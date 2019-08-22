@@ -1852,7 +1852,6 @@ class ComputeAPI(API):
                 startip=start_ip,
                 endip=end_ip,
                 netmask=netmask,
-                networkofferingid="eb35f4e6-0ecc-412e-9925-e469bf03d8fd",  # PrivNet
             )
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)

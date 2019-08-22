@@ -45,12 +45,6 @@ def test_instance_template_id():
 
 
 @pytest.fixture(autouse=True, scope="module")
-def test_privnet_networkoffering_id():
-    # PrivNet
-    return "eb35f4e6-0ecc-412e-9925-e469bf03d8fd"
-
-
-@pytest.fixture(autouse=True, scope="module")
 def test_reverse_dns():
     return "python.exoscale.com."
 
@@ -198,7 +192,7 @@ def instance(
 
 
 @pytest.fixture(autouse=True, scope="function")
-def privnet(exo, zone, test_prefix, test_description, test_privnet_networkoffering_id):
+def privnet(exo, zone, test_prefix, test_description):
     private_networks = []
 
     def _private_network(
@@ -208,7 +202,6 @@ def privnet(exo, zone, test_prefix, test_description, test_privnet_networkofferi
             zoneid=zone_id,
             name=name if name else "".join([test_prefix, _random_str()]),
             displaytext=description,
-            networkofferingid=test_privnet_networkoffering_id,
         )["network"]
 
         if teardown:

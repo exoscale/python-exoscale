@@ -103,8 +103,10 @@ class Incident(Resource):
 
     Attributes:
         id (int): the incident unique identifier
+        title (str): a incident title
         start_date (datetime.datetime): the incident start date
         end_date (datetime.datetime): the incident end date
+        services ([str]): a list of services impacted by the incident
         state (str): the incident state
         status (str): the incident status
         page (Page): the page the incident belongs to
@@ -118,6 +120,8 @@ class Incident(Resource):
     status = attr.ib(repr=False)
     start_date = attr.ib(repr=False)
     end_date = attr.ib(default=None, repr=False)
+    title = attr.ib(default=None, repr=False)
+    services = attr.ib(default=None, repr=False)
 
     @classmethod
     def from_rs(cls, runstatus, res, page):
@@ -125,88 +129,16 @@ class Incident(Resource):
             runstatus,
             res,
             id=res["id"],
+            page=page,
+            state=res["state"],
+            status=res["status"],
             start_date=datetime.strptime(res["start_date"], "%Y-%m-%dT%H:%M:%S.%f%z"),
             end_date=datetime.strptime(res["end_date"], "%Y-%m-%dT%H:%M:%S.%f%z")
             if res["end_date"] is not None
             else None,
-            state=res["state"],
-            status=res["status"],
-            page=page,
+            title=res["title"],
+            services=res["services"],
         )
-
-    @property
-    def title(self):
-        """
-        Incident title.
-
-        Returns:
-            str: the incident title
-        """
-
-        if "title" in self.res:
-            return self.res["title"]
-
-        res = self.runstatus._get(
-            url="/pages/{p}/incidents/{i}".format(p=self.name, i=self.id)
-        )
-
-        return res["title"]
-
-    @title.setter
-    def title(self, title):
-        """
-        Set the incident title.
-
-        Parameters:
-            title (str): the incident title
-
-        Returns:
-            None
-        """
-
-        self.runstatus._patch(
-            url="/pages/{p}/incidents/{i}".format(p=self.page.name, i=self.id),
-            json={"title": title},
-        )
-
-        self.res["title"] = title
-
-    @property
-    def services(self):
-        """
-        Services impacted by the incident.
-
-        Returns:
-            [str]: list of service names
-        """
-
-        if "services" in self.res:
-            return self.res["services"]
-
-        res = self.runstatus._get(
-            url="/pages/{p}/incidents/{i}".format(p=self.name, i=self.id)
-        )
-
-        return res["services"]
-
-    @services.setter
-    def services(self, services):
-        """
-        Set the services impacted by the incident.
-
-        Parameters:
-            [str]: list of service names
-
-        Returns:
-            None
-        """
-
-        self.runstatus._patch(
-            url="/pages/{p}/incidents/{i}".format(p=self.page.name, i=self.id),
-            json={"services": services},
-        )
-
-        self.res["services"] = services
 
     @property
     def events(self):
@@ -232,7 +164,7 @@ class Incident(Resource):
                 incident=self,
             )
 
-    def update(self, description, state=None, status=None):
+    def add_event(self, description, state=None, status=None):
         """
         Update the incident event stream.
 
@@ -270,6 +202,34 @@ class Incident(Resource):
 
         self.state = state if state is not None else self.state
         self.status = status if status is not None else self.status
+
+    def update(self, title=None, services=None):
+        """
+        Update the incident properties.
+
+        Parameters:
+            title (str): an incident title
+            services ([str]): a list of services impacted by the incident
+
+        Returns:
+            None
+        """
+
+        json = {}
+        if title is not None:
+            json["title"] = title
+        if services is not None:
+            json["services"] = services
+
+        self.runstatus._patch(
+            url="/pages/{p}/incidents/{i}".format(p=self.page.name, i=self.id),
+            json=json,
+        )
+
+        if title is not None:
+            self.title = title
+        if services is not None:
+            self.services = services
 
     def close(self, description):
         """
@@ -315,6 +275,11 @@ class Maintenance(Resource):
 
     Attributes:
         id (int): the maintenance unique identifier
+        title (str): a maintenance title
+        description (str): a maintenance description
+        services ([str]): a list of services impacted by the maintenance
+        start_date (datetime.datetime): a maintenance start date
+        end_date (datetime.datetime): a maintenance end date
         status (str): the maintenance status
         page (Page): the page the maintenance belongs to
     """
@@ -322,197 +287,28 @@ class Maintenance(Resource):
     runstatus = attr.ib(repr=False)
     res = attr.ib(repr=False)
     id = attr.ib()
-    status = attr.ib(repr=False)
     page = attr.ib(repr=False)
+    status = attr.ib(repr=False)
+    start_date = attr.ib(repr=False)
+    end_date = attr.ib(repr=False)
+    title = attr.ib(default=None, repr=False)
+    description = attr.ib(default=None, repr=False)
+    services = attr.ib(default=None, repr=False)
 
     @classmethod
     def from_rs(cls, runstatus, res, page):
-        return cls(runstatus, res, id=res["id"], status=res["status"], page=page)
-
-    @property
-    def title(self):
-        """
-        Maintenance title.
-
-        Returns:
-            str: the maintenance title.
-        """
-
-        if "title" in self.res:
-            return self.res["title"]
-
-        res = self.runstatus._get(
-            url="/pages/{p}/maintenance/{m}".format(p=self.name, m=self.id)
+        return cls(
+            runstatus,
+            res,
+            id=res["id"],
+            page=page,
+            status=res["status"],
+            start_date=datetime.strptime(res["start_date"], "%Y-%m-%dT%H:%M:%S%z"),
+            end_date=datetime.strptime(res["end_date"], "%Y-%m-%dT%H:%M:%S%z"),
+            title=res["title"],
+            description=res["description"],
+            services=res["services"],
         )
-
-        return res["title"]
-
-    @title.setter
-    def title(self, title):
-        """
-        Set the maintenance title.
-
-        Parameters:
-            title (str): the maintenance title
-
-        Returns:
-            None
-        """
-
-        self.runstatus._patch(
-            url="/pages/{p}/maintenances/{m}".format(p=self.page.name, m=self.id),
-            json={"title": title},
-        )
-
-        self.res["title"] = title
-
-    @property
-    def description(self):
-        """
-        Maintenance description.
-
-        Returns:
-            str: the maintenance description
-        """
-
-        if "description" in self.res:
-            return self.res["description"]
-
-        res = self.runstatus._get(
-            url="/pages/{p}/maintenance/{m}".format(p=self.name, m=self.id)
-        )
-
-        return res["description"]
-
-    @description.setter
-    def description(self, description):
-        """
-        Set the maintenance description.
-
-        Parameters:
-            description (str): the maintenance description
-
-        Returns:
-            None
-        """
-
-        self.runstatus._patch(
-            url="/pages/{p}/maintenances/{m}".format(p=self.page.name, m=self.id),
-            json={"description": description},
-        )
-
-        self.res["description"] = description
-
-    @property
-    def start_date(self):
-        """
-        Maintenance start date.
-
-        Returns:
-            datetime.datetime: the maintenance start date
-        """
-
-        if "start_date" in self.res:
-            return datetime.strptime(self.res["start_date"], "%Y-%m-%dT%H:%M:%S%z")
-
-        res = self.runstatus._get(
-            url="/pages/{p}/maintenance/{m}".format(p=self.name, m=self.id)
-        )
-
-        return datetime.strptime(res["start_date"], "%Y-%m-%dT%H:%M:%S%z")
-
-    @start_date.setter
-    def start_date(self, date):
-        """
-        Set the maintenance start date.
-
-        Parameters:
-            date (datetime.datetime): the maintenance start date
-
-        Returns:
-            None
-        """
-
-        self.runstatus._patch(
-            url="/pages/{p}/maintenances/{m}".format(p=self.page.name, m=self.id),
-            json={"start_date": date.isoformat()},
-        )
-
-        self.res["start_date"] = date.isoformat()
-
-    @property
-    def end_date(self):
-        """
-        Maintenance end date.
-
-        Returns:
-            datetime.datetime: the maintenance end date
-        """
-
-        if "end_date" in self.res:
-            return datetime.strptime(self.res["end_date"], "%Y-%m-%dT%H:%M:%S%z")
-
-        res = self.runstatus._get(
-            url="/pages/{p}/maintenance/{m}".format(p=self.name, m=self.id)
-        )
-
-        return datetime.strptime(res["end_date"], "%Y-%m-%dT%H:%M:%S%z")
-
-    @end_date.setter
-    def end_date(self, date):
-        """
-        Set the maintenance end date.
-
-        Parameters:
-            date (datetime.datetime): the maintenance end date
-
-        Returns:
-            None
-        """
-
-        self.runstatus._patch(
-            url="/pages/{p}/maintenances/{m}".format(p=self.page.name, m=self.id),
-            json={"end_date": date.isoformat()},
-        )
-
-        self.res["end_date"] = date.isoformat()
-
-    @property
-    def services(self):
-        """
-        Services impacted by the maintenance.
-
-        Returns:
-            [str]: list of service names
-        """
-
-        if "services" in self.res:
-            return self.res["services"]
-
-        res = self.runstatus._get(
-            url="/pages/{p}/maintenance/{m}".format(p=self.name, m=self.id)
-        )
-
-        return res["services"]
-
-    @services.setter
-    def services(self, services):
-        """
-        Set the services impacted by the maintenance.
-
-        Parameters:
-            services ([str]): list of service names
-
-        Returns:
-            None
-        """
-
-        self.runstatus._patch(
-            url="/pages/{p}/maintenances/{m}".format(p=self.page.name, m=self.id),
-            json={"services": services},
-        )
-
-        self.res["services"] = services
 
     @property
     def events(self):
@@ -537,7 +333,7 @@ class Maintenance(Resource):
                 maintenance=self,
             )
 
-    def update(self, description, status=None):
+    def add_event(self, description, status=None):
         """
         Update the maintenance event stream.
 
@@ -568,6 +364,56 @@ class Maintenance(Resource):
 
         self.status = status if status is not None else self.status
 
+    def update(
+        self,
+        title=None,
+        description=None,
+        start_date=None,
+        end_date=None,
+        services=None,
+    ):
+        """
+        Update the maintenance properties.
+
+        Parameters:
+            title (str): a maintenance title
+            description (str): a maintenance description
+            services ([str]): a list of services impacted by the maintenance
+            start_date (datetime.datetime): a maintenance start date
+            end_date (datetime.datetime): a maintenance end date
+
+        Returns:
+            None
+        """
+
+        json = {}
+        if title is not None:
+            json["title"] = title
+        if description is not None:
+            json["description"] = description
+        if services is not None:
+            json["services"] = services
+        if start_date is not None:
+            json["start_date"] = start_date.isoformat()
+        if end_date is not None:
+            json["end_date"] = end_date.isoformat()
+
+        self.runstatus._patch(
+            url="/pages/{p}/maintenances/{i}".format(p=self.page.name, i=self.id),
+            json=json,
+        )
+
+        if title is not None:
+            self.title = title
+        if description is not None:
+            self.description = description
+        if services is not None:
+            self.services = services
+        if start_date is not None:
+            self.start_date = start_date
+        if end_date is not None:
+            self.end_date = end_date
+
     def close(self, description):
         """
         Close the maintenance.
@@ -595,150 +441,28 @@ class Page(Resource):
     Attributes:
         id (int): the page unique identifier
         name (str): the page name
+        title (str): a page title
+        default_status_message (str): a default "OK" status message
+        custom_domain (str): a custom page domain name
+        time_zone (str): a time zone
+
+    Note:
+        The expected time zone format is the tz database (a.k.a "tzdata" or "Olson"
+        database): https://en.wikipedia.org/wiki/Tz_database
     """
 
     runstatus = attr.ib(repr=False)
     res = attr.ib(repr=False)
     id = attr.ib()
     name = attr.ib()
+    title = attr.ib(default=None, repr=False)
+    default_status_message = attr.ib(default=None, repr=False)
+    custom_domain = attr.ib(default=None, repr=False)
+    time_zone = attr.ib(default=None, repr=False)
 
     @classmethod
     def from_rs(cls, runstatus, res):
         return cls(runstatus, res, id=res["id"], name=res["subdomain"])
-
-    @property
-    def title(self):
-        """
-        Page title.
-
-        Returns:
-            str: the page title
-        """
-
-        if "title" in self.res:
-            return self.res["title"]
-
-        res = self.runstatus._get(url="/pages/{p}".format(p=self.name))
-
-        return res["title"]
-
-    @title.setter
-    def title(self, title):
-        """
-        Set the page title.
-
-        Parameters:
-            title (str): the page title
-
-        Returns:
-            None
-        """
-
-        self.runstatus._patch(
-            url="/pages/{p}".format(p=self.name), json={"title": title}
-        )
-
-        self.res["title"] = title
-
-    @property
-    def default_status_message(self):
-        """
-        Page default status message.
-
-        Returns:
-            str: the page default status message
-        """
-
-        if "ok_text" in self.res:
-            return self.res["ok_text"]
-
-        res = self.runstatus._get(url="/pages/{p}".format(p=self.name))
-
-        return res["ok_text"]
-
-    @default_status_message.setter
-    def default_status_message(self, message):
-        """
-        Set the page default status message.
-
-        Parameters:
-            message (str): the page default status message
-        """
-
-        self.runstatus._patch(
-            url="/pages/{p}".format(p=self.name), json={"ok_text": message}
-        )
-
-        self.res["ok_text"] = message
-
-    @property
-    def custom_domain(self):
-        """
-        Custom page domain name.
-
-        Returns:
-            str: the page custom domain name
-        """
-
-        if "domain" in self.res:
-            return self.res["domain"]
-
-        res = self.runstatus._get(url="/pages/{p}".format(p=self.name))
-
-        return res["domain"]
-
-    @custom_domain.setter
-    def custom_domain(self, domain):
-        """
-        Set a custom page domain name.
-
-        Parameters:
-            domain (str): the custom page domain name
-        """
-
-        self.runstatus._patch(
-            url="/pages/{p}".format(p=self.name), json={"domain": domain}
-        )
-
-        self.res["domain"] = domain
-
-    @property
-    def time_zone(self):
-        """
-        Page time zone.
-
-        Returns:
-            str: the page time zone
-        """
-
-        if "time_zone" in self.res:
-            return self.res["time_zone"]
-
-        res = self.runstatus._get(url="/pages/{p}".format(p=self.name))
-
-        return res["time_zone"]
-
-    @time_zone.setter
-    def time_zone(self, tz):
-        """
-        Set a page time zone.
-
-        Parameters:
-            tz (str): a time zone
-
-        Returns:
-            None
-
-        Note:
-            The expected time zone format is the tz database (a.k.a "tzdata" or "Olson"
-            database): https://en.wikipedia.org/wiki/Tz_database
-        """
-
-        self.runstatus._patch(
-            url="/pages/{p}".format(p=self.name), json={"time_zone": tz}
-        )
-
-        self.res["time_zone"] = tz
 
     @property
     def services(self):
@@ -868,6 +592,51 @@ class Page(Resource):
                 "services": services,
             },
         )
+
+    def update(
+        self,
+        title=None,
+        default_status_message=None,
+        custom_domain=None,
+        time_zone=None,
+    ):
+        """
+        Update the page properties.
+
+        Parameters:
+            title (str): a page title
+            default_status_message (str): a default "OK" status message
+            custom_domain (str): a custom page domain name
+            time_zone (str): a time zone
+
+        Returns:
+            None
+
+        Note:
+            The expected time zone format is the tz database (a.k.a "tzdata" or "Olson"
+            database): https://en.wikipedia.org/wiki/Tz_database
+        """
+
+        json = {}
+        if title is not None:
+            json["title"] = title
+        if default_status_message is not None:
+            json["ok_text"] = default_status_message
+        if custom_domain is not None:
+            json["domain"] = custom_domain
+        if time_zone is not None:
+            json["time_zone"] = time_zone
+
+        self.runstatus._patch(url="/pages/{p}".format(p=self.name), json=json)
+
+        if title is not None:
+            self.title = title
+        if default_status_message is not None:
+            self.default_status_message = default_status_message
+        if custom_domain is not None:
+            self.custom_domain = custom_domain
+        if time_zone is not None:
+            self.time_zone = time_zone
 
     def delete(self):
         """

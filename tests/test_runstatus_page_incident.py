@@ -7,7 +7,7 @@ from datetime import timezone
 
 
 class TestRunstatusPageIncident:
-    def test_update(self, exo, runstatus_page):
+    def test_add_event(self, exo, runstatus_page):
         page = Page.from_rs(exo.runstatus, runstatus_page())
         test_incident_title = "Everything's on fire"
         test_incident_description = "It's fine ¯\\_(ツ)_/¯"
@@ -34,9 +34,9 @@ class TestRunstatusPageIncident:
         res = exo.runstatus._get(url="/pages/{p}/incidents".format(p=page.name)).json()
         incident = Incident.from_rs(exo.runstatus, res["results"][0], page)
 
-        incident.update(description="Hmm...", status="investigating")
-        incident.update(description="Who did this?!", status="identified")
-        incident.update(
+        incident.add_event(description="Hmm...", status="investigating")
+        incident.add_event(description="Who did this?!", status="identified")
+        incident.add_event(
             description="Should be better now",
             status="monitoring",
             state="degraded_performance",
@@ -55,6 +55,47 @@ class TestRunstatusPageIncident:
         assert res["results"][2]["text"] == "Hmm..."
         assert res["results"][2]["state"] == "major_outage"
         assert res["results"][2]["status"] == "investigating"
+
+    def test_update(self, exo, runstatus_page):
+        page = Page.from_rs(exo.runstatus, runstatus_page())
+        test_incident_description = "It's fine ¯\\_(ツ)_/¯"
+        test_incident_state = "major_outage"
+        test_incident_status = "identified"
+        test_incident_title = "Everything's on fire"
+        test_incident_title_edited = "Everything's on fire (edited)"
+        test_incident_service = "db1"
+        test_incident_service_edited = "db2"
+
+        for i in [test_incident_service, test_incident_service_edited]:
+            exo.runstatus._post(
+                url="/pages/{p}/services".format(p=page.name), json={"name": i}
+            )
+
+        exo.runstatus._post(
+            url="/pages/{p}/incidents".format(p=page.name),
+            json={
+                "title": test_incident_title,
+                "status_text": test_incident_description,
+                "status": test_incident_status,
+                "state": test_incident_state,
+                "services": [test_incident_service],
+            },
+        )
+
+        res = exo.runstatus._get(url="/pages/{p}/incidents".format(p=page.name)).json()
+        incident = Incident.from_rs(exo.runstatus, res["results"][0], page)
+
+        incident.update(
+            title=test_incident_title_edited, services=[test_incident_service_edited]
+        )
+
+        res = exo.runstatus._get(
+            url="/pages/{p}/incidents/{i}".format(p=page.name, i=incident.id)
+        ).json()
+        assert res["title"] == test_incident_title_edited
+        assert incident.title == test_incident_title_edited
+        assert res["services"] == [test_incident_service_edited]
+        assert incident.services == [test_incident_service_edited]
 
     def test_close(self, exo, runstatus_page):
         page = Page.from_rs(exo.runstatus, runstatus_page())
@@ -96,7 +137,6 @@ class TestRunstatusPageIncident:
     def test_properties(self, exo, runstatus_page):
         page = Page.from_rs(exo.runstatus, runstatus_page())
         test_incident_title = "Everything's on fire"
-        test_incident_title_edited = "Everything's on fire (edited)"
         test_incident_description = "It's fine ¯\\_(ツ)_/¯"
         test_incident_state = "major_outage"
         test_incident_status = "identified"
@@ -120,12 +160,6 @@ class TestRunstatusPageIncident:
 
         res = exo.runstatus._get(url="/pages/{p}/incidents".format(p=page.name)).json()
         incident = Incident.from_rs(exo.runstatus, res["results"][0], page)
-
-        incident.title = test_incident_title_edited
-        assert incident.title == test_incident_title_edited
-
-        incident.services = ["a"]
-        assert incident.services == ["a"]
 
         for i in [1, 2, 3]:
             exo.runstatus._post(

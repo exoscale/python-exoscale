@@ -93,12 +93,32 @@ class TestRunstatusPage:
             res = exo.runstatus._get(url="/pages/{p}".format(p=page.name))
         assert excinfo.type == ResourceNotFoundError
 
+    def test_update(self, exo, runstatus_page):
+        page = Page.from_rs(exo.runstatus, runstatus_page())
+        test_page_title_edited = "python-exoscale"
+        test_page_default_status_message_edited = "It's all good in the hood"
+        test_page_custom_domain_edited = "status.example.net"
+        test_page_time_zone_edited = "Europe/Zurich"
+
+        page.update(
+            title=test_page_title_edited,
+            default_status_message=test_page_default_status_message_edited,
+            custom_domain=test_page_custom_domain_edited,
+            time_zone=test_page_time_zone_edited,
+        )
+
+        res = exo.runstatus._get(url="/pages/{p}".format(p=page.name)).json()
+        assert res["title"] == test_page_title_edited
+        assert page.title == test_page_title_edited
+        assert res["ok_text"] == test_page_default_status_message_edited
+        assert page.default_status_message == test_page_default_status_message_edited
+        assert res["domain"] == test_page_custom_domain_edited
+        assert page.custom_domain == test_page_custom_domain_edited
+        assert res["time_zone"] == test_page_time_zone_edited
+        assert page.time_zone == test_page_time_zone_edited
+
     def test_properties(self, exo, runstatus_page):
         page = Page.from_rs(exo.runstatus, runstatus_page())
-        test_page_title = "python-exoscale"
-        test_page_default_status_message = "It's all good in the hood"
-        test_page_custom_domain = "status.example.net"
-        test_page_time_zone = "Europe/Zurich"
         test_page_service_name = "python-exoscale"
         test_incident_title = "Everything's on fire"
         test_incident_description = "It's fine ¯\\_(ツ)_/¯"
@@ -110,18 +130,6 @@ class TestRunstatusPage:
         )
         test_maintenance_start_date = datetime(2019, 8, 2, 4, 0, tzinfo=timezone.utc)
         test_maintenance_end_date = datetime(2019, 8, 2, 5, 0, tzinfo=timezone.utc)
-
-        page.title = test_page_title
-        assert page.title == test_page_title
-
-        page.custom_domain = test_page_custom_domain
-        assert page.custom_domain == test_page_custom_domain
-
-        page.default_status_message = test_page_default_status_message
-        assert page.default_status_message == test_page_default_status_message
-
-        page.time_zone = test_page_time_zone
-        assert page.time_zone == test_page_time_zone
 
         exo.runstatus._post(
             url="/pages/{p}/services".format(p=page.name),

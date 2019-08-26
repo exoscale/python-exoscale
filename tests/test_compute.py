@@ -230,6 +230,9 @@ class TestCompute:
         instance = exo.compute.get_instance(id=instance1.id)
         assert instance.id == instance1.id
 
+        instance = exo.compute.get_instance(ip_address=instance1.ipv4_address)
+        assert instance.id == instance1.id
+
         with pytest.raises(ResourceNotFoundError) as excinfo:
             instance = exo.compute.get_instance(
                 id="00000000-0000-0000-0000-000000000000"

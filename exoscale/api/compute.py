@@ -1725,19 +1725,27 @@ class ComputeAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-    def get_instance(self, id):
+    def get_instance(self, id=None, ip_address=None):
         """
-        Get Compute instances.
+        Get a Compute instance.
 
         Parameters:
             id (str): an instance identifier
+            ip_address (str): an instance IP address
 
         Returns:
             Instance: a Compute instance
+
+        Note:
+            The ``ip_address`` parameter is a Compute instance's *primary* IP address,
+            not an Elastic IP.
         """
 
+        if id is None and ip_address is None:
+            raise ValueError("either id or ip_address must be specifed")
+
         try:
-            instances = list(self.list_instances(id=id))
+            instances = list(self.list_instances(id=id, ipadddress=ip_address))
         except APIException as e:
             if e.error["errortext"].find("entity does not exist"):
                 raise ResourceNotFoundError

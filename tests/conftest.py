@@ -196,12 +196,21 @@ def privnet(exo, zone, test_prefix, test_description):
     private_networks = []
 
     def _private_network(
-        name=None, description=test_description, zone_id=_DEFAULT_ZONE_ID, teardown=True
+        name=None,
+        description=test_description,
+        zone_id=_DEFAULT_ZONE_ID,
+        start_ip=None,
+        end_ip=None,
+        netmask=None,
+        teardown=True,
     ):
         private_network = exo.compute.cs.createNetwork(
             zoneid=zone_id,
             name=name if name else "".join([test_prefix, _random_str()]),
             displaytext=description,
+            startip=start_ip,
+            endip=end_ip,
+            netmask=netmask,
         )["network"]
 
         if teardown:

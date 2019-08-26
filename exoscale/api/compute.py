@@ -981,6 +981,10 @@ class PrivateNetwork(Resource):
         start_ip (str): the start address of the managed Private Network IP range
         end_ip (str): the end address of the managed Private Network IP range
         netmask (str): the managed Private Network IP range netmask
+
+    Note:
+        The ``start_ip``, ``end_ip`` and ``netmask`` attributes are required in
+        "managed" mode.
     """
 
     compute = attr.ib(repr=False)
@@ -1018,20 +1022,43 @@ class PrivateNetwork(Resource):
 
         return self.compute.list_instances(networkid=self.id)
 
-    def update(self, description):
+    def update(
+        self, name=None, description=None, start_ip=None, end_ip=None, netmask=None
+    ):
         """
         Update the Private Network properties.
 
         Parameters:
-            description (str): the Private Network description
+            name (str): a Private Network name
+            description (str): a Private Network description
+            start_ip (str): a start address of the managed Private Network IP range
+            end_ip (str): an end address of the managed Private Network IP range
+            netmask (str): a managed Private Network IP range netmask
 
         Returns:
             None
         """
 
         try:
-            self.compute.cs.updateNetwork(id=self.id, displaytext=description)
-            self.description = description
+            self.compute.cs.updateNetwork(
+                id=self.id,
+                name=name,
+                displaytext=description,
+                startip=start_ip,
+                endip=end_ip,
+                netmask=netmask,
+            )
+
+            if name is not None:
+                self.name = name
+            if description is not None:
+                self.description = description
+            if start_ip is not None:
+                self.start_ip = start_ip
+            if end_ip is not None:
+                self.end_ip = end_ip
+            if netmask is not None:
+                self.netmask = netmask
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 

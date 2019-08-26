@@ -48,14 +48,35 @@ class TestComputePrivateNetwork:
         assert len(res) == 0
 
     def test_update(self, exo, privnet):
-        private_network = PrivateNetwork.from_cs(exo.compute, privnet())
+        private_network = PrivateNetwork.from_cs(
+            exo.compute,
+            privnet(start_ip="10.0.0.10", end_ip="10.0.0.50", netmask="255.255.255.0"),
+        )
+        name_edited = private_network.name + " (edited)"
         description_edited = private_network.description + " (edited)"
+        start_ip_edited = "10.0.0.1"
+        end_ip_edited = "10.0.0.100"
+        netmask_edited = "255.0.0.0"
 
-        private_network.update(description=description_edited)
-        assert private_network.description == description_edited
+        private_network.update(
+            name=name_edited,
+            description=description_edited,
+            start_ip=start_ip_edited,
+            end_ip=end_ip_edited,
+            netmask=netmask_edited,
+        )
 
         res = exo.compute.cs.listNetworks(id=private_network.id, fetch_list=True)
+        assert res[0]["name"] == name_edited
+        assert private_network.name == name_edited
         assert res[0]["displaytext"] == description_edited
+        assert private_network.description == description_edited
+        assert res[0]["startip"] == start_ip_edited
+        assert private_network.start_ip == start_ip_edited
+        assert res[0]["endip"] == end_ip_edited
+        assert private_network.end_ip == end_ip_edited
+        assert res[0]["netmask"] == netmask_edited
+        assert private_network.netmask == netmask_edited
 
     def test_delete(self, exo, privnet):
         private_network = PrivateNetwork.from_cs(exo.compute, privnet(teardown=False))

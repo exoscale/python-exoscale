@@ -38,7 +38,28 @@ class TestComputeElasticIP:
         res = exo.compute.cs.listNics(virtualmachineid=instance.id, fetch_list=True)
         assert "secondaryip" not in instance._default_nic(res)
 
-    def test_update_healthcheck(self, exo, eip):
+    def test_set_reverse_dns(self, exo, eip, test_reverse_dns):
+        elastic_ip = ElasticIP.from_cs(exo.compute, eip())
+
+        elastic_ip.set_reverse_dns(record=test_reverse_dns)
+
+        res = exo.compute.cs.queryReverseDnsForPublicIpAddress(id=elastic_ip.id)
+        assert res["publicipaddress"]["reversedns"][0]["domainname"] == test_reverse_dns
+
+    def test_unset_reverse_dns(self, exo, eip, test_reverse_dns):
+        elastic_ip = ElasticIP.from_cs(exo.compute, eip())
+
+        res = exo.compute.cs.updateReverseDnsForPublicIpAddress(
+            id=elastic_ip.id, domainname=test_reverse_dns
+        )
+        assert res["publicipaddress"]["reversedns"][0]["domainname"] == test_reverse_dns
+
+        elastic_ip.unset_reverse_dns()
+
+        res = exo.compute.cs.queryReverseDnsForPublicIpAddress(id=elastic_ip.id)
+        assert len(res["publicipaddress"]["reversedns"]) == 0
+
+    def test_update(self, exo, eip):
         elastic_ip = ElasticIP.from_cs(exo.compute, eip())
         healthcheck_mode = "http"
         healthcheck_port = 80
@@ -61,40 +82,19 @@ class TestComputeElasticIP:
         [res] = exo.compute.cs.listPublicIpAddresses(id=elastic_ip.id, fetch_list=True)
         assert "healthcheck" in res.keys()
         assert res["healthcheck"]["mode"] == healthcheck_mode
-        assert res["healthcheck"]["path"] == healthcheck_path
-        assert res["healthcheck"]["port"] == healthcheck_port
-        assert res["healthcheck"]["interval"] == healthcheck_interval
-        assert res["healthcheck"]["timeout"] == healthcheck_timeout
-        assert res["healthcheck"]["strikes-ok"] == healthcheck_strikes_ok
-        assert res["healthcheck"]["strikes-fail"] == healthcheck_strikes_fail
         assert elastic_ip.healthcheck_mode == healthcheck_mode
+        assert res["healthcheck"]["path"] == healthcheck_path
         assert elastic_ip.healthcheck_path == healthcheck_path
+        assert res["healthcheck"]["port"] == healthcheck_port
         assert elastic_ip.healthcheck_port == healthcheck_port
+        assert res["healthcheck"]["interval"] == healthcheck_interval
         assert elastic_ip.healthcheck_interval == healthcheck_interval
+        assert res["healthcheck"]["timeout"] == healthcheck_timeout
         assert elastic_ip.healthcheck_timeout == healthcheck_timeout
+        assert res["healthcheck"]["strikes-ok"] == healthcheck_strikes_ok
         assert elastic_ip.healthcheck_strikes_ok == healthcheck_strikes_ok
+        assert res["healthcheck"]["strikes-fail"] == healthcheck_strikes_fail
         assert elastic_ip.healthcheck_strikes_fail == healthcheck_strikes_fail
-
-    def test_set_reverse_dns(self, exo, eip, test_reverse_dns):
-        elastic_ip = ElasticIP.from_cs(exo.compute, eip())
-
-        elastic_ip.set_reverse_dns(record=test_reverse_dns)
-
-        res = exo.compute.cs.queryReverseDnsForPublicIpAddress(id=elastic_ip.id)
-        assert res["publicipaddress"]["reversedns"][0]["domainname"] == test_reverse_dns
-
-    def test_unset_reverse_dns(self, exo, eip, test_reverse_dns):
-        elastic_ip = ElasticIP.from_cs(exo.compute, eip())
-
-        res = exo.compute.cs.updateReverseDnsForPublicIpAddress(
-            id=elastic_ip.id, domainname=test_reverse_dns
-        )
-        assert res["publicipaddress"]["reversedns"][0]["domainname"] == test_reverse_dns
-
-        elastic_ip.unset_reverse_dns()
-
-        res = exo.compute.cs.queryReverseDnsForPublicIpAddress(id=elastic_ip.id)
-        assert len(res["publicipaddress"]["reversedns"]) == 0
 
     def test_delete(self, exo, eip, instance):
         elastic_ip = ElasticIP.from_cs(exo.compute, eip(teardown=False))

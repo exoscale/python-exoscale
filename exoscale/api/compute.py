@@ -210,36 +210,34 @@ class ElasticIP(Resource):
                     "strikes-fail": healthcheck_strikes_fail,
                 }
             )
-
-            self.healthcheck_mode = (
-                healthcheck_mode if healthcheck_mode else self.healthcheck_mode
-            )
-            self.healthcheck_port = (
-                healthcheck_port if healthcheck_port else self.healthcheck_port
-            )
-            self.healthcheck_path = (
-                healthcheck_path if healthcheck_path else self.healthcheck_path
-            )
-            self.healthcheck_interval = (
-                healthcheck_interval
-                if healthcheck_interval
-                else self.healthcheck_interval
-            )
-            self.healthcheck_timeout = (
-                healthcheck_timeout if healthcheck_timeout else self.healthcheck_timeout
-            )
-            self.healthcheck_strikes_ok = (
-                healthcheck_strikes_ok
-                if healthcheck_strikes_ok
-                else self.healthcheck_strikes_ok
-            )
-            self.healthcheck_strikes_fail = (
-                healthcheck_strikes_fail
-                if healthcheck_strikes_fail
-                else self.healthcheck_strikes_fail
-            )
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
+
+        self.healthcheck_mode = (
+            healthcheck_mode if healthcheck_mode else self.healthcheck_mode
+        )
+        self.healthcheck_port = (
+            healthcheck_port if healthcheck_port else self.healthcheck_port
+        )
+        self.healthcheck_path = (
+            healthcheck_path if healthcheck_path else self.healthcheck_path
+        )
+        self.healthcheck_interval = (
+            healthcheck_interval if healthcheck_interval else self.healthcheck_interval
+        )
+        self.healthcheck_timeout = (
+            healthcheck_timeout if healthcheck_timeout else self.healthcheck_timeout
+        )
+        self.healthcheck_strikes_ok = (
+            healthcheck_strikes_ok
+            if healthcheck_strikes_ok
+            else self.healthcheck_strikes_ok
+        )
+        self.healthcheck_strikes_fail = (
+            healthcheck_strikes_fail
+            if healthcheck_strikes_fail
+            else self.healthcheck_strikes_fail
+        )
 
     def attach_instance(self, instance):
         """
@@ -511,8 +509,8 @@ class Instance(Resource):
         Update the instance properties.
 
         Parameters:
-            name (str): the instance hostname/display name
-            security_groups ([SecurityGroup]): the list of Security Groups the instance
+            name (str): an instance hostname/display name
+            security_groups ([SecurityGroup]): a list of Security Groups the instance
                 is member of
             user_data (str): a cloud-init user data configuration
 
@@ -521,20 +519,22 @@ class Instance(Resource):
         """
 
         try:
-            if name is not None or security_groups is not None:
-                self.compute.cs.updateVirtualMachine(
-                    id=self.id,
-                    name=name,
-                    displayname=name,
-                    securitygroupids=list(i.id for i in security_groups)
-                    if security_groups
-                    else None,
-                    userdata=b64encode(bytes(user_data, encoding="utf-8"))
-                    if user_data
-                    else None,
-                )
+            self.compute.cs.updateVirtualMachine(
+                id=self.id,
+                name=name if name is not None else None,
+                displayname=name if name is not None else None,
+                securitygroupids=list(i.id for i in security_groups)
+                if security_groups
+                else None,
+                userdata=b64encode(bytes(user_data, encoding="utf-8"))
+                if user_data
+                else None,
+            )
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
+
+        if name is not None:
+            self.name = name
 
     def scale(self, type):
         """
@@ -1048,19 +1048,19 @@ class PrivateNetwork(Resource):
                 endip=end_ip,
                 netmask=netmask,
             )
-
-            if name is not None:
-                self.name = name
-            if description is not None:
-                self.description = description
-            if start_ip is not None:
-                self.start_ip = start_ip
-            if end_ip is not None:
-                self.end_ip = end_ip
-            if netmask is not None:
-                self.netmask = netmask
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
+
+        if name is not None:
+            self.name = name
+        if description is not None:
+            self.description = description
+        if start_ip is not None:
+            self.start_ip = start_ip
+        if end_ip is not None:
+            self.end_ip = end_ip
+        if netmask is not None:
+            self.netmask = netmask
 
     def attach_instance(self, instance):
         """

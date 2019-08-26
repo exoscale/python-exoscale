@@ -6,17 +6,9 @@ from exoscale.api.compute import *
 
 
 class TestComputeInstance:
-    def test_update_name(self, exo, instance):
-        instance = Instance.from_cs(exo.compute, instance())
-        name_edited = instance.name + "-edited"
-
-        instance.update(name=name_edited)
-
-        [res] = exo.compute.cs.listVirtualMachines(id=instance.id, fetch_list=True)
-        assert res["name"] == name_edited
-
-    def test_update_security_groups(self, exo, instance):
+    def test_update(self, exo, instance):
         instance = Instance.from_cs(exo.compute, instance(start=False))
+        name_edited = instance.name + "-edited"
         security_group_default = SecurityGroup.from_cs(
             exo.compute,
             exo.compute.cs.listSecurityGroups(
@@ -24,7 +16,11 @@ class TestComputeInstance:
             )[0],
         )
 
-        instance.update(security_groups=[security_group_default])
+        instance.update(name=name_edited, security_groups=[security_group_default])
+
+        [res] = exo.compute.cs.listVirtualMachines(id=instance.id, fetch_list=True)
+        assert res["name"] == name_edited
+        assert instance.name == name_edited
 
         [res] = exo.compute.cs.listSecurityGroups(
             virtualmachineid=instance.id, fetch_list=True

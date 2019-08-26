@@ -60,6 +60,10 @@ class Domain(Resource):
 
         Yields:
             DomainRecord: the next DNS domain record defined
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:

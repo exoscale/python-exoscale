@@ -232,6 +232,10 @@ class BucketFile(Resource):
                 for f in mybucket.list_files():
                     print(f.content.read())
 
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+
         References:
             * `botocore.response API`_
 
@@ -252,6 +256,10 @@ class BucketFile(Resource):
 
         Returns:
             int: the stored file size in bytes
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         if "Size" in self.res:
@@ -271,6 +279,10 @@ class BucketFile(Resource):
 
         Returns:
             datetime.datetime: the stored file last modification date
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
 
         References:
             * `Python datetime module`_
@@ -295,6 +307,10 @@ class BucketFile(Resource):
 
         Returns:
             AccessControlPolicy: the Access Control Policy applied to the stored file
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -314,6 +330,10 @@ class BucketFile(Resource):
 
         Returns:
             dict: the stored file metadata
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -400,6 +420,10 @@ class Bucket(Resource):
 
         Returns:
             AccessControlPolicy: the Access Control Policy applied to the Storage bucket
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -417,6 +441,10 @@ class Bucket(Resource):
 
         Yields:
             CORSRule: the next CORS rule
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -433,6 +461,10 @@ class Bucket(Resource):
 
         Returns:
             str: the Storage bucket zone
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:

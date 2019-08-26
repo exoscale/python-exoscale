@@ -44,6 +44,10 @@ class Service(Resource):
 
         Returns:
             str: the service state
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         if "state" in self.res:
@@ -147,6 +151,10 @@ class Incident(Resource):
 
         Yields:
             IncidentEvent: the next incident event
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         res = self.runstatus._get(
@@ -317,6 +325,10 @@ class Maintenance(Resource):
 
         Yields:
             MaintenanceEvent: the next maintenance event
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         res = self.runstatus._get(
@@ -471,6 +483,10 @@ class Page(Resource):
 
         Yields:
             Service: the next service
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         res = self.runstatus._get(url="/pages/{p}/services".format(p=self.name))
@@ -500,6 +516,10 @@ class Page(Resource):
 
         Yields:
             Incident: the next incident
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         res = self.runstatus._get(url="/pages/{p}/incidents".format(p=self.name))
@@ -557,6 +577,10 @@ class Page(Resource):
 
         Yields:
             Maintenance: the next maintenance
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         res = self.runstatus._get(url="/pages/{p}/maintenances".format(p=self.name))

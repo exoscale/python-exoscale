@@ -45,6 +45,10 @@ class AntiAffinityGroup(Resource):
 
         Yields:
             Instance: the next Anti-Affinity Group instance member
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         # We need to refresh ourselves as the virtualmachineIds attribute may have
@@ -138,6 +142,10 @@ class ElasticIP(Resource):
 
         Yields:
             Instance: the next instance the Elastic IP is attached to
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         for instance in self.compute.list_instances(zone=self.zone):
@@ -154,6 +162,10 @@ class ElasticIP(Resource):
 
         Returns:
             str: reverse DNS record, or None if none set
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -399,6 +411,10 @@ class Instance(Resource):
 
         Yields:
             AntiAffinityGroup: the next Anti-Affinity Group the instance is member of
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -417,6 +433,10 @@ class Instance(Resource):
 
         Yields:
             ElasticIP: the next Elastic IP attached to the instance
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -434,6 +454,10 @@ class Instance(Resource):
 
         Yields:
             PrivateNetwork: the next Private Network the instance is member of
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -452,6 +476,10 @@ class Instance(Resource):
 
         Returns:
             str: reverse DNS record, or None if none set
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -470,6 +498,10 @@ class Instance(Resource):
 
         Yields:
             SecurityGroup: the next Security Group the instance is member of
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -488,6 +520,10 @@ class Instance(Resource):
 
         Yields:
             InstanceVolumeSnapshot: the next instance storage volume snapshot
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -506,6 +542,10 @@ class Instance(Resource):
 
         Returns:
             str: the current instance state
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -871,6 +911,10 @@ class InstanceVolumeSnapshot(Resource):
 
         Returns:
             str: the current instance storage volume snapshot state.
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -995,6 +1039,10 @@ class PrivateNetwork(Resource):
 
         Yields:
             Instance: the next Private Network instance member
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         return self.compute.list_instances(networkid=self.id)
@@ -1123,6 +1171,10 @@ class SecurityGroup(Resource):
 
         Yields:
             SecurityGroupRule: the next ingress rule of the Security Group
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:
@@ -1141,6 +1193,10 @@ class SecurityGroup(Resource):
 
         Yields:
             SecurityGroupRule: the next egress rule of the Security Group
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
         """
 
         try:

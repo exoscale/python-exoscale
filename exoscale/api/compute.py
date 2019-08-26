@@ -1564,12 +1564,13 @@ class ComputeAPI(API):
 
         try:
             _list = self.cs.listPublicIpAddresses(
-                fetch_list=True, zoneid=getattr(zone, "id", None), **kwargs
+                fetch_list=True,
+                zoneid=getattr(zone, "id", None),
+                iselastic=True,
+                **kwargs,
             )
 
             for i in _list:
-                if not i["iselastic"]:
-                    continue
                 yield ElasticIP.from_cs(self, i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)

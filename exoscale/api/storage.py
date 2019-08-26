@@ -559,7 +559,47 @@ class Bucket(Resource):
         res.pop("ResponseMetadata")
         return BucketFile(self.storage, res, path=path, bucket=self)
 
-    # TODO: def delete_files(self, prefix=""):
+    def delete_files(self, prefix=""):
+        """
+        Delete files stored in the bucket.
+
+        Parameters:
+            prefix (str): a path prefix to restrict files deletion to
+
+        Returns:
+            None
+        """
+
+        _MAX_DELETE_BATCH = 1000
+
+        batches = []
+        batch = []
+        n = 0
+        # Iterate over the list of files to delete, and pack batches of
+        # _MAX_DELETE_BATCH files to be executed once we've finished listing
+        for f in self.list_files(prefix):
+            batch.append({"Key": f.path})
+            n = n + 1
+
+            # We reached maximum batch capacity, queue it and move on to the rest of
+            # the list
+            if n >= _MAX_DELETE_BATCH:
+                batches.append(batch)
+                batch = []
+                n = 0
+
+        # Include the remaining non-batched files
+        if len(batch) > 0:
+            batches.append(batch)
+
+        # Perform objects batch deletions
+        try:
+            for ob in batches:
+                res = self.storage.boto.delete_objects(
+                    Bucket=self.name, Delete={"Objects": ob}
+                )
+        except Exception as e:
+            raise APIException(e)
 
     def set_acl(self, acl="", acp=None):
         """

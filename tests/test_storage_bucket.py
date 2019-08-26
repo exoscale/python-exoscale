@@ -62,6 +62,28 @@ class TestStorageBucket:
 
         exo.storage.boto.delete_object(Bucket=bucket.name, Key="a")
 
+    def test_delete_files(self, exo, bucket, tmp_path):
+        bucket = Bucket(exo.storage, {}, bucket())
+
+        f_a = tmp_path / "file_a"
+        f_a.write_text("a")
+        f_b = tmp_path / "file_b"
+        f_b.write_text("b")
+
+        exo.storage.boto.upload_file(Bucket=bucket.name, Filename=str(f_a), Key="a/a")
+        exo.storage.boto.upload_file(Bucket=bucket.name, Filename=str(f_b), Key="b")
+
+        res = exo.storage.boto.list_objects(Bucket=bucket.name)
+        assert len(res["Contents"]) == 2
+
+        bucket.delete_files(prefix="a")
+
+        res = exo.storage.boto.list_objects(Bucket=bucket.name)
+        assert len(res["Contents"]) == 1
+        assert res["Contents"][0]["Key"] == "b"
+
+        exo.storage.boto.delete_object(Bucket=bucket.name, Key="b")
+
     def test_delete(self, exo, bucket):
         bucket = Bucket(exo.storage, {}, bucket(teardown=False))
         bucket_name = bucket.name

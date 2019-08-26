@@ -108,7 +108,7 @@ def aag(exo, test_prefix, test_description):
 
     def _anti_affinity_group(name=None, description=test_description, teardown=True):
         anti_affinity_group = exo.compute.cs.createAffinityGroup(
-            name=name if name else "".join([test_prefix, _random_str()]),
+            name=name if name else "-".join([test_prefix, _random_str()]),
             description=description,
             type="host anti-affinity",
         )["affinitygroup"]
@@ -168,7 +168,7 @@ def instance(
         teardown=True,
     ):
         instance = exo.compute.cs.deployVirtualMachine(
-            name=name if name else "".join([test_prefix, _random_str()]),
+            name=name if name else "-".join([test_prefix, _random_str()]),
             displayname=name,
             zoneid=zone_id,
             templateid=template_id,
@@ -206,7 +206,7 @@ def privnet(exo, zone, test_prefix, test_description):
     ):
         private_network = exo.compute.cs.createNetwork(
             zoneid=zone_id,
-            name=name if name else "".join([test_prefix, _random_str()]),
+            name=name if name else "-".join([test_prefix, _random_str()]),
             displaytext=description,
             startip=start_ip,
             endip=end_ip,
@@ -231,7 +231,7 @@ def sg(exo, test_prefix, test_description):
 
     def _security_group(name=None, description=test_description, teardown=True):
         security_group = exo.compute.cs.createSecurityGroup(
-            name=name if name else "".join([test_prefix, _random_str()]),
+            name=name if name else "-".join([test_prefix, _random_str()]),
             description=description,
         )["securitygroup"]
 
@@ -256,7 +256,7 @@ def sshkey(exo, test_prefix):
 
     def _ssh_key(name=None, teardown=True):
         ssh_key = exo.compute.cs.createSSHKeyPair(
-            name=name if name else "".join([test_prefix, _random_str()])
+            name=name if name else "-".join([test_prefix, _random_str()])
         )["keypair"]
 
         if teardown:
@@ -298,7 +298,7 @@ def bucket(exo, test_prefix):
 
     def _bucket(name=None, zone=None, acl="private", teardown=True):
         bucket = exo.storage.boto.create_bucket(
-            Bucket=name if name else "".join([test_prefix, _random_str()]),
+            Bucket=name if name else "-".join([test_prefix, _random_str()]),
             CreateBucketConfiguration={
                 "LocationConstraint": _DEFAULT_ZONE_NAME if zone is None else zone
             },
@@ -321,7 +321,7 @@ def runstatus_page(exo, test_prefix):
     pages = []
 
     def _page(name=None, teardown=True):
-        name = name if name else "".join([test_prefix, _random_str()])
+        name = name if name else "-".join([test_prefix, _random_str()])
         page = exo.runstatus._post(
             url="/pages", json={"name": name, "subdomain": name}
         ).json()

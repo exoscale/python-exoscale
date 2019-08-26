@@ -176,6 +176,7 @@ class TestCompute:
         assert instance.zone.id == zone_gva2.id
         assert instance.type.id == instance_type.id
         assert instance.template.id == template.id
+        assert instance.volume_size == 21474836480  # 20 GB
         assert instance.ipv4_address != ""
         assert instance.ipv6_address != ""
         assert instance.ssh_key.name == ssh_key.name

@@ -342,6 +342,7 @@ class Instance(Resource):
         zone (Zone): the zone in which the instance is located
         type (InstanceType): the instance type
         template (InstanceTemplate): the instance template
+        volume_size (int): the instance storage volume capacity in bytes
         ipv4_address (str): the instance public network interface IP address
         ipv6_address (str): the instance public network interface IPv6 address,
             or None if IPv6 is not enabled
@@ -356,12 +357,20 @@ class Instance(Resource):
     zone = attr.ib(repr=False)
     type = attr.ib(repr=False)
     template = attr.ib(repr=False)
+    volume_id = attr.ib(repr=False)
+    volume_size = attr.ib(repr=False)
     ipv4_address = attr.ib(repr=False)
     ipv6_address = attr.ib(default=None, repr=False)
     ssh_key = attr.ib(default=None, repr=False)
 
     @classmethod
     def from_cs(cls, compute, res):
+        try:
+            _list = compute.cs.listVolumes(virtualmachineid=res["id"], fetch_list=True)
+            volume_res = _list[0]
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
         return cls(
             compute,
             res,
@@ -370,6 +379,8 @@ class Instance(Resource):
             zone=compute.get_zone(id=res["zoneid"]),
             type=compute.get_instance_type(id=res["serviceofferingid"]),
             template=compute.get_instance_template(id=res["templateid"]),
+            volume_id=volume_res["id"],
+            volume_size=volume_res["size"],
             ipv4_address=next(i for i in res["nic"] if i["isdefault"]).get(
                 "ipaddress", None
             ),
@@ -471,6 +482,24 @@ class Instance(Resource):
             raise APIException(e.error["errortext"], e.error)
 
     @property
+    def volume_snapshots(self):
+        """
+        Snapshots of the instance storage volume.
+
+        Yields:
+            InstanceVolumeSnapshot: the next instance storage volume snapshot
+        """
+
+        try:
+            _list = self.compute.cs.listSnapshots(
+                volumeid=self.volume_id, fetch_list=True
+            )
+            for i in _list:
+                yield InstanceVolumeSnapshot.from_cs(self.compute, i)
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+    @property
     def state(self):
         """
         State of the instance.
@@ -485,24 +514,6 @@ class Instance(Resource):
             raise APIException(e.error["errortext"], e.error)
 
         return res["state"].lower()
-
-    @property
-    def volume(self):
-        """
-        Root instance storage volume.
-
-        Returns:
-            InstanceVolume: the instance root storage volume
-        """
-
-        try:
-            _list = self.compute.cs.listVolumes(
-                virtualmachineid=self.id, fetch_list=True
-            )
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
-
-        return InstanceVolume.from_cs(self.compute, _list[0])
 
     def update(self, name=None, security_groups=None, user_data=None):
         """
@@ -591,6 +602,40 @@ class Instance(Resource):
             self.compute.cs.rebootVirtualMachine(id=self.id)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
+
+    def resize_volume(self, size):
+        """
+        Resize the instance storage volume.
+
+        Parameters:
+            size (int): new instance storage volume size in GB (must be greater than
+                current size)
+
+        Returns:
+            None
+        """
+
+        try:
+            res = self.compute.cs.resizeVolume(id=self.volume_id, size=size)
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+        self.volume_size = res["volume"]["size"]
+
+    def snapshot_volume(self):
+        """
+        Take a snapshot of the instance storage volume.
+
+        Returns:
+            InstanceVolumeSnapshot: the instance storage volume snapshot taken
+        """
+
+        try:
+            res = self.compute.cs.createSnapshot(volumeid=self.volume_id)
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+        return InstanceVolumeSnapshot.from_cs(self.compute, res["snapshot"])
 
     def attach_elastic_ip(self, elastic_ip):
         """
@@ -785,74 +830,6 @@ class InstanceTemplate(Resource):
         )
 
     # TODO: @classmethod def register(...)
-
-
-@attr.s
-class InstanceVolume(Resource):
-    """
-    A Compute instance storage volume.
-
-    Attributes:
-        id (str): the instance storage volume unique identifier
-        size (int): the instance storage volume size in bytes
-    """
-
-    compute = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    size = attr.ib(repr=False)
-
-    @classmethod
-    def from_cs(cls, compute, res):
-        return cls(compute, res, id=res["id"], size=res["size"])
-
-    @property
-    def snapshots(self):
-        """
-        Snapshots of the instance storage volume.
-
-        Yields:
-            InstanceVolumeSnapshot: the next instance storage volume snapshot
-        """
-
-        try:
-            _list = self.compute.cs.listSnapshots(volumeid=self.id, fetch_list=True)
-            for i in _list:
-                yield InstanceVolumeSnapshot.from_cs(self.compute, i)
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
-
-    def resize(self, size):
-        """
-        Resize the instance storage volume.
-
-        Parameters:
-            size (int): new instance storage volume size in GB (must be greater than
-                current size)
-
-        Returns:
-            None
-        """
-
-        try:
-            self.compute.cs.resizeVolume(id=self.id, size=size)
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
-
-    def snapshot(self):
-        """
-        Take a snapshot of the instance storage volume.
-
-        Returns:
-            InstanceVolumeSnapshot: the instance storage volume snapshot taken
-        """
-
-        try:
-            res = self.compute.cs.createSnapshot(volumeid=self.id)
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
-
-        return InstanceVolumeSnapshot.from_cs(self.compute, res["snapshot"])
 
 
 @attr.s

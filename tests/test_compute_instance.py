@@ -62,6 +62,23 @@ class TestComputeInstance:
         [res] = exo.compute.cs.listVirtualMachines(id=instance.id, fetch_list=True)
         assert res["state"].lower() in ["starting", "running"]
 
+    def test_resize_volume(self, exo, instance):
+        instance = Instance.from_cs(exo.compute, instance(start=False))
+
+        instance.resize_volume(size=20)
+
+        res = exo.compute.cs.listVolumes(virtualmachineid=instance.id, fetch_list=True)
+        assert res[0]["size"] == 21474836480  # 20 GB
+        assert instance.volume_size == 21474836480
+
+    def test_snapshot_volume(self, exo, instance):
+        instance = Instance.from_cs(exo.compute, instance())
+
+        snapshot = instance.snapshot_volume()
+        assert snapshot.id != ""
+        assert snapshot.date != ""
+        assert snapshot.size > 0
+
     def test_attach_elastic_ip(self, exo, eip, instance):
         elastic_ip = ElasticIP.from_cs(exo.compute, eip())
         instance = Instance.from_cs(exo.compute, instance())
@@ -211,11 +228,10 @@ class TestComputeInstance:
         )
         assert instance.reverse_dns == test_reverse_dns
 
-        # For some reason the CS deployVirtualMachine response `rootdeviceid`
-        # attribute value is "0", so we can't compare it to instance_volume.id
-        instance_volume = instance.volume
-        assert instance_volume.id is not None
-        assert instance_volume.size > 0
+        res = exo.compute.cs.createSnapshot(volumeid=instance.volume_id)
+        instance_volume_snapshots = list(instance.volume_snapshots)
+        assert len(instance_volume_snapshots) == 1
+        assert instance_volume_snapshots[0].id == res["snapshot"]["id"]
 
         # We have to delete the fixture instance here because of a race condition with
         # the sg fixture teardown than will fail because it can't delete itself while

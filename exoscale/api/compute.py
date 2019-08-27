@@ -869,7 +869,43 @@ class InstanceTemplate(Resource):
             password_reset_enabled=res["passwordenabled"],
         )
 
-    # TODO: @classmethod def register(...)
+    @classmethod
+    def register(
+        cls,
+        compute,
+        name,
+        url,
+        checksum,
+        zone,
+        description=None,
+        username=None,
+        disable_ssh_key=False,
+        disable_password_reset=False,
+    ):
+        templateDetails = {}
+        if username is not None:
+            templateDetails["username"] = username
+
+        try:
+            res = compute.cs.registerCustomTemplate(
+                name=name,
+                displaytext=description,
+                zoneId=zone.id,
+                url=url,
+                checksum=checksum,
+                details=templateDetails,
+                sshkeyenabled=False if disable_ssh_key else True,
+                passwordenabled=False if disable_password_reset else True,
+                fetch_result=True,
+            )
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+        # TODO: this can go once bug ch5391 is fixed
+        if "sshkeyenabled" not in res["template"][0]:
+            res["template"][0]["sshkeyenabled"] = not disable_ssh_key
+
+        return cls.from_cs(compute, res["template"][0])
 
 
 @attr.s
@@ -1789,6 +1825,44 @@ class ComputeAPI(API):
         return instances[0]
 
     ### Instance Template
+
+    def register_instance_template(
+        self,
+        name,
+        url,
+        checksum,
+        zone,
+        description=None,
+        username=None,
+        disable_ssh_key=False,
+        disable_password_reset=False,
+    ):
+        """
+        Register a custom instance template.
+
+        Attributes:
+            name (str): the instance template name
+            description (str): an instance template description
+            url (str): the URL at which to find the instance template disk image
+            checksum (str): the instance template disk image MD5 checksum
+            username (str): an username to log into Compute instances using this
+                template
+            disable_ssh_key (bool): a flag indicating whether to disable SSH key
+                installation during Compute instance creation
+            disable_password_reset (bool): a flag indicating whether to disable
+                Compute instance password reset
+        """
+        return InstanceTemplate.register(
+            compute=self,
+            name=name,
+            description=description,
+            url=url,
+            checksum=checksum,
+            zone=zone,
+            username=username,
+            disable_ssh_key=disable_ssh_key,
+            disable_password_reset=disable_password_reset,
+        )
 
     def list_instance_templates(self, name=None, zone=None, type="exoscale", **kwargs):
         """

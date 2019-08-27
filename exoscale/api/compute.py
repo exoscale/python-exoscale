@@ -901,10 +901,6 @@ class InstanceTemplate(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        # TODO: this can go once bug ch5391 is fixed
-        if "sshkeyenabled" not in res["template"][0]:
-            res["template"][0]["sshkeyenabled"] = not disable_ssh_key
-
         return cls.from_cs(compute, res["template"][0])
 
     def delete(self):

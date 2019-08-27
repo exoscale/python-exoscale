@@ -907,6 +907,29 @@ class InstanceTemplate(Resource):
 
         return cls.from_cs(compute, res["template"][0])
 
+    def delete(self):
+        """
+        Delete the instance template.
+
+        Returns:
+            None
+        """
+
+        try:
+            self.compute.cs.deleteTemplate(id=self.id)
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+        self.compute = None
+        self.res = None
+        self.name = None
+        self.description = None
+        self.zone = None
+        self.date = None
+        self.ssh_key_enabled = None
+        self.password_reset_enabled = None
+        self.username = None
+
 
 @attr.s
 class InstanceVolumeSnapshot(Resource):

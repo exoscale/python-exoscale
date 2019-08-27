@@ -689,8 +689,7 @@ class RunstatusAPI(API):
         trace (bool): API request/response tracing flag
     """
 
-    def __init__(self, key, secret, endpoint=None, trace=False):
-        endpoint = "https://api.runstatus.com" if endpoint is None else endpoint
+    def __init__(self, key, secret, endpoint="https://api.runstatus.com", trace=False):
         super().__init__(endpoint, key, secret, trace)
 
         self.auth = ExoscaleAuth(self.key, self.secret)

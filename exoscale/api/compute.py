@@ -1520,8 +1520,9 @@ class ComputeAPI(API):
         trace (bool): API request/response tracing flag
     """
 
-    def __init__(self, key, secret, endpoint=None, trace=False):
-        endpoint = "https://api.exoscale.com/compute" if endpoint is None else endpoint
+    def __init__(
+        self, key, secret, endpoint="https://api.exoscale.com/compute", trace=False
+    ):
         super().__init__(endpoint, key, secret, trace)
 
         self.cs = CloudStack(

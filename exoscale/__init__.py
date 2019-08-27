@@ -134,33 +134,27 @@ class Exoscale:
         self.api_key = api_key
         self.api_secret = api_secret
 
-        self.compute = ComputeAPI(
-            key=self.api_key,
-            secret=self.api_secret,
-            endpoint=compute_api_endpoint,
-            trace=trace,
-        )
+        kwargs = {"key": self.api_key, "secret": self.api_secret, "trace": trace}
+        if compute_api_endpoint is not None:
+            kwargs["endpoint"] = compute_api_endpoint
+        self.compute = ComputeAPI(**kwargs)
 
-        self.dns = DnsAPI(
-            key=self.api_key,
-            secret=self.api_secret,
-            endpoint=dns_api_endpoint,
-            trace=trace,
-        )
+        kwargs = {"key": self.api_key, "secret": self.api_secret, "trace": trace}
+        if dns_api_endpoint is not None:
+            kwargs["endpoint"] = dns_api_endpoint
+        self.dns = DnsAPI(**kwargs)
 
-        self.storage = StorageAPI(
-            key=self.api_key,
-            secret=self.api_secret,
-            endpoint=storage_api_endpoint,
-            zone=storage_zone,
-        )
+        kwargs = {"key": self.api_key, "secret": self.api_secret}
+        if storage_api_endpoint is not None:
+            kwargs["endpoint"] = storage_api_endpoint
+        if storage_zone is not None:
+            kwargs["zone"] = storage_zone
+        self.storage = StorageAPI(**kwargs)
 
-        self.runstatus = RunstatusAPI(
-            key=self.api_key,
-            secret=self.api_secret,
-            endpoint=runstatus_api_endpoint,
-            trace=trace,
-        )
+        kwargs = {"key": self.api_key, "secret": self.api_secret, "trace": trace}
+        if runstatus_api_endpoint is not None:
+            kwargs["endpoint"] = runstatus_api_endpoint
+        self.runstatus = RunstatusAPI(**kwargs)
 
     def _get_profile(self, profile=None):
         if "profiles" not in self._config or len(self._config["profiles"]) == 0:

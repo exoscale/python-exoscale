@@ -89,7 +89,7 @@ class TestComputePrivateNetwork:
             res = exo.compute.cs.listNetworks(id=private_network_id, fetch_list=True)
             assert len(res) == 0
         assert excinfo.type == CloudStackApiException
-        assert excinfo.value.error["errortext"].find("entity does not exist")
+        assert "does not exist" in excinfo.value.error["errortext"]
 
     def test_properties(self, exo, privnet, instance):
         private_network = PrivateNetwork.from_cs(exo.compute, privnet())

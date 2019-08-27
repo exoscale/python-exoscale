@@ -1599,7 +1599,7 @@ class ComputeAPI(API):
                 self.list_anti_affinity_groups(id=id, name=name)
             )
         except APIException as e:
-            if e.error["errortext"].find("entity does not exist"):
+            if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
 
         if len(anti_affinity_groups) == 0:
@@ -1712,7 +1712,7 @@ class ComputeAPI(API):
         try:
             elastic_ips = list(self.list_elastic_ips(id=id, ipaddress=address))
         except APIException as e:
-            if e.error["errortext"].find("entity does not exist"):
+            if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
 
         if len(elastic_ips) == 0:
@@ -1839,7 +1839,7 @@ class ComputeAPI(API):
         try:
             instances = list(self.list_instances(id=id, ipadddress=ip_address))
         except APIException as e:
-            if e.error["errortext"].find("entity does not exist"):
+            if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
 
         if len(instances) == 0:
@@ -1936,7 +1936,7 @@ class ComputeAPI(API):
         try:
             instance_templates = list(self.list_instance_templates(id=id))
         except APIException as e:
-            if e.error["errortext"].find("entity does not exist"):
+            if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
 
         if len(instance_templates) == 0:
@@ -1980,7 +1980,7 @@ class ComputeAPI(API):
         try:
             instance_types = list(self.list_instance_types(id=id, name=name))
         except APIException as e:
-            if e.error["errortext"].find("entity does not exist"):
+            if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
 
         if len(instance_types) == 0:
@@ -2059,7 +2059,7 @@ class ComputeAPI(API):
         try:
             private_networks = list(self.list_private_networks(id=id))
         except APIException as e:
-            if e.error["errortext"].find("entity does not exist"):
+            if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
 
         if len(private_networks) == 0:
@@ -2124,7 +2124,7 @@ class ComputeAPI(API):
                 self.list_security_groups(id=id, securitygroupname=name)
             )
         except APIException as e:
-            if e.error["errortext"].find("entity does not exist"):
+            if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
 
         if len(security_groups) == 0:
@@ -2201,7 +2201,7 @@ class ComputeAPI(API):
         try:
             ssh_keys = list(self.list_ssh_keys(name=name))
         except APIException as e:
-            if e.error["errortext"].find("entity does not exist"):
+            if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
 
         if len(ssh_keys) == 0:
@@ -2245,7 +2245,7 @@ class ComputeAPI(API):
         try:
             zones = list(self.list_zones(id=id, name=name))
         except APIException as e:
-            if e.error["errortext"].find("entity does not exist"):
+            if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
 
         if len(zones) == 0:

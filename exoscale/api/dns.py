@@ -306,7 +306,7 @@ class DnsAPI(API):
         try:
             domains = self.list_domains()
         except APIException as e:
-            if e.error["errortext"].find("entity does not exist"):
+            if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
 
         for domain in domains:

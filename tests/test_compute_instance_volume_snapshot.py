@@ -9,10 +9,7 @@ class TestComputeInstanceVolumeSnapshot:
     def test_revert(self, exo, instance):
         instance = Instance.from_cs(exo.compute, instance())
 
-        res = exo.compute.cs.listVolumes(virtualmachineid=instance.id, fetch_list=True)
-        instance_volume = InstanceVolume.from_cs(exo.compute, res[0])
-
-        res = exo.compute.cs.createSnapshot(volumeid=instance_volume.id)
+        res = exo.compute.cs.createSnapshot(volumeid=instance.volume_id)
         snapshot = InstanceVolumeSnapshot.from_cs(exo.compute, res["snapshot"])
 
         res = exo.compute.cs.stopVirtualMachine(id=instance.id)
@@ -25,25 +22,19 @@ class TestComputeInstanceVolumeSnapshot:
     def test_delete(self, exo, instance):
         instance = Instance.from_cs(exo.compute, instance())
 
-        res = exo.compute.cs.listVolumes(virtualmachineid=instance.id, fetch_list=True)
-        instance_volume = InstanceVolume.from_cs(exo.compute, res[0])
-
-        res = exo.compute.cs.createSnapshot(volumeid=instance_volume.id)
+        res = exo.compute.cs.createSnapshot(volumeid=instance.volume_id)
         snapshot = InstanceVolumeSnapshot.from_cs(exo.compute, res["snapshot"])
 
         snapshot.delete()
         assert snapshot.id is None
 
-        res = exo.compute.cs.listSnapshots(volumeid=instance_volume.id, fetch_list=True)
+        res = exo.compute.cs.listSnapshots(volumeid=instance.volume_id, fetch_list=True)
         assert len(res) == 0
 
     def test_properties(self, exo, instance):
         instance = Instance.from_cs(exo.compute, instance())
 
-        res = exo.compute.cs.listVolumes(virtualmachineid=instance.id, fetch_list=True)
-        instance_volume = InstanceVolume.from_cs(exo.compute, res[0])
-
-        res = exo.compute.cs.createSnapshot(volumeid=instance_volume.id)
+        res = exo.compute.cs.createSnapshot(volumeid=instance.volume_id)
         instance_volume_snapshot = InstanceVolumeSnapshot.from_cs(
             exo.compute, res["snapshot"]
         )

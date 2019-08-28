@@ -51,8 +51,8 @@ class TestRunstatusPage:
             "We're upgrading the database server hardware to add more memory"
         )
         test_maintenance_service = "db"
-        test_maintenance_start_date = datetime(2019, 8, 2, 4, 0, tzinfo=timezone.utc)
-        test_maintenance_end_date = datetime(2019, 8, 2, 5, 0, tzinfo=timezone.utc)
+        test_maintenance_start_date = datetime(2019, 8, 2, 4, 0)
+        test_maintenance_end_date = datetime(2019, 8, 2, 5, 0)
 
         exo.runstatus._post(
             url="/pages/{p}/services".format(p=page.name),
@@ -74,11 +74,11 @@ class TestRunstatusPage:
         assert res["results"][0]["title"] == test_maintenance_title
         assert res["results"][0]["description"] == test_maintenance_description
         assert (
-            datetime.strptime(res["results"][0]["start_date"], "%Y-%m-%dT%H:%M:%S%z")
+            rstime_to_datetime(res["results"][0]["start_date"])
             == test_maintenance_start_date
         )
         assert (
-            datetime.strptime(res["results"][0]["end_date"], "%Y-%m-%dT%H:%M:%S%z")
+            rstime_to_datetime(res["results"][0]["end_date"])
             == test_maintenance_end_date
         )
         assert res["results"][0]["services"] == [test_maintenance_service]
@@ -128,8 +128,8 @@ class TestRunstatusPage:
         test_maintenance_description = (
             "We're upgrading the database server hardware to add more memory"
         )
-        test_maintenance_start_date = datetime(2019, 8, 2, 4, 0, tzinfo=timezone.utc)
-        test_maintenance_end_date = datetime(2019, 8, 2, 5, 0, tzinfo=timezone.utc)
+        test_maintenance_start_date = datetime(2019, 8, 2, 4, 0)
+        test_maintenance_end_date = datetime(2019, 8, 2, 5, 0)
 
         exo.runstatus._post(
             url="/pages/{p}/services".format(p=page.name),

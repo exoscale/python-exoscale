@@ -14,6 +14,17 @@ _SUPPORTED_INCIDENT_STATUSES = {"investigating", "identified", "monitoring"}
 _SUPPORTED_MAINTENANCE_STATUSES = {"scheduled", "in-progress"}
 
 
+def rstime_to_datetime(rstime):
+    """
+    Parses a Runstatus API timestamp and returns the corresponding datetime object.
+    """
+
+    try:
+        return datetime.strptime(rstime, "%Y-%m-%dT%H:%M:%S.%fZ")
+    except ValueError:
+        return datetime.strptime(rstime, "%Y-%m-%dT%H:%M:%SZ")
+
+
 @attr.s
 class Service(Resource):
     """
@@ -136,8 +147,8 @@ class Incident(Resource):
             page=page,
             state=res["state"],
             status=res["status"],
-            start_date=datetime.strptime(res["start_date"], "%Y-%m-%dT%H:%M:%S.%f%z"),
-            end_date=datetime.strptime(res["end_date"], "%Y-%m-%dT%H:%M:%S.%f%z")
+            start_date=rstime_to_datetime(res["start_date"]),
+            end_date=rstime_to_datetime(res["end_date"])
             if res["end_date"] is not None
             else None,
             title=res["title"],
@@ -165,7 +176,7 @@ class Incident(Resource):
             yield IncidentEvent(
                 self.runstatus,
                 i,
-                date=datetime.strptime(i["created"], "%Y-%m-%dT%H:%M:%S.%f%z"),
+                date=rstime_to_datetime(i["created"]),
                 description=i["text"],
                 status=i["status"],
                 state=i["state"],
@@ -311,8 +322,8 @@ class Maintenance(Resource):
             id=res["id"],
             page=page,
             status=res["status"],
-            start_date=datetime.strptime(res["start_date"], "%Y-%m-%dT%H:%M:%S%z"),
-            end_date=datetime.strptime(res["end_date"], "%Y-%m-%dT%H:%M:%S%z"),
+            start_date=rstime_to_datetime(res["start_date"]),
+            end_date=rstime_to_datetime(res["end_date"]),
             title=res["title"],
             description=res["description"],
             services=res["services"],
@@ -339,7 +350,7 @@ class Maintenance(Resource):
             yield MaintenanceEvent(
                 self.runstatus,
                 i,
-                date=datetime.strptime(i["created"], "%Y-%m-%dT%H:%M:%S.%f%z"),
+                date=rstime_to_datetime(i["created"]),
                 description=i["text"],
                 status=i["status"],
                 maintenance=self,

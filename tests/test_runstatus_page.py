@@ -4,6 +4,7 @@
 import pytest
 from exoscale.api.runstatus import *
 from datetime import timezone
+from .conftest import _random_str
 
 
 class TestRunstatusPage:
@@ -93,11 +94,13 @@ class TestRunstatusPage:
             res = exo.runstatus._get(url="/pages/{p}".format(p=page.name))
         assert excinfo.type == ResourceNotFoundError
 
-    def test_update(self, exo, runstatus_page):
+    def test_update(self, exo, runstatus_page, test_prefix):
         page = Page.from_rs(exo.runstatus, runstatus_page())
         test_page_title_edited = "python-exoscale"
         test_page_default_status_message_edited = "It's all good in the hood"
-        test_page_custom_domain_edited = "status.example.net"
+        test_page_custom_domain_edited = (
+            "-".join([test_prefix, _random_str()]) + ".example.net"
+        )
         test_page_time_zone_edited = "Europe/Zurich"
 
         page.update(

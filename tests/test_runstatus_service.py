@@ -7,7 +7,7 @@ from exoscale.api.runstatus import *
 
 class TestRunstatusPageService:
     def test_delete(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page(teardown=False))
+        page = Page.from_rs(exo.runstatus, runstatus_page())
         service_name = "a"
 
         exo.runstatus._post(
@@ -24,7 +24,7 @@ class TestRunstatusPageService:
         assert len(res["results"]) == 0
 
     def test_properties(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page(teardown=False))
+        page = Page.from_rs(exo.runstatus, runstatus_page())
         service_name = "a"
 
         exo.runstatus._post(

@@ -1834,7 +1834,7 @@ class ComputeAPI(API):
             raise ValueError("either id or ip_address must be specifed")
 
         try:
-            instances = list(self.list_instances(id=id, ipadddress=ip_address))
+            instances = list(self.list_instances(id=id, ipaddress=ip_address))
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError

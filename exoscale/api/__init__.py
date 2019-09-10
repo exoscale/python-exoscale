@@ -26,6 +26,10 @@ class API(object):
         endpoint (str): the API endpoint
         key (str): the API key
         secret (str): the API secret
+        session (requests.Session): the API HTTP session
+        max_retries (int): the API HTTP session retry policy number of retries to allow
+        retry_backoff_factor (int): the API HTTP session retry policy backoff factor to
+            apply between attempts after the second try
         trace (bool): API request/response tracing flag
     """
 
@@ -33,26 +37,39 @@ class API(object):
     key = attr.ib()
     secret = attr.ib(repr=False)
     trace = attr.ib(default=False, repr=False)
+    session = attr.ib(default=requests.Session(), repr=False)
+    max_retry = attr.ib(default=3, repr=False)
+    retry_backoff_factor = attr.ib(default=0.3, repr=False)
 
-    # HTTP session-related settings
-    max_retry = attr.ib(default=3)
-    retry_backoff_factor = attr.ib(default=0.3)
+    def __attrs_post_init__(self):
+        # HTTP session-related settings
 
-    user_agent = (
-        "Exoscale-Python/{python_exoscale_version} "
-        "cs/{cs_version} "
-        "{requests_user_agent} "
-        "{python_implementation}/{python_version} "
-        "{os_name}/{os_version}"
-    ).format(
-        python_exoscale_version=pkg_resources.get_distribution("exoscale").version,
-        cs_version=pkg_resources.get_distribution("cs").version,
-        requests_user_agent=requests_user_agent(),
-        python_implementation=platform.python_implementation(),
-        python_version=platform.python_version(),
-        os_name=platform.system(),
-        os_version=platform.release(),
-    )
+        self.user_agent = (
+            "Exoscale-Python/{python_exoscale_version} "
+            "cs/{cs_version} "
+            "{requests_user_agent} "
+            "{python_implementation}/{python_version} "
+            "{os_name}/{os_version}"
+        ).format(
+            python_exoscale_version=pkg_resources.get_distribution("exoscale").version,
+            cs_version=pkg_resources.get_distribution("cs").version,
+            requests_user_agent=requests_user_agent(),
+            python_implementation=platform.python_implementation(),
+            python_version=platform.python_version(),
+            os_name=platform.system(),
+            os_version=platform.release(),
+        )
+
+        adapter = HTTPAdapter(
+            max_retries=Retry(
+                total=self.max_retry,
+                backoff_factor=self.retry_backoff_factor,
+                status_forcelist=None,
+            )
+        )
+
+        self.session.mount("http://", adapter=adapter)
+        self.session.mount("https://", adapter=adapter)
 
     def send(self, **kwargs):
         """
@@ -65,20 +82,7 @@ class API(object):
             request.Response: the HTTP request response
         """
 
-        adapter = HTTPAdapter(
-            max_retries=Retry(
-                total=self.max_retry,
-                backoff_factor=self.retry_backoff_factor,
-                status_forcelist=None,
-            )
-        )
-
-        session = requests.Session()
-        session.mount("http://", adapter=adapter)
-        session.mount("https://", adapter=adapter)
-
         req = requests.Request(**kwargs).prepare()
-        req.headers.update({"User-Agent": self.user_agent})
 
         if self.trace:
             print(
@@ -89,7 +93,7 @@ class API(object):
             if req.body:
                 print("    body:{body}".format(body=req.body), file=sys.stderr)
 
-        res = session.send(req)
+        res = self.session.send(req)
 
         if self.trace:
             print(

@@ -242,9 +242,10 @@ class DnsAPI(API):
             key=key,
             secret=secret,
             endpoint=endpoint,
-            headers={"User-Agent": API.user_agent},
-            fetch_result=True,
+            session=self.session,
+            headers={**self.session.headers, **{"User-Agent": self.user_agent}},
             trace=self.trace,
+            fetch_result=True,
         )
 
     def __repr__(self):

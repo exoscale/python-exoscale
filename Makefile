@@ -22,5 +22,12 @@ help:
 apidoc:
 	@sphinx-apidoc --separate -f -o "$(SOURCEDIR)" -H API --maxdepth 10 exoscale
 
+publish-doc: apidoc html
+	@cd $(BUILDDIR)/html && \
+		touch .nojekyll && \
+		git init && \
+		git add . && \
+		git push -f git@github.com:exoscale/python-exoscale master:gh-pages
+
 serve:
 	@python3 -m http.server 8000 --bind 127.0.0.1 --directory $(BUILDDIR)/html

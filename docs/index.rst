@@ -11,8 +11,15 @@ with high-level Python bindings.
 
 .. toctree::
   :maxdepth: 10
-  :caption: Contents:
 
   configuration
   usage
   modules
+
+Changelog
+---------
+
+0.1.1 (2019-09-12)
+~~~~~~~~~~~~~~~~~~
+
+- Initial release

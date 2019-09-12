@@ -8,8 +8,12 @@ EXTRA_REQUIRE = []
 with open("requirements.dev.txt", "r", encoding="utf-8") as f:
     EXTRA_REQUIRE = list(i.rstrip() for i in f.readlines())
 
+with open('README.md', 'r', encoding='utf-8') as f:
+    long_description = f.read()
+
 setup(
     name="exoscale",
+    long_description=long_description,
     packages=find_packages(),
     version="0.1.0",
     license="ISC",

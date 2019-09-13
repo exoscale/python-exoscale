@@ -12,7 +12,7 @@ exo = exoscale.Exoscale()
 zone_gva2 = exo.compute.get_zone("ch-gva-2")
 
 security_group_web = exo.compute.create_security_group("web")
-security_group_web.add_rules([
+for rule in [
     exoscale.api.compute.SecurityGroupRule.ingress(
         description="HTTP",
         network_cidr="0.0.0.0/0",
@@ -25,7 +25,8 @@ security_group_web.add_rules([
         port="443",
         protocol="tcp",
     ),
-])
+]:
+    security_group_web.add_rule(rule)
 
 elastic_ip = exo.compute.create_elastic_ip(zone_gva2)
 
@@ -117,8 +118,7 @@ import exoscale
 exo = exoscale.Exoscale()
 
 page = exo.runstatus.create_page("unicorns-net")
-page.title = "Unicorns Networks"
-page.custom_domain = "status.unicorns.net"
+page.update(title="Unicorns Networks", custom_domain="status.unicorns.net")
 
 exo.dns.get_domain(name="unicorns.net").
     add_record(name="status", type="CNAME", content="unicorns-net.runstat.us.")

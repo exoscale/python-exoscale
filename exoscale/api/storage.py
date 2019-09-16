@@ -8,7 +8,7 @@ import attr
 import boto3
 import botocore
 from . import API, Resource, APIException, ResourceNotFoundError
-from os.path import basename
+from os.path import basename, join
 
 _DEFAULT_ZONE = "ch-gva-2"
 
@@ -343,6 +343,21 @@ class BucketFile(Resource):
 
         return res["Metadata"]
 
+    @property
+    def url(self):
+        """
+        Stored file URL.
+
+        Returns:
+            str: the stored file URL
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        return join(self.bucket.url, self.path)
+
     def set_acl(self, acl="", acp=None):
         """
         Set the stored file Access Control List.
@@ -473,6 +488,23 @@ class Bucket(Resource):
             raise APIException(e)
 
         return res["LocationConstraint"]
+
+    @property
+    def url(self):
+        """
+        URL of the Storage bucket.
+
+        Returns:
+            str: the Storage bucket URL
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        return "https://sos-{zone}.exo.io/{bucket}".format(
+            zone=self.zone, bucket=self.name
+        )
 
     def put_file(self, src, dst=None, metadata=None, acl=None, transferConfig=None):
         """

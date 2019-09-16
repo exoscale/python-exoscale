@@ -19,6 +19,13 @@ with high-level Python bindings.
 Changelog
 ---------
 
+UNRELEASED (XXXX-XX-XX)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Features:
+
+- storage: add Bucket/BucketFile "url" attribute
+
 0.1.1 (2019-09-12)
 ~~~~~~~~~~~~~~~~~~
 

@@ -8,7 +8,8 @@ import attr
 import boto3
 import botocore
 from . import API, Resource, APIException, ResourceNotFoundError
-from os.path import basename, join
+from os.path import basename
+from urllib.parse import urljoin
 
 _DEFAULT_ZONE = "ch-gva-2"
 
@@ -356,7 +357,7 @@ class BucketFile(Resource):
             latency.
         """
 
-        return join(self.bucket.url, self.path)
+        return urljoin(self.bucket.url, self.path)
 
     def set_acl(self, acl="", acp=None):
         """

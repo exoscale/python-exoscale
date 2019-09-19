@@ -151,9 +151,12 @@ class TestStorageBucket:
         assert res["CORSRules"][0]["ExposeHeaders"] == ["X-Header1"]
         assert res["CORSRules"][0]["MaxAgeSeconds"] == 3600
 
-    def test_properties(self, exo, bucket):
+    def test_properties(self, exo, bucket, test_prefix):
         bucket = Bucket(exo.storage, {}, bucket(zone="ch-gva-2"))
         assert bucket.zone == "ch-gva-2"
+        assert bucket.url.startswith(
+            "https://sos-ch-gva-2.exo.io/{}".format(test_prefix)
+        )
 
         exo.storage.boto.put_bucket_acl(
             Bucket=bucket.name,

@@ -77,6 +77,8 @@ class TestStorageBucketFile:
         assert type(f.last_modification_date) == datetime
         assert f.metadata == {"k": "v"}
         assert f.content.read() == b"a"
+        file_url = f.url
+        assert file_url.startswith("https://sos-") and file_url.endswith("/a")
 
         # We retrieve the current owner of the file to maintain it in the updated ACP,
         # otherwise we'll lock ourselves out and we won't be able to delete the file

@@ -7,7 +7,7 @@ from exoscale.api.compute import *
 
 class TestComputeSSHKey:
     def test_delete(self, exo, sshkey):
-        ssh_key = SSHKey.from_cs(exo.compute, sshkey(teardown=False))
+        ssh_key = SSHKey._from_cs(exo.compute, sshkey(teardown=False))
         ssh_key_name = ssh_key.name
 
         ssh_key.delete()

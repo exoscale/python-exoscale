@@ -46,7 +46,7 @@ class CORSRule(Resource):
     max_age_seconds = attr.ib(default=None, repr=False)
 
     @classmethod
-    def from_s3(cls, res):
+    def _from_s3(cls, res):
         return cls(
             res,
             allowed_headers=res["AllowedHeaders"],
@@ -104,20 +104,20 @@ class AccessControlPolicy(Resource):
     write_acp = attr.ib(default=None, repr=False)
 
     @classmethod
-    def from_s3(cls, res):
+    def _from_s3(cls, res):
         acp = cls(res, owner=res["Owner"]["ID"])
 
         for i in res["Grants"]:
             if i["Permission"] == "FULL_CONTROL":
-                acp.full_control = acp._grantee_from_s3(i["Grantee"])
+                acp.full_control = acp._grantee__from_s3(i["Grantee"])
             if i["Permission"] == "READ":
-                acp.read = acp._grantee_from_s3(i["Grantee"])
+                acp.read = acp._grantee__from_s3(i["Grantee"])
             if i["Permission"] == "WRITE":
-                acp.write = acp._grantee_from_s3(i["Grantee"])
+                acp.write = acp._grantee__from_s3(i["Grantee"])
             if i["Permission"] == "READ_ACP":
-                acp.read_acp = acp._grantee_from_s3(i["Grantee"])
+                acp.read_acp = acp._grantee__from_s3(i["Grantee"])
             if i["Permission"] == "WRITE_ACP":
-                acp.write_acp = acp._grantee_from_s3(i["Grantee"])
+                acp.write_acp = acp._grantee__from_s3(i["Grantee"])
 
         return acp
 
@@ -166,7 +166,7 @@ class AccessControlPolicy(Resource):
 
         return acp
 
-    def _grantee_from_s3(self, grantee):
+    def _grantee__from_s3(self, grantee):
         """
         Convert an AWS S3 Access Control Policy grantee to AccessControlPolicy class
         format.
@@ -321,7 +321,7 @@ class BucketFile(Resource):
             raise APIException(e)
 
         res.pop("ResponseMetadata")
-        return AccessControlPolicy.from_s3(res)
+        return AccessControlPolicy._from_s3(res)
 
     @property
     def metadata(self):
@@ -447,7 +447,7 @@ class Bucket(Resource):
             raise APIException(e)
 
         res.pop("ResponseMetadata")
-        return AccessControlPolicy.from_s3(res)
+        return AccessControlPolicy._from_s3(res)
 
     @property
     def cors(self):
@@ -465,7 +465,7 @@ class Bucket(Resource):
         try:
             res = self.storage.boto.get_bucket_cors(Bucket=self.name)
             for i in res["CORSRules"]:
-                yield CORSRule.from_s3(i)
+                yield CORSRule._from_s3(i)
         except Exception as e:
             raise APIException(e)
 

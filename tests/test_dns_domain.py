@@ -8,7 +8,7 @@ from exoscale.api.dns import *
 
 class TestDNSDomain:
     def test_add_record(self, exo, domain):
-        domain = Domain.from_cs(exo.dns, domain())
+        domain = Domain._from_cs(exo.dns, domain())
         domain_record_name = "test-python-exoscale"
         domain_record_type = "MX"
         domain_record_content = "mx1.example.net"
@@ -34,7 +34,7 @@ class TestDNSDomain:
             assert record["ttl"] == domain_record_ttl
 
     def test_delete(self, exo, domain):
-        domain = Domain.from_cs(exo.dns, domain(teardown=False))
+        domain = Domain._from_cs(exo.dns, domain(teardown=False))
         domain_id = domain.id
 
         domain.delete()
@@ -45,7 +45,7 @@ class TestDNSDomain:
             assert i["id"] != domain_id
 
     def test_properties(self, exo, domain):
-        domain = Domain.from_cs(exo.dns, domain())
+        domain = Domain._from_cs(exo.dns, domain())
         domain_record_name = "test-python-exoscale"
         domain_record_type = "A"
         domain_record_content = "1.2.3.4"

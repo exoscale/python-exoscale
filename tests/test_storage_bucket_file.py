@@ -35,7 +35,7 @@ class TestStorageBucketFile:
                 assert i["Grantee"]["Type"] == "Group"
                 assert i["Grantee"]["URI"] == ACL_ALL_USERS
 
-        f_acp = AccessControlPolicy.from_s3(res)
+        f_acp = AccessControlPolicy._from_s3(res)
         f_acp.read = "ALL_USERS"
         f_acp.write = "AUTHENTICATED_USERS"
         f_acp.read_acp = "alice@example.net"

@@ -8,7 +8,7 @@ from exoscale.api.dns import *
 
 class TestDNSDomainRecord:
     def test_update(self, exo, domain):
-        domain = Domain.from_cs(exo.dns, domain())
+        domain = Domain._from_cs(exo.dns, domain())
         domain_record_name = "test-python-exoscale"
         domain_record_name_edited = "test-python-exoscale-edited"
         domain_record_type = "MX"
@@ -33,7 +33,7 @@ class TestDNSDomainRecord:
             if r["name"] == "":
                 continue
 
-            domain_record = DomainRecord.from_cs(exo.dns, r, domain)
+            domain_record = DomainRecord._from_cs(exo.dns, r, domain)
 
             domain_record.update(
                 name=domain_record_name_edited,
@@ -52,7 +52,7 @@ class TestDNSDomainRecord:
             assert r["ttl"] == domain_record_ttl_edited
 
     def test_delete(self, exo, domain):
-        domain = Domain.from_cs(exo.dns, domain())
+        domain = Domain._from_cs(exo.dns, domain())
         domain_record_name = "test-python-exoscale"
         domain_record_type = "MX"
         domain_record_content = "mx1.example.net"
@@ -73,7 +73,7 @@ class TestDNSDomainRecord:
             if r["name"] == "":
                 continue
 
-            domain_record = DomainRecord.from_cs(exo.dns, r, domain)
+            domain_record = DomainRecord._from_cs(exo.dns, r, domain)
 
             domain_record.delete()
 

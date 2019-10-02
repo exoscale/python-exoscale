@@ -7,8 +7,8 @@ from exoscale.api.compute import *
 
 class TestComputePrivateNetwork:
     def test_attach_instance(self, exo, privnet, instance):
-        private_network = PrivateNetwork.from_cs(exo.compute, privnet())
-        instance = Instance.from_cs(exo.compute, instance())
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
+        instance = Instance._from_cs(exo.compute, instance())
 
         private_network.attach_instance(instance)
 
@@ -27,8 +27,8 @@ class TestComputePrivateNetwork:
             )
 
     def test_detach_instance(self, exo, privnet, instance):
-        private_network = PrivateNetwork.from_cs(exo.compute, privnet())
-        instance = Instance.from_cs(exo.compute, instance())
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
+        instance = Instance._from_cs(exo.compute, instance())
 
         exo.compute.cs.addNicToVirtualMachine(
             virtualmachineid=instance.id, networkid=private_network.id
@@ -48,7 +48,7 @@ class TestComputePrivateNetwork:
         assert len(res) == 0
 
     def test_update(self, exo, privnet):
-        private_network = PrivateNetwork.from_cs(
+        private_network = PrivateNetwork._from_cs(
             exo.compute,
             privnet(start_ip="10.0.0.10", end_ip="10.0.0.50", netmask="255.255.255.0"),
         )
@@ -79,7 +79,7 @@ class TestComputePrivateNetwork:
         assert private_network.netmask == netmask_edited
 
     def test_delete(self, exo, privnet):
-        private_network = PrivateNetwork.from_cs(exo.compute, privnet(teardown=False))
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet(teardown=False))
         private_network_id = private_network.id
 
         private_network.delete()
@@ -92,8 +92,8 @@ class TestComputePrivateNetwork:
         assert "does not exist" in excinfo.value.error["errortext"]
 
     def test_properties(self, exo, privnet, instance):
-        private_network = PrivateNetwork.from_cs(exo.compute, privnet())
-        instance = Instance.from_cs(exo.compute, instance())
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
+        instance = Instance._from_cs(exo.compute, instance())
 
         res = exo.compute.cs.addNicToVirtualMachine(
             virtualmachineid=instance.id, networkid=private_network.id

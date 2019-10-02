@@ -9,7 +9,7 @@ from .conftest import _random_str
 
 class TestRunstatusPage:
     def test_add_service(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page())
+        page = Page._from_rs(exo.runstatus, runstatus_page())
 
         page.add_service(name="test")
 
@@ -18,7 +18,7 @@ class TestRunstatusPage:
         assert res["results"][0]["name"] == "test"
 
     def test_add_incident(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page())
+        page = Page._from_rs(exo.runstatus, runstatus_page())
         test_incident_title = "Everything's on fire"
         test_incident_description = "It's fine ¯\\_(ツ)_/¯"
         test_incident_state = "major_outage"
@@ -46,7 +46,7 @@ class TestRunstatusPage:
         assert res["results"][0]["services"] == test_incident_services
 
     def test_add_maintenance(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page())
+        page = Page._from_rs(exo.runstatus, runstatus_page())
         test_maintenance_title = "Database server upgrade"
         test_maintenance_description = (
             "We're upgrading the database server hardware to add more memory"
@@ -85,7 +85,7 @@ class TestRunstatusPage:
         assert res["results"][0]["services"] == [test_maintenance_service]
 
     def test_delete(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page(teardown=False))
+        page = Page._from_rs(exo.runstatus, runstatus_page(teardown=False))
 
         page.delete()
         assert page.id is None
@@ -95,7 +95,7 @@ class TestRunstatusPage:
         assert excinfo.type == ResourceNotFoundError
 
     def test_update(self, exo, runstatus_page, test_prefix):
-        page = Page.from_rs(exo.runstatus, runstatus_page())
+        page = Page._from_rs(exo.runstatus, runstatus_page())
         test_page_title_edited = "python-exoscale"
         test_page_default_status_message_edited = "It's all good in the hood"
         test_page_custom_domain_edited = (
@@ -121,7 +121,7 @@ class TestRunstatusPage:
         assert page.time_zone == test_page_time_zone_edited
 
     def test_properties(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page())
+        page = Page._from_rs(exo.runstatus, runstatus_page())
         test_page_service_name = "python-exoscale"
         test_incident_title = "Everything's on fire"
         test_incident_description = "It's fine ¯\\_(ツ)_/¯"

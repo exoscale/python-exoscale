@@ -48,7 +48,7 @@ class Domain(Resource):
     unicode_name = attr.ib(repr=False)
 
     @classmethod
-    def from_cs(cls, dns, res):
+    def _from_cs(cls, dns, res):
         return cls(
             dns, res, id=res["id"], name=res["name"], unicode_name=res["unicodename"]
         )
@@ -69,7 +69,7 @@ class Domain(Resource):
         try:
             _list = self.dns.cs.listDnsDomainRecords(id=self.id, fetch_list=True)
             for i in _list:
-                yield DomainRecord.from_cs(self.dns, domain=self, res=i)
+                yield DomainRecord._from_cs(self.dns, domain=self, res=i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -153,7 +153,7 @@ class DomainRecord(Resource):
     ttl = attr.ib(default=3600, repr=False)
 
     @classmethod
-    def from_cs(cls, dns, res, domain):
+    def _from_cs(cls, dns, res, domain):
         return cls(
             dns,
             res,
@@ -272,7 +272,7 @@ class DnsAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return Domain.from_cs(self, res["dnsdomain"])
+        return Domain._from_cs(self, res["dnsdomain"])
 
     def list_domains(self):
         """
@@ -286,7 +286,7 @@ class DnsAPI(API):
             _list = self.cs.listDnsDomains(fetch_list=True)
 
             for i in _list:
-                yield Domain.from_cs(self, i)
+                yield Domain._from_cs(self, i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 

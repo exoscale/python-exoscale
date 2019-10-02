@@ -7,7 +7,7 @@ from exoscale.api.compute import *
 
 class TestComputeSecurityGroupRule:
     def test_delete(self, exo, sg):
-        security_group = SecurityGroup.from_cs(exo.compute, sg())
+        security_group = SecurityGroup._from_cs(exo.compute, sg())
 
         rule1 = exo.compute.cs.authorizeSecurityGroupIngress(
             securitygroupid=security_group.id,
@@ -25,10 +25,10 @@ class TestComputeSecurityGroupRule:
         )["securitygroup"]["egressrule"][0]
 
         res = exo.compute.cs.listSecurityGroups(id=security_group.id, fetch_list=True)
-        SecurityGroupRule.from_cs(
+        SecurityGroupRule._from_cs(
             compute=exo.compute, type="ingress", res=res[0]["ingressrule"][0]
         ).delete()
-        SecurityGroupRule.from_cs(
+        SecurityGroupRule._from_cs(
             compute=exo.compute, type="egress", res=res[0]["egressrule"][0]
         ).delete()
 

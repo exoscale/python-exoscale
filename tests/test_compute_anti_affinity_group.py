@@ -19,13 +19,3 @@ class TestComputeAntiAffinityGroup:
             name=anti_affinity_group_name, fetch_list=True
         )
         assert len(res) == 0
-
-    def test_properties(self, exo, aag, instance):
-        anti_affinity_group = AntiAffinityGroup._from_cs(exo.compute, aag())
-        instance = Instance._from_cs(
-            exo.compute, instance(anti_affinity_groups=[anti_affinity_group.id])
-        )
-
-        anti_affinity_group_instances = list(anti_affinity_group.instances)
-        assert len(anti_affinity_group_instances) == 1
-        assert anti_affinity_group_instances[0].name == instance.name

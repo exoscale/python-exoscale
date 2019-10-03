@@ -59,7 +59,7 @@ class TestCompute:
     ### Elastic IP
 
     def test_create_elastic_ip(self, exo, zone):
-        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
+        zone = Zone._from_cs(zone("ch-gva-2"))
         healthcheck_mode = "http"
         healthcheck_port = 80
         healthcheck_path = "/health"
@@ -69,7 +69,7 @@ class TestCompute:
         healthcheck_strikes_fail = 1
 
         elastic_ip = exo.compute.create_elastic_ip(
-            zone=zone_gva2,
+            zone=zone,
             healthcheck_mode=healthcheck_mode,
             healthcheck_port=healthcheck_port,
             healthcheck_path=healthcheck_path,
@@ -78,8 +78,8 @@ class TestCompute:
             healthcheck_strikes_ok=healthcheck_strikes_ok,
             healthcheck_strikes_fail=healthcheck_strikes_fail,
         )
-        assert elastic_ip.zone.id == zone_gva2.id
-        assert elastic_ip.zone.name == zone_gva2.name
+        assert elastic_ip.zone.id == zone.id
+        assert elastic_ip.zone.name == zone.name
         assert elastic_ip.address != ""
         assert elastic_ip.healthcheck_mode == healthcheck_mode
         assert elastic_ip.healthcheck_port == healthcheck_port
@@ -92,40 +92,34 @@ class TestCompute:
         exo.compute.cs.disassociateIpAddress(id=elastic_ip.id)
 
     def test_list_elastic_ips(self, exo, zone, eip):
-        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
-        zone_fra1 = Zone._from_cs(zone("de-fra-1"))
-        elastic_ip1 = eip(zone_id=zone_gva2.id)
-        elastic_ip2 = eip(zone_id=zone_fra1.id)
+        zone = Zone._from_cs(zone("ch-gva-2"))
+        elastic_ip = eip(zone_id=zone.id)
 
-        elastic_ips = list(exo.compute.list_elastic_ips())
-        # We cannot guarantee that there will be only our resources,
-        # so we ensure we get at least our fixture Elastic IPs
-        assert len(elastic_ips) >= 2
-
-        elastic_ips = list(exo.compute.list_elastic_ips(zone=zone_gva2))
+        elastic_ips = list(exo.compute.list_elastic_ips(zone=zone))
         # We cannot guarantee that there will be only our resources,
         # so we ensure we get at least our fixture Elastic IP
         assert len(elastic_ips) >= 1
 
     def test_get_elastic_ip(self, exo, zone, eip):
+        zone = Zone._from_cs(zone("ch-gva-2"))
         elastic_ip1 = ElasticIP._from_cs(exo.compute, eip())
         elastic_ip2 = ElasticIP._from_cs(exo.compute, eip())
 
-        elastic_ip = exo.compute.get_elastic_ip(id=elastic_ip1.id)
+        elastic_ip = exo.compute.get_elastic_ip(zone=zone, id=elastic_ip1.id)
         assert elastic_ip.id == elastic_ip1.id
 
-        elastic_ip = exo.compute.get_elastic_ip(address=elastic_ip2.address)
+        elastic_ip = exo.compute.get_elastic_ip(zone=zone, address=elastic_ip2.address)
         assert elastic_ip.id == elastic_ip2.id
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
             elastic_ip = exo.compute.get_elastic_ip(
-                id="00000000-0000-0000-0000-000000000000"
+                zone=zone, id="00000000-0000-0000-0000-000000000000"
             )
             assert elastic_ip is None
         assert excinfo.type == ResourceNotFoundError
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            elastic_ip = exo.compute.get_elastic_ip(address="1.2.3.4")
+            elastic_ip = exo.compute.get_elastic_ip(zone=zone, address="1.2.3.4")
             assert elastic_ip is None
         assert excinfo.type == ResourceNotFoundError
 
@@ -145,12 +139,11 @@ class TestCompute:
         test_instance_service_offering_id,
         test_instance_template_id,
     ):
-        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
-        instance_name = "-".join([test_prefix, _random_str()])
+        zone = Zone._from_cs(zone("ch-gva-2"))
         instance_type = InstanceType._from_cs(
             instance_type(id=test_instance_service_offering_id)
         )
-        template = InstanceTemplate._from_cs(
+        instance_template = InstanceTemplate._from_cs(
             exo.compute, instance_template(id=test_instance_template_id)
         )
         anti_affinity_group = AntiAffinityGroup._from_cs(exo.compute, aag())
@@ -158,12 +151,13 @@ class TestCompute:
         security_group1 = SecurityGroup._from_cs(exo.compute, sg())
         security_group2 = SecurityGroup._from_cs(exo.compute, sg())
         ssh_key = SSHKey._from_cs(exo.compute, sshkey())
+        instance_name = "-".join([test_prefix, _random_str()])
 
         instance = exo.compute.create_instance(
             name=instance_name,
-            zone=zone_gva2,
+            zone=zone,
             type=instance_type,
-            template=template,
+            template=instance_template,
             root_disk_size=20,
             security_groups=[security_group1, security_group2],
             anti_affinity_groups=[anti_affinity_group],
@@ -173,9 +167,9 @@ class TestCompute:
         )
         assert instance.id != ""
         assert instance.name == instance_name
-        assert instance.zone.id == zone_gva2.id
+        assert instance.zone.id == zone.id
         assert instance.type.id == instance_type.id
-        assert instance.template.id == template.id
+        assert instance.template.id == instance_template.id
         assert instance.volume_size == 21474836480  # 20 GB
         assert instance.ipv4_address != ""
         assert instance.ipv6_address != ""
@@ -193,52 +187,52 @@ class TestCompute:
         exo.compute.cs.destroyVirtualMachine(id=instance.id)
 
     def test_list_instances(self, exo, zone, privnet, instance):
-        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
-        zone_fra1 = Zone._from_cs(zone("de-fra-1"))
+        zone = Zone._from_cs(zone("ch-gva-2"))
         private_network = PrivateNetwork._from_cs(exo.compute, privnet())
-        instance1 = Instance._from_cs(exo.compute, instance(zone_id=zone_gva2.id))
-        instance2 = Instance._from_cs(exo.compute, instance(zone_id=zone_fra1.id))
+        instance = Instance._from_cs(exo.compute, instance())
 
-        instances = list(exo.compute.list_instances(zone=zone_gva2))
+        instances = list(exo.compute.list_instances(zone=zone))
         # We cannot guarantee that there will be only our resources,
         # so we ensure we get at least our fixture instance
         assert len(instances) >= 1
 
-        instances = list(exo.compute.list_instances(name=instance1.name))
+        instances = list(exo.compute.list_instances(zone=zone, name=instance.name))
         assert len(instances) == 1
 
-        instances = list(exo.compute.list_instances(ids=[instance1.id, instance2.id]))
-        assert len(instances) == 2
-
         res = exo.compute.cs.addNicToVirtualMachine(
-            virtualmachineid=instance1.id, networkid=private_network.id
+            virtualmachineid=instance.id, networkid=private_network.id
         )
 
-        instances = list(exo.compute.list_instances(networkid=private_network.id))
+        instances = list(
+            exo.compute.list_instances(zone=zone, networkid=private_network.id)
+        )
         assert len(instances) == 1
 
         for nic in res["virtualmachine"]["nic"]:
             if nic["isdefault"]:
                 continue
             exo.compute.cs.removeNicFromVirtualMachine(
-                virtualmachineid=instance1.id, nicid=nic["id"]
+                virtualmachineid=instance.id, nicid=nic["id"]
             )
 
-    def test_get_instance(self, exo, privnet, instance):
+    def test_get_instance(self, exo, zone, privnet, instance):
+        zone = Zone._from_cs(zone("ch-gva-2"))
         private_network = PrivateNetwork._from_cs(exo.compute, privnet())
-        instance1 = Instance._from_cs(exo.compute, instance())
+        instance = Instance._from_cs(exo.compute, instance())
 
-        instance = exo.compute.get_instance(id=instance1.id)
-        assert instance.id == instance1.id
+        _instance = exo.compute.get_instance(zone=zone, id=instance.id)
+        assert _instance.id == instance.id
 
-        instance = exo.compute.get_instance(ip_address=instance1.ipv4_address)
-        assert instance.id == instance1.id
+        _instance = exo.compute.get_instance(
+            zone=zone, ip_address=instance.ipv4_address
+        )
+        assert _instance.id == instance.id
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            instance = exo.compute.get_instance(
-                id="00000000-0000-0000-0000-000000000000"
+            _instance = exo.compute.get_instance(
+                zone=zone, id="00000000-0000-0000-0000-000000000000"
             )
-            assert instance is None
+            assert _instance is None
         assert excinfo.type == ResourceNotFoundError
 
     ### Instance Template
@@ -246,27 +240,29 @@ class TestCompute:
     def test_list_instance_templates(
         self, exo, zone, test_instance_template_id, test_instance_template_name
     ):
-        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
+        zone = Zone._from_cs(zone("ch-gva-2"))
 
-        instance_templates = list(exo.compute.list_instance_templates(zone=zone_gva2))
+        instance_templates = list(exo.compute.list_instance_templates(zone=zone))
         assert len(instance_templates) > 10
 
         instance_templates = list(
             exo.compute.list_instance_templates(
-                name=test_instance_template_name, zone=zone_gva2
+                zone=zone, name=test_instance_template_name
             )
         )
         assert len(instance_templates) == 1
 
-    def test_get_instance_template(self, exo, test_instance_template_id):
+    def test_get_instance_template(self, exo, zone, test_instance_template_id):
+        zone = Zone._from_cs(zone("ch-gva-2"))
+
         instance_template = exo.compute.get_instance_template(
-            id=test_instance_template_id
+            zone=zone, id=test_instance_template_id
         )
         assert instance_template.id == test_instance_template_id
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
             instance_template = exo.compute.get_instance_template(
-                id="00000000-0000-0000-0000-000000000000"
+                zone=zone, id="00000000-0000-0000-0000-000000000000"
             )
             assert instance_template is None
         assert excinfo.type == ResourceNotFoundError
@@ -319,22 +315,22 @@ class TestCompute:
     ### Private Network
 
     def test_create_private_network(self, exo, zone, test_prefix, test_description):
+        zone = Zone._from_cs(zone("ch-gva-2"))
         private_network_name = "-".join([test_prefix, _random_str()])
-        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
         start_ip = "192.168.1.10"
         end_ip = "192.168.1.100"
         netmask = "255.255.255.0"
 
         private_network = exo.compute.create_private_network(
-            zone=zone_gva2,
+            zone=zone,
             name=private_network_name,
             description=test_description,
             start_ip=start_ip,
             end_ip=end_ip,
             netmask=netmask,
         )
-        assert private_network.zone.id == zone_gva2.id
-        assert private_network.zone.name == zone_gva2.name
+        assert private_network.zone.id == zone.id
+        assert private_network.zone.name == zone.name
         assert private_network.name == private_network_name
         assert private_network.description == test_description
         assert private_network.start_ip == start_ip
@@ -344,43 +340,34 @@ class TestCompute:
         exo.compute.cs.deleteNetwork(id=private_network.id)
 
     def test_list_private_networks(self, exo, zone, privnet):
-        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
-        zone_fra1 = Zone._from_cs(zone("de-fra-1"))
-        private_network1 = PrivateNetwork._from_cs(
-            exo.compute, privnet(zone_id=zone_gva2.id)
-        )
-        private_network2 = PrivateNetwork._from_cs(
-            exo.compute, privnet(zone_id=zone_fra1.id)
-        )
+        zone = Zone._from_cs(zone("ch-gva-2"))
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
 
-        private_networks = list(exo.compute.list_private_networks())
+        private_networks = list(exo.compute.list_private_networks(zone=zone))
         # We cannot guarantee that there will be only our resources,
-        # so we ensure we get at least our 2 fixture private networks
-        assert len(private_networks) >= 2
+        # so we ensure we get at least our fixture Private Network
+        assert len(private_networks) >= 1
 
         private_networks = list(
-            exo.compute.list_private_networks(name=private_network1.name)
+            exo.compute.list_private_networks(zone=zone, name=private_network.name)
         )
         assert len(private_networks) == 1
-        assert private_networks[0].name == private_network1.name
+        assert private_networks[0].name == private_network.name
 
-        private_networks = list(exo.compute.list_private_networks(zone=zone_gva2))
-        # We cannot guarantee that there will be only our resources,
-        # so we ensure we get only private networks in the zone specified
-        for p in private_networks:
-            assert p.zone.name == private_network1.zone.name
+    def test_get_private_network(self, exo, zone, privnet):
+        zone = Zone._from_cs(zone("ch-gva-2"))
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
 
-    def test_get_private_network(self, exo, privnet):
-        private_network1 = PrivateNetwork._from_cs(exo.compute, privnet())
-
-        private_network = exo.compute.get_private_network(id=private_network1.id)
-        assert private_network.id == private_network1.id
+        _private_network = exo.compute.get_private_network(
+            zone=zone, id=private_network.id
+        )
+        assert _private_network.id == private_network.id
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            private_network = exo.compute.get_private_network(
-                id="00000000-0000-0000-0000-000000000000"
+            _private_network = exo.compute.get_private_network(
+                zone=zone, id="00000000-0000-0000-0000-000000000000"
             )
-            assert private_network is None
+            assert _private_network is None
         assert excinfo.type == ResourceNotFoundError
 
     ### Security Group
@@ -473,12 +460,12 @@ class TestCompute:
     def test_get_ssh_key(self, exo, sshkey):
         ssh_key = SSHKey._from_cs(exo.compute, sshkey())
 
-        ssh_key = exo.compute.get_ssh_key(name=ssh_key.name)
-        assert ssh_key.name == ssh_key.name
+        _ssh_key = exo.compute.get_ssh_key(name=ssh_key.name)
+        assert _ssh_key.name == ssh_key.name
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            ssh_key = exo.compute.get_ssh_key(name="lolnope")
-            assert sshkey is None
+            _ssh_key = exo.compute.get_ssh_key(name="lolnope")
+            assert _ssh_key is None
         assert excinfo.type == ResourceNotFoundError
 
     ### Zone

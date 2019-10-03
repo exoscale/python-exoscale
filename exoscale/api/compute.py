@@ -38,28 +38,6 @@ class AntiAffinityGroup(Resource):
             description=res.get("description", ""),
         )
 
-    @property
-    def instances(self):
-        """
-        Anti-Affinity Group instance members.
-
-        Yields:
-            Instance: the next Anti-Affinity Group instance member
-
-        Note:
-            This property value is dynamically retrieved from the API, incurring extra
-            latency.
-        """
-
-        # We need to refresh ourselves as the virtualmachineIds attribute may have
-        # changed since instantiation (i.e. new instances joined)
-        try:
-            [res] = self.compute.cs.listAffinityGroups(id=self.id, fetch_list=True)
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
-
-        return self.compute.list_instances(ids=res.get("virtualmachineIds", None))
-
     def delete(self):
         """
         Delete the Anti-Affinity Group.
@@ -117,12 +95,15 @@ class ElasticIP(Resource):
     healthcheck_strikes_fail = attr.ib(default=None, repr=False)
 
     @classmethod
-    def _from_cs(cls, compute, res):
+    def _from_cs(cls, compute, res, zone=None):
+        if zone is None:
+            zone = compute.get_zone(id=res["zoneid"])
+
         return cls(
             compute,
             res,
             id=res["id"],
-            zone=compute.get_zone(name=res["zonename"]),
+            zone=zone,
             address=res["ipaddress"],
             healthcheck_mode=res.get("healthcheck", {}).get("mode", None),
             healthcheck_port=res.get("healthcheck", {}).get("port", None),
@@ -376,7 +357,10 @@ class Instance(Resource):
     ssh_key = attr.ib(default=None, repr=False)
 
     @classmethod
-    def _from_cs(cls, compute, res):
+    def _from_cs(cls, compute, res, zone=None):
+        if zone is None:
+            zone = compute.get_zone(id=res["zoneid"])
+
         try:
             _list = compute.cs.listVolumes(virtualmachineid=res["id"], fetch_list=True)
             volume_res = _list[0]
@@ -388,9 +372,9 @@ class Instance(Resource):
             res,
             id=res["id"],
             name=res["displayname"],
-            zone=compute.get_zone(id=res["zoneid"]),
+            zone=zone,
             type=compute.get_instance_type(id=res["serviceofferingid"]),
-            template=compute.get_instance_template(id=res["templateid"]),
+            template=compute.get_instance_template(zone, id=res["templateid"]),
             volume_id=volume_res["id"],
             volume_size=volume_res["size"],
             ipv4_address=next(i for i in res["nic"] if i["isdefault"]).get(
@@ -854,14 +838,17 @@ class InstanceTemplate(Resource):
     username = attr.ib(default=None, repr=False)
 
     @classmethod
-    def _from_cs(cls, compute, res):
+    def _from_cs(cls, compute, res, zone=None):
+        if zone is None:
+            zone = compute.get_zone(id=res["zoneid"])
+
         return cls(
             compute,
             res,
             id=res["id"],
             name=res["name"],
             description=res.get("displaytext", ""),
-            zone=compute.get_zone(id=res["zoneid"]),
+            zone=zone,
             date=datetime.strptime(res["created"], "%Y-%m-%dT%H:%M:%S%z"),
             size=res["size"],
             username=res["details"].get("username", None),
@@ -1074,12 +1061,15 @@ class PrivateNetwork(Resource):
     netmask = attr.ib(default=None, repr=False)
 
     @classmethod
-    def _from_cs(cls, compute, res):
+    def _from_cs(cls, compute, res, zone=None):
+        if zone is None:
+            zone = compute.get_zone(id=res["zoneid"])
+
         return cls(
             compute,
             res,
             id=res["id"],
-            zone=compute.get_zone(name=res["zonename"]),
+            zone=zone,
             name=res["name"],
             description=res["displaytext"],
             start_ip=res.get("startip", ""),
@@ -1100,7 +1090,7 @@ class PrivateNetwork(Resource):
             latency.
         """
 
-        return self.compute.list_instances(networkid=self.id)
+        return self.compute.list_instances(zone=zone, networkid=self.id)
 
     def update(
         self, name=None, description=None, start_ip=None, end_ip=None, netmask=None
@@ -1688,14 +1678,14 @@ class ComputeAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return ElasticIP._from_cs(self, res["ipaddress"])
+        return ElasticIP._from_cs(self, res["ipaddress"], zone=zone)
 
-    def list_elastic_ips(self, zone=None, **kwargs):
+    def list_elastic_ips(self, zone, **kwargs):
         """
         List Elastic IPs.
 
         Parameters:
-            zone (Zone): a zone to restrict results to
+            zone (Zone): the zone to list in
             
         Yields:
             ElasticIP: the next Elastic IP
@@ -1703,22 +1693,20 @@ class ComputeAPI(API):
 
         try:
             _list = self.cs.listPublicIpAddresses(
-                fetch_list=True,
-                zoneid=getattr(zone, "id", None),
-                iselastic=True,
-                **kwargs,
+                fetch_list=True, zoneid=zone.id, iselastic=True, **kwargs
             )
 
             for i in _list:
-                yield ElasticIP._from_cs(self, i)
+                yield ElasticIP._from_cs(self, i, zone=zone)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-    def get_elastic_ip(self, address=None, id=None):
+    def get_elastic_ip(self, zone, address=None, id=None):
         """
         Retrieve an Elastic IP.
 
         Parameters:
+            zone (Zone): the zone to retrieve from
             address (str): an Elastic IP address
             id (str): an Elastic IP identifier
 
@@ -1730,7 +1718,7 @@ class ComputeAPI(API):
             raise ValueError("either id or address must be specifed")
 
         try:
-            elastic_ips = list(self.list_elastic_ips(id=id, ipaddress=address))
+            elastic_ips = list(self.list_elastic_ips(zone, id=id, ipaddress=address))
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
@@ -1806,18 +1794,16 @@ class ComputeAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return Instance._from_cs(self, res["virtualmachine"])
+        return Instance._from_cs(self, res["virtualmachine"], zone=zone)
 
-    def list_instances(
-        self, name=None, ids=None, private_network=None, zone=None, **kwargs
-    ):
+    def list_instances(self, zone, name=None, ids=None, **kwargs):
         """
         List Compute instances.
 
         Parameters:
+            zone (Zone): the zone to list in
             name (str): an Instance name to restrict results to
-            ids ([str]): a list of Instance ID to restrict results to
-            zone (Zone): a zone to restrict results to
+            ids ([str]): a list of Instance IDs to restrict results to
 
         Yields:
             Instance: the next Compute instance
@@ -1825,23 +1811,20 @@ class ComputeAPI(API):
 
         try:
             _list = self.cs.listVirtualMachines(
-                fetch_list=True,
-                ids=ids,
-                name=name,
-                zoneid=getattr(zone, "id", None),
-                **kwargs,
+                fetch_list=True, zoneid=zone.id, ids=ids, name=name, **kwargs
             )
 
             for i in _list:
-                yield Instance._from_cs(self, i)
+                yield Instance._from_cs(self, i, zone=zone)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-    def get_instance(self, id=None, ip_address=None):
+    def get_instance(self, zone, id=None, ip_address=None):
         """
         Get a Compute instance.
 
         Parameters:
+            zone (Zone): the zone to retrieve from
             id (str): an instance identifier
             ip_address (str): an instance IP address
 
@@ -1857,7 +1840,7 @@ class ComputeAPI(API):
             raise ValueError("either id or ip_address must be specifed")
 
         try:
-            instances = list(self.list_instances(id=id, ipaddress=ip_address))
+            instances = list(self.list_instances(zone, id=id, ipaddress=ip_address))
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
@@ -1907,13 +1890,13 @@ class ComputeAPI(API):
             disable_password_reset=disable_password_reset,
         )
 
-    def list_instance_templates(self, name=None, zone=None, type="exoscale", **kwargs):
+    def list_instance_templates(self, zone, name=None, type="exoscale", **kwargs):
         """
         List instance templates.
 
         Parameters:
+            zone (Zone): the zone to list in
             name (str): an instance template name to restrict results to
-            zone (Zone): a zone to restrict results to
             type (str): an instance template type to restrict results to
 
         Yields:
@@ -1931,22 +1914,23 @@ class ComputeAPI(API):
         try:
             _list = self.cs.listTemplates(
                 fetch_list=True,
+                zoneid=zone.id,
                 name=name,
-                zoneid=getattr(zone, "id", None),
                 templatefilter=template_filters[type],
                 **kwargs,
             )
 
             for i in _list:
-                yield InstanceTemplate._from_cs(self, i)
+                yield InstanceTemplate._from_cs(self, i, zone=zone)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-    def get_instance_template(self, id):
+    def get_instance_template(self, zone, id):
         """
         Get an instance template.
 
         Parameters:
+            zone (Zone): the zone to retrieve from
             id (str): an instance template identifier
 
         Returns:
@@ -1954,7 +1938,7 @@ class ComputeAPI(API):
         """
 
         try:
-            instance_templates = list(self.list_instance_templates(id=id))
+            instance_templates = list(self.list_instance_templates(zone, id=id))
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
@@ -2042,34 +2026,33 @@ class ComputeAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return PrivateNetwork._from_cs(self, res["network"])
+        return PrivateNetwork._from_cs(self, res["network"], zone=zone)
 
-    def list_private_networks(self, zone=None, **kwargs):
+    def list_private_networks(self, zone, **kwargs):
         """
         List Private Networks.
 
         Parameters:
-            zone (Zone): a zone to restrict results to
+            zone (Zone): the zone to list in
 
         Yields:
             PrivateNetwork: the next Private Network
         """
 
         try:
-            _list = self.cs.listNetworks(
-                fetch_list=True, zoneid=getattr(zone, "id", None), **kwargs
-            )
+            _list = self.cs.listNetworks(fetch_list=True, zoneid=zone.id, **kwargs)
 
             for i in _list:
-                yield PrivateNetwork._from_cs(self, i)
+                yield PrivateNetwork._from_cs(self, i, zone=zone)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-    def get_private_network(self, id):
+    def get_private_network(self, zone, id):
         """
         Get a Private Network.
 
         Parameters:
+            zone (Zone): the zone to retrieve from
             id (str): a Private Network identifier
 
         Returns:
@@ -2077,7 +2060,7 @@ class ComputeAPI(API):
         """
 
         try:
-            private_networks = list(self.list_private_networks(id=id))
+            private_networks = list(self.list_private_networks(zone, id=id))
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError

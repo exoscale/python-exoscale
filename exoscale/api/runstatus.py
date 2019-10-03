@@ -43,7 +43,7 @@ class Service(Resource):
     page = attr.ib(repr=False)
 
     @classmethod
-    def from_rs(cls, runstatus, res, page):
+    def _from_rs(cls, runstatus, res, page):
         return cls(
             runstatus, res, id=res["url"].split("/")[-1], name=res["name"], page=page
         )
@@ -139,7 +139,7 @@ class Incident(Resource):
     services = attr.ib(default=None, repr=False)
 
     @classmethod
-    def from_rs(cls, runstatus, res, page):
+    def _from_rs(cls, runstatus, res, page):
         return cls(
             runstatus,
             res,
@@ -315,7 +315,7 @@ class Maintenance(Resource):
     services = attr.ib(default=None, repr=False)
 
     @classmethod
-    def from_rs(cls, runstatus, res, page):
+    def _from_rs(cls, runstatus, res, page):
         return cls(
             runstatus,
             res,
@@ -484,7 +484,7 @@ class Page(Resource):
     time_zone = attr.ib(default=None, repr=False)
 
     @classmethod
-    def from_rs(cls, runstatus, res):
+    def _from_rs(cls, runstatus, res):
         return cls(runstatus, res, id=res["id"], name=res["subdomain"])
 
     @property
@@ -503,7 +503,7 @@ class Page(Resource):
         res = self.runstatus._get(url="/pages/{p}/services".format(p=self.name))
 
         for i in res.json().get("results", []):
-            yield Service.from_rs(self.runstatus, i, page=self)
+            yield Service._from_rs(self.runstatus, i, page=self)
 
     def add_service(self, name):
         """
@@ -536,7 +536,7 @@ class Page(Resource):
         res = self.runstatus._get(url="/pages/{p}/incidents".format(p=self.name))
 
         for i in res.json().get("results", []):
-            yield Incident.from_rs(self.runstatus, i, self)
+            yield Incident._from_rs(self.runstatus, i, self)
 
     def add_incident(self, title, description, state, status, services=None):
         """
@@ -597,7 +597,7 @@ class Page(Resource):
         res = self.runstatus._get(url="/pages/{p}/maintenances".format(p=self.name))
 
         for i in res.json().get("results", []):
-            yield Maintenance.from_rs(self.runstatus, i, self)
+            yield Maintenance._from_rs(self.runstatus, i, self)
 
     def add_maintenance(self, title, description, start_date, end_date, services=None):
         """
@@ -827,7 +827,7 @@ class RunstatusAPI(API):
 
         res = self._post(url="/pages", json={"name": name, "subdomain": name})
 
-        return Page.from_rs(self, res.json())
+        return Page._from_rs(self, res.json())
 
     def list_pages(self):
         """
@@ -840,7 +840,7 @@ class RunstatusAPI(API):
         res = self._get(url="/pages")
 
         for i in res.json().get("results", []):
-            yield Page.from_rs(self, i)
+            yield Page._from_rs(self, i)
 
     def get_page(self, name=None, id=None):
         """

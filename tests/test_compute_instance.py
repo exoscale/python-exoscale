@@ -7,9 +7,9 @@ from exoscale.api.compute import *
 
 class TestComputeInstance:
     def test_update(self, exo, instance):
-        instance = Instance.from_cs(exo.compute, instance(start=False))
+        instance = Instance._from_cs(exo.compute, instance(start=False))
         name_edited = instance.name + "-edited"
-        security_group_default = SecurityGroup.from_cs(
+        security_group_default = SecurityGroup._from_cs(
             exo.compute,
             exo.compute.cs.listSecurityGroups(
                 securitygroupname="default", fetch_list=True
@@ -28,8 +28,8 @@ class TestComputeInstance:
         assert res["id"] == security_group_default.id
 
     def test_scale(self, exo, instance):
-        instance = Instance.from_cs(exo.compute, instance(start=False))
-        instance_type_small = InstanceType.from_cs(
+        instance = Instance._from_cs(exo.compute, instance(start=False))
+        instance_type_small = InstanceType._from_cs(
             exo.compute.cs.listServiceOfferings(name="small", fetch_list=True)[0]
         )
 
@@ -39,7 +39,7 @@ class TestComputeInstance:
         assert res["serviceofferingid"] == instance_type_small.id
 
     def test_start(self, exo, instance):
-        instance = Instance.from_cs(exo.compute, instance(start=False))
+        instance = Instance._from_cs(exo.compute, instance(start=False))
 
         instance.start()
 
@@ -47,7 +47,7 @@ class TestComputeInstance:
         assert res["state"].lower() in {"starting", "running"}
 
     def test_stop(self, exo, instance):
-        instance = Instance.from_cs(exo.compute, instance())
+        instance = Instance._from_cs(exo.compute, instance())
 
         instance.stop()
 
@@ -55,7 +55,7 @@ class TestComputeInstance:
         assert res["state"].lower() in ["stopping", "stopped"]
 
     def test_reboot(self, exo, instance):
-        instance = Instance.from_cs(exo.compute, instance())
+        instance = Instance._from_cs(exo.compute, instance())
 
         instance.reboot()
 
@@ -63,7 +63,7 @@ class TestComputeInstance:
         assert res["state"].lower() in ["starting", "running"]
 
     def test_resize_volume(self, exo, instance):
-        instance = Instance.from_cs(exo.compute, instance(start=False))
+        instance = Instance._from_cs(exo.compute, instance(start=False))
 
         instance.resize_volume(size=20)
 
@@ -72,7 +72,7 @@ class TestComputeInstance:
         assert instance.volume_size == 21474836480
 
     def test_snapshot_volume(self, exo, instance):
-        instance = Instance.from_cs(exo.compute, instance())
+        instance = Instance._from_cs(exo.compute, instance())
 
         snapshot = instance.snapshot_volume()
         assert snapshot.id != ""
@@ -80,8 +80,8 @@ class TestComputeInstance:
         assert snapshot.size > 0
 
     def test_attach_elastic_ip(self, exo, eip, instance):
-        elastic_ip = ElasticIP.from_cs(exo.compute, eip())
-        instance = Instance.from_cs(exo.compute, instance())
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
+        instance = Instance._from_cs(exo.compute, instance())
 
         instance.attach_elastic_ip(elastic_ip=elastic_ip)
 
@@ -92,8 +92,8 @@ class TestComputeInstance:
             assert nic["secondaryip"][0]["ipaddress"] == elastic_ip.address
 
     def test_detach_elastic_ip(self, exo, eip, instance):
-        elastic_ip = ElasticIP.from_cs(exo.compute, eip())
-        instance = Instance.from_cs(exo.compute, instance())
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
+        instance = Instance._from_cs(exo.compute, instance())
 
         instance.attach_elastic_ip(elastic_ip=elastic_ip)
 
@@ -112,8 +112,8 @@ class TestComputeInstance:
             assert "secondaryip" not in nic
 
     def test_attach_private_network(self, exo, privnet, instance):
-        private_network = PrivateNetwork.from_cs(exo.compute, privnet())
-        instance = Instance.from_cs(exo.compute, instance())
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
+        instance = Instance._from_cs(exo.compute, instance())
 
         instance.attach_private_network(private_network=private_network)
 
@@ -128,8 +128,8 @@ class TestComputeInstance:
         )
 
     def test_detach_private_network(self, exo, privnet, instance):
-        private_network = PrivateNetwork.from_cs(exo.compute, privnet())
-        instance = Instance.from_cs(exo.compute, instance())
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
+        instance = Instance._from_cs(exo.compute, instance())
 
         res = exo.compute.cs.addNicToVirtualMachine(
             virtualmachineid=instance.id, networkid=private_network.id
@@ -149,7 +149,7 @@ class TestComputeInstance:
         assert len(res) == 0
 
     def test_set_reverse_dns(self, exo, instance, test_reverse_dns):
-        instance = Instance.from_cs(exo.compute, instance())
+        instance = Instance._from_cs(exo.compute, instance())
 
         instance.set_reverse_dns(record=test_reverse_dns)
 
@@ -160,7 +160,7 @@ class TestComputeInstance:
         )
 
     def test_unset_reverse_dns(self, exo, instance, test_reverse_dns):
-        instance = Instance.from_cs(exo.compute, instance())
+        instance = Instance._from_cs(exo.compute, instance())
 
         res = exo.compute.cs.updateReverseDnsForVirtualMachine(
             id=instance.id, domainname=test_reverse_dns
@@ -176,7 +176,7 @@ class TestComputeInstance:
         assert len(res["virtualmachine"]["nic"][0]["reversedns"]) == 0
 
     def test_delete(self, exo, instance):
-        instance = Instance.from_cs(exo.compute, instance(teardown=False))
+        instance = Instance._from_cs(exo.compute, instance(teardown=False))
         instance_name = instance.name
 
         instance.delete()
@@ -186,11 +186,11 @@ class TestComputeInstance:
         assert len(res) == 0
 
     def test_properties(self, exo, aag, sg, privnet, eip, instance, test_reverse_dns):
-        anti_affinity_group = AntiAffinityGroup.from_cs(exo.compute, aag())
-        security_group = SecurityGroup.from_cs(exo.compute, sg())
-        private_network = PrivateNetwork.from_cs(exo.compute, privnet())
-        elastic_ip = ElasticIP.from_cs(exo.compute, eip())
-        instance = Instance.from_cs(
+        anti_affinity_group = AntiAffinityGroup._from_cs(exo.compute, aag())
+        security_group = SecurityGroup._from_cs(exo.compute, sg())
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
+        instance = Instance._from_cs(
             exo.compute,
             instance(
                 anti_affinity_groups=[anti_affinity_group.id],

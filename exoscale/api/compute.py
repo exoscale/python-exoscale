@@ -29,7 +29,7 @@ class AntiAffinityGroup(Resource):
     description = attr.ib(default="", repr=False)
 
     @classmethod
-    def from_cs(cls, compute, res):
+    def _from_cs(cls, compute, res):
         return cls(
             compute,
             res,
@@ -117,7 +117,7 @@ class ElasticIP(Resource):
     healthcheck_strikes_fail = attr.ib(default=None, repr=False)
 
     @classmethod
-    def from_cs(cls, compute, res):
+    def _from_cs(cls, compute, res):
         return cls(
             compute,
             res,
@@ -376,7 +376,7 @@ class Instance(Resource):
     ssh_key = attr.ib(default=None, repr=False)
 
     @classmethod
-    def from_cs(cls, compute, res):
+    def _from_cs(cls, compute, res):
         try:
             _list = compute.cs.listVolumes(virtualmachineid=res["id"], fetch_list=True)
             volume_res = _list[0]
@@ -422,7 +422,7 @@ class Instance(Resource):
                 virtualmachineid=self.id, fetch_list=True
             )
             for i in _list:
-                yield AntiAffinityGroup.from_cs(self, i)
+                yield AntiAffinityGroup._from_cs(self, i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -509,7 +509,7 @@ class Instance(Resource):
                 virtualmachineid=self.id, fetch_list=True
             )
             for i in _list:
-                yield SecurityGroup.from_cs(self, i)
+                yield SecurityGroup._from_cs(self, i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -531,7 +531,7 @@ class Instance(Resource):
                 volumeid=self.volume_id, fetch_list=True
             )
             for i in _list:
-                yield InstanceVolumeSnapshot.from_cs(self.compute, i)
+                yield InstanceVolumeSnapshot._from_cs(self.compute, i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -675,7 +675,7 @@ class Instance(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return InstanceVolumeSnapshot.from_cs(self.compute, res["snapshot"])
+        return InstanceVolumeSnapshot._from_cs(self.compute, res["snapshot"])
 
     def attach_elastic_ip(self, elastic_ip):
         """
@@ -854,7 +854,7 @@ class InstanceTemplate(Resource):
     username = attr.ib(default=None, repr=False)
 
     @classmethod
-    def from_cs(cls, compute, res):
+    def _from_cs(cls, compute, res):
         return cls(
             compute,
             res,
@@ -870,7 +870,7 @@ class InstanceTemplate(Resource):
         )
 
     @classmethod
-    def register(
+    def _register(
         cls,
         compute,
         name,
@@ -901,7 +901,7 @@ class InstanceTemplate(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return cls.from_cs(compute, res["template"][0])
+        return cls._from_cs(compute, res["template"][0])
 
     def delete(self):
         """
@@ -950,7 +950,7 @@ class InstanceVolumeSnapshot(Resource):
     size = attr.ib(repr=False)
 
     @classmethod
-    def from_cs(cls, compute, res):
+    def _from_cs(cls, compute, res):
         return cls(
             compute,
             res,
@@ -1034,7 +1034,7 @@ class InstanceType(Resource):
     memory = attr.ib(repr=False)
 
     @classmethod
-    def from_cs(cls, res):
+    def _from_cs(cls, res):
         return cls(
             res,
             id=res["id"],
@@ -1074,7 +1074,7 @@ class PrivateNetwork(Resource):
     netmask = attr.ib(default=None, repr=False)
 
     @classmethod
-    def from_cs(cls, compute, res):
+    def _from_cs(cls, compute, res):
         return cls(
             compute,
             res,
@@ -1210,7 +1210,7 @@ class SecurityGroup(Resource):
     description = attr.ib(default="", repr=False)
 
     @classmethod
-    def from_cs(cls, compute, res):
+    def _from_cs(cls, compute, res):
         return cls(
             compute,
             res,
@@ -1235,7 +1235,7 @@ class SecurityGroup(Resource):
         try:
             [res] = self.compute.cs.listSecurityGroups(id=self.id, fetch_list=True)
             for rule in res.get("ingressrule", []):
-                yield SecurityGroupRule.from_cs(
+                yield SecurityGroupRule._from_cs(
                     type="ingress", compute=self.compute, res=rule
                 )
         except CloudStackApiException as e:
@@ -1257,7 +1257,7 @@ class SecurityGroup(Resource):
         try:
             [res] = self.compute.cs.listSecurityGroups(id=self.id, fetch_list=True)
             for rule in res.get("egressrule", []):
-                yield SecurityGroupRule.from_cs(
+                yield SecurityGroupRule._from_cs(
                     type="egress", compute=self.compute, res=rule
                 )
         except CloudStackApiException as e:
@@ -1362,7 +1362,7 @@ class SecurityGroupRule:
     icmp_type = attr.ib(default=None, repr=False)
 
     @classmethod
-    def from_cs(cls, compute, res, type):
+    def _from_cs(cls, compute, res, type):
         port = str(res.get("startport", ""))
         port = (
             "-".join([port, str(res["endport"])])
@@ -1387,10 +1387,32 @@ class SecurityGroupRule:
 
     @classmethod
     def ingress(cls, **kwargs):
+        """
+        Returns an ingress-type SecurityGroupRule object.
+        
+        Returns:
+            SecurityGroupRule: an ingress-type Security Group rule
+
+        See Also:
+            See `SecurityGroupRule <#exoscale.api.compute.SecurityGroupRule>`_ class
+            documentation for parameters.
+        """
+
         return cls(type="ingress", **kwargs)
 
     @classmethod
     def egress(cls, **kwargs):
+        """
+        Returns an egress-type SecurityGroupRule object.
+        
+        Returns:
+            SecurityGroupRule: an egress-type Security Group rule
+
+        See Also:
+            See `SecurityGroupRule <#exoscale.api.compute.SecurityGroupRule>`_ class
+            documentation for parameters.
+        """
+
         return cls(type="egress", **kwargs)
 
     def delete(self):
@@ -1458,7 +1480,7 @@ class SSHKey(Resource):
     private_key = attr.ib(default=None, repr=False)
 
     @classmethod
-    def from_cs(cls, compute, res):
+    def _from_cs(cls, compute, res):
         return cls(
             compute,
             res,
@@ -1501,7 +1523,7 @@ class Zone(Resource):
     name = attr.ib()
 
     @classmethod
-    def from_cs(cls, res):
+    def _from_cs(cls, res):
         return cls(res, id=res["id"], name=res["name"])
 
 
@@ -1558,7 +1580,7 @@ class ComputeAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return AntiAffinityGroup.from_cs(self, res["affinitygroup"])
+        return AntiAffinityGroup._from_cs(self, res["affinitygroup"])
 
     def list_anti_affinity_groups(self, **kwargs):
         """
@@ -1573,7 +1595,7 @@ class ComputeAPI(API):
 
             for i in _list:
                 if i["type"] == "host anti-affinity":
-                    yield AntiAffinityGroup.from_cs(self, i)
+                    yield AntiAffinityGroup._from_cs(self, i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -1666,7 +1688,7 @@ class ComputeAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return ElasticIP.from_cs(self, res["ipaddress"])
+        return ElasticIP._from_cs(self, res["ipaddress"])
 
     def list_elastic_ips(self, zone=None, **kwargs):
         """
@@ -1688,7 +1710,7 @@ class ComputeAPI(API):
             )
 
             for i in _list:
-                yield ElasticIP.from_cs(self, i)
+                yield ElasticIP._from_cs(self, i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -1784,7 +1806,7 @@ class ComputeAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return Instance.from_cs(self, res["virtualmachine"])
+        return Instance._from_cs(self, res["virtualmachine"])
 
     def list_instances(
         self, name=None, ids=None, private_network=None, zone=None, **kwargs
@@ -1811,7 +1833,7 @@ class ComputeAPI(API):
             )
 
             for i in _list:
-                yield Instance.from_cs(self, i)
+                yield Instance._from_cs(self, i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -1873,7 +1895,7 @@ class ComputeAPI(API):
             disable_password_reset (bool): a flag indicating whether to disable
                 Compute instance password reset
         """
-        return InstanceTemplate.register(
+        return InstanceTemplate._register(
             compute=self,
             name=name,
             description=description,
@@ -1916,7 +1938,7 @@ class ComputeAPI(API):
             )
 
             for i in _list:
-                yield InstanceTemplate.from_cs(self, i)
+                yield InstanceTemplate._from_cs(self, i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -1956,7 +1978,7 @@ class ComputeAPI(API):
             _list = self.cs.listServiceOfferings(fetch_list=True, **kwargs)
 
             for i in _list:
-                yield InstanceType.from_cs(i)
+                yield InstanceType._from_cs(i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -2020,7 +2042,7 @@ class ComputeAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return PrivateNetwork.from_cs(self, res["network"])
+        return PrivateNetwork._from_cs(self, res["network"])
 
     def list_private_networks(self, zone=None, **kwargs):
         """
@@ -2039,7 +2061,7 @@ class ComputeAPI(API):
             )
 
             for i in _list:
-                yield PrivateNetwork.from_cs(self, i)
+                yield PrivateNetwork._from_cs(self, i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -2084,7 +2106,7 @@ class ComputeAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return SecurityGroup.from_cs(self, res["securitygroup"])
+        return SecurityGroup._from_cs(self, res["securitygroup"])
 
     def list_security_groups(self, **kwargs):
         """
@@ -2098,7 +2120,7 @@ class ComputeAPI(API):
             _list = self.cs.listSecurityGroups(fetch_list=True, **kwargs)
 
             for i in _list:
-                yield SecurityGroup.from_cs(self, i)
+                yield SecurityGroup._from_cs(self, i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -2148,7 +2170,7 @@ class ComputeAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return SSHKey.from_cs(self, res["keypair"])
+        return SSHKey._from_cs(self, res["keypair"])
 
     def register_ssh_key(self, name, public_key):
         """
@@ -2167,7 +2189,7 @@ class ComputeAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return SSHKey.from_cs(self, res["keypair"])
+        return SSHKey._from_cs(self, res["keypair"])
 
     def list_ssh_keys(self, **kwargs):
         """
@@ -2181,7 +2203,7 @@ class ComputeAPI(API):
             _list = self.cs.listSSHKeyPairs(fetch_list=True, **kwargs)
 
             for i in _list:
-                yield SSHKey.from_cs(self, i)
+                yield SSHKey._from_cs(self, i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -2221,7 +2243,7 @@ class ComputeAPI(API):
             _list = self.cs.listZones(fetch_list=True, **kwargs)
 
             for i in _list:
-                yield Zone.from_cs(i)
+                yield Zone._from_cs(i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 

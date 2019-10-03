@@ -46,7 +46,7 @@ class CORSRule(Resource):
     max_age_seconds = attr.ib(default=None, repr=False)
 
     @classmethod
-    def from_s3(cls, res):
+    def _from_s3(cls, res):
         return cls(
             res,
             allowed_headers=res["AllowedHeaders"],
@@ -56,7 +56,7 @@ class CORSRule(Resource):
             max_age_seconds=res.get("MaxAgeSeconds", None),
         )
 
-    def to_s3(self):
+    def _to_s3(self):
         """
         Serialize a CORSRule class instance to the AWS S3 CORS rule format.
 
@@ -104,7 +104,7 @@ class AccessControlPolicy(Resource):
     write_acp = attr.ib(default=None, repr=False)
 
     @classmethod
-    def from_s3(cls, res):
+    def _from_s3(cls, res):
         acp = cls(res, owner=res["Owner"]["ID"])
 
         for i in res["Grants"]:
@@ -121,7 +121,7 @@ class AccessControlPolicy(Resource):
 
         return acp
 
-    def to_s3(self):
+    def _to_s3(self):
         """
         Serialize an AccessControlPolicy class instance to the AWS S3 Access Control
         Policy format.
@@ -321,7 +321,7 @@ class BucketFile(Resource):
             raise APIException(e)
 
         res.pop("ResponseMetadata")
-        return AccessControlPolicy.from_s3(res)
+        return AccessControlPolicy._from_s3(res)
 
     @property
     def metadata(self):
@@ -389,7 +389,7 @@ class BucketFile(Resource):
                 res = self.storage.boto.put_object_acl(
                     Bucket=self.bucket.name,
                     Key=self.path,
-                    AccessControlPolicy=acp.to_s3(),
+                    AccessControlPolicy=acp._to_s3(),
                 )
         except Exception as e:
             raise APIException(e)
@@ -447,7 +447,7 @@ class Bucket(Resource):
             raise APIException(e)
 
         res.pop("ResponseMetadata")
-        return AccessControlPolicy.from_s3(res)
+        return AccessControlPolicy._from_s3(res)
 
     @property
     def cors(self):
@@ -465,7 +465,7 @@ class Bucket(Resource):
         try:
             res = self.storage.boto.get_bucket_cors(Bucket=self.name)
             for i in res["CORSRules"]:
-                yield CORSRule.from_s3(i)
+                yield CORSRule._from_s3(i)
         except Exception as e:
             raise APIException(e)
 
@@ -660,7 +660,7 @@ class Bucket(Resource):
                 res = self.storage.boto.put_bucket_acl(Bucket=self.name, ACL=acl)
             else:
                 res = self.storage.boto.put_bucket_acl(
-                    Bucket=self.name, AccessControlPolicy=acp.to_s3()
+                    Bucket=self.name, AccessControlPolicy=acp._to_s3()
                 )
         except Exception as e:
             raise APIException(e)
@@ -679,7 +679,7 @@ class Bucket(Resource):
         try:
             res = self.storage.boto.put_bucket_cors(
                 Bucket=self.name,
-                CORSConfiguration={"CORSRules": list(r.to_s3() for r in rules)},
+                CORSConfiguration={"CORSRules": list(r._to_s3() for r in rules)},
             )
         except Exception as e:
             raise APIException(e)

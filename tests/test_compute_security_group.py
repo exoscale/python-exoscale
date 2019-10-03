@@ -7,14 +7,14 @@ from exoscale.api.compute import *
 
 class TestComputeSecurityGroup:
     def test_add_rule(self, exo, sg, test_description):
-        security_group = SecurityGroup.from_cs(exo.compute, sg())
+        security_group = SecurityGroup._from_cs(exo.compute, sg())
         test_network_cidr = "1.1.1.1/32"
         test_port_ingress = "80-81"
         test_protocol_ingress = "tcp"
         test_port_egress = "53"
         test_protocol_egress = "udp"
 
-        security_group_default = SecurityGroup.from_cs(
+        security_group_default = SecurityGroup._from_cs(
             exo.compute,
             exo.compute.cs.listSecurityGroups(
                 securitygroupname="default", fetch_list=True
@@ -56,7 +56,7 @@ class TestComputeSecurityGroup:
         assert str(res[0]["egressrule"][0]["endport"]) == test_port_egress
 
     def test_delete(self, exo, sg):
-        security_group = SecurityGroup.from_cs(exo.compute, sg(teardown=False))
+        security_group = SecurityGroup._from_cs(exo.compute, sg(teardown=False))
         security_group_name = security_group.name
 
         security_group.delete()
@@ -68,8 +68,8 @@ class TestComputeSecurityGroup:
         assert len(res) == 0
 
     def test_properties(self, exo, sg):
-        security_group = SecurityGroup.from_cs(exo.compute, sg())
-        security_group_default = SecurityGroup.from_cs(
+        security_group = SecurityGroup._from_cs(exo.compute, sg())
+        security_group_default = SecurityGroup._from_cs(
             exo.compute,
             exo.compute.cs.listSecurityGroups(
                 securitygroupname="default", fetch_list=True

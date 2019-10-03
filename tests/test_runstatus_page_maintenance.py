@@ -8,7 +8,7 @@ from datetime import timezone
 
 class TestRunstatusPageMaintenance:
     def test_add_event(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page())
+        page = Page._from_rs(exo.runstatus, runstatus_page())
         test_maintenance_title = "Database server upgrade"
         test_maintenance_description = (
             "We're upgrading the database server hardware to add more memory"
@@ -36,7 +36,7 @@ class TestRunstatusPageMaintenance:
         res = exo.runstatus._get(
             url="/pages/{p}/maintenances".format(p=page.name)
         ).json()
-        maintenance = Maintenance.from_rs(exo.runstatus, res["results"][0], page)
+        maintenance = Maintenance._from_rs(exo.runstatus, res["results"][0], page)
 
         maintenance.add_event(description="Stopping server", status="in-progress")
         maintenance.add_event(description="Upgrading memory")
@@ -56,7 +56,7 @@ class TestRunstatusPageMaintenance:
         assert res["results"][2]["status"] == "in-progress"
 
     def test_update(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page())
+        page = Page._from_rs(exo.runstatus, runstatus_page())
         test_maintenance_title = "Database server upgrade"
         test_maintenance_title_edited = "Database server upgrade (edited)"
         test_maintenance_description = (
@@ -91,7 +91,7 @@ class TestRunstatusPageMaintenance:
         res = exo.runstatus._get(
             url="/pages/{p}/maintenances".format(p=page.name)
         ).json()
-        maintenance = Maintenance.from_rs(exo.runstatus, res["results"][0], page)
+        maintenance = Maintenance._from_rs(exo.runstatus, res["results"][0], page)
 
         maintenance.update(
             title=test_maintenance_title_edited,
@@ -118,7 +118,7 @@ class TestRunstatusPageMaintenance:
         assert maintenance.services == [test_maintenance_service_edited]
 
     def test_close(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page())
+        page = Page._from_rs(exo.runstatus, runstatus_page())
         test_maintenance_title = "Database server upgrade"
         test_maintenance_description = (
             "We're upgrading the database server hardware to add more memory"
@@ -146,7 +146,7 @@ class TestRunstatusPageMaintenance:
         res = exo.runstatus._get(
             url="/pages/{p}/maintenances".format(p=page.name)
         ).json()
-        maintenance = Maintenance.from_rs(exo.runstatus, res["results"][0], page)
+        maintenance = Maintenance._from_rs(exo.runstatus, res["results"][0], page)
 
         maintenance.close("We're done here")
 
@@ -160,7 +160,7 @@ class TestRunstatusPageMaintenance:
         assert res["results"][0]["status"] == "completed"
 
     def test_properties(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page())
+        page = Page._from_rs(exo.runstatus, runstatus_page())
         test_maintenance_title = "Database server upgrade"
         test_maintenance_description = (
             "We're upgrading the database server hardware to add more memory"
@@ -188,7 +188,7 @@ class TestRunstatusPageMaintenance:
         res = exo.runstatus._get(
             url="/pages/{p}/maintenances".format(p=page.name)
         ).json()
-        maintenance = Maintenance.from_rs(exo.runstatus, res["results"][0], page)
+        maintenance = Maintenance._from_rs(exo.runstatus, res["results"][0], page)
 
         for i in [1, 2, 3]:
             exo.runstatus._post(

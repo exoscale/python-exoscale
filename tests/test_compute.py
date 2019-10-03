@@ -23,7 +23,7 @@ class TestCompute:
         exo.compute.cs.deleteAffinityGroup(id=anti_affinity_group.id)
 
     def test_list_anti_affinity_groups(self, exo, aag):
-        anti_affinity_group = AntiAffinityGroup.from_cs(exo.compute, aag())
+        anti_affinity_group = AntiAffinityGroup._from_cs(exo.compute, aag())
 
         anti_affinity_groups = list(exo.compute.list_anti_affinity_groups())
         # We cannot guarantee that there will be only our resources,
@@ -31,8 +31,8 @@ class TestCompute:
         assert len(anti_affinity_groups) >= 1
 
     def test_get_anti_affinity_group(self, exo, aag):
-        anti_affinity_group1 = AntiAffinityGroup.from_cs(exo.compute, aag())
-        anti_affinity_group2 = AntiAffinityGroup.from_cs(exo.compute, aag())
+        anti_affinity_group1 = AntiAffinityGroup._from_cs(exo.compute, aag())
+        anti_affinity_group2 = AntiAffinityGroup._from_cs(exo.compute, aag())
 
         anti_affinity_group = exo.compute.get_anti_affinity_group(
             id=anti_affinity_group1.id
@@ -59,7 +59,7 @@ class TestCompute:
     ### Elastic IP
 
     def test_create_elastic_ip(self, exo, zone):
-        zone_gva2 = Zone.from_cs(zone("ch-gva-2"))
+        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
         healthcheck_mode = "http"
         healthcheck_port = 80
         healthcheck_path = "/health"
@@ -92,8 +92,8 @@ class TestCompute:
         exo.compute.cs.disassociateIpAddress(id=elastic_ip.id)
 
     def test_list_elastic_ips(self, exo, zone, eip):
-        zone_gva2 = Zone.from_cs(zone("ch-gva-2"))
-        zone_fra1 = Zone.from_cs(zone("de-fra-1"))
+        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
+        zone_fra1 = Zone._from_cs(zone("de-fra-1"))
         elastic_ip1 = eip(zone_id=zone_gva2.id)
         elastic_ip2 = eip(zone_id=zone_fra1.id)
 
@@ -108,8 +108,8 @@ class TestCompute:
         assert len(elastic_ips) >= 1
 
     def test_get_elastic_ip(self, exo, zone, eip):
-        elastic_ip1 = ElasticIP.from_cs(exo.compute, eip())
-        elastic_ip2 = ElasticIP.from_cs(exo.compute, eip())
+        elastic_ip1 = ElasticIP._from_cs(exo.compute, eip())
+        elastic_ip2 = ElasticIP._from_cs(exo.compute, eip())
 
         elastic_ip = exo.compute.get_elastic_ip(id=elastic_ip1.id)
         assert elastic_ip.id == elastic_ip1.id
@@ -145,19 +145,19 @@ class TestCompute:
         test_instance_service_offering_id,
         test_instance_template_id,
     ):
-        zone_gva2 = Zone.from_cs(zone("ch-gva-2"))
+        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
         instance_name = "-".join([test_prefix, _random_str()])
-        instance_type = InstanceType.from_cs(
+        instance_type = InstanceType._from_cs(
             instance_type(id=test_instance_service_offering_id)
         )
-        template = InstanceTemplate.from_cs(
+        template = InstanceTemplate._from_cs(
             exo.compute, instance_template(id=test_instance_template_id)
         )
-        anti_affinity_group = AntiAffinityGroup.from_cs(exo.compute, aag())
-        private_network = PrivateNetwork.from_cs(exo.compute, privnet())
-        security_group1 = SecurityGroup.from_cs(exo.compute, sg())
-        security_group2 = SecurityGroup.from_cs(exo.compute, sg())
-        ssh_key = SSHKey.from_cs(exo.compute, sshkey())
+        anti_affinity_group = AntiAffinityGroup._from_cs(exo.compute, aag())
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
+        security_group1 = SecurityGroup._from_cs(exo.compute, sg())
+        security_group2 = SecurityGroup._from_cs(exo.compute, sg())
+        ssh_key = SSHKey._from_cs(exo.compute, sshkey())
 
         instance = exo.compute.create_instance(
             name=instance_name,
@@ -193,11 +193,11 @@ class TestCompute:
         exo.compute.cs.destroyVirtualMachine(id=instance.id)
 
     def test_list_instances(self, exo, zone, privnet, instance):
-        zone_gva2 = Zone.from_cs(zone("ch-gva-2"))
-        zone_fra1 = Zone.from_cs(zone("de-fra-1"))
-        private_network = PrivateNetwork.from_cs(exo.compute, privnet())
-        instance1 = Instance.from_cs(exo.compute, instance(zone_id=zone_gva2.id))
-        instance2 = Instance.from_cs(exo.compute, instance(zone_id=zone_fra1.id))
+        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
+        zone_fra1 = Zone._from_cs(zone("de-fra-1"))
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
+        instance1 = Instance._from_cs(exo.compute, instance(zone_id=zone_gva2.id))
+        instance2 = Instance._from_cs(exo.compute, instance(zone_id=zone_fra1.id))
 
         instances = list(exo.compute.list_instances(zone=zone_gva2))
         # We cannot guarantee that there will be only our resources,
@@ -225,8 +225,8 @@ class TestCompute:
             )
 
     def test_get_instance(self, exo, privnet, instance):
-        private_network = PrivateNetwork.from_cs(exo.compute, privnet())
-        instance1 = Instance.from_cs(exo.compute, instance())
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
+        instance1 = Instance._from_cs(exo.compute, instance())
 
         instance = exo.compute.get_instance(id=instance1.id)
         assert instance.id == instance1.id
@@ -246,7 +246,7 @@ class TestCompute:
     def test_list_instance_templates(
         self, exo, zone, test_instance_template_id, test_instance_template_name
     ):
-        zone_gva2 = Zone.from_cs(zone("ch-gva-2"))
+        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
 
         instance_templates = list(exo.compute.list_instance_templates(zone=zone_gva2))
         assert len(instance_templates) > 10
@@ -320,7 +320,7 @@ class TestCompute:
 
     def test_create_private_network(self, exo, zone, test_prefix, test_description):
         private_network_name = "-".join([test_prefix, _random_str()])
-        zone_gva2 = Zone.from_cs(zone("ch-gva-2"))
+        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
         start_ip = "192.168.1.10"
         end_ip = "192.168.1.100"
         netmask = "255.255.255.0"
@@ -344,12 +344,12 @@ class TestCompute:
         exo.compute.cs.deleteNetwork(id=private_network.id)
 
     def test_list_private_networks(self, exo, zone, privnet):
-        zone_gva2 = Zone.from_cs(zone("ch-gva-2"))
-        zone_fra1 = Zone.from_cs(zone("de-fra-1"))
-        private_network1 = PrivateNetwork.from_cs(
+        zone_gva2 = Zone._from_cs(zone("ch-gva-2"))
+        zone_fra1 = Zone._from_cs(zone("de-fra-1"))
+        private_network1 = PrivateNetwork._from_cs(
             exo.compute, privnet(zone_id=zone_gva2.id)
         )
-        private_network2 = PrivateNetwork.from_cs(
+        private_network2 = PrivateNetwork._from_cs(
             exo.compute, privnet(zone_id=zone_fra1.id)
         )
 
@@ -371,7 +371,7 @@ class TestCompute:
             assert p.zone.name == private_network1.zone.name
 
     def test_get_private_network(self, exo, privnet):
-        private_network1 = PrivateNetwork.from_cs(exo.compute, privnet())
+        private_network1 = PrivateNetwork._from_cs(exo.compute, privnet())
 
         private_network = exo.compute.get_private_network(id=private_network1.id)
         assert private_network.id == private_network1.id
@@ -399,8 +399,8 @@ class TestCompute:
         exo.compute.cs.deleteSecurityGroup(id=security_group.id)
 
     def test_list_security_groups(self, exo, sg):
-        security_group1 = SecurityGroup.from_cs(exo.compute, sg())
-        security_group2 = SecurityGroup.from_cs(exo.compute, sg())
+        security_group1 = SecurityGroup._from_cs(exo.compute, sg())
+        security_group2 = SecurityGroup._from_cs(exo.compute, sg())
 
         security_groups = list(exo.compute.list_security_groups())
         # We cannot guarantee that there will be only our resources,
@@ -408,8 +408,8 @@ class TestCompute:
         assert len(security_groups) >= 2
 
     def test_get_security_group(self, exo, sg):
-        security_group1 = SecurityGroup.from_cs(exo.compute, sg())
-        security_group2 = SecurityGroup.from_cs(exo.compute, sg())
+        security_group1 = SecurityGroup._from_cs(exo.compute, sg())
+        security_group2 = SecurityGroup._from_cs(exo.compute, sg())
 
         security_group = exo.compute.get_security_group(id=security_group1.id)
         assert security_group.name == security_group1.name
@@ -463,7 +463,7 @@ class TestCompute:
         exo.compute.cs.deleteSSHKeyPair(name=ssh_key.name)
 
     def test_list_ssh_keys(self, exo, sshkey):
-        ssh_key = SSHKey.from_cs(exo.compute, sshkey())
+        ssh_key = SSHKey._from_cs(exo.compute, sshkey())
 
         ssh_keys = list(exo.compute.list_ssh_keys())
         # We cannot guarantee that there will be only our resources,
@@ -471,7 +471,7 @@ class TestCompute:
         assert len(ssh_keys) >= 1
 
     def test_get_ssh_key(self, exo, sshkey):
-        ssh_key = SSHKey.from_cs(exo.compute, sshkey())
+        ssh_key = SSHKey._from_cs(exo.compute, sshkey())
 
         ssh_key = exo.compute.get_ssh_key(name=ssh_key.name)
         assert ssh_key.name == ssh_key.name

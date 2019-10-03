@@ -7,7 +7,7 @@ from exoscale.api.compute import *
 
 class TestComputeAntiAffinityGroup:
     def test_delete(self, exo, aag):
-        anti_affinity_group = AntiAffinityGroup.from_cs(
+        anti_affinity_group = AntiAffinityGroup._from_cs(
             exo.compute, aag(teardown=False)
         )
         anti_affinity_group_name = anti_affinity_group.name
@@ -21,8 +21,8 @@ class TestComputeAntiAffinityGroup:
         assert len(res) == 0
 
     def test_properties(self, exo, aag, instance):
-        anti_affinity_group = AntiAffinityGroup.from_cs(exo.compute, aag())
-        instance = Instance.from_cs(
+        anti_affinity_group = AntiAffinityGroup._from_cs(exo.compute, aag())
+        instance = Instance._from_cs(
             exo.compute, instance(anti_affinity_groups=[anti_affinity_group.id])
         )
 

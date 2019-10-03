@@ -7,7 +7,7 @@ from exoscale.api.runstatus import *
 
 class TestRunstatusPageService:
     def test_delete(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page())
+        page = Page._from_rs(exo.runstatus, runstatus_page())
         service_name = "a"
 
         exo.runstatus._post(
@@ -15,7 +15,7 @@ class TestRunstatusPageService:
         )
 
         res = exo.runstatus._get(url="/pages/{p}/services".format(p=page.name)).json()
-        service = Service.from_rs(exo.runstatus, res["results"][0], page=page)
+        service = Service._from_rs(exo.runstatus, res["results"][0], page=page)
 
         service.delete()
         assert service.id == None
@@ -24,7 +24,7 @@ class TestRunstatusPageService:
         assert len(res["results"]) == 0
 
     def test_properties(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page())
+        page = Page._from_rs(exo.runstatus, runstatus_page())
         service_name = "a"
 
         exo.runstatus._post(
@@ -32,6 +32,6 @@ class TestRunstatusPageService:
         )
 
         res = exo.runstatus._get(url="/pages/{p}/services".format(p=page.name)).json()
-        service = Service.from_rs(exo.runstatus, res["results"][0], page=page)
+        service = Service._from_rs(exo.runstatus, res["results"][0], page=page)
 
         assert service.state == "operational"

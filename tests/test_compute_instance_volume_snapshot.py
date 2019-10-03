@@ -7,10 +7,10 @@ from exoscale.api.compute import *
 
 class TestComputeInstanceVolumeSnapshot:
     def test_revert(self, exo, instance):
-        instance = Instance.from_cs(exo.compute, instance())
+        instance = Instance._from_cs(exo.compute, instance())
 
         res = exo.compute.cs.createSnapshot(volumeid=instance.volume_id)
-        snapshot = InstanceVolumeSnapshot.from_cs(exo.compute, res["snapshot"])
+        snapshot = InstanceVolumeSnapshot._from_cs(exo.compute, res["snapshot"])
 
         res = exo.compute.cs.stopVirtualMachine(id=instance.id)
         assert res["virtualmachine"]["state"].lower() in ["stopping", "stopped"]
@@ -20,10 +20,10 @@ class TestComputeInstanceVolumeSnapshot:
         # so we'll consider that no exception is an OK -- no news is good news!
 
     def test_delete(self, exo, instance):
-        instance = Instance.from_cs(exo.compute, instance())
+        instance = Instance._from_cs(exo.compute, instance())
 
         res = exo.compute.cs.createSnapshot(volumeid=instance.volume_id)
-        snapshot = InstanceVolumeSnapshot.from_cs(exo.compute, res["snapshot"])
+        snapshot = InstanceVolumeSnapshot._from_cs(exo.compute, res["snapshot"])
 
         snapshot.delete()
         assert snapshot.id is None
@@ -32,10 +32,10 @@ class TestComputeInstanceVolumeSnapshot:
         assert len(res) == 0
 
     def test_properties(self, exo, instance):
-        instance = Instance.from_cs(exo.compute, instance())
+        instance = Instance._from_cs(exo.compute, instance())
 
         res = exo.compute.cs.createSnapshot(volumeid=instance.volume_id)
-        instance_volume_snapshot = InstanceVolumeSnapshot.from_cs(
+        instance_volume_snapshot = InstanceVolumeSnapshot._from_cs(
             exo.compute, res["snapshot"]
         )
         assert instance_volume_snapshot.state == "backedup"

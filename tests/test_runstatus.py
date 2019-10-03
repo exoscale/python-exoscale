@@ -19,7 +19,7 @@ class TestRunstatus:
         exo.runstatus._delete(url="/pages/{p}".format(p=page_name))
 
     def test_list_pages(self, exo, runstatus_page):
-        page = Page.from_rs(exo.runstatus, runstatus_page())
+        page = Page._from_rs(exo.runstatus, runstatus_page())
 
         pages = list(exo.runstatus.list_pages())
         # We cannot guarantee that there will be only our resources,
@@ -27,7 +27,7 @@ class TestRunstatus:
         assert len(pages) >= 1
 
     def test_get_page(self, exo, runstatus_page):
-        page1 = Page.from_rs(exo.runstatus, runstatus_page())
+        page1 = Page._from_rs(exo.runstatus, runstatus_page())
 
         page = exo.runstatus.get_page(name=page1.name)
         assert page.name == page1.name

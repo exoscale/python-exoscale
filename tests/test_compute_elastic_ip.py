@@ -7,8 +7,8 @@ from exoscale.api.compute import *
 
 class TestComputeElasticIP:
     def test_attach_instance(self, exo, eip, instance):
-        elastic_ip = ElasticIP.from_cs(exo.compute, eip())
-        instance = Instance.from_cs(exo.compute, instance())
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
+        instance = Instance._from_cs(exo.compute, instance())
 
         elastic_ip.attach_instance(instance)
 
@@ -19,8 +19,8 @@ class TestComputeElasticIP:
         )
 
     def test_detach_instance(self, exo, eip, instance):
-        elastic_ip = ElasticIP.from_cs(exo.compute, eip())
-        instance = Instance.from_cs(exo.compute, instance())
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
+        instance = Instance._from_cs(exo.compute, instance())
 
         res = exo.compute.cs.listNics(virtualmachineid=instance.id, fetch_list=True)
         exo.compute.cs.addIpToNic(
@@ -39,7 +39,7 @@ class TestComputeElasticIP:
         assert "secondaryip" not in instance._default_nic(res)
 
     def test_set_reverse_dns(self, exo, eip, test_reverse_dns):
-        elastic_ip = ElasticIP.from_cs(exo.compute, eip())
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
 
         elastic_ip.set_reverse_dns(record=test_reverse_dns)
 
@@ -47,7 +47,7 @@ class TestComputeElasticIP:
         assert res["publicipaddress"]["reversedns"][0]["domainname"] == test_reverse_dns
 
     def test_unset_reverse_dns(self, exo, eip, test_reverse_dns):
-        elastic_ip = ElasticIP.from_cs(exo.compute, eip())
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
 
         res = exo.compute.cs.updateReverseDnsForPublicIpAddress(
             id=elastic_ip.id, domainname=test_reverse_dns
@@ -60,7 +60,7 @@ class TestComputeElasticIP:
         assert len(res["publicipaddress"]["reversedns"]) == 0
 
     def test_update(self, exo, eip):
-        elastic_ip = ElasticIP.from_cs(exo.compute, eip())
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
         healthcheck_mode = "http"
         healthcheck_port = 80
         healthcheck_path = "/test"
@@ -97,9 +97,9 @@ class TestComputeElasticIP:
         assert elastic_ip.healthcheck_strikes_fail == healthcheck_strikes_fail
 
     def test_delete(self, exo, eip, instance):
-        elastic_ip = ElasticIP.from_cs(exo.compute, eip(teardown=False))
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip(teardown=False))
         elastic_ip_id = elastic_ip.id
-        instance = Instance.from_cs(exo.compute, instance())
+        instance = Instance._from_cs(exo.compute, instance())
 
         res = exo.compute.cs.listNics(virtualmachineid=instance.id, fetch_list=True)
         exo.compute.cs.addIpToNic(
@@ -113,8 +113,8 @@ class TestComputeElasticIP:
         assert len(res) == 0
 
     def test_properties(self, exo, eip, instance, test_reverse_dns):
-        elastic_ip = ElasticIP.from_cs(exo.compute, eip())
-        instance = Instance.from_cs(exo.compute, instance())
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
+        instance = Instance._from_cs(exo.compute, instance())
 
         instance_nics = exo.compute.cs.listNics(
             virtualmachineid=instance.id, fetch_list=True

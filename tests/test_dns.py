@@ -19,7 +19,7 @@ class TestDNS:
         exo.dns.cs.deleteDnsDomain(id=domain.id)
 
     def test_list_domains(self, exo, domain):
-        domain = Domain.from_cs(exo.dns, domain())
+        domain = Domain._from_cs(exo.dns, domain())
 
         domains = list(exo.dns.list_domains())
         # We cannot guarantee that there will be only our resources,
@@ -27,7 +27,7 @@ class TestDNS:
         assert len(domains) >= 1
 
     def test_get_domain(self, exo, domain):
-        domain1 = Domain.from_cs(exo.dns, domain())
+        domain1 = Domain._from_cs(exo.dns, domain())
 
         domain = exo.dns.get_domain(id=domain1.id)
         assert domain.id == domain1.id

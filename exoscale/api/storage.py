@@ -56,7 +56,7 @@ class CORSRule(Resource):
             max_age_seconds=res.get("MaxAgeSeconds", None),
         )
 
-    def to_s3(self):
+    def _to_s3(self):
         """
         Serialize a CORSRule class instance to the AWS S3 CORS rule format.
 
@@ -109,19 +109,19 @@ class AccessControlPolicy(Resource):
 
         for i in res["Grants"]:
             if i["Permission"] == "FULL_CONTROL":
-                acp.full_control = acp._grantee__from_s3(i["Grantee"])
+                acp.full_control = acp._grantee_from_s3(i["Grantee"])
             if i["Permission"] == "READ":
-                acp.read = acp._grantee__from_s3(i["Grantee"])
+                acp.read = acp._grantee_from_s3(i["Grantee"])
             if i["Permission"] == "WRITE":
-                acp.write = acp._grantee__from_s3(i["Grantee"])
+                acp.write = acp._grantee_from_s3(i["Grantee"])
             if i["Permission"] == "READ_ACP":
-                acp.read_acp = acp._grantee__from_s3(i["Grantee"])
+                acp.read_acp = acp._grantee_from_s3(i["Grantee"])
             if i["Permission"] == "WRITE_ACP":
-                acp.write_acp = acp._grantee__from_s3(i["Grantee"])
+                acp.write_acp = acp._grantee_from_s3(i["Grantee"])
 
         return acp
 
-    def to_s3(self):
+    def _to_s3(self):
         """
         Serialize an AccessControlPolicy class instance to the AWS S3 Access Control
         Policy format.
@@ -166,7 +166,7 @@ class AccessControlPolicy(Resource):
 
         return acp
 
-    def _grantee__from_s3(self, grantee):
+    def _grantee_from_s3(self, grantee):
         """
         Convert an AWS S3 Access Control Policy grantee to AccessControlPolicy class
         format.
@@ -389,7 +389,7 @@ class BucketFile(Resource):
                 res = self.storage.boto.put_object_acl(
                     Bucket=self.bucket.name,
                     Key=self.path,
-                    AccessControlPolicy=acp.to_s3(),
+                    AccessControlPolicy=acp._to_s3(),
                 )
         except Exception as e:
             raise APIException(e)
@@ -660,7 +660,7 @@ class Bucket(Resource):
                 res = self.storage.boto.put_bucket_acl(Bucket=self.name, ACL=acl)
             else:
                 res = self.storage.boto.put_bucket_acl(
-                    Bucket=self.name, AccessControlPolicy=acp.to_s3()
+                    Bucket=self.name, AccessControlPolicy=acp._to_s3()
                 )
         except Exception as e:
             raise APIException(e)
@@ -679,7 +679,7 @@ class Bucket(Resource):
         try:
             res = self.storage.boto.put_bucket_cors(
                 Bucket=self.name,
-                CORSConfiguration={"CORSRules": list(r.to_s3() for r in rules)},
+                CORSConfiguration={"CORSRules": list(r._to_s3() for r in rules)},
             )
         except Exception as e:
             raise APIException(e)

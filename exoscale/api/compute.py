@@ -427,7 +427,7 @@ class Instance(Resource):
             _list = self.compute.cs.listNics(virtualmachineid=self.id, fetch_list=True)
             default_nic = self._default_nic(_list)
             for a in default_nic.get("secondaryip", []):
-                yield self.compute.get_elastic_ip(address=a["ipaddress"])
+                yield self.compute.get_elastic_ip(zone=zone, address=a["ipaddress"])
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -449,7 +449,7 @@ class Instance(Resource):
             for nic in _list:
                 if nic["isdefault"]:
                     continue
-                yield self.compute.get_private_network(id=nic["networkid"])
+                yield self.compute.get_private_network(zone=zone, id=nic["networkid"])
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 

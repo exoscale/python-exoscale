@@ -427,7 +427,9 @@ class Instance(Resource):
             _list = self.compute.cs.listNics(virtualmachineid=self.id, fetch_list=True)
             default_nic = self._default_nic(_list)
             for a in default_nic.get("secondaryip", []):
-                yield self.compute.get_elastic_ip(zone=zone, address=a["ipaddress"])
+                yield self.compute.get_elastic_ip(
+                    zone=self.zone, address=a["ipaddress"]
+                )
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -449,7 +451,9 @@ class Instance(Resource):
             for nic in _list:
                 if nic["isdefault"]:
                     continue
-                yield self.compute.get_private_network(zone=zone, id=nic["networkid"])
+                yield self.compute.get_private_network(
+                    zone=self.zone, id=nic["networkid"]
+                )
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -1090,7 +1094,7 @@ class PrivateNetwork(Resource):
             latency.
         """
 
-        return self.compute.list_instances(zone=zone, networkid=self.id)
+        return self.compute.list_instances(zone=self.zone, networkid=self.id)
 
     def update(
         self, name=None, description=None, start_ip=None, end_ip=None, netmask=None

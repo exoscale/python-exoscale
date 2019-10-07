@@ -36,8 +36,8 @@ instance = exo.compute.create_instance(
     type=exo.compute.get_instance_type("medium"),
     template=list(
         exo.compute.list_instance_templates(
-            "Linux Ubuntu 18.04 LTS 64-bit",
-            zone_gva2))[0],
+            zone_gva2,
+            "Linux Ubuntu 18.04 LTS 64-bit")[0],
     root_disk_size=50,
     security_groups=[security_group_web],
     user_data="""#cloud-config

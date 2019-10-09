@@ -16,7 +16,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
-    version="0.1.1",
+    version="0.2.0",
     license="ISC",
     author="Exoscale",
     platforms="any",

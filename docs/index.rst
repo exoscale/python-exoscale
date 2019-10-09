@@ -19,12 +19,32 @@ with high-level Python bindings.
 Changelog
 ---------
 
-UNRELEASED (XXXX-XX-XX)
-~~~~~~~~~~~~~~~~~~~~~~~
+0.2.0 (2019-10-09)
+~~~~~~~~~~~~~~~~~~
 
-Features:
+Features
+********
 
 - storage: add Bucket/BucketFile "url" attribute
+
+Fixes
+*****
+
+- compute: fix unhandled exception in ``get_*`` functions
+
+Changes
+*******
+
+- compute: ``create_instance()`` function *root_disk_size* parameter has been renamed
+  to *volume_size*
+- compute: ``get_elastic_ip()`` function now requires a *zone* parameter
+- compute: ``get_instance_template()`` function now requires a *zone* parameter
+- compute: ``get_instance()`` function now requires a *zone* parameter
+- compute: ``get_private_network()`` function now requires a *zone* parameter
+- compute: ``list_elastic_ips()`` function now requires a *zone* parameter
+- compute: ``list_instance_templates()`` function now requires a *zone* parameter
+- compute: ``list_instances()`` function now requires a *zone* parameter
+- compute: ``list_private_networks()`` function now requires a *zone* parameter
 
 0.1.1 (2019-09-12)
 ~~~~~~~~~~~~~~~~~~

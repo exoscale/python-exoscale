@@ -310,6 +310,8 @@ class DnsAPI(API):
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
+            else:
+                raise e
 
         for domain in domains:
             if (name and domain.name == name) or (id and domain.id == id):

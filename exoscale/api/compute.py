@@ -1615,6 +1615,8 @@ class ComputeAPI(API):
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
+            else:
+                raise e
 
         if len(anti_affinity_groups) == 0:
             raise ResourceNotFoundError
@@ -1726,6 +1728,8 @@ class ComputeAPI(API):
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
+            else:
+                raise e
 
         if len(elastic_ips) == 0:
             raise ResourceNotFoundError
@@ -1848,6 +1852,8 @@ class ComputeAPI(API):
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
+            else:
+                raise e
 
         if len(instances) == 0:
             raise ResourceNotFoundError
@@ -1946,6 +1952,8 @@ class ComputeAPI(API):
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
+            else:
+                raise e
 
         if len(instance_templates) == 0:
             raise ResourceNotFoundError
@@ -1990,6 +1998,8 @@ class ComputeAPI(API):
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
+            else:
+                raise e
 
         if len(instance_types) == 0:
             raise ResourceNotFoundError
@@ -2068,6 +2078,8 @@ class ComputeAPI(API):
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
+            else:
+                raise e
 
         if len(private_networks) == 0:
             raise ResourceNotFoundError
@@ -2133,6 +2145,8 @@ class ComputeAPI(API):
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
+            else:
+                raise e
 
         if len(security_groups) == 0:
             raise ResourceNotFoundError
@@ -2210,6 +2224,8 @@ class ComputeAPI(API):
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
+            else:
+                raise e
 
         if len(ssh_keys) == 0:
             raise ResourceNotFoundError
@@ -2254,6 +2270,8 @@ class ComputeAPI(API):
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
+            else:
+                raise e
 
         if len(zones) == 0:
             raise ResourceNotFoundError

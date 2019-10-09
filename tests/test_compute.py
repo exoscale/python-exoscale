@@ -158,7 +158,7 @@ class TestCompute:
             zone=zone,
             type=instance_type,
             template=instance_template,
-            root_disk_size=20,
+            volume_size=20,
             security_groups=[security_group1, security_group2],
             anti_affinity_groups=[anti_affinity_group],
             private_networks=[private_network],

@@ -38,7 +38,7 @@ instance = exo.compute.create_instance(
         exo.compute.list_instance_templates(
             zone_gva2,
             "Linux Ubuntu 18.04 LTS 64-bit")[0],
-    root_disk_size=50,
+    volume_size=50,
     security_groups=[security_group_web],
     user_data="""#cloud-config
 package_upgrade: true

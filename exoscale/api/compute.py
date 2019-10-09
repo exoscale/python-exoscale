@@ -1740,7 +1740,7 @@ class ComputeAPI(API):
         zone,
         type,
         template,
-        root_disk_size=10,
+        volume_size=10,
         security_groups=None,
         anti_affinity_groups=None,
         private_networks=None,
@@ -1756,7 +1756,7 @@ class ComputeAPI(API):
             zone (Zone): the zone in which to create the Compute Instance
             type (InstanceType): the instance type
             template (InstanceTemplate): the instance template
-            root_disk_size (int): the instance root disk size in GB
+            volume_size (int): the instance storage volume size in GB
             security_groups ([SecurityGroup]): a list of Security Groups to attach
                 the instance to
             anti_affinity_groups ([AntiAffinityGroup]): a list of Anti-Affinity Groups
@@ -1779,7 +1779,7 @@ class ComputeAPI(API):
                 zoneid=zone.id,
                 serviceofferingid=type.id,
                 templateid=template.id,
-                rootdisksize=root_disk_size,
+                rootdisksize=volume_size,
                 securitygroupids=list(i.id for i in security_groups)
                 if security_groups
                 else None,

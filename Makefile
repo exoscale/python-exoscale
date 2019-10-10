@@ -27,6 +27,7 @@ publish-doc: apidoc html
 		touch .nojekyll && \
 		git init && \
 		git add . && \
+		git commit -m "Update documentation" && \
 		git push -f git@github.com:exoscale/python-exoscale master:gh-pages
 
 serve:

@@ -40,8 +40,8 @@ def test_instance_template_name():
 
 @pytest.fixture(autouse=True, scope="module")
 def test_instance_template_id():
-    # Linux Ubuntu 18.04 LTS 64-bit
-    return "095250e3-7c56-441a-a25b-100a3d3f5a6e"
+    # Linux Ubuntu 18.04 LTS 64-bit @ ch-gva-2
+    return "45346aba-6027-45bc-ad1e-bd1f563c2d84"
 
 
 @pytest.fixture(autouse=True, scope="module")

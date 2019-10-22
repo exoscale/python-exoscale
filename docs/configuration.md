@@ -38,6 +38,7 @@ A `[[profiles]]` entry is a dictionary supporting the following key/values
 * `dns_api_endpoint`: an alternative Exoscale DNS API endpoint
 * `storage_api_endpoint`: an alternative Exoscale Storage API endpoint
 * `runstatus_api_endpoint`: an alternative Exoscale Runstatus API endpoint
+* `iam_api_endpoint`: an alternative Exoscale IAM API endpoint
 
 ## Environment variables
 
@@ -50,6 +51,7 @@ file:
 * `EXOSCALE_DNS_API_ENDPOINT`: an alternative Exoscale DNS API endpoint
 * `EXOSCALE_RUNSTATUS_API_ENDPOINT`: an alternative Exoscale Runstatus API
   endpoint
+* `EXOSCALE_IAM_API_ENDPOINT`: an alternative Exoscale IAM API endpoint
 * `EXOSCALE_STORAGE_API_ENDPOINT`: an alternative Exoscale Storage API endpoint
 * `EXOSCALE_STORAGE_ZONE`: an Exoscale Storage zone
 * `EXOSCALE_CONFIG_FILE`: an alternative configuration file location (default:

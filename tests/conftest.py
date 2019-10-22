@@ -389,3 +389,23 @@ def runstatus_page(exo, test_prefix):
 
     for page in pages:
         res = exo.runstatus._delete(url="/pages/{p}".format(p=page["subdomain"]))
+
+
+@pytest.fixture(autouse=True, scope="function")
+def apikey(exo, test_prefix):
+    api_keys = []
+
+    def _api_key(name=None, teardown=True):
+        api_key = exo.iam.cs.createApiKey(
+            name=name if name else "-".join([test_prefix, _random_str()])
+        )["apikey"]
+
+        if teardown:
+            api_keys.append(api_key)
+
+        return api_key
+
+    yield _api_key
+
+    for api_key in api_keys:
+        res = exo.iam.cs.revokeApiKey(key=api_key["key"])

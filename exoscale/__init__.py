@@ -7,6 +7,7 @@ from .api.compute import ComputeAPI
 from .api.dns import DnsAPI
 from .api.storage import StorageAPI
 from .api.runstatus import RunstatusAPI
+from .api.iam import IamAPI
 
 _API_KEY_ENVVAR = "EXOSCALE_API_KEY"
 _API_SECRET_ENVVAR = "EXOSCALE_API_SECRET"
@@ -14,6 +15,7 @@ _COMPUTE_API_ENDPOINT_ENVVAR = "EXOSCALE_COMPUTE_API_ENDPOINT"
 _DNS_API_ENDPOINT_ENVVAR = "EXOSCALE_DNS_API_ENDPOINT"
 _RUNSTATUS_API_ENDPOINT_ENVVAR = "EXOSCALE_RUNSTATUS_API_ENDPOINT"
 _STORAGE_API_ENDPOINT_ENVVAR = "EXOSCALE_STORAGE_API_ENDPOINT"
+_IAM_API_ENDPOINT_ENVVAR = "EXOSCALE_IAM_API_ENDPOINT"
 _STORAGE_ZONE_ENVVAR = "EXOSCALE_STORAGE_ZONE"
 _CONFIG_FILE_ENVVAR = "EXOSCALE_CONFIG_FILE"
 _DEFAULT_CONFIG_FILE = os.path.join(os.getenv("HOME"), ".exoscale", "config.toml")
@@ -31,6 +33,7 @@ class Exoscale:
         compute_api_endpoint (str): an alternative Exoscale Compute API endpoint
         dns_api_endpoint (str): an alternative Exoscale DNS API endpoint
         storage_api_endpoint (str): an alternative Exoscale Object Storage API endpoint
+        iam_api_endpoint (str): an alternative Exoscale IAM API endpoint
         storage_zone (str): an Exoscale Storage zone
         runstatus_api_endpoint (str): an alternative Exoscale Runstatus API endpoint
         trace (bool): API requests/responses tracing flag
@@ -42,6 +45,7 @@ class Exoscale:
         dns (api.compute.DnsAPI): the Exoscale DNS API client
         storage (api.storage.StorageAPI): the Exoscale Object Storage API client
         runstatus (api.runstatus.RunstatusAPI): the Exoscale Runstatus API client
+        iam (api.iam.IamAPI): the Exoscale IAM API client
     """
 
     def __init__(
@@ -55,6 +59,7 @@ class Exoscale:
         storage_api_endpoint=None,
         storage_zone=None,
         runstatus_api_endpoint=None,
+        iam_api_endpoint=None,
         trace=False,
     ):
         # Load settings from a configuration file profile
@@ -100,6 +105,11 @@ class Exoscale:
                 if not runstatus_api_endpoint
                 else runstatus_api_endpoint
             )
+            iam_api_endpoint = (
+                profile.get("iam_api_endpoint", None)
+                if not iam_api_endpoint
+                else iam_api_endpoint
+            )
 
         # Fallback: load settings from environment variables
         api_key = api_key if api_key else os.getenv(_API_KEY_ENVVAR, None)
@@ -126,6 +136,11 @@ class Exoscale:
             runstatus_api_endpoint
             if runstatus_api_endpoint
             else os.getenv(_RUNSTATUS_API_ENDPOINT_ENVVAR, None)
+        )
+        iam_api_endpoint = (
+            iam_api_endpoint
+            if iam_api_endpoint
+            else os.getenv(_IAM_API_ENDPOINT_ENVVAR, None)
         )
 
         if api_key is None or api_secret is None:
@@ -155,6 +170,11 @@ class Exoscale:
         if runstatus_api_endpoint is not None:
             kwargs["endpoint"] = runstatus_api_endpoint
         self.runstatus = RunstatusAPI(**kwargs)
+
+        kwargs = {"key": self.api_key, "secret": self.api_secret, "trace": trace}
+        if iam_api_endpoint is not None:
+            kwargs["endpoint"] = iam_api_endpoint
+        self.iam = IamAPI(**kwargs)
 
     def _get_profile(self, profile=None):
         if "profiles" not in self._config or len(self._config["profiles"]) == 0:

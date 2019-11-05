@@ -126,11 +126,15 @@ def aag(exo, test_prefix, test_description):
 
 
 @pytest.fixture(autouse=True, scope="function")
-def eip(exo, zone):
+def eip(exo, zone, test_description):
     elastic_ips = []
 
-    def _elastic_ip(zone_id=_DEFAULT_ZONE_ID, teardown=True):
-        elastic_ip = exo.compute.cs.associateIpAddress(zoneid=zone_id)["ipaddress"]
+    def _elastic_ip(
+        zone_id=_DEFAULT_ZONE_ID, description=test_description, teardown=True
+    ):
+        elastic_ip = exo.compute.cs.associateIpAddress(
+            zoneid=zone_id, description=description
+        )["ipaddress"]
 
         if teardown:
             elastic_ips.append(elastic_ip)

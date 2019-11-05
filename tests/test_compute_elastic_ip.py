@@ -59,8 +59,9 @@ class TestComputeElasticIP:
         res = exo.compute.cs.queryReverseDnsForPublicIpAddress(id=elastic_ip.id)
         assert len(res["publicipaddress"]["reversedns"]) == 0
 
-    def test_update(self, exo, eip):
+    def test_update(self, exo, eip, test_description):
         elastic_ip = ElasticIP._from_cs(exo.compute, eip())
+        description_edited = test_description + " (edited)"
         healthcheck_mode = "http"
         healthcheck_port = 80
         healthcheck_path = "/test"
@@ -70,6 +71,7 @@ class TestComputeElasticIP:
         healthcheck_strikes_fail = 1
 
         elastic_ip.update(
+            description=description_edited,
             healthcheck_mode=healthcheck_mode,
             healthcheck_path=healthcheck_path,
             healthcheck_port=healthcheck_port,
@@ -80,6 +82,8 @@ class TestComputeElasticIP:
         )
 
         [res] = exo.compute.cs.listPublicIpAddresses(id=elastic_ip.id, fetch_list=True)
+        assert res["description"] == description_edited
+        assert elastic_ip.description == description_edited
         assert "healthcheck" in res.keys()
         assert res["healthcheck"]["mode"] == healthcheck_mode
         assert elastic_ip.healthcheck_mode == healthcheck_mode

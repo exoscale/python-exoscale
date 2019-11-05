@@ -58,7 +58,7 @@ class TestCompute:
 
     ### Elastic IP
 
-    def test_create_elastic_ip(self, exo, zone):
+    def test_create_elastic_ip(self, exo, zone, test_description):
         zone = Zone._from_cs(zone("ch-gva-2"))
         healthcheck_mode = "http"
         healthcheck_port = 80
@@ -70,6 +70,7 @@ class TestCompute:
 
         elastic_ip = exo.compute.create_elastic_ip(
             zone=zone,
+            description=test_description,
             healthcheck_mode=healthcheck_mode,
             healthcheck_port=healthcheck_port,
             healthcheck_path=healthcheck_path,
@@ -81,6 +82,7 @@ class TestCompute:
         assert elastic_ip.zone.id == zone.id
         assert elastic_ip.zone.name == zone.name
         assert elastic_ip.address != ""
+        assert elastic_ip.description == test_description
         assert elastic_ip.healthcheck_mode == healthcheck_mode
         assert elastic_ip.healthcheck_port == healthcheck_port
         assert elastic_ip.healthcheck_path == healthcheck_path
@@ -100,13 +102,14 @@ class TestCompute:
         # so we ensure we get at least our fixture Elastic IP
         assert len(elastic_ips) >= 1
 
-    def test_get_elastic_ip(self, exo, zone, eip):
+    def test_get_elastic_ip(self, exo, zone, eip, test_description):
         zone = Zone._from_cs(zone("ch-gva-2"))
         elastic_ip1 = ElasticIP._from_cs(exo.compute, eip())
         elastic_ip2 = ElasticIP._from_cs(exo.compute, eip())
 
         elastic_ip = exo.compute.get_elastic_ip(zone=zone, id=elastic_ip1.id)
         assert elastic_ip.id == elastic_ip1.id
+        assert elastic_ip.description == test_description
 
         elastic_ip = exo.compute.get_elastic_ip(zone=zone, address=elastic_ip2.address)
         assert elastic_ip.id == elastic_ip2.id

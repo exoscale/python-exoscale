@@ -67,6 +67,7 @@ class ElasticIP(Resource):
         id (str): the Elastic IP unique identifier
         zone (Zone): the zone in which the Elastic IP is located
         address (str): the Elastic IP address
+        description (str): the Elastic IP description
         healthcheck_mode (str): the healthcheck probing mode (must be either "tcp" or
             "http")
         healthcheck_port (int): the healthcheck service port to probe
@@ -86,6 +87,7 @@ class ElasticIP(Resource):
     id = attr.ib()
     zone = attr.ib(repr=False)
     address = attr.ib()
+    description = attr.ib(default=None, repr=False)
     healthcheck_mode = attr.ib(default=None, repr=False)
     healthcheck_port = attr.ib(default=None, repr=False)
     healthcheck_path = attr.ib(default=None, repr=False)
@@ -105,6 +107,7 @@ class ElasticIP(Resource):
             id=res["id"],
             zone=zone,
             address=res["ipaddress"],
+            description=res["description"],
             healthcheck_mode=res.get("healthcheck", {}).get("mode", None),
             healthcheck_port=res.get("healthcheck", {}).get("port", None),
             healthcheck_path=res.get("healthcheck", {}).get("path", None),
@@ -159,6 +162,7 @@ class ElasticIP(Resource):
 
     def update(
         self,
+        description=None,
         healthcheck_mode=None,
         healthcheck_port=None,
         healthcheck_path=None,
@@ -171,6 +175,7 @@ class ElasticIP(Resource):
         Update the Elastic IP properties.
 
         Parameters:
+            description (str): the Elastic IP description
             healthcheck_mode (str): the healthcheck probing mode (must be either "tcp"
                 or "http")
             healthcheck_port (int): the healthcheck service port to probe
@@ -194,6 +199,7 @@ class ElasticIP(Resource):
             self.compute.cs.updateIpAddress(
                 **{
                     "id": self.id,
+                    "description": description,
                     "mode": healthcheck_mode,
                     "port": healthcheck_port,
                     "path": healthcheck_path,
@@ -206,6 +212,7 @@ class ElasticIP(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
+        self.description = description if description else self.description
         self.healthcheck_mode = (
             healthcheck_mode if healthcheck_mode else self.healthcheck_mode
         )
@@ -315,6 +322,7 @@ class ElasticIP(Resource):
         self.id = None
         self.zone = None
         self.address = None
+        self.description = None
         self.healthcheck_mode = None
         self.healthcheck_port = None
         self.healthcheck_path = None
@@ -1627,6 +1635,7 @@ class ComputeAPI(API):
     def create_elastic_ip(
         self,
         zone,
+        description=None,
         healthcheck_mode=None,
         healthcheck_port=None,
         healthcheck_path="/",
@@ -1640,6 +1649,7 @@ class ComputeAPI(API):
 
         Parameters:
             zone (Zone): the zone in which to create the Elastic IP
+            description (str): an Elastic IP description
             healthcheck_mode (str): optional healthcheck mode
             healthcheck_port (int): healthcheck port,
                 required if healthchecking is enabled
@@ -1671,6 +1681,7 @@ class ComputeAPI(API):
             res = self.cs.associateIpAddress(
                 **{
                     "zoneid": zone.id,
+                    "description": description,
                     "mode": healthcheck_mode,
                     "port": healthcheck_port,
                     "path": healthcheck_path,

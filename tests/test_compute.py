@@ -26,8 +26,8 @@ class TestCompute:
         anti_affinity_group = AntiAffinityGroup._from_cs(exo.compute, aag())
 
         anti_affinity_groups = list(exo.compute.list_anti_affinity_groups())
-        # We cannot guarantee that there will be only our resources,
-        # so we ensure we get at least our fixture anti-affinity group
+        # We cannot guarantee that there will be only our resources in the
+        # testing environment, so we ensure we get at least our fixture anti-affinity group
         assert len(anti_affinity_groups) >= 1
 
     def test_get_anti_affinity_group(self, exo, aag):
@@ -98,8 +98,8 @@ class TestCompute:
         elastic_ip = eip(zone_id=zone.id)
 
         elastic_ips = list(exo.compute.list_elastic_ips(zone=zone))
-        # We cannot guarantee that there will be only our resources,
-        # so we ensure we get at least our fixture Elastic IP
+        # We cannot guarantee that there will be only our resources in the
+        # testing environment, so we ensure we get at least our fixture Elastic IP
         assert len(elastic_ips) >= 1
 
     def test_get_elastic_ip(self, exo, zone, eip, test_description):
@@ -195,8 +195,8 @@ class TestCompute:
         instance = Instance._from_cs(exo.compute, instance())
 
         instances = list(exo.compute.list_instances(zone=zone))
-        # We cannot guarantee that there will be only our resources,
-        # so we ensure we get at least our fixture instance
+        # We cannot guarantee that there will be only our resources in the
+        # testing environment, so we ensure we get at least our fixture instance
         assert len(instances) >= 1
 
         instances = list(exo.compute.list_instances(zone=zone, name=instance.name))
@@ -347,8 +347,8 @@ class TestCompute:
         private_network = PrivateNetwork._from_cs(exo.compute, privnet())
 
         private_networks = list(exo.compute.list_private_networks(zone=zone))
-        # We cannot guarantee that there will be only our resources,
-        # so we ensure we get at least our fixture Private Network
+        # We cannot guarantee that there will be only our resources in the
+        # testing environment, so we ensure we get at least our fixture Private Network
         assert len(private_networks) >= 1
 
         private_networks = list(
@@ -393,8 +393,8 @@ class TestCompute:
         security_group2 = SecurityGroup._from_cs(exo.compute, sg())
 
         security_groups = list(exo.compute.list_security_groups())
-        # We cannot guarantee that there will be only our resources,
-        # so we ensure we get at least our 2 fixture security groups
+        # We cannot guarantee that there will be only our resources in the
+        # testing environment, so we ensure we get at least our 2 fixture security groups
         assert len(security_groups) >= 2
 
     def test_get_security_group(self, exo, sg):
@@ -456,8 +456,8 @@ class TestCompute:
         ssh_key = SSHKey._from_cs(exo.compute, sshkey())
 
         ssh_keys = list(exo.compute.list_ssh_keys())
-        # We cannot guarantee that there will be only our resources,
-        # so we ensure we get at least our fixture SSH key
+        # We cannot guarantee that there will be only our resources in the
+        # testing environment, so we ensure we get at least our fixture SSH key
         assert len(ssh_keys) >= 1
 
     def test_get_ssh_key(self, exo, sshkey):

@@ -22,8 +22,8 @@ class TestDNS:
         domain = Domain._from_cs(exo.dns, domain())
 
         domains = list(exo.dns.list_domains())
-        # We cannot guarantee that there will be only our resources,
-        # so we ensure we get at least our fixture domain
+        # We cannot guarantee that there will be only our resources in the
+        # testing environment, so we ensure we get at least our fixture domain
         assert len(domains) >= 1
 
     def test_get_domain(self, exo, domain):

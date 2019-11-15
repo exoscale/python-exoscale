@@ -22,8 +22,8 @@ class TestRunstatus:
         page = Page._from_rs(exo.runstatus, runstatus_page())
 
         pages = list(exo.runstatus.list_pages())
-        # We cannot guarantee that there will be only our resources,
-        # so we ensure we get at least our fixture page
+        # We cannot guarantee that there will be only our resources in the
+        # testing environment, so we ensure we get at least our fixture page
         assert len(pages) >= 1
 
     def test_get_page(self, exo, runstatus_page):

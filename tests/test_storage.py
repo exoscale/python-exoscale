@@ -21,8 +21,8 @@ class TestStorage:
         bucket = bucket()
 
         buckets = list(exo.storage.list_buckets())
-        # We cannot guarantee that there will be only our resources,
-        # so we ensure we get at least our fixture bucket
+        # We cannot guarantee that there will be only our resources in the
+        # testing environment, so we ensure we get at least our fixture bucket
         assert len(buckets) >= 1
 
     def test_get_bucket(self, exo, bucket):

@@ -241,7 +241,7 @@ class ElasticIP(Resource):
 
     def attach_instance(self, instance):
         """
-        Attach the Elastic IP to a Compute Instance.
+        Attach the Elastic IP to a Compute instance.
 
         Parameters:
             instance (Instance): the instance to attach the Elastic IP to
@@ -254,7 +254,7 @@ class ElasticIP(Resource):
 
     def detach_instance(self, instance):
         """
-        Detach the Elastic IP from a Compute Instance it is attached to.
+        Detach the Elastic IP from a Compute instance it is attached to.
 
         Parameters:
             instance (Instance): the instance to detach the Elastic IP from
@@ -432,6 +432,7 @@ class Instance(Resource):
         """
 
         try:
+            # FIXME: use `iselastic=True` filter
             _list = self.compute.cs.listNics(virtualmachineid=self.id, fetch_list=True)
             default_nic = self._default_nic(_list)
             for a in default_nic.get("secondaryip", []):
@@ -1146,7 +1147,7 @@ class PrivateNetwork(Resource):
 
     def attach_instance(self, instance):
         """
-        Attach a Compute Instance to the Private Network.
+        Attach a Compute instance to the Private Network.
 
         Parameters:
             instance (Instance): the instance to attach
@@ -1159,7 +1160,7 @@ class PrivateNetwork(Resource):
 
     def detach_instance(self, instance):
         """
-        Detach a Compute Instance from the Private Network.
+        Detach a Compute instance from the Private Network.
 
         Parameters:
             instances (Instance): the instance to detach
@@ -1762,11 +1763,11 @@ class ComputeAPI(API):
         user_data=None,
     ):
         """
-        Create a Compute Instance.
+        Create a Compute instance.
 
         Parameters:
             name (str): the name of the instance
-            zone (Zone): the zone in which to create the Compute Instance
+            zone (Zone): the zone in which to create the Compute instance
             type (InstanceType): the instance type
             template (InstanceTemplate): the instance template
             volume_size (int): the instance storage volume size in GB

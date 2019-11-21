@@ -3,6 +3,7 @@
 
 import pytest
 from cs import CloudStackApiException
+from datetime import datetime, timedelta
 from exoscale.api import ResourceNotFoundError
 from exoscale.api.compute import *
 from .conftest import _random_str
@@ -170,6 +171,9 @@ class TestCompute:
         )
         assert instance.id != ""
         assert instance.name == instance_name
+        assert datetime.now() - instance.creation_date.replace(tzinfo=None) < timedelta(
+            minutes=2
+        )
         assert instance.zone.id == zone.id
         assert instance.type.id == instance_type.id
         assert instance.template.id == instance_template.id

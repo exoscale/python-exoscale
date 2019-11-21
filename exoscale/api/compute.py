@@ -340,6 +340,7 @@ class Instance(Resource):
     Attributes:
         id (str): the instance unique identifier
         name (str): the instance hostname/display name
+        creation_date (datetime.datetime): the instance creation date
         zone (Zone): the zone in which the instance is located
         type (InstanceType): the instance type
         template (InstanceTemplate): the instance template
@@ -355,6 +356,7 @@ class Instance(Resource):
     res = attr.ib(repr=False)
     id = attr.ib()
     name = attr.ib()
+    creation_date = attr.ib(repr=False)
     zone = attr.ib(repr=False)
     type = attr.ib(repr=False)
     template = attr.ib(repr=False)
@@ -380,6 +382,7 @@ class Instance(Resource):
             res,
             id=res["id"],
             name=res["displayname"],
+            creation_date=datetime.strptime(res["created"], "%Y-%m-%dT%H:%M:%S%z"),
             zone=zone,
             type=compute.get_instance_type(id=res["serviceofferingid"]),
             template=compute.get_instance_template(zone, id=res["templateid"]),
@@ -802,6 +805,7 @@ class Instance(Resource):
         self.res = None
         self.id = None
         self.name = None
+        self.creation_date = None
         self.zone = None
         self.type = None
         self.template = None

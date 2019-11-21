@@ -96,10 +96,10 @@ class TestComputeInstance:
         instance = Instance._from_cs(exo.compute, instance())
 
         # FIXME: attach the EIP using exo.compute.cs.addIpToNic:
-        #res = exo.compute.cs.listNics(virtualmachineid=instance.id, fetch_list=True)
-        #exo.compute.cs.addIpToNic(
+        # res = exo.compute.cs.listNics(virtualmachineid=instance.id, fetch_list=True)
+        # exo.compute.cs.addIpToNic(
         #    nicid=instance._default_nic(res)["id"], ipaddress=elastic_ip.address
-        #)
+        # )
         instance.attach_elastic_ip(elastic_ip=elastic_ip)
 
         res = exo.compute.cs.listNics(virtualmachineid=instance.id, fetch_list=True)

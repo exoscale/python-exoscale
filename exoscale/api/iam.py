@@ -118,7 +118,7 @@ class IamAPI(API):
 
     def list_api_keys(self, **kwargs):
         """
-        list API keys.
+        List API keys.
 
         Yields:
            APIKey: the next API key
@@ -131,3 +131,42 @@ class IamAPI(API):
                 yield APIKey._from_cs(self, i)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
+
+    def get_api_key(self, key):
+        """
+        Get an API key.
+
+        Parameters:
+            key (str): the key of an API key 
+
+        Returns:
+            APIKey: an API key
+        """
+
+        try:
+            res = self.cs.getApiKey(key=key)
+        except CloudStackApiException as e:
+            if "does not exist" in e.error["errortext"]:
+                raise ResourceNotFoundError
+            else:
+                raise APIException(e.error["errortext"], e.error)
+
+        return APIKey._from_cs(self, res)
+
+    def list_api_key_operations(self):
+        """
+        list all supported operations of an API key.
+
+       Returns:
+            [str] : list of operations for the current API key
+        """
+
+        try:
+            res = self.cs.listApiKeyOperations()
+        except CloudStackApiException as e:
+            if "does not exist" in e.error["errortext"]:
+                raise ResourceNotFoundError
+            else:
+                raise APIException(e.error["errortext"], e.error)
+        
+        return res["operations"]

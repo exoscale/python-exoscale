@@ -107,7 +107,7 @@ class ElasticIP(Resource):
             id=res["id"],
             zone=zone,
             address=res["ipaddress"],
-            description=res["description"],
+            description=res.get("description", ""),
             healthcheck_mode=res.get("healthcheck", {}).get("mode", None),
             healthcheck_port=res.get("healthcheck", {}).get("port", None),
             healthcheck_path=res.get("healthcheck", {}).get("path", None),

@@ -59,6 +59,14 @@ class TestComputeElasticIP:
         res = exo.compute.cs.queryReverseDnsForPublicIpAddress(id=elastic_ip.id)
         assert len(res["publicipaddress"]["reversedns"]) == 0
 
+    def test_description_is_optional(self, exo, eip):
+        response = eip()
+        # The eip() fixture has a description set - del'ing it here is much cheaper
+        # than writing a new fixture just for this particular case.
+        del response['description']
+        elastic_ip = ElasticIP._from_cs(exo.compute, response)
+        assert elastic_ip.description == ""
+
     def test_update(self, exo, eip, test_description):
         elastic_ip = ElasticIP._from_cs(exo.compute, eip())
         description_edited = test_description + " (edited)"

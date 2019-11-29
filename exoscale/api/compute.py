@@ -568,7 +568,7 @@ class Instance(Resource):
             latency.
         """
 
-        if self.res.get("manager", False) and self.res["manager"] == "instancepool":
+        if self.res.get("manager") == "instancepool":
             return self.compute.get_instance_pool(self.res["managerid"], self.zone)
 
     def update(self, name=None, security_groups=None, user_data=None):

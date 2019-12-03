@@ -9,6 +9,7 @@ from . import API, Resource, APIException, ResourceNotFoundError
 from base64 import b64encode
 from cs import CloudStack, CloudStackApiException
 from datetime import datetime
+import time
 
 
 @attr.s
@@ -1261,7 +1262,7 @@ class InstancePool(Resource):
         if instance_volume_size is not None:
             self.instance_volume_size = instance_volume_size
 
-    def delete(self):
+    def delete(self, wait=True, max_poll=300):
         """
         Delete the Instance Pool.
 
@@ -1274,6 +1275,16 @@ class InstancePool(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
+        if wait:
+            for _ in range(max_poll):
+                time.sleep(1)
+                try:
+                    self.compute.cs.getInstancePool(id=self.id, zoneid=self.zone.id)
+                except CloudStackApiException as e:
+                    if e.error["errorcode"] == 404:
+                        break
+                    else:
+                        raise APIException(e.error["errortext"], e.error)
         self.compute = None
         self.res = None
         self.id = None

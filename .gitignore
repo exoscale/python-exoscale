@@ -4,3 +4,4 @@ docs/exoscale*rst
 __pycache__
 *.egg-info
 .venv
+dist

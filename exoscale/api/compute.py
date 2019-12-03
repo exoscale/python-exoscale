@@ -9,6 +9,7 @@ from . import API, Resource, APIException, ResourceNotFoundError
 from base64 import b64encode
 from cs import CloudStack, CloudStackApiException
 from datetime import datetime
+import time
 
 
 @attr.s
@@ -555,6 +556,22 @@ class Instance(Resource):
 
         return res["state"].lower()
 
+    @property
+    def instance_pool(self):
+        """
+        Instance Pool the instance is a member of.
+
+        Returns:
+            InstancePool: the Instance Pool the instance is member of
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        if self.res.get("manager") == "instancepool":
+            return self.compute.get_instance_pool(self.res["managerid"], self.zone)
+
     def update(self, name=None, security_groups=None, user_data=None):
         """
         Update the instance properties.
@@ -1046,6 +1063,237 @@ class InstanceType(Resource):
             cpu=res["cpunumber"],
             memory=res["memory"],
         )
+
+
+@attr.s
+class InstancePool(Resource):
+    """
+    A Compute Instance Pool.
+
+    Attributes:
+        id (str): the Instance Pool unique identifier
+        name (str): the Instance Pool name
+        description (str): the Instance Pool description
+        zone (Zone): the zone in which the Instance Pool is located
+        size (int): the number of Compute instance members the Instance Pool manages
+        instance_type (InstanceType): the type of instances managed by this instance
+            pool
+        instance_template (InstanceTemplate): the template to be used when this instance
+            pool creates new instances.
+        instance_volume_size (int): the storage volume capacity in bytes to set when
+            this Instance Pool creates new instances.
+    """
+
+    compute = attr.ib(repr=False)
+    res = attr.ib(repr=False)
+    id = attr.ib()
+    name = attr.ib()
+    zone = attr.ib(repr=False)
+    size = attr.ib(repr=False)
+    instance_type = attr.ib(repr=False)
+    instance_template = attr.ib(repr=False)
+    instance_volume_size = attr.ib(repr=False)
+    description = attr.ib(default=None, repr=False)
+
+    @classmethod
+    def _from_cs(cls, compute, res, zone=None):
+        if zone is None:
+            zone = compute.get_zone(id=res["zoneid"])
+
+        return cls(
+            compute,
+            res,
+            id=res["id"],
+            name=res["name"],
+            description=res.get("description"),
+            zone=zone,
+            size=res["size"],
+            instance_type=compute.get_instance_type(id=res["serviceofferingid"]),
+            instance_template=compute.get_instance_template(zone, id=res["templateid"]),
+            instance_volume_size=res["rootdisksize"],
+        )
+
+    @property
+    def instances(self):
+        """
+        Pool instance members.
+
+        Yields:
+            Instance: the next instance managed by this pool
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        try:
+            [res] = self.compute.cs.getInstancePool(
+                id=self.id, zoneid=self.zone.id, fetch_list=True
+            )
+            for i in res.get("virtualmachines", []):
+                yield Instance._from_cs(self.compute, i)
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+    @property
+    def private_networks(self):
+        """
+        Private Networks the instances are member of.
+
+        Yields:
+            PrivateNetwork: the next Private Network the instances are member of
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        try:
+            [res] = self.compute.cs.getInstancePool(
+                id=self.id, zoneid=self.zone.id, fetch_list=True
+            )
+            for sgid in res.get("private_network_ids", []):
+                yield self.compute.get_private_network(zone=self.zone, id=sgid)
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+    @property
+    def state(self):
+        """
+        State of the Instance Pool.
+
+        Returns:
+            str: the current Instance Pool state.
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        try:
+            [res] = self.compute.cs.getInstancePool(
+                id=self.id, zoneid=self.zone.id, fetch_list=True
+            )
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+        return res["state"].lower()
+
+    def scale(self, size):
+        """
+        Scale the Instance Pool up or down.
+
+        Parameters:
+            size (int): the number of Compute instance members the pool must manage
+
+        Returns:
+            None
+        """
+
+        if size <= 0:
+            raise ValueError("size must be > 0")
+
+        try:
+            self.compute.cs.scaleInstancePool(
+                id=self.id, zoneid=self.zone.id, size=size
+            )
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+        self.size = size
+
+    def update(
+        self,
+        name=None,
+        description=None,
+        instance_template=None,
+        instance_volume_size=None,
+        instance_user_data=None,
+    ):
+        """
+        Update the Instance Pool properties.
+
+        Parameters:
+            name (str): an Instance Pool name
+            description (str): an Instance Pool description
+            instance_template (InstanceTemplate): an instance template to use for
+                Compute instance members
+            instance_volume_size (int): the Compute instance members storage volume
+                size in GB
+            instance_user_data (str): a cloud-init user data configuration to apply to
+                the Compute instance members
+
+        Returns:
+            None
+        """
+
+        instance_template_id = None
+        if instance_template is not None:
+            instance_template_id = instance_template.id
+
+        instance_user_data_content = None
+        if instance_user_data is not None:
+            instance_user_data_content = b64encode(
+                bytes(instance_user_data, encoding="utf-8")
+            )
+
+        try:
+            self.compute.cs.updateInstancePool(
+                id=self.id,
+                zoneid=self.zone.id,
+                name=name,
+                description=description,
+                templateid=instance_template_id,
+                rootdisksize=instance_volume_size,
+                userdata=instance_user_data_content,
+            )
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+        if name:
+            self.name = name
+
+        if description:
+            self.description = description
+
+        if instance_template is not None:
+            self.instance_template = instance_template
+
+        if instance_volume_size is not None:
+            self.instance_volume_size = instance_volume_size
+
+    def delete(self, wait=True, max_poll=300):
+        """
+        Delete the Instance Pool.
+
+        Returns:
+            None
+        """
+
+        try:
+            self.compute.cs.destroyInstancePool(id=self.id, zoneid=self.zone.id)
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+        if wait:
+            for _ in range(max_poll):
+                time.sleep(1)
+                try:
+                    self.compute.cs.getInstancePool(id=self.id, zoneid=self.zone.id)
+                except CloudStackApiException as e:
+                    if e.error["errorcode"] == 404:
+                        break
+                    else:
+                        raise APIException(e.error["errortext"], e.error)
+        self.compute = None
+        self.res = None
+        self.id = None
+        self.name = None
+        self.zone = None
+        self.size = None
+        self.instance_type = None
+        self.instance_template = None
+        self.instance_volume_size = None
 
 
 @attr.s
@@ -2016,6 +2264,133 @@ class ComputeAPI(API):
             raise ResourceNotFoundError
 
         return instance_types[0]
+
+    ### Instance Pool
+
+    def create_instance_pool(
+        self,
+        zone,
+        name,
+        size,
+        instance_type,
+        instance_template,
+        instance_volume_size=10,
+        instance_security_groups=None,
+        instance_private_networks=None,
+        instance_enable_ipv6=False,
+        instance_ssh_key=None,
+        instance_user_data=None,
+        description=None,
+    ):
+        """
+        Create a Compute Instance Pool.
+
+        Parameters:
+            zone (Zone): the zone in which to create the Instance Pool
+            name (str): the name of the Instance Pool
+            description (str): a description of the Instance Pool
+            size (int): the number of Compute instance members the pool must manage
+            instance_type (InstanceType): the Compute instance members type
+            instance_template (InstanceTemplate): the Compute instance template to use
+                for members
+            instance_volume_size (int): the Compute instance members storage volume
+                size in GB
+            instance_private_networks ([PrivateNetwork]): a list of Private Networks to
+                attach the Compute instance members to
+            instance_security_groups ([SecurityGroup]): a list of Security Groups to
+                attach the Compute instance members to
+            instance_enable_ipv6 (bool): a flag indicating whether to enable IPv6 on
+                the Compute instance members public network interface
+            instance_ssh_key (SSHKey): a SSH Key to deploy on the Compute instance
+                members
+            instance_user_data (str): a cloud-init user data configuration to apply to
+                the Compute instance members
+
+        Returns:
+            InstancePool: the Compute Instance Pool created
+        """
+
+        if size <= 0:
+            raise ValueError("size must be > 0")
+
+        instance_security_group_ids = None
+        if instance_security_groups:
+            instance_security_group_ids = [i.id for i in instance_security_groups]
+
+        instance_private_network_ids = None
+        if instance_security_groups:
+            instance_private_network_ids = [i.id for i in instance_private_networks]
+
+        instance_ssh_key_name = None
+        if instance_ssh_key:
+            instance_ssh_key_name = instance_ssh_key.name
+
+        instance_user_data_content = None
+        if instance_user_data is not None:
+            instance_user_data_content = b64encode(
+                bytes(instance_user_data, encoding="utf-8")
+            )
+
+        try:
+            res = self.cs.createInstancePool(
+                name=name,
+                description=description,
+                size=size,
+                zoneid=zone.id,
+                serviceofferingid=instance_type.id,
+                templateid=instance_template.id,
+                rootdisksize=instance_volume_size,
+                securitygroupids=instance_security_group_ids,
+                networkids=instance_private_network_ids,
+                ip6=instance_enable_ipv6,
+                keypair=instance_ssh_key_name,
+                userdata=instance_user_data_content,
+            )
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+        return InstancePool._from_cs(self, res)
+
+    def list_instance_pools(self, zone, **kwargs):
+        """
+        List Compute Instance Pools.
+
+        Parameters:
+            zone (Zone): a zone to restrict results to
+
+        Yields:
+            InstancePool: the next Compute Instance Pool
+        """
+
+        try:
+            _list = self.cs.listInstancePools(zoneid=zone.id, fetch_list=True, **kwargs)
+
+            for i in _list:
+                yield InstancePool._from_cs(self, i)
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+    def get_instance_pool(self, id, zone):
+        """
+        Get an Instance Pool.
+
+        Parameters:
+            id (str): an Instance Pool identifier
+            zone (Zone): the zone in which the Instance Pool is located in
+
+        Returns:
+            InstancePool: an Instance Pool
+        """
+
+        try:
+            [res] = self.cs.getInstancePool(id=id, zoneid=zone.id, fetch_list=True)
+        except CloudStackApiException as e:
+            if "does not exist" in e.error["errortext"]:
+                raise ResourceNotFoundError
+            else:
+                raise APIException(e.error["errortext"], e.error)
+
+        return InstancePool._from_cs(self, res)
 
     ### Private Network
 

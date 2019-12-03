@@ -196,6 +196,49 @@ def instance(
 
 
 @pytest.fixture(autouse=True, scope="function")
+def instance_pool(
+    exo,
+    instance_type,
+    instance_template,
+    test_prefix,
+    test_description,
+    test_instance_service_offering_id,
+    test_instance_template_id,
+):
+    instance_pools = []
+
+    def _instance_pool(
+        zone_id=_DEFAULT_ZONE_ID,
+        name=None,
+        description=test_description,
+        size=1,
+        instance_type_id=test_instance_service_offering_id,
+        instance_template_id=test_instance_template_id,
+        teardown=True,
+    ):
+        instance_pool = exo.compute.cs.createInstancePool(
+            zoneid=zone_id,
+            name=name if name else "-".join([test_prefix, _random_str()]),
+            description=description,
+            size=size,
+            serviceofferingid=instance_type_id,
+            templateid=instance_template_id,
+        )
+
+        if teardown:
+            instance_pools.append(instance_pool)
+
+        return instance_pool
+
+    yield _instance_pool
+
+    for instance_pool in instance_pools:
+        exo.compute.cs.destroyInstancePool(
+            id=instance_pool["id"], zoneid=instance_pool["zoneid"]
+        )
+
+
+@pytest.fixture(autouse=True, scope="function")
 def privnet(exo, zone, test_prefix, test_description):
     private_networks = []
 

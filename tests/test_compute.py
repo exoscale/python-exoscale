@@ -4,6 +4,7 @@
 import pytest
 from cs import CloudStackApiException
 from datetime import datetime, timedelta
+from time import sleep
 from exoscale.api import ResourceNotFoundError
 from exoscale.api.compute import *
 from .conftest import _random_str
@@ -317,6 +318,114 @@ class TestCompute:
         with pytest.raises(ResourceNotFoundError) as excinfo:
             instance_type = exo.compute.get_instance_type(name="lolnope")
             assert instance_type is None
+        assert excinfo.type == ResourceNotFoundError
+
+    ### Instance Pool
+
+    def test_create_instance_pool(
+        self,
+        exo,
+        zone,
+        sg,
+        privnet,
+        sshkey,
+        instance_type,
+        instance_template,
+        test_prefix,
+        test_description,
+        test_instance_service_offering_id,
+        test_instance_template_id,
+    ):
+        zone = Zone._from_cs(zone("ch-gva-2"))
+        instance_pool_name = "-".join([test_prefix, _random_str()])
+        instance_pool_size = 1
+        instance_type = InstanceType._from_cs(instance_type())
+        instance_template = InstanceTemplate._from_cs(
+            exo.compute, instance_template(id=test_instance_template_id)
+        )
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet(zone_id=zone.id))
+        security_group = SecurityGroup._from_cs(exo.compute, sg())
+        ssh_key = SSHKey._from_cs(exo.compute, sshkey())
+
+        instance_pool = exo.compute.create_instance_pool(
+            zone=zone,
+            name=instance_pool_name,
+            description=test_description,
+            size=instance_pool_size,
+            instance_type=instance_type,
+            instance_template=instance_template,
+            instance_volume_size=20,
+            instance_security_groups=[security_group],
+            instance_private_networks=[private_network],
+            instance_ssh_key=ssh_key,
+        )
+
+        [actual_instance_pool] = exo.compute.cs.getInstancePool(
+            id=instance_pool.id, zoneid=zone.id, fetch_list=True
+        )
+
+        assert instance_pool.zone.id == zone.id
+        assert instance_pool.id == actual_instance_pool["id"]
+        assert instance_pool.name == instance_pool_name
+        assert actual_instance_pool["name"] == instance_pool_name
+        assert instance_pool.description == test_description
+        assert actual_instance_pool["description"] == test_description
+        assert instance_pool.size == instance_pool_size
+        assert actual_instance_pool["size"] == instance_pool_size
+        assert instance_pool.instance_type.id == instance_type.id
+        assert actual_instance_pool["serviceofferingid"] == instance_type.id
+        assert instance_pool.instance_template.id == instance_template.id
+        assert actual_instance_pool["templateid"] == instance_template.id
+        assert instance_pool.instance_volume_size == 20
+        assert actual_instance_pool["rootdisksize"] == 20
+
+        exo.compute.cs.destroyInstancePool(id=instance_pool.id, zoneid=zone.id)
+
+        # We have to delay the end of the test until the Instance Pool and its managed
+        # Compute instances are effectively destroyed, otherwise the referenced fixtures
+        # teardown will fail as it's not possible to delete resources still being
+        # referenced by a Compute instance or Instance Pool.
+        # Grab a seat, this can take a while...
+        t = datetime.now()
+        while (
+            len(
+                list(
+                    i
+                    for i in exo.compute.cs.listInstancePools(
+                        zoneid=zone.id, fetch_list=True
+                    )
+                    if i["id"] == instance_pool.id
+                )
+            )
+            > 0
+        ) and datetime.now() - t < timedelta(minutes=5):
+            sleep(10)
+
+    def test_list_instance_pools(self, exo, zone, instance_pool):
+        zone = Zone._from_cs(zone("ch-gva-2"))
+        instance_pool = InstancePool._from_cs(
+            exo.compute, instance_pool(zone_id=zone.id)
+        )
+
+        instance_pools = list(exo.compute.list_instance_pools(zone=zone))
+        # We cannot guarantee that there will be only our resources in the
+        # testing environment, so we ensure we get at least our fixture Instance Pool
+        assert len(instance_pools) >= 1
+
+    def test_get_instance_pool(self, exo, zone, instance_pool):
+        zone = Zone._from_cs(zone("ch-gva-2"))
+        instance_pool = InstancePool._from_cs(
+            exo.compute, instance_pool(zone_id=zone.id)
+        )
+
+        _instance_pool = exo.compute.get_instance_pool(id=instance_pool.id, zone=zone)
+        assert _instance_pool.id == instance_pool.id
+
+        with pytest.raises(ResourceNotFoundError) as excinfo:
+            _instance_pool = exo.compute.get_instance_pool(
+                id="00000000-0000-0000-0000-000000000000", zone=zone
+            )
+            assert _instance_pool is None
         assert excinfo.type == ResourceNotFoundError
 
     ### Private Network

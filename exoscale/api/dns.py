@@ -234,7 +234,7 @@ class DnsAPI(API):
     """
 
     def __init__(
-        self, key, secret, endpoint="https://api.exoscale.com/compute", trace=False
+        self, key, secret, endpoint="https://api.exoscale.com/v1", trace=False
     ):
         super().__init__(endpoint, key, secret, trace)
 

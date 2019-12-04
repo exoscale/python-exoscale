@@ -63,7 +63,7 @@ class TestComputeElasticIP:
         response = eip()
         # The eip() fixture has a description set - del'ing it here is much cheaper
         # than writing a new fixture just for this particular case.
-        del response['description']
+        del response["description"]
         elastic_ip = ElasticIP._from_cs(exo.compute, response)
         assert elastic_ip.description == ""
 

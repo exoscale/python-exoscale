@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from base64 import b64decode
 from cs import CloudStackApiException
 from datetime import datetime, timedelta
 from time import sleep
@@ -335,6 +336,7 @@ class TestCompute:
         test_description,
         test_instance_service_offering_id,
         test_instance_template_id,
+        test_instance_user_data,
     ):
         zone = Zone._from_cs(zone("ch-gva-2"))
         instance_pool_name = "-".join([test_prefix, _random_str()])
@@ -358,6 +360,7 @@ class TestCompute:
             instance_security_groups=[security_group],
             instance_private_networks=[private_network],
             instance_ssh_key=ssh_key,
+            instance_user_data=test_instance_user_data,
         )
 
         [actual_instance_pool] = exo.compute.cs.getInstancePool(
@@ -378,6 +381,14 @@ class TestCompute:
         assert actual_instance_pool["templateid"] == instance_template.id
         assert instance_pool.instance_volume_size == 20
         assert actual_instance_pool["rootdisksize"] == 20
+        assert (
+            b64decode(instance_pool.instance_user_data).decode("utf-8")
+            == test_instance_user_data
+        )
+        assert (
+            b64decode(actual_instance_pool["userdata"]).decode("utf-8")
+            == test_instance_user_data
+        )
 
         exo.compute.cs.destroyInstancePool(id=instance_pool.id, zoneid=zone.id)
 

@@ -1080,6 +1080,8 @@ class InstancePool(Resource):
             pool
         instance_template (InstanceTemplate): the template to be used when this instance
             pool creates new instances.
+        instance_user_data (InstanceTemplate): The base64-encoded instances user
+            data, when the Instance Pool creates new instances
         instance_volume_size (int): the storage volume capacity in bytes to set when
             this Instance Pool creates new instances.
     """
@@ -1092,6 +1094,7 @@ class InstancePool(Resource):
     size = attr.ib(repr=False)
     instance_type = attr.ib(repr=False)
     instance_template = attr.ib(repr=False)
+    instance_user_data = attr.ib(repr=False)
     instance_volume_size = attr.ib(repr=False)
     description = attr.ib(default=None, repr=False)
 
@@ -1110,6 +1113,7 @@ class InstancePool(Resource):
             size=res["size"],
             instance_type=compute.get_instance_type(id=res["serviceofferingid"]),
             instance_template=compute.get_instance_template(zone, id=res["templateid"]),
+            instance_user_data=res.get("userdata"),
             instance_volume_size=res["rootdisksize"],
         )
 
@@ -1259,6 +1263,8 @@ class InstancePool(Resource):
         if instance_template is not None:
             self.instance_template = instance_template
 
+        if instance_user_data_content:
+            self.instance_user_data = instance_user_data_content
         if instance_volume_size is not None:
             self.instance_volume_size = instance_volume_size
 
@@ -1293,6 +1299,7 @@ class InstancePool(Resource):
         self.size = None
         self.instance_type = None
         self.instance_template = None
+        self.instance_user_data = None
         self.instance_volume_size = None
 
 

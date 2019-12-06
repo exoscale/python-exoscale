@@ -45,6 +45,11 @@ def test_instance_template_id():
 
 
 @pytest.fixture(autouse=True, scope="module")
+def test_instance_user_data():
+    return "#cloud-config"
+
+
+@pytest.fixture(autouse=True, scope="module")
 def test_reverse_dns():
     return "python.exoscale.com."
 
@@ -204,6 +209,7 @@ def instance_pool(
     test_description,
     test_instance_service_offering_id,
     test_instance_template_id,
+    test_instance_user_data,
 ):
     instance_pools = []
 
@@ -223,6 +229,7 @@ def instance_pool(
             size=size,
             serviceofferingid=instance_type_id,
             templateid=instance_template_id,
+            user_data=test_instance_user_data,
         )
 
         if teardown:

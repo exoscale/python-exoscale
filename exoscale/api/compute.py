@@ -1080,8 +1080,8 @@ class InstancePool(Resource):
             pool
         instance_template (InstanceTemplate): the template to be used when this instance
             pool creates new instances.
-        instance_user_data (InstanceTemplate): The instances user data, in base64
-            pool creates new instances.
+        instance_user_data (InstanceTemplate): The base64-encoded instances user
+            data, when the Instance Pool creates new instances
         instance_volume_size (int): the storage volume capacity in bytes to set when
             this Instance Pool creates new instances.
     """

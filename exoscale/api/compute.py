@@ -2277,7 +2277,6 @@ class ComputeAPI(API):
         instance_volume_size=10,
         instance_security_groups=None,
         instance_private_networks=None,
-        instance_enable_ipv6=False,
         instance_ssh_key=None,
         instance_user_data=None,
         description=None,
@@ -2299,8 +2298,6 @@ class ComputeAPI(API):
                 attach the Compute instance members to
             instance_security_groups ([SecurityGroup]): a list of Security Groups to
                 attach the Compute instance members to
-            instance_enable_ipv6 (bool): a flag indicating whether to enable IPv6 on
-                the Compute instance members public network interface
             instance_ssh_key (SSHKey): a SSH Key to deploy on the Compute instance
                 members
             instance_user_data (str): a cloud-init user data configuration to apply to
@@ -2342,7 +2339,6 @@ class ComputeAPI(API):
                 rootdisksize=instance_volume_size,
                 securitygroupids=instance_security_group_ids,
                 networkids=instance_private_network_ids,
-                ip6=instance_enable_ipv6,
                 keypair=instance_ssh_key_name,
                 userdata=instance_user_data_content,
             )

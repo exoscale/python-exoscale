@@ -30,6 +30,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ),
+    python_requires=">=3.6",
     install_requires=INSTALL_REQUIRES,
     extra_require=EXTRA_REQUIRE,
     tests_require=["pytest>=5.0.0"],

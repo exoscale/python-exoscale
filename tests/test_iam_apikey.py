@@ -3,7 +3,6 @@
 
 import pytest
 from exoscale.api.iam import *
-from .conftest import _random_str
 
 class TestIAMAPIKey:
     def test_revoke(self, exo, apikey):

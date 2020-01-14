@@ -146,10 +146,10 @@ class IamAPI(API):
         try:
             res = self.cs.getApiKey(key=key)
         except CloudStackApiException as e:
-            if "does not exist" in e.error["errortext"]:
+            if "The key is not found." in e.error["errortext"]:
                 raise ResourceNotFoundError
             else:
-                raise APIException(e.error["errortext"], e.error)
+                raise CloudStackApiException(e.error["errortext"], e.error)
 
         return APIKey._from_cs(self, res)
 

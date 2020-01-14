@@ -8,6 +8,7 @@ import attr
 from . import API, Resource, APIException, ResourceNotFoundError
 from cs import CloudStack, CloudStackApiException
 
+
 @attr.s
 class APIKey(Resource):
     """
@@ -28,7 +29,6 @@ class APIKey(Resource):
     type = attr.ib()
     secret = attr.ib(repr=False)
     operations = attr.ib(repr=False)
-    
 
     @classmethod
     def _from_cs(cls, iam, res):
@@ -73,7 +73,7 @@ class IamAPI(API):
         endpoint (str): the IAM API endpoint
         trace (bool): API request/response tracing flag
     """
-    
+
     def __init__(
         self, key, secret, endpoint="https://api.exoscale.com/compute", trace=False
     ):
@@ -103,12 +103,12 @@ class IamAPI(API):
 
         Parameters:
             name (str): the API key name
-            operations (str): the API key description
+            operations (str): the API key operations
 
         Returns:
            APIKey: the API key created
         """
-        
+
         try:
             res = self.cs.createApiKey(name=name, operations=operations)
         except CloudStackApiException as e:
@@ -137,7 +137,7 @@ class IamAPI(API):
         Get an API key.
 
         Parameters:
-            key (str): the key of an API key 
+            key (str): the API key unique identifier 
 
         Returns:
             APIKey: an API key
@@ -168,5 +168,5 @@ class IamAPI(API):
                 raise ResourceNotFoundError
             else:
                 raise APIException(e.error["errortext"], e.error)
-        
+
         return res["operations"]

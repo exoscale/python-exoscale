@@ -390,6 +390,7 @@ def runstatus_page(exo, test_prefix):
     for page in pages:
         res = exo.runstatus._delete(url="/pages/{p}".format(p=page["subdomain"]))
 
+
 @pytest.fixture(autouse=True, scope="function")
 def apikey(exo, test_prefix):
     api_keys = []

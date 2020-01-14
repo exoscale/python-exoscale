@@ -6,6 +6,7 @@ from exoscale.api import ResourceNotFoundError
 from exoscale.api.iam import *
 from .conftest import _random_str
 
+
 class TestIAM:
     ### API key
 
@@ -26,7 +27,7 @@ class TestIAM:
         api_key = APIKey._from_cs(exo.iam, apikey())
 
         api_keys = list(exo.iam.list_api_keys())
-     
+
         assert len(api_keys) >= 1
 
     def test_get_api_key(self, exo, apikey):
@@ -36,13 +37,11 @@ class TestIAM:
         assert _api_key.name == api_key.name
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            _api_key = exo.iam.get_api_key(
-                key="EXO000000000000000000000000"
-            )
+            _api_key = exo.iam.get_api_key(key="EXO000000000000000000000000")
             assert _api_key is None
         assert excinfo.type == ResourceNotFoundError
 
     def test_list_api_key_operations(self, exo):
         operations = list(exo.iam.list_api_key_operations())
-       
+
         assert len(operations) >= 1

@@ -4,6 +4,7 @@
 import pytest
 from exoscale.api.iam import *
 
+
 class TestIAMAPIKey:
     def test_revoke(self, exo, apikey):
         api_key = APIKey._from_cs(exo.iam, apikey(teardown=False))

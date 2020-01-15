@@ -16,10 +16,10 @@ class APIKey(Resource):
 
     Attributes:
         name (str): the API key display name
-        key (str): the API key
+        key (str): the API key unique identifier
         type (str): the API key type
         secret (str): the API key secret
-        operations ([str]): the API key operations
+        operations ([str]): a list of allowed API operations
     """
 
     iam = attr.ib(repr=False)
@@ -68,7 +68,7 @@ class IamAPI(API):
     An Exoscale IAM API client.
 
     Parameters:
-        key (str): the IAM API key
+        key (str): the API key unique identifier
         secret (str): the IAM API secret
         endpoint (str): the IAM API endpoint
         trace (bool): API request/response tracing flag
@@ -103,7 +103,7 @@ class IamAPI(API):
 
         Parameters:
             name (str): the API key name
-            operations (str): the API key operations
+            operations (str): a comma-separated list of allowed API operations
 
         Returns:
            APIKey: the API key created
@@ -158,7 +158,7 @@ class IamAPI(API):
         list all supported operations of an API key.
 
        Returns:
-            [str] : list of operations for the current API key
+            [str]: list of operations for the current API key
         """
 
         try:

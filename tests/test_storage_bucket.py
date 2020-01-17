@@ -3,6 +3,7 @@
 
 import pytest
 from exoscale.api.storage import *
+from time import sleep
 
 
 class TestStorageBucket:
@@ -197,6 +198,12 @@ class TestStorageBucket:
                 ]
             },
         )
+
+        # Retrieving the bucket ACL policy immediately after having set it can trigger
+        # a race condition at SOS level due to eventual consistency data store, so as
+        # a workaround we wait for a bit before getting our ACL policy back.
+        sleep(3)
+
         acp = bucket.acl
         assert acp.full_control == "alice@example.net"
         assert acp.read == "ALL_USERS"
@@ -218,6 +225,12 @@ class TestStorageBucket:
                 ]
             },
         )
+
+        # Retrieving the CORS configuration immediately after having set it can trigger
+        # a race condition at SOS level due to eventual consistency data store, so as
+        # a workaround we wait for a bit before getting our CORS configuration back.
+        sleep(3)
+
         cors = list(bucket.cors)
         assert len(cors) == 1
         assert cors[0].allowed_headers == ["*"]

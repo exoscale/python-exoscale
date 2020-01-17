@@ -105,7 +105,7 @@ class AccessControlPolicy(Resource):
 
     @classmethod
     def _from_s3(cls, res):
-        acp = cls(res, owner=res["Owner"]["ID"])
+        acp = cls(res, owner=res["Owner"]["DisplayName"])
 
         for i in res["Grants"]:
             if i["Permission"] == "FULL_CONTROL":
@@ -173,7 +173,7 @@ class AccessControlPolicy(Resource):
         """
 
         if grantee["Type"] == "CanonicalUser":
-            return grantee["ID"]
+            return grantee["DisplayName"]
         else:
             if grantee["URI"] == ACL_ALL_USERS:
                 return "ALL_USERS"

@@ -4,6 +4,7 @@
 import pytest
 from datetime import datetime
 from exoscale.api.storage import *
+from time import sleep
 
 
 class TestStorageBucketFile:
@@ -83,9 +84,9 @@ class TestStorageBucketFile:
         # We retrieve the current owner of the file to maintain it in the updated ACP,
         # otherwise we'll lock ourselves out and we won't be able to delete the file
         # afterwards
-        owner_id = exo.storage.boto.get_object_acl(Bucket=bucket.name, Key="a")[
-            "Owner"
-        ]["ID"]
+        owner = exo.storage.boto.get_object_acl(Bucket=bucket.name, Key="a")["Owner"][
+            "DisplayName"
+        ]
 
         exo.storage.boto.put_object_acl(
             Bucket=bucket.name,
@@ -94,8 +95,8 @@ class TestStorageBucketFile:
                 "Grants": [
                     {
                         "Grantee": {
-                            "DisplayName": owner_id,
-                            "ID": owner_id,
+                            "DisplayName": owner,
+                            "ID": owner,
                             "Type": "CanonicalUser",
                         },
                         "Permission": "FULL_CONTROL",
@@ -127,8 +128,14 @@ class TestStorageBucketFile:
                 ]
             },
         )
+
+        # Retrieving the bucket ACL policy immediately after having set it can trigger
+        # a race condition at SOS level due to eventual consistency data store, so as
+        # a workaround we wait for a bit before getting our ACL policy back.
+        sleep(3)
+
         acp = f.acl
-        assert acp.full_control == owner_id
+        assert acp.full_control == owner
         assert acp.read == "ALL_USERS"
         assert acp.write == "AUTHENTICATED_USERS"
         assert acp.read_acp == "bob@example.net"

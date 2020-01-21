@@ -71,13 +71,25 @@ class IamAPI(API):
         key (str): the API key unique identifier
         secret (str): the IAM API secret
         endpoint (str): the IAM API endpoint
+        max_retries (int): the API HTTP session retry policy number of retries to allow
         trace (bool): API request/response tracing flag
     """
 
     def __init__(
-        self, key, secret, endpoint="https://api.exoscale.com/compute", trace=False
+        self,
+        key,
+        secret,
+        endpoint="https://api.exoscale.com/compute",
+        max_retries=None,
+        trace=False,
     ):
-        super().__init__(endpoint, key, secret, trace)
+        super().__init__(
+            endpoint=endpoint,
+            key=key,
+            secret=secret,
+            max_retries=max_retries,
+            trace=trace,
+        )
 
         self.cs = CloudStack(
             key=key,

@@ -697,11 +697,25 @@ class RunstatusAPI(API):
         key (str): the Runstatus API key
         secret (str): the Runstatus API secret
         endpoint (str): the Runstatus API endpoint
+        max_retries (int): the API HTTP session retry policy number of retries to allow
         trace (bool): API request/response tracing flag
     """
 
-    def __init__(self, key, secret, endpoint="https://api.runstatus.com", trace=False):
-        super().__init__(endpoint, key, secret, trace)
+    def __init__(
+        self,
+        key,
+        secret,
+        endpoint="https://api.runstatus.com",
+        max_retries=None,
+        trace=False,
+    ):
+        super().__init__(
+            endpoint=endpoint,
+            key=key,
+            secret=secret,
+            max_retries=max_retries,
+            trace=trace,
+        )
 
         self.auth = ExoscaleAuth(self.key, self.secret)
 

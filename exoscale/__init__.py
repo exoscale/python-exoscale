@@ -175,6 +175,7 @@ class Exoscale:
             "key": self.api_key,
             "secret": self.api_secret,
             "max_retries": max_retries,
+            "trace": trace,
         }
         if storage_api_endpoint is not None:
             kwargs["endpoint"] = storage_api_endpoint

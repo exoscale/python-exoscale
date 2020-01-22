@@ -19,13 +19,35 @@ with high-level Python bindings.
 Changelog
 ---------
 
+0.3.0 (2020-01-22)
+~~~~~~~~~~~~~~~~~~
+
+New
+***
+
+- Add support for IAM (``iam`` submodule)
+
+Features
+********
+
+- Allow HTTP session retry policy to be user configurable
+- compute: add support for Instance Pools
+- compute: add support for Elastic IP descriptions
+- compute: add Instance ``creation_date`` attribute
+
+Fixes
+*****
+
+- storage: fix failing integration tests
+- storage: honor global client settings
+
 0.2.0 (2019-10-09)
 ~~~~~~~~~~~~~~~~~~
 
 Features
 ********
 
-- storage: add Bucket/BucketFile "url" attribute
+- storage: add Bucket/BucketFile ``url`` attribute
 
 Fixes
 *****

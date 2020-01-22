@@ -7,6 +7,7 @@ This submodule represents the Exoscale Storage API.
 import attr
 import boto3
 import botocore
+import logging
 from . import API, Resource, APIException, ResourceNotFoundError
 from os.path import basename
 
@@ -715,14 +716,20 @@ class StorageAPI(API):
         trace (bool): API request/response tracing flag
     """
 
-    def __init__(self, key, secret, endpoint=None, zone=None, max_retries=None):
+    def __init__(
+        self, key, secret, endpoint=None, zone=None, max_retries=None, trace=False
+    ):
         self.zone = _DEFAULT_ZONE if zone is None else zone
         endpoint = (
             "https://sos-{}.exo.io".format(self.zone) if endpoint is None else endpoint
         )
         max_retries = 3 if max_retries is None else max_retries
         super().__init__(
-            endpoint=endpoint, key=key, secret=secret, max_retries=max_retries,
+            endpoint=endpoint,
+            key=key,
+            secret=secret,
+            max_retries=max_retries,
+            trace=trace,
         )
 
         if self.zone is None:
@@ -734,8 +741,16 @@ class StorageAPI(API):
             endpoint_url=self.endpoint,
             aws_access_key_id=key,
             aws_secret_access_key=secret,
-            config=botocore.client.Config(retries={"max_attempts": self.max_retries}),
+            config=botocore.client.Config(
+                user_agent="{} boto3/{} botocore/{}".format(
+                    self.user_agent, boto3.__version__, botocore.__version__
+                ),
+                retries={"max_attempts": self.max_retries},
+            ),
         )
+
+        if trace:
+            boto3.set_stream_logger(name="", level=logging.DEBUG)
 
     def __repr__(self):
         return "StorageAPI(endpoint='{}' zone='{}' key='{}')".format(

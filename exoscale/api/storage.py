@@ -711,15 +711,19 @@ class StorageAPI(API):
         secret (str): the Storage API secret
         endpoint (str): the Storage API endpoint
         zone (str): the Storage zone
+        max_retries (int): the API HTTP session retry policy number of retries to allow
         trace (bool): API request/response tracing flag
     """
 
-    def __init__(self, key, secret, endpoint=None, zone=None):
+    def __init__(self, key, secret, endpoint=None, zone=None, max_retries=None):
         self.zone = _DEFAULT_ZONE if zone is None else zone
         endpoint = (
             "https://sos-{}.exo.io".format(self.zone) if endpoint is None else endpoint
         )
-        super().__init__(endpoint, key, secret)
+        max_retries = 3 if max_retries is None else max_retries
+        super().__init__(
+            endpoint=endpoint, key=key, secret=secret, max_retries=max_retries,
+        )
 
         if self.zone is None:
             raise ValueError("no storage zone specified")
@@ -730,7 +734,7 @@ class StorageAPI(API):
             endpoint_url=self.endpoint,
             aws_access_key_id=key,
             aws_secret_access_key=secret,
-            config=botocore.client.Config(retries=dict(max_attempts=1)),
+            config=botocore.client.Config(retries={"max_attempts": self.max_retries}),
         )
 
     def __repr__(self):

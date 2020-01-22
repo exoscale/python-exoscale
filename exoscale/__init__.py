@@ -36,6 +36,7 @@ class Exoscale:
         iam_api_endpoint (str): an alternative Exoscale IAM API endpoint
         storage_zone (str): an Exoscale Storage zone
         runstatus_api_endpoint (str): an alternative Exoscale Runstatus API endpoint
+        max_retries (int): the API HTTP session retry policy number of retries to allow
         trace (bool): API requests/responses tracing flag
 
     Attributes:
@@ -60,6 +61,7 @@ class Exoscale:
         storage_zone=None,
         runstatus_api_endpoint=None,
         iam_api_endpoint=None,
+        max_retries=3,
         trace=False,
     ):
         # Load settings from a configuration file profile
@@ -149,29 +151,53 @@ class Exoscale:
         self.api_key = api_key
         self.api_secret = api_secret
 
-        kwargs = {"key": self.api_key, "secret": self.api_secret, "trace": trace}
+        kwargs = {
+            "key": self.api_key,
+            "secret": self.api_secret,
+            "max_retries": max_retries,
+            "trace": trace,
+        }
         if compute_api_endpoint is not None:
             kwargs["endpoint"] = compute_api_endpoint
         self.compute = ComputeAPI(**kwargs)
 
-        kwargs = {"key": self.api_key, "secret": self.api_secret, "trace": trace}
+        kwargs = {
+            "key": self.api_key,
+            "secret": self.api_secret,
+            "max_retries": max_retries,
+            "trace": trace,
+        }
         if dns_api_endpoint is not None:
             kwargs["endpoint"] = dns_api_endpoint
         self.dns = DnsAPI(**kwargs)
 
-        kwargs = {"key": self.api_key, "secret": self.api_secret}
+        kwargs = {
+            "key": self.api_key,
+            "secret": self.api_secret,
+            "max_retries": max_retries,
+        }
         if storage_api_endpoint is not None:
             kwargs["endpoint"] = storage_api_endpoint
         if storage_zone is not None:
             kwargs["zone"] = storage_zone
         self.storage = StorageAPI(**kwargs)
 
-        kwargs = {"key": self.api_key, "secret": self.api_secret, "trace": trace}
+        kwargs = {
+            "key": self.api_key,
+            "secret": self.api_secret,
+            "max_retries": max_retries,
+            "trace": trace,
+        }
         if runstatus_api_endpoint is not None:
             kwargs["endpoint"] = runstatus_api_endpoint
         self.runstatus = RunstatusAPI(**kwargs)
 
-        kwargs = {"key": self.api_key, "secret": self.api_secret, "trace": trace}
+        kwargs = {
+            "key": self.api_key,
+            "secret": self.api_secret,
+            "max_retries": max_retries,
+            "trace": trace,
+        }
         if iam_api_endpoint is not None:
             kwargs["endpoint"] = iam_api_endpoint
         self.iam = IamAPI(**kwargs)

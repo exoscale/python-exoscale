@@ -38,7 +38,7 @@ class API(object):
     secret = attr.ib(repr=False)
     trace = attr.ib(default=False, repr=False)
     session = attr.ib(default=requests.Session(), repr=False)
-    max_retry = attr.ib(default=3, repr=False)
+    max_retries = attr.ib(default=3, repr=False)
     retry_backoff_factor = attr.ib(default=0.3, repr=False)
 
     def __attrs_post_init__(self):
@@ -62,7 +62,7 @@ class API(object):
 
         adapter = HTTPAdapter(
             max_retries=Retry(
-                total=self.max_retry,
+                total=self.max_retries,
                 backoff_factor=self.retry_backoff_factor,
                 status_forcelist=None,
             )

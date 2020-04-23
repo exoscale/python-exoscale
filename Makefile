@@ -36,5 +36,4 @@ serve:
 installrequirements:
 	@pip install wheel
 	@pip install -r requirements.dev.txt
-	@pip install -r requirements.txt
 	@pip install -e .

@@ -47,6 +47,6 @@ class TestComputeInstanceVolumeSnapshot:
         snapshot = InstanceVolumeSnapshot._from_cs(exo.compute, res["snapshot"])
         assert snapshot.state == "backedup"
 
-        snapshot.export()
-
+        url = snapshot.export()
         assert snapshot.state == "exported"
+        assert url.startswith("https://exported-snapshots")

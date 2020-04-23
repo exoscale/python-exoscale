@@ -1040,13 +1040,15 @@ class InstanceVolumeSnapshot(Resource):
         Exports the storage volume snapshot.
 
         Returns:
-            None
+            str: the URL of the exported snapshot file
         """
 
         try:
-            self.compute.cs.exportSnapshot(id=self.id)
+            res = self.compute.cs.exportSnapshot(id=self.id)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
+
+        return res["presignedurl"]
 
 
 @attr.s

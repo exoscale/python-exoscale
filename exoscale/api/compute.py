@@ -1040,7 +1040,7 @@ class InstanceVolumeSnapshot(Resource):
         Exports the storage volume snapshot.
 
         Returns:
-            str: the URL of the exported snapshot file
+            dict: the exported snapshot file properties (URL, checksum...)
         """
 
         try:
@@ -1048,7 +1048,7 @@ class InstanceVolumeSnapshot(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return res["presignedurl"]
+        return res
 
 
 @attr.s

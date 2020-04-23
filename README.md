@@ -4,7 +4,7 @@ This library allows developpers to use the [Exoscale] cloud platform API with
 high-level Python bindings. API documentation and usage examples can be found
 at this address: https://exoscale.github.io/python-exoscale
 
-# develop instructions:
+## Development
 
 First create a new virtual environment and run `make installrequirements`.
 Then create a configuration file with your **production** user's API keys.

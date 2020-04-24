@@ -32,3 +32,8 @@ publish-doc: apidoc html
 
 serve:
 	@python3 -m http.server 8000 --bind 127.0.0.1 --directory $(BUILDDIR)/html
+
+installrequirements:
+	@pip install wheel
+	@pip install -r requirements.dev.txt
+	@pip install -e .

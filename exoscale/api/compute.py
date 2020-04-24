@@ -1035,6 +1035,21 @@ class InstanceVolumeSnapshot(Resource):
         self.date = None
         self.size = None
 
+    def export(self):
+        """
+        Exports the storage volume snapshot.
+
+        Returns:
+            dict: the exported snapshot file properties (URL, checksum...)
+        """
+
+        try:
+            res = self.compute.cs.exportSnapshot(id=self.id)
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+        return res
+
 
 @attr.s
 class InstanceType(Resource):

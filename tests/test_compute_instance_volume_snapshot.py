@@ -39,3 +39,14 @@ class TestComputeInstanceVolumeSnapshot:
             exo.compute, res["snapshot"]
         )
         assert instance_volume_snapshot.state == "backedup"
+
+    def test_export(self, exo, instance):
+        instance = Instance._from_cs(exo.compute, instance())
+
+        res = exo.compute.cs.createSnapshot(volumeid=instance.volume_id)
+        snapshot = InstanceVolumeSnapshot._from_cs(exo.compute, res["snapshot"])
+        assert snapshot.state == "backedup"
+
+        res = snapshot.export()
+        assert snapshot.state == "exported"
+        assert "presignedurl" in res

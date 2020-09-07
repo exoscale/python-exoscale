@@ -149,7 +149,7 @@ class IamAPI(API):
         Get an API key.
 
         Parameters:
-            key (str): the API key unique identifier 
+            key (str): the API key unique identifier
 
         Returns:
             APIKey: an API key
@@ -167,10 +167,10 @@ class IamAPI(API):
 
     def list_api_key_operations(self):
         """
-        list all supported operations of an API key.
+         list all supported operations of an API key.
 
-       Returns:
-            [str]: list of operations for the current API key
+        Returns:
+             [str]: list of operations for the current API key
         """
 
         try:

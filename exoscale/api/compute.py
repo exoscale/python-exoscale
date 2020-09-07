@@ -1666,7 +1666,7 @@ class SecurityGroupRule:
     def ingress(cls, **kwargs):
         """
         Returns an ingress-type SecurityGroupRule object.
-        
+
         Returns:
             SecurityGroupRule: an ingress-type Security Group rule
 
@@ -1681,7 +1681,7 @@ class SecurityGroupRule:
     def egress(cls, **kwargs):
         """
         Returns an egress-type SecurityGroupRule object.
-        
+
         Returns:
             SecurityGroupRule: an egress-type Security Group rule
 
@@ -1989,7 +1989,7 @@ class ComputeAPI(API):
 
         Parameters:
             zone (Zone): the zone to list in
-            
+
         Yields:
             ElasticIP: the next Elastic IP
         """
@@ -2543,7 +2543,7 @@ class ComputeAPI(API):
         Get a Security Group.
 
         Parameters:
-            name (str): a Security Group name 
+            name (str): a Security Group name
             id (str): a Security Group identifier
 
         Returns:
@@ -2594,7 +2594,7 @@ class ComputeAPI(API):
         Parameters:
             name (str): the SSH Key unique name
             public_key (str): the SSH public key to register
-        
+
         Returns:
             SSHKey: the SSH key created
         """
@@ -2627,7 +2627,7 @@ class ComputeAPI(API):
         Get an SSH Key.
 
         Parameters:
-            name (str): an SSH Key name 
+            name (str): an SSH Key name
 
         Returns:
             SSHKey: an SSH Key

@@ -511,7 +511,7 @@ class Page(Resource):
 
         Parameters:
             name (str): the name of the service
-        
+
         Returns:
             None
         """

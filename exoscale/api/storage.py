@@ -185,7 +185,7 @@ class AccessControlPolicy(Resource):
 
     def _grantee_to_s3(self, grantee):
         """
-        Convert an AccessControlPolicy class to AWS S3 Access Control Policy grantee 
+        Convert an AccessControlPolicy class to AWS S3 Access Control Policy grantee
         format.
 
         References:
@@ -513,7 +513,7 @@ class Bucket(Resource):
 
         Parameters:
             src (str): the path to the source file
-            dst (str): a path to which to store the file in the bucket 
+            dst (str): a path to which to store the file in the bucket
             metadata (dict): a dict of metadata to set to the file
             acl (str): a canned ACL to apply to the file
             transferConfig (boto3.s3.transfer.TransferConfig): a boto3 transfer

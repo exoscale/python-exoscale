@@ -18,9 +18,11 @@ setup(
     packages=find_packages(),
     version="0.3.0",
     license="ISC",
+    url='https://github.com/exoscale/python-exoscale',
     author="Exoscale",
+    author_email="contact@exoscale.com",
     platforms="any",
-    classifiers=(
+    classifiers=[
         "Intended Audience :: Developers",
         "Intended Audience :: System Administrators",
         "License :: OSI Approved :: ISC License (ISCL)",
@@ -29,9 +31,10 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
-    ),
+    ],
     python_requires=">=3.6",
     install_requires=INSTALL_REQUIRES,
     extra_require=EXTRA_REQUIRE,
     tests_require=["pytest>=5.0.0"],
+    include_package_data=True,
 )

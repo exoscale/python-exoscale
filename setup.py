@@ -18,7 +18,7 @@ setup(
     packages=find_packages(),
     version="0.3.0",
     license="ISC",
-    url='https://github.com/exoscale/python-exoscale',
+    url="https://github.com/exoscale/python-exoscale",
     author="Exoscale",
     author_email="contact@exoscale.com",
     platforms="any",

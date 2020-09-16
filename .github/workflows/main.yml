@@ -12,7 +12,10 @@ jobs:
         python-version: '3.x'
     - name: Lint
       uses: lgeiger/black-action@master
-      arg: '--check --diff .'
+      args: '--check --diff .'
     - name: Tests
       run: |
         pytest -x -s -vvv tests/
+      env:
+        EXOSCALE_API_KEY: ${{ secrets.EXOSCALE_API_KEY }}
+        EXOSCALE_API_SECRET: ${{ secrets.EXOSCALE_API_SECRET }}

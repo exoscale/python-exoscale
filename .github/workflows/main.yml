@@ -12,7 +12,8 @@ jobs:
         python-version: '3.x'
     - name: Lint
       uses: lgeiger/black-action@master
-      args: '--check --diff .'
+      with:
+        args: '--check --diff .'
     - name: Tests
       run: |
         pytest -x -s -vvv tests/

@@ -570,7 +570,7 @@ class Instance(Resource):
         """
 
         if self.res.get("manager") == "instancepool":
-            return self.compute.get_instance_pool(self.res["managerid"], self.zone)
+            return self.compute.get_instance_pool(self.zone, self.res["managerid"])
 
     def update(self, name=None, security_groups=None, user_data=None):
         """
@@ -2400,13 +2400,13 @@ class ComputeAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-    def get_instance_pool(self, id, zone):
+    def get_instance_pool(self, zone, id):
         """
         Get an Instance Pool.
 
         Parameters:
-            id (str): an Instance Pool identifier
             zone (Zone): the zone in which the Instance Pool is located in
+            id (str): an Instance Pool identifier
 
         Returns:
             InstancePool: an Instance Pool

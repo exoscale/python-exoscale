@@ -429,12 +429,12 @@ class TestCompute:
             exo.compute, instance_pool(zone_id=zone.id)
         )
 
-        _instance_pool = exo.compute.get_instance_pool(id=instance_pool.id, zone=zone)
+        _instance_pool = exo.compute.get_instance_pool(zone=zone, id=instance_pool.id)
         assert _instance_pool.id == instance_pool.id
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
             _instance_pool = exo.compute.get_instance_pool(
-                id="00000000-0000-0000-0000-000000000000", zone=zone
+                zone=zone, id="00000000-0000-0000-0000-000000000000"
             )
             assert _instance_pool is None
         assert excinfo.type == ResourceNotFoundError

@@ -445,6 +445,58 @@ class TestCompute:
             assert _instance_pool is None
         assert excinfo.type == ResourceNotFoundError
 
+    ### Network Load Balancer
+
+    def test_create_network_load_balancer(
+        self, exo, zone, test_prefix, test_description
+    ):
+        zone = Zone._from_cs(zone("ch-gva-2"))
+        nlb_name = "-".join([test_prefix, _random_str()])
+
+        nlb = exo.compute.create_network_load_balancer(
+            zone=zone,
+            name=nlb_name,
+            description=test_description,
+        )
+        assert nlb.zone.id == zone.id
+        assert nlb.zone.name == zone.name
+        assert nlb.name == nlb_name
+        assert nlb.description == test_description
+        assert datetime.now() - nlb.creation_date.replace(tzinfo=None) < timedelta(
+            minutes=2
+        )
+
+        res = exo.compute._v2_request_async(
+            "DELETE", "/load-balancer/" + nlb.id, zone.name
+        )
+
+    def test_list_network_load_balancers(self, exo, zone, nlb):
+        zone = Zone._from_cs(zone("ch-gva-2"))
+        _ = nlb(zone_name=zone.name)
+
+        nlbs = list(exo.compute.list_network_load_balancers(zone=zone))
+        # We cannot guarantee that there will be only our resources in the
+        # testing environment, so we ensure we get at least our fixture Network Load
+        # Balancer
+        assert len(nlbs) >= 1
+
+    def test_get_network_load_balancer(self, exo, zone, nlb):
+        zone = Zone._from_cs(zone("ch-gva-2"))
+        nlb = NetworkLoadBalancer._from_api(exo.compute, nlb(), zone)
+
+        _nlb = exo.compute.get_network_load_balancer(zone=zone, name=nlb.name)
+        assert _nlb.name == nlb.name
+
+        _nlb = exo.compute.get_network_load_balancer(zone=zone, id=nlb.id)
+        assert _nlb.id == nlb.id
+
+        with pytest.raises(ResourceNotFoundError) as excinfo:
+            _nlb = exo.compute.get_network_load_balancer(
+                zone=zone, id="00000000-0000-0000-0000-000000000000"
+            )
+            assert _nlb is None
+        assert excinfo.type == ResourceNotFoundError
+
     ### Private Network
 
     def test_create_private_network(self, exo, zone, test_prefix, test_description):

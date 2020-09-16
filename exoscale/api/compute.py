@@ -5,11 +5,16 @@ This submodule represents the Exoscale Compute API.
 """
 
 import attr
-from . import API, Resource, APIException, ResourceNotFoundError
+import json
+import polling
+import requests
+import sys
+import time
+from . import API, Resource, APIException, ResourceNotFoundError, RequestError
 from base64 import b64encode
 from cs import CloudStack, CloudStackApiException
 from datetime import datetime
-import time
+from exoscale_auth import ExoscaleV2Auth
 
 
 @attr.s
@@ -1333,6 +1338,490 @@ class InstancePool(Resource):
 
 
 @attr.s
+class NetworkLoadBalancerServiceHealthcheck(Resource):
+    """
+    A Network Load Balancer service healthcheck.
+
+    Attributes:
+        mode (str): the healthcheck probing mode (tcp|http|https)
+        port (int): the healthcheck service port to probe
+        uri (str): the healthcheck probe HTTP request path (must be specified in http(s)
+            mode)
+        interval (int): the healthcheck probing interval in seconds
+        timeout (int): the time in seconds before considering a healthcheck
+            probing failed
+        retries (int): the number of times to retry a failed healthchecking probe before
+            marking the target as failing
+        tls_sni (str): the TLS SNI domain to present for HTTPS healthchecks
+    """
+
+    res = attr.ib(repr=False)
+    mode = attr.ib()
+    port = attr.ib()
+    uri = attr.ib(default=None, repr=False)
+    interval = attr.ib(default=None, repr=False)
+    timeout = attr.ib(default=None, repr=False)
+    retries = attr.ib(default=None, repr=False)
+    tls_sni = attr.ib(default=None, repr=False)
+
+    @classmethod
+    def _from_api(cls, res):
+        return cls(
+            res,
+            mode=res["mode"],
+            port=res["port"],
+            uri=res.get("uri"),
+            interval=res.get("interval"),
+            timeout=res.get("timeout"),
+            retries=res.get("retries"),
+            tls_sni=res.get("tls-sni"),
+        )
+
+
+@attr.s
+class NetworkLoadBalancerService(Resource):
+    """
+    A Network Load Balancer service.
+
+    Attributes:
+        nlb (NetworkLoadBalancer): the parent Network Load Balancer instance
+        id (str): the Network Load Balancer service uniquer identifier
+        name (str): the Network Load Balancer service name
+        description (str): a Network Load Balancer service description
+        instance_pool (InstancePool): the Instance Pool to forward the Network Load
+            Balancer service traffic to
+        port (int): the Network Load Balancer service port
+        target_port (port): the port to forward the Network Load Balancer service
+            traffic to
+        protocol (str): the Network Load Balancer service protocol (tcp|udp)
+        strategy (str): the Network Load Balancer service dispatch strategy
+            (round-robin|source-hash)
+        healthcheck (NetworkLoadBalancerServiceHealthcheck): the Network Load Balancer
+            service healthcheck
+    """
+
+    compute = attr.ib(repr=False)
+    res = attr.ib(repr=False)
+    nlb = attr.ib(repr=False)
+    id = attr.ib()
+    name = attr.ib()
+    instance_pool = attr.ib(repr=False)
+    port = attr.ib(repr=False)
+    target_port = attr.ib(repr=False)
+    protocol = attr.ib(repr=False)
+    strategy = attr.ib(repr=False)
+    healthcheck = attr.ib(repr=False)
+    description = attr.ib(default="", repr=False)
+
+    @classmethod
+    def _from_api(cls, compute, res, nlb):
+        return cls(
+            compute,
+            res,
+            nlb=nlb,
+            id=res["id"],
+            name=res["name"],
+            description=res.get("description"),
+            instance_pool=compute.get_instance_pool(
+                nlb.zone, res["instance-pool"]["id"]
+            ),
+            port=res["port"],
+            target_port=res["target-port"],
+            protocol=res["protocol"],
+            strategy=res["strategy"],
+            healthcheck=NetworkLoadBalancerServiceHealthcheck._from_api(
+                res["healthcheck"]
+            ),
+        )
+
+    @property
+    def healthcheck_status(self):
+        """
+        Status of the Network Load Balancer service healthcheck.
+
+        Returns:
+            [dict]: the current Network Load Balancer service healthcheck status,
+                a list of dicts containing keys "public-ip" and "status".
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        res = self.compute._v2_request(
+            "GET",
+            "/load-balancer/{}/service/{}".format(self.nlb.id, self.id),
+            self.nlb.zone.name,
+        )
+
+        return res["healthcheck-status"]
+
+    @property
+    def state(self):
+        """
+        State of the Network Load Balancer service.
+
+        Returns:
+            str: the current Network Load Balancer service state.
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        res = self.compute._v2_request(
+            "GET",
+            "/load-balancer/{}/service/{}".format(self.nlb.id, self.id),
+            self.nlb.zone.name,
+        )
+
+        return res["state"]
+
+    def update(
+        self,
+        name=None,
+        description=None,
+        port=None,
+        target_port=None,
+        protocol=None,
+        strategy=None,
+        healthcheck_mode=None,
+        healthcheck_port=None,
+        healthcheck_uri=None,
+        healthcheck_interval=None,
+        healthcheck_timeout=None,
+        healthcheck_retries=None,
+        healthcheck_tls_sni=None,
+    ):
+        """
+        Update the Network Load Balancer service properties.
+
+        Parameters:
+            name (str): the Network Load Balancer service name
+            description (str): a Network Load Balancer service description
+            port (int): the Network Load Balancer service port
+            target_port (port): the port to forward the Network Load Balancer service
+                traffic to
+            protocol (str): the Network Load Balancer service protocol (tcp|udp)
+            strategy (str): the Network Load Balancer service dispatch strategy
+                (round-robin|source-hash)
+            healtcheck_mode (str): the healthcheck probing mode (tcp|http|https)
+            healtcheck_port (int): the healthcheck service port to probe
+            healtcheck_uri (str): the healthcheck probe HTTP request path (must be
+                specified in http(s) mode)
+            healthcheck_interval (int): the healthcheck probing interval in seconds
+            healthcheck_timeout (int): the time in seconds before considering a
+                healthcheck probing failed
+            healthcheck_retries (int): the number of times to retry a failed
+                healthchecking probe before marking the target as failing
+            healthcheck_tls_sni (str): the TLS SNI domain to present for HTTPS
+                healthchecks
+        Returns:
+            None
+        """
+
+        self.compute._v2_request_async(
+            "PUT",
+            "/load-balancer/{}/service/{}".format(self.nlb.id, self.id),
+            zone=self.nlb.zone.name,
+            json={
+                "name": name if name is not None else self.name,
+                "description": description
+                if description is not None
+                else self.description,
+                "port": port if port is not None else self.port,
+                "target-port": target_port
+                if target_port is not None
+                else self.target_port,
+                "protocol": protocol if protocol is not None else self.protocol,
+                "strategy": strategy if strategy is not None else self.strategy,
+                "healthcheck": {
+                    "mode": healthcheck_mode
+                    if healthcheck_mode is not None
+                    else self.healthcheck.mode,
+                    "port": healthcheck_port
+                    if healthcheck_port is not None
+                    else self.healthcheck.port,
+                    "uri": healthcheck_uri
+                    if healthcheck_uri is not None
+                    else self.healthcheck.uri,
+                    "interval": healthcheck_interval
+                    if healthcheck_interval is not None
+                    else self.healthcheck.interval,
+                    "timeout": healthcheck_timeout
+                    if healthcheck_timeout is not None
+                    else self.healthcheck.timeout,
+                    "retries": healthcheck_retries
+                    if healthcheck_retries is not None
+                    else self.healthcheck.retries,
+                    "tls-sni": healthcheck_tls_sni
+                    if healthcheck_tls_sni is not None
+                    else self.healthcheck.tls_sni,
+                },
+            },
+        )
+
+        if name is not None:
+            self.name = name
+        if description is not None:
+            self.description = description
+        if port is not None:
+            self.port = port
+        if target_port is not None:
+            self.target_port = target_port
+        if protocol is not None:
+            self.protocol = protocol
+        if strategy is not None:
+            self.strategy = strategy
+        if healthcheck_mode is not None:
+            self.healthcheck.mode = healthcheck_mode
+        if healthcheck_port is not None:
+            self.healthcheck.port = healthcheck_port
+        if healthcheck_uri is not None:
+            self.healthcheck.uri = healthcheck_uri
+        if healthcheck_interval is not None:
+            self.healthcheck.interval = healthcheck_interval
+        if healthcheck_timeout is not None:
+            self.healthcheck.timeout = healthcheck_timeout
+        if healthcheck_retries is not None:
+            self.healthcheck.retries = healthcheck_retries
+        if healthcheck_tls_sni is not None:
+            self.healthcheck.tls_sni = healthcheck_tls_sni
+
+    def delete(self):
+        """
+        Delete the Network Load Balancer service.
+
+        Returns:
+            None
+        """
+
+        res = self.compute._v2_request_async(
+            "DELETE",
+            "/load-balancer/{}/service/{}".format(self.nlb.id, self.id),
+            self.nlb.zone.name,
+        )
+
+        # Reset all attributes
+        for k, v in self.__dict__.items():
+            setattr(self, k, None)
+
+
+@attr.s
+class NetworkLoadBalancer(Resource):
+    """
+    A Network Load Balancer.
+
+    Attributes:
+        id (str): the Network Load Balancer unique identifier
+        name (str): the Network Load Balancer name
+        description (str): a Network Load Balancer description
+        creation_date (datetime.datetime): the Network Load Balancer creation date
+        ip_address (str): the Network Load Balancer public IP address
+        zone (Zone): the zone in which the Network Load Balancer is located
+    """
+
+    compute = attr.ib(repr=False)
+    res = attr.ib(repr=False)
+    id = attr.ib()
+    name = attr.ib()
+    creation_date = attr.ib(repr=False)
+    ip_address = attr.ib(repr=False)
+    zone = attr.ib(repr=False)
+    description = attr.ib(default="", repr=False)
+
+    @classmethod
+    def _from_api(cls, compute, res, zone):
+        return cls(
+            compute,
+            res,
+            id=res["id"],
+            zone=zone,
+            name=res["name"],
+            description=res["description"],
+            creation_date=datetime.strptime(res["created-at"], "%Y-%m-%dT%H:%M:%SZ"),
+            ip_address=res["ip"],
+        )
+
+    @property
+    def services(self):
+        """
+        Services running on the Network Load Balancer.
+
+        Yields:
+            NetworkLoadBalancerService: the next Network Load Balancer service
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        res = self.compute._v2_request(
+            "GET", "/load-balancer/" + self.id, self.zone.name
+        )
+
+        for svc in res["services"]:
+            yield NetworkLoadBalancerService._from_api(self.compute, svc, self)
+
+    @property
+    def state(self):
+        """
+        State of the Network Load Balancer.
+
+        Returns:
+            str: the current Network Load Balancer state.
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        res = self.compute._v2_request(
+            "GET",
+            "/load-balancer/" + self.id,
+            self.zone.name,
+        )
+
+        return res["state"]
+
+    def add_service(
+        self,
+        name,
+        instance_pool,
+        port,
+        healthcheck_interval,
+        protocol="tcp",
+        description="",
+        target_port=None,
+        strategy="round-robin",
+        healthcheck_mode="tcp",
+        healthcheck_port=None,
+        healthcheck_uri=None,
+        healthcheck_timeout=None,
+        healthcheck_retries=None,
+        healthcheck_tls_sni=None,
+    ):
+        """
+        Add a new service to the Network Load Balancer.
+
+        Parameters:
+            name (str): the Network Load Balancer service name
+            description (str): a Network Load Balancer service description
+            instance_pool (InstancePool): the Instance Pool to forward the Network Load
+                Balancer service traffic to
+            port (int): the Network Load Balancer service port
+            target_port (port): the port to forward the Network Load Balancer service
+                traffic to
+            protocol (str): the Network Load Balancer service protocol (tcp|udp)
+            strategy (str): the Network Load Balancer service dispatch strategy
+                (round-robin|source-hash)
+            healtcheck_mode (str): the healthcheck probing mode (tcp|http|https)
+            healtcheck_port (int): the healthcheck service port to probe
+            healtcheck_uri (str): the healthcheck probe HTTP request path (must be
+                specified in http(s) mode)
+            healthcheck_interval (int): the healthcheck probing interval in seconds
+            healthcheck_timeout (int): the time in seconds before considering a
+                healthcheck probing failed
+            healthcheck_retries (int): the number of times to retry a failed
+                healthchecking probe before marking the target as failing
+            healthcheck_tls_sni (str): the TLS SNI domain to present for HTTPS
+                healthchecks
+
+        Returns:
+            NetworkLoadBalancerService: the Network Load Balancer service added.
+        """
+
+        # The API doesn't return the NLB service created directly, so in order to return
+        # a NetworkLoadBalancerService corresponding to the new service we have to
+        # manually compare the list of services on the NLB instance before and after the
+        # service creation, and identify the service that wasn't there before.
+        # Note: in case of multiple services creation in parallel this technique is
+        # subject to race condition as we could return an unrelated service. To prevent
+        # this, we also compare the name of the new service to the name specified in the
+        # parameters.
+        services = []
+        for svc in self.services:
+            services.append(svc.id)
+
+        if target_port is None:
+            target_port = port
+        if healthcheck_port is None:
+            healthcheck_port = target_port
+
+        res = self.compute._v2_request_async(
+            "POST",
+            "/load-balancer/{}/service".format(self.id),
+            zone=self.zone.name,
+            json={
+                "name": name,
+                "description": description,
+                "instance-pool": {"id": instance_pool.id},
+                "port": port,
+                "target-port": target_port,
+                "protocol": protocol,
+                "strategy": strategy,
+                "healthcheck": {
+                    "mode": healthcheck_mode,
+                    "port": healthcheck_port,
+                    "uri": healthcheck_uri,
+                    "interval": healthcheck_interval,
+                    "timeout": healthcheck_timeout,
+                    "retries": healthcheck_retries,
+                    "tls-sni": healthcheck_tls_sni,
+                },
+            },
+        )
+
+        # Look for an unknown service: if we find one we hope it's the one we've just
+        # created.
+        for svc in self.services:
+            if svc.id not in services and svc.name == name:
+                return svc
+
+        raise APIException("unable to retrieve the service created")
+
+    def update(self, name=None, description=None):
+        """
+        Update the Network Load Balancer properties.
+
+        Parameters:
+            name (str): the Network Load Balancer name
+            description (str): the Network Load Balancer description
+
+        Returns:
+            None
+        """
+
+        res = self.compute._v2_request_async(
+            "PUT",
+            "/load-balancer/" + self.id,
+            zone=self.zone.name,
+            json={"name": name, "description": description},
+        )
+
+        if name is not None:
+            self.name = name
+        if description is not None:
+            self.description = description
+
+    def delete(self):
+        """
+        Delete the Network Load Balancer.
+
+        Returns:
+            None
+        """
+
+        res = self.compute._v2_request_async(
+            "DELETE", "/load-balancer/" + self.id, self.zone.name
+        )
+
+        # Reset all attributes
+        for k, v in self.__dict__.items():
+            setattr(self, k, None)
+
+
+@attr.s
 class PrivateNetwork(Resource):
     """
     A Private Network.
@@ -1835,6 +2324,7 @@ class ComputeAPI(API):
         key,
         secret,
         endpoint="https://api.exoscale.com/v1",
+        environment="api",
         max_retries=None,
         trace=False,
     ):
@@ -1845,6 +2335,8 @@ class ComputeAPI(API):
             max_retries=max_retries,
             trace=trace,
         )
+
+        self.environment = environment
 
         self.cs = CloudStack(
             key=key,
@@ -2446,6 +2938,67 @@ class ComputeAPI(API):
 
         return InstancePool._from_cs(self, res)
 
+    ### Network Load Balancer
+
+    def create_network_load_balancer(self, zone, name, description=""):
+        """
+        Create a Network Load Balancer.
+
+        Parameters:
+            zone (Zone): the zone in which to create the Network Load Balancer
+            name (str): the Network Load Balancer name
+            description (str): the Network Load Balancer description
+
+        Returns:
+            NetworkLoadBalancer: the Network Load Balancer created
+        """
+
+        res = self._v2_request_async(
+            "POST",
+            "/load-balancer",
+            zone=zone.name,
+            json={"name": name, "description": description},
+        )
+
+        return self.get_network_load_balancer(zone, id=res["reference"]["id"])
+
+    def list_network_load_balancers(self, zone):
+        """
+        List Network Load Balancers.
+
+        Parameters:
+            zone (Zone): the zone to list in
+
+        Yields:
+            NetworkLoadBalancer: the next Network Load Balancer
+        """
+
+        _list = self._v2_request("GET", "/load-balancer", zone.name)
+
+        for i in _list["load-balancers"]:
+            yield NetworkLoadBalancer._from_api(self, i, zone)
+
+    def get_network_load_balancer(self, zone, name=None, id=None):
+        """
+        Get a Network Load Balancer.
+
+        Parameters:
+            name (str): a Network Load Balancer name
+            id (str): a Network Load Balancer unique identifier
+
+        Returns:
+            NetworkLoadBalancer: a Network Load Balancer
+        """
+
+        if id is None and name is None:
+            raise ValueError("either id or name must be specifed")
+
+        for nlb in self.list_network_load_balancers(zone):
+            if nlb.id == id or nlb.name == name:
+                return nlb
+
+        raise ResourceNotFoundError
+
     ### Private Network
 
     def create_private_network(
@@ -2713,3 +3266,57 @@ class ComputeAPI(API):
             raise ResourceNotFoundError
 
         return zones[0]
+
+    ### V2 API
+
+    def _v2_check_response(self, res, *args, **kwargs):
+        """
+        Check the API response and raise an exception depending on the status code.
+        """
+
+        if res.status_code >= 500:
+            raise APIException(res.text)
+
+        if res.status_code == 404:
+            raise ResourceNotFoundError
+
+        if res.status_code >= 400:
+            raise RequestError(str(res.text))
+
+    def _v2_request(self, method, path, zone=None, **kwargs):
+        base_url = "https://api.exoscale/v2.alpha"
+        if zone:
+            base_url = "https://{}-{}.exoscale.com/v2.alpha".format(
+                self.environment, zone
+            )
+
+        return API.send(
+            self,
+            method=method,
+            url="/".join((base_url, path.lstrip("/"))),
+            auth=ExoscaleV2Auth(self.key, self.secret),
+            hooks={"response": self._v2_check_response},
+            **kwargs,
+        ).json()
+
+    def _v2_request_async(self, method, path, zone, **kwargs):
+        op = self._v2_request(method, path, zone, **kwargs)
+
+        return polling.poll(
+            lambda: self._v2_request("GET", "/operation/" + op["id"], zone),
+            check_success=self._v2_check_async_operation_state,
+            step=3,
+            poll_forever=True,
+        )
+
+    def _v2_check_async_operation_state(self, op):
+        if op["state"] == "pending":
+            return False
+        if op["state"] == "success":
+            return True
+        elif op["state"] == "failure":
+            raise APIException("asynchronous operation failed")
+        elif op["state"] == "timeout":
+            raise APIException("asynchronous operation timed out")
+        else:
+            raise APIException('unknown operation state "{}"'.format(op.state))

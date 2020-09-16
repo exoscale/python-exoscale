@@ -156,8 +156,6 @@ def eip(exo, zone, test_description):
 @pytest.fixture(autouse=True, scope="function")
 def instance(
     exo,
-    instance_type,
-    instance_template,
     test_prefix,
     test_instance_service_offering_id,
     test_instance_template_id,
@@ -242,6 +240,43 @@ def instance_pool(
     for instance_pool in instance_pools:
         exo.compute.cs.destroyInstancePool(
             id=instance_pool["id"], zoneid=instance_pool["zoneid"]
+        )
+
+
+@pytest.fixture(autouse=True, scope="function")
+def nlb(exo, zone, test_prefix, test_description):
+    nlbs = []
+
+    def _nlb(
+        name=None,
+        description=test_description,
+        zone_name=_DEFAULT_ZONE_NAME,
+        teardown=True,
+    ):
+        res = exo.compute._v2_request_async(
+            "POST",
+            "/load-balancer",
+            zone=zone_name,
+            json={
+                "name": name if name else "-".join([test_prefix, _random_str()]),
+                "description": description,
+            },
+        )
+        nlb = exo.compute._v2_request(
+            "GET", "/load-balancer/" + res["reference"]["id"], zone_name
+        )
+        nlb["zone"] = zone_name  # Saving NLB zone for later use in teardown
+
+        if teardown:
+            nlbs.append(nlb)
+
+        return nlb
+
+    yield _nlb
+
+    for nlb in nlbs:
+        res = exo.compute._v2_request_async(
+            "DELETE", "/load-balancer/" + nlb["id"], nlb["zone"]
         )
 
 

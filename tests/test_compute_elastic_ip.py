@@ -70,13 +70,15 @@ class TestComputeElasticIP:
     def test_update(self, exo, eip, test_description):
         elastic_ip = ElasticIP._from_cs(exo.compute, eip())
         description_edited = test_description + " (edited)"
-        healthcheck_mode = "http"
-        healthcheck_port = 80
+        healthcheck_mode = "https"
+        healthcheck_port = 443
         healthcheck_path = "/test"
         healthcheck_interval = 5
         healthcheck_timeout = 3
         healthcheck_strikes_ok = 2
         healthcheck_strikes_fail = 1
+        healthcheck_tls_sni = "example.net"
+        healthcheck_tls_skip_verify = True
 
         elastic_ip.update(
             description=description_edited,
@@ -87,6 +89,8 @@ class TestComputeElasticIP:
             healthcheck_timeout=healthcheck_timeout,
             healthcheck_strikes_ok=healthcheck_strikes_ok,
             healthcheck_strikes_fail=healthcheck_strikes_fail,
+            healthcheck_tls_sni=healthcheck_tls_sni,
+            healthcheck_tls_skip_verify=healthcheck_tls_skip_verify,
         )
 
         [res] = exo.compute.cs.listPublicIpAddresses(id=elastic_ip.id, fetch_list=True)
@@ -107,6 +111,10 @@ class TestComputeElasticIP:
         assert elastic_ip.healthcheck_strikes_ok == healthcheck_strikes_ok
         assert res["healthcheck"]["strikes-fail"] == healthcheck_strikes_fail
         assert elastic_ip.healthcheck_strikes_fail == healthcheck_strikes_fail
+        assert res["healthcheck"]["tls-sni"] == healthcheck_tls_sni
+        assert elastic_ip.healthcheck_tls_sni == healthcheck_tls_sni
+        assert res["healthcheck"]["tls-skip-verify"] == healthcheck_tls_skip_verify
+        assert elastic_ip.healthcheck_tls_skip_verify == healthcheck_tls_skip_verify
 
     def test_delete(self, exo, eip, instance):
         elastic_ip = ElasticIP._from_cs(exo.compute, eip(teardown=False))

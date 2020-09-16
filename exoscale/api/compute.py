@@ -69,11 +69,10 @@ class ElasticIP(Resource):
         zone (Zone): the zone in which the Elastic IP is located
         address (str): the Elastic IP address
         description (str): the Elastic IP description
-        healthcheck_mode (str): the healthcheck probing mode (must be either "tcp" or
-            "http")
+        healthcheck_mode (str): the healthcheck probing mode (tcp|http|https)
         healthcheck_port (int): the healthcheck service port to probe
         healthcheck_path (str): the healthcheck probe HTTP request path (must be
-            specified in http mode)
+            specified in http(s) mode)
         healthcheck_interval (int): the healthcheck probing interval in seconds
         healthcheck_timeout (int): the time in seconds before considering a healthcheck
             probing failed
@@ -81,6 +80,9 @@ class ElasticIP(Resource):
             considering the target healthy
         healthcheck_strikes_fail (int): the number of unsuccessful healthcheck probes
             before considering the target unhealthy
+        healthcheck_tls_sni (str): the TLS SNI domain to present for HTTPS healthchecks
+        healthcheck_tls_skip_verify (bool): whether to skip TLS certificate validation
+            for HTTPS healthchecks
     """
 
     compute = attr.ib(repr=False)
@@ -96,6 +98,8 @@ class ElasticIP(Resource):
     healthcheck_timeout = attr.ib(default=None, repr=False)
     healthcheck_strikes_ok = attr.ib(default=None, repr=False)
     healthcheck_strikes_fail = attr.ib(default=None, repr=False)
+    healthcheck_tls_sni = attr.ib(default=None, repr=False)
+    healthcheck_tls_skip_verify = attr.ib(default=None, repr=False)
 
     @classmethod
     def _from_cs(cls, compute, res, zone=None):
@@ -117,6 +121,10 @@ class ElasticIP(Resource):
             healthcheck_strikes_ok=res.get("healthcheck", {}).get("strikes-ok", None),
             healthcheck_strikes_fail=res.get("healthcheck", {}).get(
                 "strikes-fail", None
+            ),
+            healthcheck_tls_sni=res.get("healthcheck", {}).get("tls-sni", None),
+            healthcheck_tls_skip_verify=res.get("healthcheck", {}).get(
+                "tls-skip-verify", None
             ),
         )
 
@@ -171,6 +179,8 @@ class ElasticIP(Resource):
         healthcheck_timeout=None,
         healthcheck_strikes_ok=None,
         healthcheck_strikes_fail=None,
+        healthcheck_tls_sni=None,
+        healthcheck_tls_skip_verify=None,
     ):
         """
         Update the Elastic IP properties.
@@ -189,6 +199,10 @@ class ElasticIP(Resource):
                 before considering the target healthy
             healthcheck_strikes_fail (int): the number of unsuccessful healthcheck
                 probes before considering the target unhealthy
+            healthcheck_tls_sni (bool): the TLS SNI domain to present for HTTPS
+                healthchecks
+            healthcheck_tls_skip_verify (bool): whether to skip TLS certificate
+                validation for HTTPS healthchecks
 
         Returns
             None
@@ -196,7 +210,7 @@ class ElasticIP(Resource):
 
         try:
             # We have to pass function arguments using **kwargs form because
-            # of the hyphen in "strikes-ok"/"strikes-fail" arguments.
+            # of the hyphen in arguments names.
             self.compute.cs.updateIpAddress(
                 **{
                     "id": self.id,
@@ -208,6 +222,8 @@ class ElasticIP(Resource):
                     "timeout": healthcheck_timeout,
                     "strikes-ok": healthcheck_strikes_ok,
                     "strikes-fail": healthcheck_strikes_fail,
+                    "tls-sni": healthcheck_tls_sni,
+                    "tls-skip-verify": healthcheck_tls_skip_verify,
                 }
             )
         except CloudStackApiException as e:
@@ -238,6 +254,14 @@ class ElasticIP(Resource):
             healthcheck_strikes_fail
             if healthcheck_strikes_fail
             else self.healthcheck_strikes_fail
+        )
+        self.healthcheck_tls_sni = (
+            healthcheck_tls_sni if healthcheck_tls_sni else self.healthcheck_tls_sni
+        )
+        self.healthcheck_tls_skip_verify = (
+            healthcheck_tls_skip_verify
+            if healthcheck_tls_skip_verify
+            else self.healthcheck_tls_skip_verify
         )
 
     def attach_instance(self, instance):
@@ -318,19 +342,9 @@ class ElasticIP(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        self.compute = None
-        self.res = None
-        self.id = None
-        self.zone = None
-        self.address = None
-        self.description = None
-        self.healthcheck_mode = None
-        self.healthcheck_port = None
-        self.healthcheck_path = None
-        self.healthcheck_interval = None
-        self.healthcheck_timeout = None
-        self.healthcheck_strikes_ok = None
-        self.healthcheck_strikes_fail = None
+        # Reset all attributes
+        for k, v in self.__dict__.items():
+            setattr(self, k, None)
 
 
 @attr.s
@@ -1930,6 +1944,8 @@ class ComputeAPI(API):
         healthcheck_timeout=2,
         healthcheck_strikes_ok=3,
         healthcheck_strikes_fail=2,
+        healthcheck_tls_sni=None,
+        healthcheck_tls_skip_verify=None,
     ):
         """
         Create an Elastic IP.
@@ -1949,6 +1965,10 @@ class ComputeAPI(API):
                 before considering the target healthy
             healthcheck_strikes_fail (int): number of unsuccessful probes
                 before considering the target unhealthy
+            healthcheck_tls_sni (str): the TLS SNI domain to present for HTTPS
+                healthchecks
+            healthcheck_tls_skip_verify (bool): whether to skip TLS certificate
+                validation for HTTPS healthchecks
 
         Returns:
             ElasticIP: the Elastic IP created
@@ -1961,10 +1981,12 @@ class ComputeAPI(API):
             healthcheck_timeout = None
             healthcheck_strikes_ok = None
             healthcheck_strikes_fail = None
+            healthcheck_tls_sni = None
+            healthcheck_tls_skip_verify = None
 
         try:
             # We have to pass function arguments using **kwargs form because
-            # of the hyphen in "strikes-ok"/"strikes-fail" arguments.
+            # of the hyphen in arguments names.
             res = self.cs.associateIpAddress(
                 **{
                     "zoneid": zone.id,
@@ -1976,6 +1998,8 @@ class ComputeAPI(API):
                     "timeout": healthcheck_timeout,
                     "strikes-ok": healthcheck_strikes_ok,
                     "strikes-fail": healthcheck_strikes_fail,
+                    "tls-sni": healthcheck_tls_sni,
+                    "tls-skip-verify": healthcheck_tls_skip_verify,
                 }
             )
         except CloudStackApiException as e:

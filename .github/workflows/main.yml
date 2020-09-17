@@ -16,7 +16,7 @@ jobs:
         args: '--check --diff .'
     - name: Tests
       run: |
-        pip install -r requirements.dev.txt -e .
+        pip install --use-feature=2020-resolver -r requirements.dev.txt -e .
         pytest -x -s -vvv tests/test_runstatus*
       env:
         EXOSCALE_API_KEY: ${{ secrets.EXOSCALE_API_KEY }}

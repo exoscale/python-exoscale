@@ -1,5 +1,7 @@
 # python-exoscale: Python bindings for Exoscale API
 
+[![Actions Status](https://github.com/exoscale/python-exoscale/workflows/CI/badge.svg)](https://github.com/exoscale/python-exoscale/actions?query=workflow%3ACI)
+
 This library allows developpers to use the [Exoscale] cloud platform API with
 high-level Python bindings. API documentation and usage examples can be found
 at this address: https://exoscale.github.io/python-exoscale

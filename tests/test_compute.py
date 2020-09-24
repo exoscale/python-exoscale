@@ -63,13 +63,15 @@ class TestCompute:
 
     def test_create_elastic_ip(self, exo, zone, test_description):
         zone = Zone._from_cs(zone("ch-gva-2"))
-        healthcheck_mode = "http"
-        healthcheck_port = 80
+        healthcheck_mode = "https"
+        healthcheck_port = 443
         healthcheck_path = "/health"
         healthcheck_interval = 5
         healthcheck_timeout = 3
         healthcheck_strikes_ok = 2
         healthcheck_strikes_fail = 1
+        healthcheck_tls_sni = "example.net"
+        healthcheck_tls_skip_verify = True
 
         elastic_ip = exo.compute.create_elastic_ip(
             zone=zone,
@@ -81,6 +83,8 @@ class TestCompute:
             healthcheck_timeout=healthcheck_timeout,
             healthcheck_strikes_ok=healthcheck_strikes_ok,
             healthcheck_strikes_fail=healthcheck_strikes_fail,
+            healthcheck_tls_sni=healthcheck_tls_sni,
+            healthcheck_tls_skip_verify=healthcheck_tls_skip_verify,
         )
         assert elastic_ip.zone.id == zone.id
         assert elastic_ip.zone.name == zone.name
@@ -93,6 +97,8 @@ class TestCompute:
         assert elastic_ip.healthcheck_timeout == healthcheck_timeout
         assert elastic_ip.healthcheck_strikes_ok == healthcheck_strikes_ok
         assert elastic_ip.healthcheck_strikes_fail == healthcheck_strikes_fail
+        assert elastic_ip.healthcheck_tls_sni == healthcheck_tls_sni
+        assert elastic_ip.healthcheck_tls_skip_verify == healthcheck_tls_skip_verify
 
         exo.compute.cs.disassociateIpAddress(id=elastic_ip.id)
 

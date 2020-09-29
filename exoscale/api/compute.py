@@ -2895,7 +2895,7 @@ class ComputeAPI(API):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return InstancePool._from_cs(self, res)
+        return InstancePool._from_cs(self, res, zone=zone)
 
     def list_instance_pools(self, zone, **kwargs):
         """
@@ -2912,7 +2912,7 @@ class ComputeAPI(API):
             _list = self.cs.listInstancePools(zoneid=zone.id, fetch_list=True, **kwargs)
 
             for i in _list:
-                yield InstancePool._from_cs(self, i)
+                yield InstancePool._from_cs(self, i, zone=zone)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -2936,7 +2936,7 @@ class ComputeAPI(API):
             else:
                 raise APIException(e.error["errortext"], e.error)
 
-        return InstancePool._from_cs(self, res)
+        return InstancePool._from_cs(self, res, zone=zone)
 
     ### Network Load Balancer
 

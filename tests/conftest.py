@@ -74,14 +74,14 @@ def timing():
     print("--- Test duration: {:0.2f}s\n".format(time.time() - started))
 
 
-@pytest.fixture(autouse=True, scope="class")
+@pytest.fixture(autouse=True, scope="function")
 def exo():
     import exoscale
 
     return exoscale.Exoscale()
 
 
-@pytest.fixture(autouse=True, scope="class")
+@pytest.fixture(autouse=True, scope="function")
 def zone(exo):
     def _zone(name):
         return exo.compute.cs.listZones(name=name, fetch_list=True)[0]
@@ -89,7 +89,7 @@ def zone(exo):
     return _zone
 
 
-@pytest.fixture(autouse=True, scope="class")
+@pytest.fixture(autouse=True, scope="function")
 def instance_type(exo):
     def _instance_type(id=None, name=None):
         return exo.compute.cs.listServiceOfferings(id=id, name=name, fetch_list=True)[0]
@@ -97,7 +97,7 @@ def instance_type(exo):
     return _instance_type
 
 
-@pytest.fixture(autouse=True, scope="class")
+@pytest.fixture(autouse=True, scope="function")
 def instance_template(exo):
     def _instance_template(id=None, name=None, zone_id=None):
         return exo.compute.cs.listTemplates(
@@ -131,7 +131,7 @@ def aag(exo, test_prefix, test_description):
 
 
 @pytest.fixture(autouse=True, scope="function")
-def eip(exo, zone, test_description):
+def eip(exo, test_description):
     elastic_ips = []
 
     def _elastic_ip(
@@ -201,8 +201,6 @@ def instance(
 @pytest.fixture(autouse=True, scope="function")
 def instance_pool(
     exo,
-    instance_type,
-    instance_template,
     test_prefix,
     test_description,
     test_instance_service_offering_id,
@@ -244,7 +242,7 @@ def instance_pool(
 
 
 @pytest.fixture(autouse=True, scope="function")
-def nlb(exo, zone, test_prefix, test_description):
+def nlb(exo, test_prefix, test_description):
     nlbs = []
 
     def _nlb(
@@ -281,7 +279,7 @@ def nlb(exo, zone, test_prefix, test_description):
 
 
 @pytest.fixture(autouse=True, scope="function")
-def privnet(exo, zone, test_prefix, test_description):
+def privnet(exo, test_prefix, test_description):
     private_networks = []
 
     def _private_network(

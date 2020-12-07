@@ -19,6 +19,22 @@ with high-level Python bindings.
 Changelog
 ---------
 
+0.4.0 (2020-12-07)
+~~~~~~~~~~~~~~~~~~
+
+Features
+********
+
+- compute: add support for Network Load Balancers
+- compute: add support for Elastic IP HTTPS health checking
+- compute: add support for snapshot exporting
+
+Changes
+*******
+
+- compute: `get_instance_pool()` arguments order
+
+
 0.3.0 (2020-01-22)
 ~~~~~~~~~~~~~~~~~~
 
@@ -40,6 +56,7 @@ Fixes
 
 - storage: fix failing integration tests
 - storage: honor global client settings
+
 
 0.2.0 (2019-10-09)
 ~~~~~~~~~~~~~~~~~~
@@ -67,6 +84,7 @@ Changes
 - compute: ``list_instance_templates()`` function now requires a *zone* parameter
 - compute: ``list_instances()`` function now requires a *zone* parameter
 - compute: ``list_private_networks()`` function now requires a *zone* parameter
+
 
 0.1.1 (2019-09-12)
 ~~~~~~~~~~~~~~~~~~

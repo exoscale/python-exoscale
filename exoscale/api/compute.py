@@ -1721,7 +1721,9 @@ class NetworkLoadBalancer(Resource):
         """
 
         res = self.compute._v2_request(
-            "GET", "/load-balancer/" + self.id, self.zone.name,
+            "GET",
+            "/load-balancer/" + self.id,
+            self.zone.name,
         )
 
         return res["state"]

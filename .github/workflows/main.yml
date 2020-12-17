@@ -1,6 +1,15 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+    - '**'
+    paths-ignore:
+    - '**.md'
+    - '**.rst'
+    - '**.txt'
+    tags-ignore:
+    - 'v**' # Don't run CI tests on release tags
 
 jobs:
   CI:

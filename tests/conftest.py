@@ -83,7 +83,7 @@ def exo():
 
 @pytest.fixture(autouse=True, scope="function")
 def zone(exo):
-    def _zone(name):
+    def _zone(name=_DEFAULT_ZONE_NAME):
         return exo.compute.cs.listZones(name=name, fetch_list=True)[0]
 
     return _zone
@@ -216,6 +216,9 @@ def instance_pool(
         size=1,
         instance_type_id=test_instance_service_offering_id,
         instance_template_id=test_instance_template_id,
+        security_groups=None,
+        anti_affinity_groups=None,
+        private_networks=None,
         teardown=True,
     ):
         instance_pool = exo.compute.cs.createInstancePool(
@@ -225,6 +228,9 @@ def instance_pool(
             size=size,
             serviceofferingid=instance_type_id,
             templateid=instance_template_id,
+            securitygroupids=security_groups,
+            affinitygroupids=anti_affinity_groups,
+            networkids=private_networks,
             user_data=test_instance_user_data,
         )
 

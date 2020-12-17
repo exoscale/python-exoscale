@@ -1174,6 +1174,50 @@ class InstancePool(Resource):
             raise APIException(e.error["errortext"], e.error)
 
     @property
+    def anti_affinity_groups(self):
+        """
+        Anti-Affinity Groups the instances are member of.
+
+        Yields:
+            AntiAffinityGroup: the next Anti-Affinity Group the instances are member of
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        try:
+            [res] = self.compute.cs.getInstancePool(
+                id=self.id, zoneid=self.zone.id, fetch_list=True
+            )
+            for aagid in res.get("affinitygroupids", []):
+                yield self.compute.get_anti_affinity_group(id=aagid)
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+    @property
+    def security_groups(self):
+        """
+        Security Groups the instances are member of.
+
+        Yields:
+            SecurityGroup: the next Security Group the instances are member of
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        try:
+            [res] = self.compute.cs.getInstancePool(
+                id=self.id, zoneid=self.zone.id, fetch_list=True
+            )
+            for sgid in res.get("securitygroupids", []):
+                yield self.compute.get_security_group(id=sgid)
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+    @property
     def private_networks(self):
         """
         Private Networks the instances are member of.
@@ -1190,8 +1234,8 @@ class InstancePool(Resource):
             [res] = self.compute.cs.getInstancePool(
                 id=self.id, zoneid=self.zone.id, fetch_list=True
             )
-            for sgid in res.get("private_network_ids", []):
-                yield self.compute.get_private_network(zone=self.zone, id=sgid)
+            for nid in res.get("networkids", []):
+                yield self.compute.get_private_network(zone=self.zone, id=nid)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -1677,9 +1721,7 @@ class NetworkLoadBalancer(Resource):
         """
 
         res = self.compute._v2_request(
-            "GET",
-            "/load-balancer/" + self.id,
-            self.zone.name,
+            "GET", "/load-balancer/" + self.id, self.zone.name,
         )
 
         return res["state"]
@@ -2825,6 +2867,7 @@ class ComputeAPI(API):
         instance_type,
         instance_template,
         instance_volume_size=10,
+        instance_anti_affinity_groups=None,
         instance_security_groups=None,
         instance_private_networks=None,
         instance_ssh_key=None,
@@ -2846,6 +2889,8 @@ class ComputeAPI(API):
                 size in GB
             instance_private_networks ([PrivateNetwork]): a list of Private Networks to
                 attach the Compute instance members to
+            instance_anti_affinity_groups ([AntiAffinityGroup]): a list of Anti-Affinity
+                Groups to attach the Compute instance members to
             instance_security_groups ([SecurityGroup]): a list of Security Groups to
                 attach the Compute instance members to
             instance_ssh_key (SSHKey): a SSH Key to deploy on the Compute instance
@@ -2859,6 +2904,12 @@ class ComputeAPI(API):
 
         if size <= 0:
             raise ValueError("size must be > 0")
+
+        instance_anti_affinity_group_ids = None
+        if instance_anti_affinity_groups:
+            instance_anti_affinity_group_ids = [
+                i.id for i in instance_anti_affinity_groups
+            ]
 
         instance_security_group_ids = None
         if instance_security_groups:
@@ -2887,6 +2938,7 @@ class ComputeAPI(API):
                 serviceofferingid=instance_type.id,
                 templateid=instance_template.id,
                 rootdisksize=instance_volume_size,
+                affinitygroupids=instance_anti_affinity_group_ids,
                 securitygroupids=instance_security_group_ids,
                 networkids=instance_private_network_ids,
                 keypair=instance_ssh_key_name,

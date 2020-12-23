@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from exoscale.api import ResourceNotFoundError
 from exoscale.api.compute import *
 from cs import CloudStackApiException
 from datetime import datetime, timedelta
@@ -92,13 +93,50 @@ class TestComputeInstancePool:
                 id=instance_pool_id, zoneid=instance_pool_zone_id, fetch_list=True
             )
 
-    def test_properties(self, exo, zone, sg, privnet, instance_pool):
-        zone = Zone._from_cs(zone("ch-gva-2"))
+    def test_properties(self, exo, zone, aag, sg, privnet, instance_pool):
+        zone = Zone._from_cs(zone())
+        anti_affinity_group = AntiAffinityGroup._from_cs(exo.compute, aag())
+        security_group = SecurityGroup._from_cs(exo.compute, sg())
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
         instance_pool = InstancePool._from_cs(
-            exo.compute, instance_pool(zone_id=zone.id)
+            exo.compute,
+            instance_pool(
+                zone_id=zone.id,
+                size=1,
+                anti_affinity_groups=[anti_affinity_group.id],
+                security_groups=[security_group.id],
+                private_networks=[private_network.id],
+                teardown=False,
+            ),
         )
 
         instance_pool_instances = list(instance_pool.instances)
         assert len(instance_pool_instances) == 1
         assert instance_pool_instances[0].instance_pool.id == instance_pool.id
-        assert instance_pool.state == "scaling-up" or instance_pool.state == "running"
+        assert instance_pool.state in ["scaling-up", "running"]
+
+        instance_pool_anti_affinity_groups = list(instance_pool.anti_affinity_groups)
+        assert len(instance_pool_anti_affinity_groups) == 1
+        assert instance_pool_anti_affinity_groups[0].id == anti_affinity_group.id
+
+        instance_pool_security_groups = list(instance_pool.security_groups)
+        assert len(instance_pool_security_groups) == 1
+        assert instance_pool_security_groups[0].id == security_group.id
+
+        instance_pool_private_networks = list(instance_pool.private_networks)
+        assert len(instance_pool_private_networks) == 1
+        assert instance_pool_private_networks[0].id == private_network.id
+
+        # We have to delete the fixture Instance Pool and ensure its member instance is
+        # actually deleted here because of a race condition with the AAG/SG fixtures
+        # teardown than will fail because it can't delete itself while still used by an
+        # instance ¯\_(ツ)_/¯
+        exo.compute.cs.destroyInstancePool(id=instance_pool.id, zoneid=zone.id)
+        t = datetime.now()
+        try:
+            while exo.compute.get_instance(
+                zone=zone, id=instance_pool_instances[0].id
+            ) != None and datetime.now() - t < timedelta(minutes=5):
+                sleep(10)
+        except ResourceNotFoundError:
+            return

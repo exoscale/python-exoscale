@@ -4,17 +4,19 @@
 This submodule represents the Exoscale Compute API.
 """
 
-import attr
 import json
-import polling
-import requests
 import sys
 import time
-from . import API, Resource, APIException, ResourceNotFoundError, RequestError
 from base64 import b64encode
-from cs import CloudStack, CloudStackApiException
 from datetime import datetime
+
+import attr
+import polling
+import requests
+from cs import CloudStack, CloudStackApiException
 from exoscale_auth import ExoscaleV2Auth
+
+from . import API, APIException, RequestError, Resource, ResourceNotFoundError
 
 
 @attr.s
@@ -904,7 +906,7 @@ class InstanceTemplate(Resource):
             zone=zone,
             date=datetime.strptime(res["created"], "%Y-%m-%dT%H:%M:%S%z"),
             size=res["size"],
-            username=res["details"].get("username", None),
+            username=res.get("details", {}).get("username", None),
             ssh_key_enabled=res["sshkeyenabled"],
             password_reset_enabled=res["passwordenabled"],
         )
@@ -1721,9 +1723,7 @@ class NetworkLoadBalancer(Resource):
         """
 
         res = self.compute._v2_request(
-            "GET",
-            "/load-balancer/" + self.id,
-            self.zone.name,
+            "GET", "/load-balancer/" + self.id, self.zone.name
         )
 
         return res["state"]

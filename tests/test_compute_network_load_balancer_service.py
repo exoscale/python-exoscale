@@ -27,7 +27,7 @@ class TestComputeNetworkLoadBalancerService:
         service_healthcheck_uri = "/health"
         service_healthcheck_interval = 5
         service_healthcheck_timeout = 3
-        service_healthcheck_retries = 1
+        service_healthcheck_retries = 2
         service_healthcheck_tls_sni = "example.net"
 
         res = exo.compute._v2_request_async(
@@ -41,7 +41,13 @@ class TestComputeNetworkLoadBalancerService:
                 "target-port": 53,
                 "protocol": "udp",
                 "strategy": "round-robin",
-                "healthcheck": {"mode": "tcp", "port": 53, "interval": 10},
+                "healthcheck": {
+                    "mode": "tcp",
+                    "port": 53,
+                    "interval": 10,
+                    "timeout": 5,
+                    "retries": 1,
+                },
             },
         )
         service = NetworkLoadBalancerService._from_api(
@@ -122,7 +128,13 @@ class TestComputeNetworkLoadBalancerService:
                 "target-port": 80,
                 "protocol": "tcp",
                 "strategy": "round-robin",
-                "healthcheck": {"mode": "tcp", "port": 80, "interval": 10},
+                "healthcheck": {
+                    "mode": "tcp",
+                    "port": 80,
+                    "interval": 10,
+                    "timeout": 5,
+                    "retries": 1,
+                },
             },
         )
         service = NetworkLoadBalancerService._from_api(
@@ -165,7 +177,13 @@ class TestComputeNetworkLoadBalancerService:
                 "target-port": 80,
                 "protocol": "tcp",
                 "strategy": "round-robin",
-                "healthcheck": {"mode": "tcp", "port": 80, "interval": 5},
+                "healthcheck": {
+                    "mode": "tcp",
+                    "port": 80,
+                    "interval": 5,
+                    "timeout": 3,
+                    "retries": 1,
+                },
             },
         )
 

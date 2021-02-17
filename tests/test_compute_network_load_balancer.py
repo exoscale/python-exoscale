@@ -131,7 +131,13 @@ class TestComputeNetworkLoadBalancer:
                 "target-port": 80,
                 "protocol": "tcp",
                 "strategy": "round-robin",
-                "healthcheck": {"mode": "tcp", "port": 80, "interval": 10},
+                "healthcheck": {
+                    "mode": "tcp",
+                    "port": 80,
+                    "interval": 10,
+                    "timeout": 5,
+                    "retries": 1,
+                },
             },
         )
 

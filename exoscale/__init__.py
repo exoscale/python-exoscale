@@ -2,6 +2,7 @@
 
 import attr
 import os
+import pathlib
 import toml
 from .api.compute import ComputeAPI
 from .api.dns import DnsAPI
@@ -18,7 +19,7 @@ _STORAGE_API_ENDPOINT_ENVVAR = "EXOSCALE_STORAGE_API_ENDPOINT"
 _IAM_API_ENDPOINT_ENVVAR = "EXOSCALE_IAM_API_ENDPOINT"
 _STORAGE_ZONE_ENVVAR = "EXOSCALE_STORAGE_ZONE"
 _CONFIG_FILE_ENVVAR = "EXOSCALE_CONFIG_FILE"
-_DEFAULT_CONFIG_FILE = os.path.join(os.getenv("HOME"), ".exoscale", "config.toml")
+_DEFAULT_CONFIG_FILE = os.path.join(pathlib.Path.home(), "config.toml")
 
 
 class Exoscale:

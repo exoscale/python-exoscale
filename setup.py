@@ -16,7 +16,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
-    version="0.4.0",
+    version="0.5.0",
     license="ISC",
     url="https://github.com/exoscale/python-exoscale",
     author="Exoscale",

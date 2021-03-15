@@ -19,6 +19,21 @@ with high-level Python bindings.
 Changelog
 ---------
 
+0.5.0 (2021-03-15)
+~~~~~~~~~~~~~~~~~~
+
+Features
+********
+
+- compute: add Anti-Affinity Groups support to Instance Pools (#27)
+
+Fixes
+*****
+
+- Rely on pathlib for home lookup (#29)
+- compute: don't crash when listing instances generated from templates (#28)
+
+
 0.4.0 (2020-12-07)
 ~~~~~~~~~~~~~~~~~~
 

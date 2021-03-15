@@ -11,12 +11,11 @@ from base64 import b64encode
 from datetime import datetime
 
 import attr
-import polling
 import requests
 from cs import CloudStack, CloudStackApiException
 from exoscale_auth import ExoscaleV2Auth
 
-from . import API, APIException, RequestError, Resource, ResourceNotFoundError
+from . import API, APIException, RequestError, Resource, ResourceNotFoundError, polling
 
 
 @attr.s

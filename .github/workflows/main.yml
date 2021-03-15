@@ -22,7 +22,7 @@ jobs:
     - name: Lint
       uses: lgeiger/black-action@master
       with:
-        args: '--check --diff .'
+        args: '--check --diff --exclude polling\.py .'
     - name: Tests
       run: |
         pip install --use-feature=2020-resolver -r requirements.dev.txt -e .

@@ -19,6 +19,15 @@ with high-level Python bindings.
 Changelog
 ---------
 
+0.5.1 (2021-03-16)
+~~~~~~~~~~~~~~~~~~
+
+Fixes
+*****
+
+- Exclude tests from Python packaging
+
+
 0.5.0 (2021-03-15)
 ~~~~~~~~~~~~~~~~~~
 

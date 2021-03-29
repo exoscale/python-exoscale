@@ -2,143 +2,246 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from .conftest import _random_str
 from datetime import datetime
 from exoscale.api.storage import *
-from time import sleep
 
 
 class TestStorageBucketFile:
-    def test_delete(self, exo, bucket, tmp_path):
-        bucket = Bucket(exo.storage, {}, bucket())
+    def test_set_acl(self, exo):
+        bucket = Bucket(exo.storage, {}, _random_str())
+        bucket_file = BucketFile(exo.storage, {}, path=_random_str(), bucket=bucket)
 
-        f_a = tmp_path / "file_a"
-        f_a.write_text("a")
-        exo.storage.boto.upload_file(Bucket=bucket.name, Filename=str(f_a), Key="a")
-
-        f = BucketFile(exo.storage, {}, path="a", bucket=bucket)
-        f.delete()
-
-        res = exo.storage.boto.list_objects(Bucket=bucket.name)
-        assert "Contents" not in res
-
-    def test_set_acl(self, exo, bucket, tmp_path):
-        bucket = Bucket(exo.storage, {}, bucket())
-
-        f_a = tmp_path / "file_a"
-        f_a.write_text("a")
-        exo.storage.boto.upload_file(Bucket=bucket.name, Filename=str(f_a), Key="a")
-
-        f = BucketFile(exo.storage, {}, path="a", bucket=bucket)
-        f.set_acl(acl="public-read")
-        res = exo.storage.boto.get_object_acl(Bucket=bucket.name, Key="a")
-        for i in res["Grants"]:
-            if i["Permission"] == "READ":
-                assert i["Grantee"]["Type"] == "Group"
-                assert i["Grantee"]["URI"] == ACL_ALL_USERS
-
-        f_acp = AccessControlPolicy._from_s3(res)
-        f_acp.read = "ALL_USERS"
-        f_acp.write = "AUTHENTICATED_USERS"
-        f_acp.read_acp = "alice@example.net"
-        f_acp.write_acp = "bob@example.net"
-        f.set_acl(acp=f_acp)
-        res = exo.storage.boto.get_object_acl(Bucket=bucket.name, Key="a")
-        for i in res["Grants"]:
-            if i["Permission"] == "READ":
-                assert i["Grantee"]["Type"] == "Group"
-                assert i["Grantee"]["URI"] == ACL_ALL_USERS
-            if i["Permission"] == "WRITE":
-                assert i["Grantee"]["Type"] == "Group"
-                assert i["Grantee"]["URI"] == ACL_AUTHENTICATED_USERS
-            if i["Permission"] == "READ_ACP":
-                assert i["Grantee"]["Type"] == "CanonicalUser"
-                assert i["Grantee"]["ID"] == "alice@example.net"
-                assert i["Grantee"]["DisplayName"] == "alice@example.net"
-            if i["Permission"] == "WRITE_ACP":
-                assert i["Grantee"]["Type"] == "CanonicalUser"
-                assert i["Grantee"]["ID"] == "bob@example.net"
-                assert i["Grantee"]["DisplayName"] == "bob@example.net"
-
-        exo.storage.boto.delete_object(Bucket=bucket.name, Key="a")
-
-    def test_properties(self, exo, bucket, tmp_path):
-        bucket = Bucket(exo.storage, {}, bucket())
-
-        f_a = tmp_path / "file_a"
-        f_a.write_text("a")
-        exo.storage.boto.upload_file(
-            Bucket=bucket.name,
-            Filename=str(f_a),
-            Key="a",
-            ExtraArgs={"Metadata": {"k": "v"}},
+        bucket_file_acl = "public-read"
+        bucket_file_acp = AccessControlPolicy(
+            {},
+            read=_random_str(),
+            write=_random_str(),
+            read_acp=_random_str(),
+            write_acp=_random_str(),
+            full_control=_random_str(),
+            owner=_random_str(),
         )
 
-        f = BucketFile(exo.storage, {}, path="a", bucket=bucket)
-        assert f.size == len(f_a.read_text())
-        assert type(f.last_modification_date) == datetime
-        assert f.metadata == {"k": "v"}
-        assert f.content.read() == b"a"
-        file_url = f.url
-        assert file_url.startswith("https://sos-") and file_url.endswith("/a")
+        with pytest.raises(ValueError) as excinfo:
+            bucket_file.set_acl()
+        assert excinfo.type == ValueError
 
-        # We retrieve the current owner of the file to maintain it in the updated ACP,
-        # otherwise we'll lock ourselves out and we won't be able to delete the file
-        # afterwards
-        owner = exo.storage.boto.get_object_acl(Bucket=bucket.name, Key="a")["Owner"][
-            "DisplayName"
-        ]
+        with pytest.raises(ValueError) as excinfo:
+            bucket_file.set_acl(acl="lolnope")
+        assert excinfo.type == ValueError
 
-        exo.storage.boto.put_object_acl(
-            Bucket=bucket.name,
-            Key="a",
-            AccessControlPolicy={
+        exo.boto_stub.add_response(
+            "put_object_acl",
+            {},
+            {
+                "Bucket": bucket.name,
+                "Key": bucket_file.path,
+                "ACL": bucket_file_acl,
+            },
+        )
+        bucket_file.set_acl(acl=bucket_file_acl)
+
+        exo.boto_stub.add_response(
+            "put_object_acl",
+            {},
+            {
+                "Bucket": bucket.name,
+                "Key": bucket_file.path,
+                "AccessControlPolicy": {
+                    "Grants": [
+                        {
+                            "Grantee": {
+                                "DisplayName": bucket_file_acp.full_control,
+                                "ID": bucket_file_acp.full_control,
+                                "Type": "CanonicalUser",
+                            },
+                            "Permission": "FULL_CONTROL",
+                        },
+                        {
+                            "Grantee": {
+                                "DisplayName": bucket_file_acp.read,
+                                "ID": bucket_file_acp.read,
+                                "Type": "CanonicalUser",
+                            },
+                            "Permission": "READ",
+                        },
+                        {
+                            "Grantee": {
+                                "DisplayName": bucket_file_acp.write,
+                                "ID": bucket_file_acp.write,
+                                "Type": "CanonicalUser",
+                            },
+                            "Permission": "WRITE",
+                        },
+                        {
+                            "Grantee": {
+                                "DisplayName": bucket_file_acp.read_acp,
+                                "ID": bucket_file_acp.read_acp,
+                                "Type": "CanonicalUser",
+                            },
+                            "Permission": "READ_ACP",
+                        },
+                        {
+                            "Grantee": {
+                                "DisplayName": bucket_file_acp.write_acp,
+                                "ID": bucket_file_acp.write_acp,
+                                "Type": "CanonicalUser",
+                            },
+                            "Permission": "WRITE_ACP",
+                        },
+                    ],
+                    "Owner": {
+                        "DisplayName": bucket_file_acp.owner,
+                        "ID": bucket_file_acp.owner,
+                    },
+                },
+            },
+        )
+
+        bucket_file.set_acl(acp=bucket_file_acp)
+
+    def test_delete(self, exo):
+        bucket = Bucket(exo.storage, {}, _random_str())
+        bucket_file = BucketFile(exo.storage, {}, path=_random_str(), bucket=bucket)
+
+        exo.boto_stub.add_response(
+            "delete_object",
+            {},
+            {
+                "Bucket": bucket.name,
+                "Key": bucket_file.path,
+            },
+        )
+
+        bucket_file.delete()
+        assert bucket_file.path is None
+
+    def test_properties(self, exo, tmp_path):
+        now = datetime.now()
+        bucket_zone = "ch-gva-2"
+        bucket = Bucket(exo.storage, {}, _random_str())
+        bucket_file = BucketFile(
+            exo.storage,
+            {"LastModified": now},
+            path=_random_str(),
+            bucket=bucket,
+        )
+
+        file = tmp_path / _random_str()
+        file.write_text(_random_str())
+
+        assert bucket_file.last_modification_date == now
+
+        exo.boto_stub.add_response(
+            "get_object",
+            {"ContentLength": len(file.read_text())},
+            {
+                "Bucket": bucket.name,
+                "Key": bucket_file.path,
+            },
+        )
+        assert bucket_file.size == len(file.read_text())
+
+        bucket_file_metadata = {"k": "v"}
+        exo.boto_stub.add_response(
+            "get_object",
+            {"Metadata": bucket_file_metadata},
+            {
+                "Bucket": bucket.name,
+                "Key": bucket_file.path,
+            },
+        )
+        assert bucket_file.metadata == bucket_file_metadata
+
+        with open(file) as f:
+            exo.boto_stub.add_response(
+                "get_object",
+                {"Body": f},
+                {
+                    "Bucket": bucket.name,
+                    "Key": bucket_file.path,
+                },
+            )
+            assert bucket_file.content == f
+
+        exo.boto_stub.add_response(
+            "get_bucket_location",
+            {"LocationConstraint": bucket_zone},
+            {"Bucket": bucket.name},
+        )
+        assert bucket_file.url == "https://sos-{}.exo.io/{}/{}".format(
+            bucket_zone, bucket.name, bucket_file.path
+        )
+
+        expected_acp = AccessControlPolicy(
+            {},
+            read=_random_str(),
+            write=_random_str(),
+            read_acp=_random_str(),
+            write_acp=_random_str(),
+            full_control=_random_str(),
+            owner=_random_str(),
+        )
+        exo.boto_stub.add_response(
+            "get_object_acl",
+            {
                 "Grants": [
                     {
                         "Grantee": {
-                            "DisplayName": owner,
-                            "ID": owner,
+                            "DisplayName": expected_acp.full_control,
+                            "ID": expected_acp.full_control,
                             "Type": "CanonicalUser",
                         },
                         "Permission": "FULL_CONTROL",
                     },
                     {
-                        "Grantee": {"Type": "Group", "URI": ACL_ALL_USERS},
+                        "Grantee": {
+                            "DisplayName": expected_acp.read,
+                            "ID": expected_acp.read,
+                            "Type": "CanonicalUser",
+                        },
                         "Permission": "READ",
                     },
                     {
-                        "Grantee": {"Type": "Group", "URI": ACL_AUTHENTICATED_USERS},
+                        "Grantee": {
+                            "DisplayName": expected_acp.write,
+                            "ID": expected_acp.write,
+                            "Type": "CanonicalUser",
+                        },
                         "Permission": "WRITE",
                     },
                     {
                         "Grantee": {
-                            "DisplayName": "bob@example.net",
-                            "ID": "bob@example.net",
+                            "DisplayName": expected_acp.read_acp,
+                            "ID": expected_acp.read_acp,
                             "Type": "CanonicalUser",
                         },
                         "Permission": "READ_ACP",
                     },
                     {
                         "Grantee": {
-                            "DisplayName": "carl@example.net",
-                            "ID": "carl@example.net",
+                            "DisplayName": expected_acp.write_acp,
+                            "ID": expected_acp.write_acp,
                             "Type": "CanonicalUser",
                         },
                         "Permission": "WRITE_ACP",
                     },
-                ]
+                ],
+                "Owner": {
+                    "DisplayName": expected_acp.owner,
+                    "ID": expected_acp.owner,
+                },
+                "ResponseMetadata": {},
+            },
+            {
+                "Bucket": bucket.name,
+                "Key": bucket_file.path,
             },
         )
-
-        # Retrieving the bucket ACL policy immediately after having set it can trigger
-        # a race condition at SOS level due to eventual consistency data store, so as
-        # a workaround we wait for a bit before getting our ACL policy back.
-        sleep(3)
-
-        acp = f.acl
-        assert acp.full_control == owner
-        assert acp.read == "ALL_USERS"
-        assert acp.write == "AUTHENTICATED_USERS"
-        assert acp.read_acp == "bob@example.net"
-        assert acp.write_acp == "carl@example.net"
-
-        exo.storage.boto.delete_object(Bucket=bucket.name, Key="a")
+        actual_acp = bucket_file.acl
+        assert actual_acp.full_control == expected_acp.full_control
+        assert actual_acp.read == expected_acp.read
+        assert actual_acp.write == expected_acp.write
+        assert actual_acp.read_acp == expected_acp.read_acp
+        assert actual_acp.write_acp == expected_acp.write_acp

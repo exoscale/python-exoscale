@@ -2,80 +2,71 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from cs import CloudStackApiException
+from .conftest import _random_str
 from exoscale.api.dns import *
+from urllib.parse import parse_qs, urlparse
 
 
 class TestDNSDomainRecord:
-    def test_update(self, exo, domain):
+    def test_update(self, exo, domain, domain_record):
         domain = Domain._from_cs(exo.dns, domain())
-        domain_record_name = "test-python-exoscale"
-        domain_record_name_edited = "test-python-exoscale-edited"
-        domain_record_type = "MX"
-        domain_record_content = "mx1.example.net"
-        domain_record_content_edited = "mx2.example.net"
+        domain_record = DomainRecord._from_cs(
+            exo.dns, domain_record(domain_id=domain.res["id"]), domain
+        )
+        domain_record_name = _random_str()
+        domain_record_content = _random_str()
         domain_record_priority = 10
-        domain_record_priority_edited = 20
-        domain_record_ttl = 1042
-        domain_record_ttl_edited = 1043
+        domain_record_ttl = 1234
 
-        exo.dns.cs.createDnsDomainRecord(
-            name=domain.name,
-            record_name=domain_record_name,
-            record_type=domain_record_type,
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["name"][0] == domain.res["name"]
+            assert params["record_name"][0] == domain_record_name
+            assert params["content"][0] == domain_record_content
+            assert params["priority"][0] == str(domain_record_priority)
+            assert params["ttl"][0] == str(domain_record_ttl)
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "updatednsdomainrecordresponse": {
+                    **domain_record.res,
+                    **{
+                        "name": domain_record_name,
+                        "content": domain_record_content,
+                        "priority": domain_record_priority,
+                        "ttl": domain_record_ttl,
+                    },
+                }
+            }
+
+        exo.mock_get("?command=updateDnsDomainRecord", _assert_request)
+        domain_record.update(
+            name=domain_record_name,
             content=domain_record_content,
+            priority=domain_record_priority,
             ttl=domain_record_ttl,
-            prio=domain_record_priority,
+        )
+        assert domain_record.name == domain_record_name
+        assert domain_record.content == domain_record_content
+        assert domain_record.priority == domain_record_priority
+        assert domain_record.ttl == domain_record_ttl
+
+    def test_delete(self, exo, domain, domain_record):
+        domain = Domain._from_cs(exo.dns, domain())
+        domain_record = DomainRecord._from_cs(
+            exo.dns, domain_record(domain_id=domain.res["id"]), domain
         )
 
-        res = exo.dns.cs.listDnsDomainRecords(id=domain.id, fetch_list=True)
-        for r in res:
-            if r["name"] == "":
-                continue
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["id"][0] == str(domain.res["id"])
 
-            domain_record = DomainRecord._from_cs(exo.dns, r, domain)
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {"deletednsdomainrecordresponse": {"success": True}}
 
-            domain_record.update(
-                name=domain_record_name_edited,
-                content=domain_record_content_edited,
-                priority=domain_record_priority_edited,
-                ttl=domain_record_ttl_edited,
-            )
+        exo.mock_get("?command=deleteDnsDomainRecord", _assert_request)
 
-        res = exo.dns.cs.listDnsDomainRecords(id=domain.id, fetch_list=True)
-        for r in res:
-            if r["name"] == "":
-                continue
-            assert r["name"] == domain_record_name_edited
-            assert r["content"] == domain_record_content_edited
-            assert r["priority"] == domain_record_priority_edited
-            assert r["ttl"] == domain_record_ttl_edited
-
-    def test_delete(self, exo, domain):
-        domain = Domain._from_cs(exo.dns, domain())
-        domain_record_name = "test-python-exoscale"
-        domain_record_type = "MX"
-        domain_record_content = "mx1.example.net"
-        domain_record_priority = 10
-        domain_record_ttl = 1042
-
-        exo.dns.cs.createDnsDomainRecord(
-            name=domain.name,
-            record_name=domain_record_name,
-            record_type=domain_record_type,
-            content=domain_record_content,
-            ttl=domain_record_ttl,
-            prio=domain_record_priority,
-        )
-
-        res = exo.dns.cs.listDnsDomainRecords(id=domain.id, fetch_list=True)
-        for r in res:
-            if r["name"] == "":
-                continue
-
-            domain_record = DomainRecord._from_cs(exo.dns, r, domain)
-
-            domain_record.delete()
-
-        res = exo.dns.cs.listDnsDomainRecords(id=domain.id, fetch_list=True)
-        assert len(list(r for r in res if r["name"] != "")) == 0
+        domain_record.delete()
+        assert domain_record.id is None

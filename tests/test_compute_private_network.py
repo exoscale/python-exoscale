@@ -2,110 +2,175 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from .conftest import _random_str, _random_uuid
 from exoscale.api.compute import *
+from urllib.parse import parse_qs, urlparse
 
 
 class TestComputePrivateNetwork:
-    def test_attach_instance(self, exo, privnet, instance):
-        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
-        instance = Instance._from_cs(exo.compute, instance())
+    def test_attach_instance(
+        self, exo, zone, privnet, instance_type, instance_template, instance
+    ):
+        exo.mock_list(
+            "listVolumes",
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+        )
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
+
+        zone = zone()
+        private_network = PrivateNetwork._from_cs(
+            exo.compute, privnet(), zone=Zone._from_cs(zone)
+        )
+        instance = Instance._from_cs(exo.compute, instance(), zone=Zone._from_cs(zone))
+
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["virtualmachineid"][0] == instance.res["id"]
+            assert params["networkid"][0] == private_network.res["id"]
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "addnictovirtualmachineresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=addNicToVirtualMachine", _assert_request)
+        exo.mock_query_async_job_result({"success": True})
 
         private_network.attach_instance(instance)
 
-        res = exo.compute.cs.listNics(
-            virtualmachineid=instance.id, networkid=private_network.id, fetch_list=True
+    def test_detach_instance(
+        self, exo, zone, privnet, instance_type, instance_template, instance
+    ):
+        exo.mock_list(
+            "listVolumes",
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
         )
-        assert len(res) == 1
-        assert res[0]["networkid"] == private_network.id
-        assert res[0]["virtualmachineid"] == instance.id
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
 
-        for nic in res:
-            if nic["isdefault"]:
-                continue
-            exo.compute.cs.removeNicFromVirtualMachine(
-                virtualmachineid=instance.id, nicid=nic["id"]
-            )
-
-    def test_detach_instance(self, exo, privnet, instance):
-        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
-        instance = Instance._from_cs(exo.compute, instance())
-
-        exo.compute.cs.addNicToVirtualMachine(
-            virtualmachineid=instance.id, networkid=private_network.id
+        zone = zone()
+        private_network = PrivateNetwork._from_cs(
+            exo.compute, privnet(), zone=Zone._from_cs(zone)
+        )
+        instance = Instance._from_cs(
+            exo.compute,
+            instance(private_network_ids=[private_network.res["id"]]),
+            zone=Zone._from_cs(zone),
         )
 
-        [res] = exo.compute.cs.listNics(
-            virtualmachineid=instance.id, networkid=private_network.id, fetch_list=True
-        )
-        assert res["networkid"] == private_network.id
-        assert res["virtualmachineid"] == instance.id
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["virtualmachineid"][0] == instance.res["id"]
+            assert params["nicid"][0] == instance.res["nic"][1]["id"]
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "removenicfromvirtualmachineresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_list("listNics", [instance.res["nic"][1]])
+        exo.mock_get("?command=removeNicFromVirtualMachine", _assert_request)
+        exo.mock_query_async_job_result({"success": True})
 
         private_network.detach_instance(instance)
 
-        res = exo.compute.cs.listNics(
-            virtualmachineid=instance.id, networkid=private_network.id, fetch_list=True
-        )
-        assert len(res) == 0
-
-    def test_update(self, exo, privnet):
+    def test_update(self, exo, zone, privnet):
         private_network = PrivateNetwork._from_cs(
-            exo.compute,
-            privnet(start_ip="10.0.0.10", end_ip="10.0.0.50", netmask="255.255.255.0"),
+            exo.compute, privnet(), zone=Zone._from_cs(zone())
         )
-        name_edited = private_network.name + " (edited)"
-        description_edited = private_network.description + " (edited)"
-        start_ip_edited = "10.0.0.1"
-        end_ip_edited = "10.0.0.100"
-        netmask_edited = "255.0.0.0"
+        private_network_name = _random_str()
+        private_network_description = _random_str()
+        private_network_start_ip = "10.0.0.1"
+        private_network_end_ip = "10.0.0.100"
+        private_network_netmask = "255.255.255.0"
+
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["id"][0] == private_network.res["id"]
+            assert params["name"][0] == private_network_name
+            assert params["displaytext"][0] == private_network_description
+            assert params["startip"][0] == private_network_start_ip
+            assert params["endip"][0] == private_network_end_ip
+            assert params["netmask"][0] == private_network_netmask
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "updatenetworkresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=updateNetwork", _assert_request)
+        exo.mock_query_async_job_result({"success": True})
 
         private_network.update(
-            name=name_edited,
-            description=description_edited,
-            start_ip=start_ip_edited,
-            end_ip=end_ip_edited,
-            netmask=netmask_edited,
+            name=private_network_name,
+            description=private_network_description,
+            start_ip=private_network_start_ip,
+            end_ip=private_network_end_ip,
+            netmask=private_network_netmask,
+        )
+        assert private_network.name == private_network_name
+        assert private_network.description == private_network_description
+        assert private_network.start_ip == private_network_start_ip
+        assert private_network.end_ip == private_network_end_ip
+        assert private_network.netmask == private_network_netmask
+
+    def test_delete(self, exo, zone, privnet):
+        private_network = PrivateNetwork._from_cs(
+            exo.compute, privnet(), zone=Zone._from_cs(zone())
         )
 
-        res = exo.compute.cs.listNetworks(id=private_network.id, fetch_list=True)
-        assert res[0]["name"] == name_edited
-        assert private_network.name == name_edited
-        assert res[0]["displaytext"] == description_edited
-        assert private_network.description == description_edited
-        assert res[0]["startip"] == start_ip_edited
-        assert private_network.start_ip == start_ip_edited
-        assert res[0]["endip"] == end_ip_edited
-        assert private_network.end_ip == end_ip_edited
-        assert res[0]["netmask"] == netmask_edited
-        assert private_network.netmask == netmask_edited
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["id"][0] == private_network.res["id"]
 
-    def test_delete(self, exo, privnet):
-        private_network = PrivateNetwork._from_cs(exo.compute, privnet(teardown=False))
-        private_network_id = private_network.id
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "deletenetworkresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=deleteNetwork", _assert_request)
+        exo.mock_query_async_job_result({"success": True})
 
         private_network.delete()
         assert private_network.id is None
 
-        with pytest.raises(CloudStackApiException) as excinfo:
-            res = exo.compute.cs.listNetworks(id=private_network_id, fetch_list=True)
-            assert len(res) == 0
-        assert excinfo.type == CloudStackApiException
-        assert "does not exist" in excinfo.value.error["errortext"]
-
-    def test_properties(self, exo, privnet, instance):
-        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
-        instance = Instance._from_cs(exo.compute, instance())
-
-        res = exo.compute.cs.addNicToVirtualMachine(
-            virtualmachineid=instance.id, networkid=private_network.id
+    def test_properties(
+        self, exo, zone, privnet, instance_type, instance_template, instance
+    ):
+        exo.mock_list(
+            "listVolumes",
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
         )
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
+
+        zone = Zone._from_cs(zone())
+        private_network = PrivateNetwork._from_cs(exo.compute, privnet(), zone=zone)
+        instance = Instance._from_cs(
+            exo.compute,
+            instance(private_network_ids=private_network.res["id"]),
+            zone=zone,
+        )
+
+        exo.mock_list("listVirtualMachines", [instance.res])
 
         private_network_instances = list(private_network.instances)
         assert len(private_network_instances) == 1
         assert private_network_instances[0].name == instance.name
-
-        for nic in res["virtualmachine"]["nic"]:
-            if nic["isdefault"]:
-                continue
-            exo.compute.cs.removeNicFromVirtualMachine(
-                virtualmachineid=instance.id, nicid=nic["id"]
-            )

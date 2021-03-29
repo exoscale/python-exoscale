@@ -4,43 +4,52 @@
 import pytest
 from exoscale.api.dns import *
 from .conftest import _random_str
+from urllib.parse import parse_qs, urlparse
 
 
 class TestDNS:
     ### Domain
 
-    def test_create_domain(self, exo, test_prefix):
-        domain_name = "-".join([test_prefix, _random_str()]) + ".net"
+    def test_create_domain(self, exo, domain):
+        domain_name = _random_str() + ".com"
+        expected = domain(name=domain_name)
 
-        domain = exo.dns.create_domain(name=domain_name)
-        assert domain.id > 0
-        assert domain.name == domain_name
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["name"][0] == domain_name
 
-        exo.dns.cs.deleteDnsDomain(id=domain.id)
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {"creatednsdomainresponse": {"dnsdomain": expected}}
+
+        exo.mock_get("?command=createDnsDomain", _assert_request)
+
+        actual = exo.dns.create_domain(name=domain_name)
+        assert actual.id == expected["id"]
+        assert actual.name == expected["name"]
+        assert actual.unicode_name == expected["unicodename"]
 
     def test_list_domains(self, exo, domain):
-        domain = Domain._from_cs(exo.dns, domain())
+        expected = domain()
 
-        domains = list(exo.dns.list_domains())
-        # We cannot guarantee that there will be only our resources in the
-        # testing environment, so we ensure we get at least our fixture domain
-        assert len(domains) >= 1
+        exo.mock_list("listDnsDomains", [expected])
+        actual = list(exo.dns.list_domains())
+        assert len(actual) == 1
+        assert actual[0].id == expected["id"]
 
     def test_get_domain(self, exo, domain):
-        domain1 = Domain._from_cs(exo.dns, domain())
+        expected = domain()
 
-        domain = exo.dns.get_domain(id=domain1.id)
-        assert domain.id == domain1.id
+        exo.mock_list("listDnsDomains", [expected])
 
-        domain = exo.dns.get_domain(name=domain1.name)
-        assert domain.id == domain1.id
+        actual = exo.dns.get_domain(id=expected["id"])
+        assert actual.id == expected["id"]
 
-        with pytest.raises(ResourceNotFoundError) as excinfo:
-            domain = exo.dns.get_domain(id=42)
-            assert domain is None
-        assert excinfo.type == ResourceNotFoundError
+        actual = exo.dns.get_domain(name=expected["name"])
+        assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            domain = exo.dns.get_domain(name="lolnope.com")
-            assert domain is None
+            exo.mock_get("?command=listDnsDomains", {"listdnsdomainsreponse": {}})
+            actual = exo.dns.get_domain(name="lolnope")
+            assert actual is None
         assert excinfo.type == ResourceNotFoundError

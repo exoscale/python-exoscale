@@ -2,137 +2,199 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from .conftest import _random_str, _random_uuid
 from base64 import b64decode
-from cs import CloudStackApiException
-from datetime import datetime, timedelta
-from time import sleep
+from datetime import datetime, timezone
 from exoscale.api import ResourceNotFoundError
 from exoscale.api.compute import *
-from .conftest import _random_str
+from urllib.parse import parse_qs, urljoin, urlparse
 
 
 class TestCompute:
     ### Anti-Affinity Group
-
-    def test_create_anti_affinity_group(self, exo, test_prefix, test_description):
-        anti_affinity_group_name = "-".join([test_prefix, _random_str()])
-        anti_affinity_group = exo.compute.create_anti_affinity_group(
-            name=anti_affinity_group_name, description=test_description
+    def test_create_anti_affinity_group(self, exo, aag):
+        anti_affinity_group_name = _random_str()
+        anti_affinity_group_description = _random_str()
+        expected = aag(
+            name=anti_affinity_group_name,
+            description=anti_affinity_group_description,
         )
-        assert anti_affinity_group.id != ""
-        assert anti_affinity_group.name == anti_affinity_group_name
-        assert anti_affinity_group.description == test_description
 
-        exo.compute.cs.deleteAffinityGroup(id=anti_affinity_group.id)
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["name"][0] == anti_affinity_group_name
+            assert params["description"][0] == anti_affinity_group_description
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "createaffinitygroupresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=createAffinityGroup", _assert_request)
+        exo.mock_query_async_job_result({"affinitygroup": expected})
+
+        actual = exo.compute.create_anti_affinity_group(
+            name=anti_affinity_group_name, description=anti_affinity_group_description
+        )
+        assert actual.id == expected["id"]
+        assert actual.name == expected["name"]
+        assert actual.description == expected["description"]
 
     def test_list_anti_affinity_groups(self, exo, aag):
-        anti_affinity_group = AntiAffinityGroup._from_cs(exo.compute, aag())
+        expected = aag()
 
-        anti_affinity_groups = list(exo.compute.list_anti_affinity_groups())
-        # We cannot guarantee that there will be only our resources in the
-        # testing environment, so we ensure we get at least our fixture anti-affinity group
-        assert len(anti_affinity_groups) >= 1
+        exo.mock_list("listAffinityGroups", [expected])
+        actual = list(exo.compute.list_anti_affinity_groups())
+        assert len(actual) == 1
+        assert actual[0].id == expected["id"]
 
     def test_get_anti_affinity_group(self, exo, aag):
-        anti_affinity_group1 = AntiAffinityGroup._from_cs(exo.compute, aag())
-        anti_affinity_group2 = AntiAffinityGroup._from_cs(exo.compute, aag())
+        expected = aag()
 
-        anti_affinity_group = exo.compute.get_anti_affinity_group(
-            id=anti_affinity_group1.id
+        exo.mock_get(
+            "?command=listAffinityGroups&id={}".format(expected["id"]),
+            {"listaffinitygroupsresponse": {"count": 1, "affinitygroup": [expected]}},
         )
-        assert anti_affinity_group.id == anti_affinity_group1.id
+        actual = exo.compute.get_anti_affinity_group(id=expected["id"])
+        assert actual.id == expected["id"]
 
-        anti_affinity_group = exo.compute.get_anti_affinity_group(
-            name=anti_affinity_group2.name
+        exo.mock_get(
+            "?command=listAffinityGroups&name={}".format(expected["name"]),
+            {"listaffinitygroupsresponse": {"count": 1, "affinitygroup": [expected]}},
         )
-        assert anti_affinity_group.id == anti_affinity_group2.id
+        actual = exo.compute.get_anti_affinity_group(name=expected["name"])
+        assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            anti_affinity_group = exo.compute.get_anti_affinity_group(
-                id="00000000-0000-0000-0000-000000000000"
+            exo.mock_get(
+                "?command=listAffinityGroups&id=lolnope",
+                {"listaffinitygroupsresponse": {}},
             )
-            assert anti_affinity_group is None
-        assert excinfo.type == ResourceNotFoundError
-
-        with pytest.raises(ResourceNotFoundError) as excinfo:
-            anti_affinity_group = exo.compute.get_anti_affinity_group(name="lolnope")
-            assert anti_affinity_group is None
+            actual = exo.compute.get_anti_affinity_group(id="lolnope")
+            assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
     ### Elastic IP
 
-    def test_create_elastic_ip(self, exo, zone, test_description):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        healthcheck_mode = "https"
-        healthcheck_port = 443
-        healthcheck_path = "/health"
-        healthcheck_interval = 5
-        healthcheck_timeout = 3
-        healthcheck_strikes_ok = 2
-        healthcheck_strikes_fail = 1
-        healthcheck_tls_sni = "example.net"
-        healthcheck_tls_skip_verify = True
-
-        elastic_ip = exo.compute.create_elastic_ip(
-            zone=zone,
-            description=test_description,
-            healthcheck_mode=healthcheck_mode,
-            healthcheck_port=healthcheck_port,
-            healthcheck_path=healthcheck_path,
-            healthcheck_interval=healthcheck_interval,
-            healthcheck_timeout=healthcheck_timeout,
-            healthcheck_strikes_ok=healthcheck_strikes_ok,
-            healthcheck_strikes_fail=healthcheck_strikes_fail,
-            healthcheck_tls_sni=healthcheck_tls_sni,
-            healthcheck_tls_skip_verify=healthcheck_tls_skip_verify,
+    def test_create_elastic_ip(self, exo, zone, eip):
+        zone = Zone._from_cs(zone())
+        elastic_ip_description = _random_str()
+        elastic_ip_healthcheck = {
+            "mode": "https",
+            "port": 443,
+            "path": "/health",
+            "interval": 5,
+            "strikes-ok": 3,
+            "strikes-fail": 1,
+            "timeout": 3,
+            "tls-sni": "example.net",
+            "tls-skip-verify": True,
+        }
+        expected = eip(
+            zone_id=zone.id,
+            description=elastic_ip_description,
+            healthcheck=elastic_ip_healthcheck,
         )
-        assert elastic_ip.zone.id == zone.id
-        assert elastic_ip.zone.name == zone.name
-        assert elastic_ip.address != ""
-        assert elastic_ip.description == test_description
-        assert elastic_ip.healthcheck_mode == healthcheck_mode
-        assert elastic_ip.healthcheck_port == healthcheck_port
-        assert elastic_ip.healthcheck_path == healthcheck_path
-        assert elastic_ip.healthcheck_interval == healthcheck_interval
-        assert elastic_ip.healthcheck_timeout == healthcheck_timeout
-        assert elastic_ip.healthcheck_strikes_ok == healthcheck_strikes_ok
-        assert elastic_ip.healthcheck_strikes_fail == healthcheck_strikes_fail
-        assert elastic_ip.healthcheck_tls_sni == healthcheck_tls_sni
-        assert elastic_ip.healthcheck_tls_skip_verify == healthcheck_tls_skip_verify
 
-        exo.compute.cs.disassociateIpAddress(id=elastic_ip.id)
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["zoneid"][0] == expected["zoneid"]
+            assert params["description"][0] == elastic_ip_description
+            assert params["mode"][0] == expected["healthcheck"]["mode"]
+            assert params["port"][0] == str(expected["healthcheck"]["port"])
+            assert params["path"][0] == str(expected["healthcheck"]["path"])
+            assert params["interval"][0] == str(expected["healthcheck"]["interval"])
+            assert params["strikes-ok"][0] == str(expected["healthcheck"]["strikes-ok"])
+            assert params["strikes-fail"][0] == str(
+                expected["healthcheck"]["strikes-fail"]
+            )
+            assert params["timeout"][0] == str(expected["healthcheck"]["timeout"])
+            assert params["tls-sni"][0] == expected["healthcheck"]["tls-sni"]
+            assert params["tls-skip-verify"][0] == str(
+                expected["healthcheck"]["tls-skip-verify"]
+            )
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "associateipaddressresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=associateIpAddress", _assert_request)
+        exo.mock_query_async_job_result({"ipaddress": expected})
+
+        actual = exo.compute.create_elastic_ip(
+            zone=zone,
+            description=elastic_ip_description,
+            healthcheck_mode=expected["healthcheck"]["mode"],
+            healthcheck_port=expected["healthcheck"]["port"],
+            healthcheck_path=expected["healthcheck"]["path"],
+            healthcheck_interval=expected["healthcheck"]["interval"],
+            healthcheck_timeout=expected["healthcheck"]["timeout"],
+            healthcheck_strikes_ok=expected["healthcheck"]["strikes-ok"],
+            healthcheck_strikes_fail=expected["healthcheck"]["strikes-fail"],
+            healthcheck_tls_sni=expected["healthcheck"]["tls-sni"],
+            healthcheck_tls_skip_verify=expected["healthcheck"]["tls-skip-verify"],
+        )
+        assert actual.zone == zone
+        assert actual.address == expected["ipaddress"]
+        assert actual.description == expected["description"]
+        assert actual.healthcheck_mode == expected["healthcheck"]["mode"]
+        assert actual.healthcheck_port == expected["healthcheck"]["port"]
+        assert actual.healthcheck_path == expected["healthcheck"]["path"]
+        assert actual.healthcheck_interval == expected["healthcheck"]["interval"]
+        assert actual.healthcheck_timeout == expected["healthcheck"]["timeout"]
+        assert actual.healthcheck_strikes_ok == expected["healthcheck"]["strikes-ok"]
+        assert (
+            actual.healthcheck_strikes_fail == expected["healthcheck"]["strikes-fail"]
+        )
+        assert actual.healthcheck_tls_sni == expected["healthcheck"]["tls-sni"]
+        assert (
+            actual.healthcheck_tls_skip_verify
+            == expected["healthcheck"]["tls-skip-verify"]
+        )
 
     def test_list_elastic_ips(self, exo, zone, eip):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        elastic_ip = eip(zone_id=zone.id)
+        zone = Zone._from_cs(zone())
+        expected = eip()
 
-        elastic_ips = list(exo.compute.list_elastic_ips(zone=zone))
-        # We cannot guarantee that there will be only our resources in the
-        # testing environment, so we ensure we get at least our fixture Elastic IP
-        assert len(elastic_ips) >= 1
+        exo.mock_list("listPublicIpAddresses", [expected])
+        actual = list(exo.compute.list_elastic_ips(zone=zone))
+        assert len(actual) == 1
+        assert actual[0].id == expected["id"]
 
-    def test_get_elastic_ip(self, exo, zone, eip, test_description):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        elastic_ip1 = ElasticIP._from_cs(exo.compute, eip())
-        elastic_ip2 = ElasticIP._from_cs(exo.compute, eip())
+    def test_get_elastic_ip(self, exo, zone, eip):
+        zone = Zone._from_cs(zone())
+        expected = eip()
 
-        elastic_ip = exo.compute.get_elastic_ip(zone=zone, id=elastic_ip1.id)
-        assert elastic_ip.id == elastic_ip1.id
-        assert elastic_ip.description == test_description
+        exo.mock_get(
+            "?command=listPublicIpAddresses&id={}".format(expected["id"]),
+            {"listpublicipaddressesresponse": {"count": 1, "ipaddress": [expected]}},
+        )
+        actual = exo.compute.get_elastic_ip(zone, id=expected["id"])
+        assert actual.id == expected["id"]
 
-        elastic_ip = exo.compute.get_elastic_ip(zone=zone, address=elastic_ip2.address)
-        assert elastic_ip.id == elastic_ip2.id
+        exo.mock_get(
+            "?command=listPublicIpAddresses&ipaddress={}".format(expected["ipaddress"]),
+            {"listpublicipaddressesresponse": {"count": 1, "ipaddress": [expected]}},
+        )
+        actual = exo.compute.get_elastic_ip(zone, address=expected["ipaddress"])
+        assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            elastic_ip = exo.compute.get_elastic_ip(
-                zone=zone, id="00000000-0000-0000-0000-000000000000"
+            exo.mock_get(
+                "?command=listPublicIpAddresses&id=lolnope",
+                {"listpublicipaddressesresponse": {}},
             )
-            assert elastic_ip is None
-        assert excinfo.type == ResourceNotFoundError
-
-        with pytest.raises(ResourceNotFoundError) as excinfo:
-            elastic_ip = exo.compute.get_elastic_ip(zone=zone, address="1.2.3.4")
-            assert elastic_ip is None
+            actual = exo.compute.get_elastic_ip(zone, id="lolnope")
+            assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
     ### Instance
@@ -147,184 +209,293 @@ class TestCompute:
         sshkey,
         instance_type,
         instance_template,
-        test_prefix,
-        test_instance_service_offering_id,
-        test_instance_template_id,
+        instance,
     ):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        instance_type = InstanceType._from_cs(
-            instance_type(id=test_instance_service_offering_id)
+        zone = zone()
+        instance_type = instance_type()
+        instance_template = instance_template()
+        anti_affinity_group = aag()
+        private_network = privnet()
+        security_group = sg()
+        ssh_key = sshkey()
+        instance_name = _random_str()
+        instance_volume_size = 20
+        instance_volume_size_bytes = instance_volume_size * 1024 ** 3
+        instance_creation_date = datetime.now(tz=timezone.utc).strftime(
+            "%Y-%m-%dT%H:%M:%S+0000"
         )
-        instance_template = InstanceTemplate._from_cs(
-            exo.compute, instance_template(id=test_instance_template_id)
-        )
-        anti_affinity_group = AntiAffinityGroup._from_cs(exo.compute, aag())
-        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
-        security_group1 = SecurityGroup._from_cs(exo.compute, sg())
-        security_group2 = SecurityGroup._from_cs(exo.compute, sg())
-        ssh_key = SSHKey._from_cs(exo.compute, sshkey())
-        instance_name = "-".join([test_prefix, _random_str()])
 
-        instance = exo.compute.create_instance(
+        expected = instance(
+            zone_id=zone["id"],
             name=instance_name,
-            zone=zone,
-            type=instance_type,
-            template=instance_template,
+            created=instance_creation_date,
+            type_id=instance_type["id"],
+            template_id=instance_template["id"],
+            security_group_ids=[security_group["id"]],
+            anti_affinity_group_ids=[anti_affinity_group["id"]],
+            private_network_ids=[private_network["id"]],
+            keypair=ssh_key["name"],
+        )
+
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["zoneid"][0] == expected["zoneid"]
+            assert params["name"][0] == expected["name"]
+            assert params["templateid"][0] == expected["templateid"]
+            assert params["serviceofferingid"][0] == expected["serviceofferingid"]
+            assert params["securitygroupids"] == [security_group["id"]]
+            assert params["affinitygroupids"] == [anti_affinity_group["id"]]
+            assert params["networkids"] == [private_network["id"]]
+            assert params["keypair"][0] == expected["keypair"]
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "deployvirtualmachineresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=deployVirtualMachine", _assert_request)
+        exo.mock_query_async_job_result({"virtualmachine": expected})
+
+        exo.mock_list(
+            "listVolumes",
+            [
+                {
+                    "id": _random_uuid(),
+                    "type": "ROOT",
+                    "size": instance_volume_size_bytes,
+                }
+            ],
+        )
+        exo.mock_list("listServiceOfferings", [instance_type])
+        exo.mock_list("listTemplates", [instance_template])
+        exo.mock_list("listSSHKeyPairs", [ssh_key])
+
+        actual = exo.compute.create_instance(
+            zone=Zone._from_cs(zone),
+            name=instance_name,
+            type=InstanceType._from_cs(instance_type),
+            template=InstanceTemplate._from_cs(exo.compute, instance_template, zone),
             volume_size=20,
-            security_groups=[security_group1, security_group2],
-            anti_affinity_groups=[anti_affinity_group],
-            private_networks=[private_network],
+            security_groups=[SecurityGroup._from_cs(exo.compute, security_group)],
+            anti_affinity_groups=[
+                AntiAffinityGroup._from_cs(exo.compute, anti_affinity_group)
+            ],
+            private_networks=[
+                PrivateNetwork._from_cs(exo.compute, private_network, zone)
+            ],
             enable_ipv6=True,
-            ssh_key=ssh_key,
+            ssh_key=SSHKey._from_cs(exo.compute, ssh_key),
         )
-        assert instance.id != ""
-        assert instance.name == instance_name
-        assert datetime.now() - instance.creation_date.replace(tzinfo=None) < timedelta(
-            minutes=2
-        )
-        assert instance.zone.id == zone.id
-        assert instance.type.id == instance_type.id
-        assert instance.template.id == instance_template.id
-        assert instance.volume_size == 21474836480  # 20 GB
-        assert instance.ipv4_address != ""
-        assert instance.ipv6_address != ""
-        assert instance.ssh_key.name == ssh_key.name
+        assert actual.zone.id == zone["id"]
+        assert actual.id == expected["id"]
+        assert actual.name == expected["name"]
         assert (
-            list(i["name"] for i in instance.res["securitygroup"]).sort()
-            == [security_group1.name, security_group2.name].sort()
+            actual.creation_date.strftime("%Y-%m-%dT%H:%M:%S+0000")
+            == instance_creation_date
         )
-        assert instance.res["affinitygroup"][0]["id"] == anti_affinity_group.id
-        assert (
-            list(i for i in instance.res["nic"] if not i["isdefault"])[0]["networkid"]
-            == private_network.id
+        assert actual.type.id == instance_type["id"]
+        assert actual.template.id == instance_template["id"]
+        assert actual.volume_size == instance_volume_size_bytes
+        assert actual.ipv4_address == expected["nic"][0]["ipaddress"]
+        assert actual.ipv6_address == expected["nic"][0]["ip6address"]
+        assert actual.ssh_key.name == ssh_key["name"]
+
+    def test_list_instances(
+        self,
+        exo,
+        zone,
+        instance_type,
+        instance_template,
+        privnet,
+        instance,
+    ):
+        zone = Zone._from_cs(zone())
+        expected = instance()
+
+        exo.mock_list(
+            "listVolumes",
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
         )
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
+        exo.mock_list("listVirtualMachines", [expected])
 
-        exo.compute.cs.destroyVirtualMachine(id=instance.id)
+        actual = list(exo.compute.list_instances(zone=zone))
+        assert len(actual) == 1
+        assert actual[0].id == expected["id"]
 
-    def test_list_instances(self, exo, zone, privnet, instance):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
-        instance = Instance._from_cs(exo.compute, instance())
+    def test_get_instance(self, exo, zone, instance_type, instance_template, instance):
+        zone = Zone._from_cs(zone())
+        expected = instance()
 
-        instances = list(exo.compute.list_instances(zone=zone))
-        # We cannot guarantee that there will be only our resources in the
-        # testing environment, so we ensure we get at least our fixture instance
-        assert len(instances) >= 1
-
-        instances = list(exo.compute.list_instances(zone=zone, name=instance.name))
-        assert len(instances) == 1
-
-        res = exo.compute.cs.addNicToVirtualMachine(
-            virtualmachineid=instance.id, networkid=private_network.id
+        exo.mock_list(
+            "listVolumes",
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
         )
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
 
-        instances = list(
-            exo.compute.list_instances(zone=zone, networkid=private_network.id)
+        exo.mock_get(
+            "?command=listVirtualMachines&id={}".format(expected["id"]),
+            {"listvirtualmachinesresponse": {"count": 1, "virtualmachine": [expected]}},
         )
-        assert len(instances) == 1
+        actual = exo.compute.get_instance(zone=zone, id=expected["id"])
+        assert actual.id == expected["id"]
 
-        for nic in res["virtualmachine"]["nic"]:
-            if nic["isdefault"]:
-                continue
-            exo.compute.cs.removeNicFromVirtualMachine(
-                virtualmachineid=instance.id, nicid=nic["id"]
-            )
-
-    def test_get_instance(self, exo, zone, privnet, instance):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
-        instance = Instance._from_cs(exo.compute, instance())
-
-        _instance = exo.compute.get_instance(zone=zone, id=instance.id)
-        assert _instance.id == instance.id
-
-        _instance = exo.compute.get_instance(
-            zone=zone, ip_address=instance.ipv4_address
+        exo.mock_get(
+            "?command=listVirtualMachines&ipaddress={}".format(
+                expected["nic"][0]["ipaddress"]
+            ),
+            {"listvirtualmachinesresponse": {"count": 1, "virtualmachine": [expected]}},
         )
-        assert _instance.id == instance.id
+        actual = exo.compute.get_instance(
+            zone=zone, ip_address=expected["nic"][0]["ipaddress"]
+        )
+        assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            _instance = exo.compute.get_instance(
-                zone=zone, id="00000000-0000-0000-0000-000000000000"
+            exo.mock_get(
+                "?command=listVirtualMachines&id=lolnope",
+                {"listvirtualmachinesresponse": {}},
             )
-            assert _instance is None
+
+            actual = exo.compute.get_instance(zone=zone, id="lolnope")
+            assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
     ### Instance Template
 
-    def test_list_instance_templates(
-        self, exo, zone, test_instance_template_id, test_instance_template_name
-    ):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-
-        instance_templates = list(exo.compute.list_instance_templates(zone=zone))
-        assert len(instance_templates) > 10
-
-        instance_templates = list(
-            exo.compute.list_instance_templates(
-                zone=zone, name=test_instance_template_name
-            )
+    def test_register_instance_template(self, exo, zone, instance_template):
+        zone = Zone._from_cs(zone())
+        expected = instance_template(
+            zone_id=zone.res["id"],
+            displaytext=_random_str(),
+            details={"username": _random_str()},
         )
-        assert len(instance_templates) == 1
+        url = _random_str()
+        boot_mode = "uefi"
 
-    def test_get_instance_template(self, exo, zone, test_instance_template_id):
-        zone = Zone._from_cs(zone("ch-gva-2"))
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["zoneid"][0] == zone.res["id"]
+            assert params["name"][0] == expected["name"]
+            assert params["displaytext"][0] == expected["displaytext"]
+            assert params["url"][0] == url
+            assert params["checksum"][0] == expected["checksum"]
+            assert params["bootmode"][0] == boot_mode
+            assert params["details[0].username"][0] == expected["details"]["username"]
+            assert params["sshkeyenabled"][0] == str(expected["sshkeyenabled"])
+            assert params["passwordenabled"][0] == str(expected["passwordenabled"])
 
-        instance_template = exo.compute.get_instance_template(
-            zone=zone, id=test_instance_template_id
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "registercustomtemplateresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=registerCustomTemplate", _assert_request)
+        exo.mock_query_async_job_result({"template": [expected]})
+
+        actual = exo.compute.register_instance_template(
+            zone=zone,
+            url=url,
+            checksum=expected["checksum"],
+            name=expected["name"],
+            description=expected["displaytext"],
+            bootmode=boot_mode,
+            username=expected["details"]["username"],
+            disable_ssh_key=not expected["sshkeyenabled"],
+            disable_password_reset=not expected["passwordenabled"],
         )
-        assert instance_template.id == test_instance_template_id
+        assert actual.zone.id == zone.res["id"]
+        assert actual.id == expected["id"]
+        assert actual.name == expected["name"]
+        assert actual.description == expected["displaytext"]
+        assert actual.size == expected["size"]
+        assert actual.boot_mode == expected["bootmode"]
+        assert actual.username == expected["details"]["username"]
+        assert actual.ssh_key_enabled == expected["sshkeyenabled"]
+        assert actual.password_reset_enabled == expected["sshkeyenabled"]
+
+    def test_list_instance_templates(self, exo, zone, instance_template):
+        zone = Zone._from_cs(zone())
+        expected = instance_template()
+
+        exo.mock_list("listTemplates", [expected])
+        actual = list(exo.compute.list_instance_templates(zone))
+        assert len(actual) == 1
+        assert actual[0].id == expected["id"]
+
+    def test_get_instance_template(self, exo, zone, instance_template):
+        zone = Zone._from_cs(zone())
+        expected = instance_template()
+
+        exo.mock_get(
+            "?command=listTemplates&id={}".format(expected["id"]),
+            {"listtemplatesresponse": {"count": 1, "template": [expected]}},
+        )
+        actual = exo.compute.get_instance_template(zone, id=expected["id"])
+        assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            instance_template = exo.compute.get_instance_template(
-                zone=zone, id="00000000-0000-0000-0000-000000000000"
+            exo.mock_get(
+                "?command=listTemplates&id=lolnope", {"listtemplatesresponse": {}}
             )
-            assert instance_template is None
+            actual = exo.compute.get_instance_template(zone, id="lolnope")
+            assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
     ### Instance Type
 
-    def test_list_instance_types(self, exo):
-        expected_type_name = "Micro"
-        expected_type_id = "71004023-bb72-4a97-b1e9-bc66dfce9470"  # Micro
-        expected_types = [
-            "Micro",
-            "Tiny",
-            "Small",
-            "Medium",
-            "Large",
-            "Extra-large",
-            "Huge",
-            "Mega",
-            "Titan",
-            "Jumbo",
-        ]
+    def test_list_instance_types(self, exo, instance_type):
+        expected = instance_type()
 
-        types = list(exo.compute.list_instance_types())
-        assert len(types) > len(expected_types)
+        exo.mock_list("listServiceOfferings", [expected])
+        actual = list(exo.compute.list_instance_types())
+        assert len(actual) == 1
+        assert actual[0].id == expected["id"]
 
-    def test_get_instance_type(self, exo):
-        expected_type_name = "Micro"
-        expected_type_id = "71004023-bb72-4a97-b1e9-bc66dfce9470"  # Micro
+    def test_get_instance_type(self, exo, instance_type):
+        expected = instance_type()
 
-        instance_type = exo.compute.get_instance_type(name=expected_type_name)
-        assert instance_type.name == expected_type_name
-        assert instance_type.id == expected_type_id
+        exo.mock_get(
+            "?command=listServiceOfferings&name={}".format(expected["name"]),
+            {
+                "listserviceofferingsresponse": {
+                    "count": 1,
+                    "serviceoffering": [expected],
+                }
+            },
+        )
+        actual = exo.compute.get_instance_type(name=expected["name"])
+        assert actual.id == expected["id"]
 
-        instance_type = exo.compute.get_instance_type(id=expected_type_id)
-        assert instance_type.name == expected_type_name
-        assert instance_type.id == expected_type_id
+        exo.mock_get(
+            "?command=listServiceOfferings&id={}".format(expected["id"]),
+            {
+                "listserviceofferingsresponse": {
+                    "count": 1,
+                    "serviceoffering": [expected],
+                }
+            },
+        )
+        actual = exo.compute.get_instance_type(id=expected["id"])
+        assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            instance_type = exo.compute.get_instance_type(
-                id="00000000-0000-0000-0000-000000000000"
+            exo.mock_get(
+                "?command=listServiceOfferings&name=lolnope",
+                {"listserviceofferingsresponse": {}},
             )
-            assert instance_type is None
-        assert excinfo.type == ResourceNotFoundError
-
-        with pytest.raises(ResourceNotFoundError) as excinfo:
-            instance_type = exo.compute.get_instance_type(name="lolnope")
-            assert instance_type is None
+            actual = exo.compute.get_instance_type(name="lolnope")
+            assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
     ### Instance Pool
@@ -333,324 +504,446 @@ class TestCompute:
         self,
         exo,
         zone,
+        aag,
         sg,
         privnet,
         sshkey,
         instance_type,
         instance_template,
-        test_prefix,
-        test_description,
-        test_instance_service_offering_id,
-        test_instance_template_id,
-        test_instance_user_data,
+        instance_pool,
     ):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        instance_pool_name = "-".join([test_prefix, _random_str()])
+        zone = zone()
+        instance_type = instance_type()
+        instance_template = instance_template()
+        anti_affinity_group = aag()
+        private_network = privnet()
+        security_group = sg()
+        ssh_key = sshkey()
+        instance_pool_name = _random_str()
+        instance_pool_description = _random_str()
         instance_pool_size = 1
-        instance_type = InstanceType._from_cs(instance_type())
-        instance_template = InstanceTemplate._from_cs(
-            exo.compute, instance_template(id=test_instance_template_id)
+        instances_volume_size = 20
+        instance_pool_creation_date = datetime.now(tz=timezone.utc).strftime(
+            "%Y-%m-%dT%H:%M:%S+0000"
         )
-        private_network = PrivateNetwork._from_cs(exo.compute, privnet(zone_id=zone.id))
-        security_group = SecurityGroup._from_cs(exo.compute, sg())
-        ssh_key = SSHKey._from_cs(exo.compute, sshkey())
+        instance_pool_userdata = _random_str()
 
-        instance_pool = exo.compute.create_instance_pool(
-            zone=zone,
+        expected = instance_pool(
+            zone_id=zone["id"],
             name=instance_pool_name,
-            description=test_description,
-            size=instance_pool_size,
-            instance_type=instance_type,
-            instance_template=instance_template,
-            instance_volume_size=20,
-            instance_security_groups=[security_group],
-            instance_private_networks=[private_network],
-            instance_ssh_key=ssh_key,
-            instance_user_data=test_instance_user_data,
+            description=instance_pool_description,
+            created=instance_pool_creation_date,
+            type_id=instance_type["id"],
+            template_id=instance_template["id"],
+            rootdisksize=instances_volume_size,
+            security_group_ids=[security_group["id"]],
+            anti_affinity_group_ids=[anti_affinity_group["id"]],
+            private_network_ids=[private_network["id"]],
+            keypair=ssh_key["name"],
+            userdata=instance_pool_userdata,
         )
 
-        [actual_instance_pool] = exo.compute.cs.getInstancePool(
-            id=instance_pool.id, zoneid=zone.id, fetch_list=True
-        )
-
-        assert instance_pool.zone.id == zone.id
-        assert instance_pool.id == actual_instance_pool["id"]
-        assert instance_pool.name == instance_pool_name
-        assert actual_instance_pool["name"] == instance_pool_name
-        assert instance_pool.description == test_description
-        assert actual_instance_pool["description"] == test_description
-        assert instance_pool.size == instance_pool_size
-        assert actual_instance_pool["size"] == instance_pool_size
-        assert instance_pool.instance_type.id == instance_type.id
-        assert actual_instance_pool["serviceofferingid"] == instance_type.id
-        assert instance_pool.instance_template.id == instance_template.id
-        assert actual_instance_pool["templateid"] == instance_template.id
-        assert instance_pool.instance_volume_size == 20
-        assert actual_instance_pool["rootdisksize"] == 20
-        assert (
-            b64decode(instance_pool.instance_user_data).decode("utf-8")
-            == test_instance_user_data
-        )
-        assert (
-            b64decode(actual_instance_pool["userdata"]).decode("utf-8")
-            == test_instance_user_data
-        )
-
-        exo.compute.cs.destroyInstancePool(id=instance_pool.id, zoneid=zone.id)
-
-        # We have to delay the end of the test until the Instance Pool and its managed
-        # Compute instances are effectively destroyed, otherwise the referenced fixtures
-        # teardown will fail as it's not possible to delete resources still being
-        # referenced by a Compute instance or Instance Pool.
-        # Grab a seat, this can take a while...
-        t = datetime.now()
-        while (
-            len(
-                list(
-                    i
-                    for i in exo.compute.cs.listInstancePools(
-                        zoneid=zone.id, fetch_list=True
-                    )
-                    if i["id"] == instance_pool.id
-                )
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["zoneid"][0] == expected["zoneid"]
+            assert params["name"][0] == instance_pool_name
+            assert params["size"][0] == str(expected["size"])
+            assert params["templateid"][0] == expected["templateid"]
+            assert params["serviceofferingid"][0] == expected["serviceofferingid"]
+            assert params["securitygroupids"] == [security_group["id"]]
+            assert params["affinitygroupids"] == [anti_affinity_group["id"]]
+            assert params["networkids"] == [private_network["id"]]
+            assert params["keypair"][0] == expected["keypair"]
+            assert (
+                b64decode(params["userdata"][0]).decode("utf-8") == expected["userdata"]
             )
-            > 0
-        ) and datetime.now() - t < timedelta(minutes=5):
-            sleep(10)
 
-    def test_list_instance_pools(self, exo, zone, instance_pool):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        instance_pool = InstancePool._from_cs(
-            exo.compute, instance_pool(zone_id=zone.id)
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "createinstancepoolresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=createInstancePool", _assert_request)
+        exo.mock_query_async_job_result(expected)
+        exo.mock_list("listServiceOfferings", [instance_type])
+        exo.mock_list("listTemplates", [instance_template])
+
+        actual = exo.compute.create_instance_pool(
+            zone=Zone._from_cs(zone),
+            name=instance_pool_name,
+            size=instance_pool_size,
+            description=instance_pool_description,
+            instance_type=InstanceType._from_cs(instance_type),
+            instance_template=InstanceTemplate._from_cs(
+                exo.compute, instance_template, Zone._from_cs(zone)
+            ),
+            instance_volume_size=instances_volume_size,
+            instance_security_groups=[
+                SecurityGroup._from_cs(exo.compute, security_group)
+            ],
+            instance_anti_affinity_groups=[
+                AntiAffinityGroup._from_cs(exo.compute, anti_affinity_group)
+            ],
+            instance_private_networks=[
+                PrivateNetwork._from_cs(
+                    exo.compute, private_network, Zone._from_cs(zone)
+                )
+            ],
+            instance_ssh_key=SSHKey._from_cs(exo.compute, ssh_key),
+            instance_user_data=instance_pool_userdata,
         )
+        assert actual.zone.id == zone["id"]
+        assert actual.id == expected["id"]
+        assert actual.name == instance_pool_name
+        assert actual.description == instance_pool_description
+        assert actual.size == instance_pool_size
+        assert actual.instance_type.id == instance_type["id"]
+        assert actual.instance_template.id == instance_template["id"]
+        assert actual.instance_volume_size == instances_volume_size
+        assert actual.instance_user_data == instance_pool_userdata
 
-        instance_pools = list(exo.compute.list_instance_pools(zone=zone))
-        # We cannot guarantee that there will be only our resources in the
-        # testing environment, so we ensure we get at least our fixture Instance Pool
-        assert len(instance_pools) >= 1
+    def test_list_instance_pools(
+        self, exo, zone, instance_type, instance_template, instance_pool
+    ):
+        zone = zone()
+        expected = instance_pool()
 
-    def test_get_instance_pool(self, exo, zone, instance_pool):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        instance_pool = InstancePool._from_cs(
-            exo.compute, instance_pool(zone_id=zone.id)
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
+
+        exo.mock_list("listInstancePools", [expected])
+        actual = list(exo.compute.list_instance_pools(zone=Zone._from_cs(zone)))
+        assert len(actual) == 1
+        assert actual[0].id == expected["id"]
+
+    def test_get_instance_pool(
+        self, exo, zone, instance_type, instance_template, instance_pool
+    ):
+        zone = zone()
+        expected = instance_pool()
+
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
+
+        exo.mock_get(
+            "?command=getInstancePool&id={}".format(expected["id"]),
+            {"listinstancepoolsresponse": {"count": 1, "instancepool": [expected]}},
         )
-
-        _instance_pool = exo.compute.get_instance_pool(zone=zone, id=instance_pool.id)
-        assert _instance_pool.id == instance_pool.id
+        actual = exo.compute.get_instance_pool(Zone._from_cs(zone), id=expected["id"])
+        assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            _instance_pool = exo.compute.get_instance_pool(
-                zone=zone, id="00000000-0000-0000-0000-000000000000"
+            exo.mocker.get(
+                urljoin(exo.compute.endpoint, "?command=getInstancePool&id=lolnope"),
+                status_code=404,
+                json={"errorresponse": {"errortext": "entity does not exist"}},
+                headers={"Content-Type": "application/json"},
             )
-            assert _instance_pool is None
+            actual = exo.compute.get_instance_pool(Zone._from_cs(zone), id="lolnope")
         assert excinfo.type == ResourceNotFoundError
 
     ### Network Load Balancer
 
-    def test_create_network_load_balancer(
-        self, exo, zone, test_prefix, test_description
-    ):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        nlb_name = "-".join([test_prefix, _random_str()])
+    def test_create_network_load_balancer(self, exo, zone, nlb):
+        zone = zone()
+        nlb_name = _random_str()
+        nlb_description = _random_str()
+        nlb_creation_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+        operation_id = _random_uuid()
 
-        nlb = exo.compute.create_network_load_balancer(
-            zone=zone,
+        expected = nlb(
+            zone=zone["name"],
             name=nlb_name,
-            description=test_description,
-        )
-        assert nlb.zone.id == zone.id
-        assert nlb.zone.name == zone.name
-        assert nlb.name == nlb_name
-        assert nlb.description == test_description
-        assert datetime.now() - nlb.creation_date.replace(tzinfo=None) < timedelta(
-            minutes=2
+            description=nlb_description,
+            created=nlb_creation_date,
         )
 
-        res = exo.compute._v2_request_async(
-            "DELETE", "/load-balancer/" + nlb.id, zone.name
+        def _assert_request(request, context):
+            body = json.loads(request.body)
+            assert body["name"] == nlb_name
+            assert body["description"] == nlb_description
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "id": operation_id,
+                "state": "success",
+                "reference": {"id": expected["id"]},
+            }
+
+        exo.mock_post(zone["name"], "load-balancer", _assert_request)
+        exo.mock_get_operation(zone["name"], operation_id, expected["id"])
+        exo.mock_get_v2(zone["name"], "load-balancer", {"load-balancers": [expected]})
+        actual = exo.compute.create_network_load_balancer(
+            zone=Zone._from_cs(zone),
+            name=nlb_name,
+            description=nlb_description,
         )
+        assert actual.zone.name == zone["name"]
+        assert actual.name == expected["name"]
+        assert actual.description == expected["description"]
+        assert actual.creation_date.strftime("%Y-%m-%dT%H:%M:%SZ") == nlb_creation_date
+        assert actual.ip_address == expected["ip"]
 
     def test_list_network_load_balancers(self, exo, zone, nlb):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        _ = nlb(zone_name=zone.name)
+        zone = zone()
+        expected = nlb(zone=zone["name"])
 
-        nlbs = list(exo.compute.list_network_load_balancers(zone=zone))
-        # We cannot guarantee that there will be only our resources in the
-        # testing environment, so we ensure we get at least our fixture Network Load
-        # Balancer
-        assert len(nlbs) >= 1
+        exo.mock_get_v2(zone["name"], "load-balancer", {"load-balancers": [expected]})
+        actual = list(exo.compute.list_network_load_balancers(zone=Zone._from_cs(zone)))
+        assert len(actual) == 1
+        assert actual[0].id == expected["id"]
 
     def test_get_network_load_balancer(self, exo, zone, nlb):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        nlb = NetworkLoadBalancer._from_api(exo.compute, nlb(), zone)
+        zone = zone()
+        expected = nlb(zone=zone["name"])
 
-        _nlb = exo.compute.get_network_load_balancer(zone=zone, name=nlb.name)
-        assert _nlb.name == nlb.name
+        exo.mock_get_v2(zone["name"], "load-balancer", {"load-balancers": [expected]})
+        actual = exo.compute.get_network_load_balancer(
+            zone=Zone._from_cs(zone), id=expected["id"]
+        )
+        assert actual.id == expected["id"]
 
-        _nlb = exo.compute.get_network_load_balancer(zone=zone, id=nlb.id)
-        assert _nlb.id == nlb.id
+        actual = exo.compute.get_network_load_balancer(
+            zone=Zone._from_cs(zone), name=expected["name"]
+        )
+        assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            _nlb = exo.compute.get_network_load_balancer(
-                zone=zone, id="00000000-0000-0000-0000-000000000000"
+            actual = exo.compute.get_network_load_balancer(
+                zone=Zone._from_cs(zone), id="lolnope"
             )
-            assert _nlb is None
+            assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
     ### Private Network
 
-    def test_create_private_network(self, exo, zone, test_prefix, test_description):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        private_network_name = "-".join([test_prefix, _random_str()])
-        start_ip = "192.168.1.10"
-        end_ip = "192.168.1.100"
-        netmask = "255.255.255.0"
+    def test_create_private_network(self, exo, zone, privnet):
+        zone = zone()
+        private_network_name = _random_str()
+        private_network_description = _random_str()
+        private_network_start_ip = "192.168.1.10"
+        private_network_end_ip = "192.168.1.100"
+        private_network_netmask = "255.255.255.0"
 
-        private_network = exo.compute.create_private_network(
-            zone=zone,
-            name=private_network_name,
-            description=test_description,
-            start_ip=start_ip,
-            end_ip=end_ip,
-            netmask=netmask,
+        expected = privnet(
+            zone_id=zone["id"],
+            description=private_network_description,
+            startip=private_network_start_ip,
+            endip=private_network_end_ip,
+            netmask=private_network_netmask,
         )
-        assert private_network.zone.id == zone.id
-        assert private_network.zone.name == zone.name
-        assert private_network.name == private_network_name
-        assert private_network.description == test_description
-        assert private_network.start_ip == start_ip
-        assert private_network.end_ip == end_ip
-        assert private_network.netmask == netmask
 
-        exo.compute.cs.deleteNetwork(id=private_network.id)
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["zoneid"][0] == zone["id"]
+            assert params["name"][0] == private_network_name
+            assert params["displaytext"][0] == private_network_description
+            assert params["startip"][0] == private_network_start_ip
+            assert params["endip"][0] == private_network_end_ip
+            assert params["netmask"][0] == private_network_netmask
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "createnetworkresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=createNetwork", _assert_request)
+        exo.mock_query_async_job_result({"network": expected})
+        actual = exo.compute.create_private_network(
+            zone=Zone._from_cs(zone),
+            name=private_network_name,
+            description=private_network_description,
+            start_ip=private_network_start_ip,
+            end_ip=private_network_end_ip,
+            netmask=private_network_netmask,
+        )
+        assert actual.zone.id == zone["id"]
+        assert actual.name == expected["name"]
+        assert actual.description == expected["displaytext"]
+        assert actual.start_ip == expected["startip"]
+        assert actual.end_ip == expected["endip"]
+        assert actual.netmask == expected["netmask"]
 
     def test_list_private_networks(self, exo, zone, privnet):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
+        zone = zone()
+        expected = privnet()
 
-        private_networks = list(exo.compute.list_private_networks(zone=zone))
-        # We cannot guarantee that there will be only our resources in the
-        # testing environment, so we ensure we get at least our fixture Private Network
-        assert len(private_networks) >= 1
-
-        private_networks = list(
-            exo.compute.list_private_networks(zone=zone, name=private_network.name)
-        )
-        assert len(private_networks) == 1
-        assert private_networks[0].name == private_network.name
+        exo.mock_list("listNetworks", [expected])
+        actual = list(exo.compute.list_private_networks(zone=Zone._from_cs(zone)))
+        assert len(actual) == 1
+        assert actual[0].id == expected["id"]
 
     def test_get_private_network(self, exo, zone, privnet):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
+        zone = zone()
+        expected = privnet()
 
-        _private_network = exo.compute.get_private_network(
-            zone=zone, id=private_network.id
+        exo.mock_get(
+            "?command=listNetworks&id={}".format(expected["id"]),
+            {"listnetworksresponse": {"count": 1, "network": [expected]}},
         )
-        assert _private_network.id == private_network.id
+        actual = exo.compute.get_private_network(Zone._from_cs(zone), id=expected["id"])
+        assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            _private_network = exo.compute.get_private_network(
-                zone=zone, id="00000000-0000-0000-0000-000000000000"
+            exo.mock_get(
+                "?command=listNetworks&id=lolnope", {"listnetworksresponse": {}}
             )
-            assert _private_network is None
+            actual = exo.compute.get_private_network(Zone._from_cs(zone), id="lolnope")
+            assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
     ### Security Group
 
-    def test_create_security_group(self, exo, test_prefix, test_description):
-        security_group_name = "-".join([test_prefix, _random_str()])
-
-        security_group = exo.compute.create_security_group(
-            name=security_group_name, description=test_description
+    def test_create_security_group(self, exo, sg):
+        security_group_name = _random_str()
+        security_group_description = _random_str()
+        expected = sg(
+            name=security_group_name,
+            description=security_group_description,
         )
 
-        assert security_group.id != ""
-        assert security_group.name == security_group_name
-        assert security_group.description == test_description
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["name"][0] == security_group_name
+            assert params["description"][0] == security_group_description
 
-        exo.compute.cs.deleteSecurityGroup(id=security_group.id)
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "createsecuritygroupresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=createSecurityGroup", _assert_request)
+        exo.mock_query_async_job_result({"securitygroup": expected})
+        actual = exo.compute.create_security_group(
+            name=security_group_name, description=security_group_description
+        )
+        assert actual.id == expected["id"]
+        assert actual.name == expected["name"]
+        assert actual.description == expected["description"]
 
     def test_list_security_groups(self, exo, sg):
-        security_group1 = SecurityGroup._from_cs(exo.compute, sg())
-        security_group2 = SecurityGroup._from_cs(exo.compute, sg())
+        expected = sg()
 
-        security_groups = list(exo.compute.list_security_groups())
-        # We cannot guarantee that there will be only our resources in the
-        # testing environment, so we ensure we get at least our 2 fixture security groups
-        assert len(security_groups) >= 2
+        exo.mock_list("listSecurityGroups", [expected])
+        actual = list(exo.compute.list_security_groups())
+        assert len(actual) == 1
+        assert actual[0].id == expected["id"]
 
     def test_get_security_group(self, exo, sg):
-        security_group1 = SecurityGroup._from_cs(exo.compute, sg())
-        security_group2 = SecurityGroup._from_cs(exo.compute, sg())
+        expected = sg()
 
-        security_group = exo.compute.get_security_group(id=security_group1.id)
-        assert security_group.name == security_group1.name
-        assert security_group.description == security_group1.description
+        exo.mock_get(
+            "?command=listSecurityGroups&id={}".format(expected["id"]),
+            {"listsecuritygroupsresponse": {"count": 1, "securitygroups": [expected]}},
+        )
+        actual = exo.compute.get_security_group(id=expected["id"])
+        assert actual.id == expected["id"]
 
-        security_group = exo.compute.get_security_group(name=security_group2.name)
-        assert security_group.name == security_group2.name
-        assert security_group.description == security_group2.description
+        exo.mock_get(
+            "?command=listSecurityGroups&securitygroupname={}".format(expected["name"]),
+            {"listsecuritygroupsresponse": {"count": 1, "securitygroups": [expected]}},
+        )
+        actual = exo.compute.get_security_group(name=expected["name"])
+        assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            security_group = exo.compute.get_security_group(
-                id="00000000-0000-0000-0000-000000000000"
+            exo.mock_get(
+                "?command=listSecurityGroups&id=lolnope",
+                {"listsecuritygroupsresponse": {}},
             )
-            assert security_group is None
-        assert excinfo.type == ResourceNotFoundError
-
-        with pytest.raises(ResourceNotFoundError) as excinfo:
-            security_group = exo.compute.get_security_group(name="lolnope")
-            assert security_group is None
+            actual = exo.compute.get_security_group(id="lolnope")
+            assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
     ### SSH Key
 
-    def test_create_ssh_key(self, exo, test_prefix):
-        ssh_key_name = "-".join([test_prefix, _random_str()])
+    def test_create_ssh_key(self, exo, sshkey):
+        ssh_key_name = _random_str()
 
-        ssh_key = exo.compute.create_ssh_key(name=ssh_key_name)
+        expected = sshkey(name=ssh_key_name)
 
-        assert ssh_key.name == ssh_key_name
-        assert ssh_key.fingerprint != ""
-        assert ssh_key.private_key != ""
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["name"][0] == ssh_key_name
 
-        exo.compute.cs.deleteSSHKeyPair(name=ssh_key.name)
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {"createsshkeypairresponse": {"keypair": expected}}
 
-    def test_register_ssh_key(self, exo, test_prefix):
-        ssh_key_name = "-".join([test_prefix, _random_str()])
+        exo.mock_get("?command=createSSHKeyPair", _assert_request)
+        actual = exo.compute.create_ssh_key(name=ssh_key_name)
+        assert actual.name == expected["name"]
+        assert actual.fingerprint == expected["fingerprint"]
+        assert actual.private_key == expected["privatekey"]
 
-        ssh_key = exo.compute.register_ssh_key(
-            name=ssh_key_name,
-            public_key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGRYWaNYBG/Ld3ZnXGsK9p"
-            + "Zl9kT3B6GXvsslgy/LCjkJvDIP+nL+opAArKZD1P1+SGylCLt8ISdJNNGLtxKp9CL12EG"
-            + "AYqdDvm5PurkpqIkEsfhsIG4dne9hNu7ZW8aHGHDWM62/4uiWOKtbGdv/P33L/Fepzypw"
-            + "pivFsaXwPYVunAgoBQLUAmj/xcwtx7cvKS4zdj0+Iu21CIGU9wsH3ZLS34QiXtCGJyMOp"
-            + "158qld9Oeus3Y/7DQ4w5XvfGn9sddxHOSMwUlNiFVty673X3exgMIc8psZOsHvWZPS0zW"
-            + "x9gEDE95cUU10K6u4vzTr2O6fgDOQBynEUw3CDiHvwRD alice@example.net",
+    def test_register_ssh_key(self, exo, sshkey):
+        ssh_key_name = _random_str()
+        ssh_key_public_key = (
+            "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGRYWaNYBG/Ld3ZnXGsK9pZl9kT3B6GX"
+            + "vsslgy/LCjkJvDIP+nL+opAArKZD1P1+SGylCLt8ISdJNNGLtxKp9CL12EGAYqdDvm5P"
+            + "urkpqIkEsfhsIG4dne9hNu7ZW8aHGHDWM62/4uiWOKtbGdv/P33L/FepzypwpivFsaXw"
+            + "PYVunAgoBQLUAmj/xcwtx7cvKS4zdj0+Iu21CIGU9wsH3ZLS34QiXtCGJyMOp158qld9"
+            + "Oeus3Y/7DQ4w5XvfGn9sddxHOSMwUlNiFVty673X3exgMIc8psZOsHvWZPS0zWx9gEDE"
+            + "95cUU10K6u4vzTr2O6fgDOQBynEUw3CDiHvwRD alice@example.net"
         )
 
-        assert ssh_key.name == ssh_key_name
-        assert ssh_key.fingerprint == "a0:25:fa:32:c0:18:7a:f8:e8:b2:3b:30:d8:ca:9a:2e"
+        expected = sshkey(name=ssh_key_name)
+        expected.pop("privatekey")
 
-        exo.compute.cs.deleteSSHKeyPair(name=ssh_key.name)
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["name"][0] == ssh_key_name
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {"registersshkeypairresponse": {"keypair": expected}}
+
+        exo.mock_get("?command=registerSSHKeyPair", _assert_request)
+        actual = exo.compute.register_ssh_key(
+            name=ssh_key_name, public_key=ssh_key_public_key
+        )
+        assert actual.name == expected["name"]
+        assert actual.fingerprint == expected["fingerprint"]
 
     def test_list_ssh_keys(self, exo, sshkey):
-        ssh_key = SSHKey._from_cs(exo.compute, sshkey())
+        expected = sshkey()
 
-        ssh_keys = list(exo.compute.list_ssh_keys())
-        # We cannot guarantee that there will be only our resources in the
-        # testing environment, so we ensure we get at least our fixture SSH key
-        assert len(ssh_keys) >= 1
+        exo.mock_list("listSSHKeyPairs", [expected])
+        actual = list(exo.compute.list_ssh_keys())
+        assert len(actual) == 1
+        assert actual[0].name == expected["name"]
 
     def test_get_ssh_key(self, exo, sshkey):
-        ssh_key = SSHKey._from_cs(exo.compute, sshkey())
+        ssh_key_name = _random_str()
+        expected = sshkey(name=ssh_key_name)
 
-        _ssh_key = exo.compute.get_ssh_key(name=ssh_key.name)
-        assert _ssh_key.name == ssh_key.name
+        exo.mock_get(
+            "?command=listSSHKeyPairs&name={}".format(expected["name"]),
+            {"listsshkeypairsresponse": {"count": 1, "sshkeypair": [expected]}},
+        )
+        actual = exo.compute.get_ssh_key(name=ssh_key_name)
+        assert actual.name == expected["name"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            _ssh_key = exo.compute.get_ssh_key(name="lolnope")
-            assert _ssh_key is None
+            exo.mock_get(
+                "?command=listSSHKeyPairs&name=lolnope", {"listsshkeypairsresponse": {}}
+            )
+
+            actual = exo.compute.get_ssh_key(name="lolnope")
+            assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
     ### Zone
@@ -665,17 +958,43 @@ class TestCompute:
             "de-muc-1",
         ]
 
-        zones = list(exo.compute.list_zones())
-        assert len(zones) >= len(expected_zones)
+        exo.mock_list(
+            "listZones",
+            [
+                {"id": _random_uuid(), "name": "at-vie-1"},
+                {"id": _random_uuid(), "name": "bg-sof-1"},
+                {"id": _random_uuid(), "name": "ch-dk-2"},
+                {"id": _random_uuid(), "name": "ch-gva-2"},
+                {"id": _random_uuid(), "name": "de-fra-1"},
+                {"id": _random_uuid(), "name": "de-muc-1"},
+            ],
+        )
 
-    def test_get_zone(self, exo):
-        expected_zone_name = "ch-gva-2"
-        expected_zone_id = "1128bd56-b4d9-4ac6-a7b9-c715b187ce11"
+        actual = list(exo.compute.list_zones())
+        assert len(actual) == len(expected_zones)
 
-        zone = exo.compute.get_zone(id=expected_zone_id)
-        assert zone.name == expected_zone_name
-        assert zone.id == expected_zone_id
+    def test_get_zone(self, exo, zone):
+        expected = zone()
 
-        zone = exo.compute.get_zone(name=expected_zone_name)
-        assert zone.name == expected_zone_name
-        assert zone.id == expected_zone_id
+        exo.mock_get(
+            "?command=listZones&id={}".format(expected["id"]),
+            {"listzonesresponse": {"count": 1, "zone": [expected]}},
+        )
+        actual = exo.compute.get_zone(id=expected["id"])
+        assert actual.id == expected["id"]
+
+        exo.mock_get(
+            "?command=listZones&name={}".format(expected["name"]),
+            {"listzonesresponse": {"count": 1, "zone": [expected]}},
+        )
+        actual = exo.compute.get_zone(name=expected["name"])
+        assert actual.id == expected["id"]
+
+        with pytest.raises(ResourceNotFoundError) as excinfo:
+            exo.mock_get(
+                "?command=listZones&name=lolnope",
+                {"listzonesresponse": {}},
+            )
+            actual = exo.compute.get_zone(name="lolnope")
+            assert actual is None
+        assert excinfo.type == ResourceNotFoundError

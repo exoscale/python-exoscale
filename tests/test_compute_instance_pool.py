@@ -2,118 +2,186 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from exoscale.api import ResourceNotFoundError
+from .conftest import _random_str, _random_uuid
+from base64 import b64decode
 from exoscale.api.compute import *
-from cs import CloudStackApiException
-from datetime import datetime, timedelta
-from time import sleep
+from urllib.parse import parse_qs, urlparse
 
 
 class TestComputeInstancePool:
-    def test_update(self, exo, zone, instance_pool):
-        zone = Zone._from_cs(zone("ch-gva-2"))
+    def test_update(self, exo, zone, instance_type, instance_template, instance_pool):
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
+
+        zone = zone()
         instance_pool = InstancePool._from_cs(
-            exo.compute, instance_pool(zone_id=zone.id)
+            exo.compute, instance_pool(zone_id=zone["id"]), zone=Zone._from_cs(zone)
         )
-        name_edited = instance_pool.name + "-edited"
-        description_edited = instance_pool.description + " (edited)"
-
-        instance_pool.update(name=name_edited, description=description_edited)
-
-        [actual_instance_pool] = exo.compute.cs.getInstancePool(
-            id=instance_pool.id, zoneid=instance_pool.zone.id, fetch_list=True
+        instance_pool_name = _random_str()
+        instance_pool_description = _random_str()
+        instance_pool_type = InstanceType._from_cs(instance_type())
+        instance_pool_template = InstanceTemplate._from_cs(
+            exo.compute, instance_template(), Zone._from_cs(zone)
         )
-        assert instance_pool.name == name_edited
-        assert actual_instance_pool["name"] == name_edited
-        assert instance_pool.description == description_edited
-        assert actual_instance_pool["description"] == description_edited
+        instance_pool_volume_size = instance_pool.instance_volume_size * 2
+        instance_pool_user_data = _random_str()
 
-    def test_scale(self, exo, zone, instance_pool):
-        zone = Zone._from_cs(zone("ch-gva-2"))
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["zoneid"][0] == zone["id"]
+            assert params["id"][0] == instance_pool.res["id"]
+            assert params["name"][0] == instance_pool_name
+            assert params["description"][0] == instance_pool_description
+            assert params["templateid"][0] == instance_pool_template.res["id"]
+            assert params["serviceofferingid"][0] == instance_pool_type.res["id"]
+            assert params["rootdisksize"][0] == str(instance_pool_volume_size)
+            assert (
+                b64decode(params["userdata"][0]).decode("utf-8")
+                == instance_pool_user_data
+            )
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "createinstancepoolresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=updateInstancePool", _assert_request)
+        exo.mock_query_async_job_result({"success": True})
+
+        instance_pool.update(
+            name=instance_pool_name,
+            description=instance_pool_description,
+            instance_type=instance_pool_type,
+            instance_template=instance_pool_template,
+            instance_volume_size=instance_pool_volume_size,
+            instance_user_data=instance_pool_user_data,
+        )
+        assert instance_pool.name == instance_pool_name
+        assert instance_pool.description == instance_pool_description
+        assert instance_pool.instance_type.id == instance_pool_type.res["id"]
+        assert instance_pool.instance_template.id == instance_pool_template.res["id"]
+        assert instance_pool.instance_volume_size == instance_pool_volume_size
+        assert (
+            b64decode(instance_pool.instance_user_data).decode("utf-8")
+            == instance_pool_user_data
+        )
+
+    def test_scale(self, exo, zone, instance_type, instance_template, instance_pool):
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
+
+        zone = zone()
         instance_pool = InstancePool._from_cs(
-            exo.compute, instance_pool(zone_id=zone.id)
+            exo.compute, instance_pool(zone_id=zone["id"]), zone=Zone._from_cs(zone)
         )
+        instance_pool_size = 3
 
-        instance_pool.scale(2)
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["zoneid"][0] == zone["id"]
+            assert params["id"][0] == instance_pool.res["id"]
+            assert params["size"][0] == str(instance_pool_size)
 
-        [actual_instance_pool] = exo.compute.cs.getInstancePool(
-            id=instance_pool.id, zoneid=instance_pool.zone.id, fetch_list=True
-        )
-        assert instance_pool.size == 2
-        assert actual_instance_pool["size"] == 2
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "createinstancepoolresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
 
-    def test_delete_no_wait(self, exo, zone, instance_pool):
-        zone = Zone._from_cs(zone("ch-gva-2"))
+        exo.mock_get("?command=scaleInstancePool", _assert_request)
+        exo.mock_query_async_job_result(instance_pool.res)
+
+        instance_pool.scale(instance_pool_size)
+        assert instance_pool.size == instance_pool_size
+
+    def test_delete(self, exo, zone, instance_type, instance_template, instance_pool):
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
+
+        zone = zone()
         instance_pool = InstancePool._from_cs(
-            exo.compute, instance_pool(zone_id=zone.id, teardown=False)
+            exo.compute, instance_pool(zone_id=zone["id"]), Zone._from_cs(zone)
         )
-        instance_pool_id = instance_pool.id
-        instance_pool_zone_id = instance_pool.zone.id
 
-        # Let's wait until the Instance Pool fixture state stabilizes before destroying
-        # it, otherwise we'll likely run into a race condition
-        t = datetime.now()
-        while exo.compute.cs.getInstancePool(
-            zoneid=zone.id, id=instance_pool.id, fetch_list=True
-        )[0]["state"] == "scaling-up" and datetime.now() - t < timedelta(minutes=5):
-            sleep(10)
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["zoneid"][0] == zone["id"]
+            assert params["id"][0] == instance_pool.res["id"]
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "removeipfromnicresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=destroyInstancePool", _assert_request)
+        exo.mock_query_async_job_result({"success": True})
 
         instance_pool.delete(wait=False)
         assert instance_pool.id is None
 
-        # Wait a few seconds for the deletion process to kick in
-        sleep(5)
-
-        [actual_instance_pool] = exo.compute.cs.getInstancePool(
-            id=instance_pool_id, zoneid=instance_pool_zone_id, fetch_list=True
+    def test_properties(
+        self,
+        exo,
+        zone,
+        aag,
+        sg,
+        privnet,
+        instance_type,
+        instance_template,
+        instance_pool,
+    ):
+        exo.mock_list(
+            "listVolumes",
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
         )
-        assert actual_instance_pool["state"] == "destroying"
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
 
-    def test_delete_wait(self, exo, zone, instance_pool):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        instance_pool = InstancePool._from_cs(
-            exo.compute, instance_pool(zone_id=zone.id, teardown=False)
-        )
-        instance_pool_id = instance_pool.id
-        instance_pool_zone_id = instance_pool.zone.id
-
-        # Let's wait until the Instance Pool fixture state stabilizes before destroying
-        # it, otherwise we'll likely run into a race condition
-        t = datetime.now()
-        while exo.compute.cs.getInstancePool(
-            zoneid=zone.id, id=instance_pool.id, fetch_list=True
-        )[0]["state"] == "scaling-up" and datetime.now() - t < timedelta(minutes=5):
-            sleep(10)
-
-        instance_pool.delete()
-        assert instance_pool.id is None
-
-        with pytest.raises(CloudStackApiException) as excinfo:
-            exo.compute.cs.getInstancePool(
-                id=instance_pool_id, zoneid=instance_pool_zone_id, fetch_list=True
-            )
-
-    def test_properties(self, exo, zone, aag, sg, privnet, instance_pool):
-        zone = Zone._from_cs(zone())
+        zone = zone()
         anti_affinity_group = AntiAffinityGroup._from_cs(exo.compute, aag())
         security_group = SecurityGroup._from_cs(exo.compute, sg())
-        private_network = PrivateNetwork._from_cs(exo.compute, privnet())
+        private_network = PrivateNetwork._from_cs(
+            exo.compute, privnet(), zone=Zone._from_cs(zone)
+        )
         instance_pool = InstancePool._from_cs(
             exo.compute,
             instance_pool(
-                zone_id=zone.id,
+                zone_id=zone["id"],
                 size=1,
-                anti_affinity_groups=[anti_affinity_group.id],
-                security_groups=[security_group.id],
-                private_networks=[private_network.id],
-                teardown=False,
+                anti_affinity_group_ids=[anti_affinity_group.id],
+                security_group_ids=[security_group.id],
+                private_network_ids=[private_network.id],
             ),
+            zone=Zone._from_cs(zone),
+        )
+
+        exo.mock_list("listAffinityGroups", [anti_affinity_group.res])
+        exo.mock_list("listSecurityGroups", [security_group.res])
+        exo.mock_list("listNetworks", [private_network.res])
+        exo.mock_get(
+            "?command=getInstancePool",
+            {
+                "getinstancepoolresponse": {
+                    "count": 1,
+                    "instancepool": [instance_pool.res],
+                }
+            },
         )
 
         instance_pool_instances = list(instance_pool.instances)
         assert len(instance_pool_instances) == 1
         assert instance_pool_instances[0].instance_pool.id == instance_pool.id
-        assert instance_pool.state in ["scaling-up", "running"]
 
         instance_pool_anti_affinity_groups = list(instance_pool.anti_affinity_groups)
         assert len(instance_pool_anti_affinity_groups) == 1
@@ -126,17 +194,3 @@ class TestComputeInstancePool:
         instance_pool_private_networks = list(instance_pool.private_networks)
         assert len(instance_pool_private_networks) == 1
         assert instance_pool_private_networks[0].id == private_network.id
-
-        # We have to delete the fixture Instance Pool and ensure its member instance is
-        # actually deleted here because of a race condition with the AAG/SG fixtures
-        # teardown than will fail because it can't delete itself while still used by an
-        # instance ¯\_(ツ)_/¯
-        exo.compute.cs.destroyInstancePool(id=instance_pool.id, zoneid=zone.id)
-        t = datetime.now()
-        try:
-            while exo.compute.get_instance(
-                zone=zone, id=instance_pool_instances[0].id
-            ) != None and datetime.now() - t < timedelta(minutes=5):
-                sleep(10)
-        except ResourceNotFoundError:
-            return

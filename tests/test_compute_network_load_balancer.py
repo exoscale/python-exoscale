@@ -2,157 +2,215 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from .conftest import _random_str, _random_uuid
 from exoscale.api.compute import *
-from exoscale.api import ResourceNotFoundError
-from .conftest import _random_str
+from urllib.parse import parse_qs, urlparse
 
 
 class TestComputeNetworkLoadBalancer:
     def test_add_service(
-        self, exo, zone, instance_pool, nlb, test_prefix, test_description
+        self,
+        exo,
+        zone,
+        instance_type,
+        instance_template,
+        instance_pool,
+        nlb,
+        nlb_service,
     ):
-        zone = Zone._from_cs(zone("ch-gva-2"))
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
+
+        zone = Zone._from_cs(zone())
         instance_pool = InstancePool._from_cs(
-            exo.compute, instance_pool(zone_id=zone.id)
+            exo.compute, instance_pool(zone_id=zone.id), zone=zone
         )
-        nlb = NetworkLoadBalancer._from_api(exo.compute, nlb(), zone)
-        service_name = "-".join([test_prefix, _random_str()])
-        service_description = test_description
-        service_port = 443
-        service_target_port = 8443
-        service_protocol = "tcp"
-        service_strategy = "source-hash"
-        service_healthcheck_mode = "https"
-        service_healthcheck_port = 8444
-        service_healthcheck_uri = "/health"
-        service_healthcheck_interval = 5
-        service_healthcheck_timeout = 3
-        service_healthcheck_retries = 1
-        service_healthcheck_tls_sni = "example.net"
+        operation_id = _random_uuid()
 
-        service = nlb.add_service(
-            name=service_name,
-            description=service_description,
+        expected = nlb_service(
+            name=_random_str(),
+            description=_random_str(),
+            instance_pool=instance_pool.res["id"],
+            port=443,
+            target_port=8443,
+            protocol="tcp",
+            strategy="source-hash",
+            healthcheck={
+                "mode": "https",
+                "port": 8443,
+                "uri": "/health",
+                "interval": 10,
+                "timeout": 5,
+                "retries": 1,
+                "tls-sni": "example.net",
+            },
+        )
+        nlb = NetworkLoadBalancer._from_api(exo.compute, nlb(), zone=zone)
+
+        exo.mock_get(
+            "?command=getInstancePool",
+            {
+                "getinstancepoolresponse": {
+                    "count": 1,
+                    "instancepool": [instance_pool.res],
+                }
+            },
+        )
+
+        def _assert_request(request, context):
+            body = json.loads(request.body)
+            assert body["name"] == expected["name"]
+            assert body["description"] == expected["description"]
+            assert body["instance-pool"]["id"] == instance_pool.res["id"]
+            assert body["port"] == expected["port"]
+            assert body["target-port"] == expected["target-port"]
+            assert body["protocol"] == expected["protocol"]
+            assert body["strategy"] == expected["strategy"]
+            assert body["healthcheck"] == expected["healthcheck"]
+
+            nlb.res["services"].append(expected)
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "id": operation_id,
+                "state": "success",
+                "reference": {"id": expected["id"]},
+            }
+
+        exo.mock_post(
+            zone.res["name"],
+            "load-balancer/{}/service".format(nlb.res["id"]),
+            _assert_request,
+        )
+        exo.mock_get_operation(zone.res["name"], operation_id, nlb.res["id"])
+
+        exo.mock_get_v2(
+            zone.res["name"], "load-balancer/{}".format(nlb.res["id"]), nlb.res
+        )
+
+        actual = nlb.add_service(
+            name=expected["name"],
+            description=expected["description"],
             instance_pool=instance_pool,
-            port=service_port,
-            target_port=service_target_port,
-            protocol=service_protocol,
-            strategy=service_strategy,
-            healthcheck_mode=service_healthcheck_mode,
-            healthcheck_port=service_healthcheck_port,
-            healthcheck_uri=service_healthcheck_uri,
-            healthcheck_interval=service_healthcheck_interval,
-            healthcheck_timeout=service_healthcheck_timeout,
-            healthcheck_retries=service_healthcheck_retries,
-            healthcheck_tls_sni=service_healthcheck_tls_sni,
+            port=expected["port"],
+            target_port=expected["target-port"],
+            protocol=expected["protocol"],
+            strategy=expected["strategy"],
+            healthcheck_mode=expected["healthcheck"]["mode"],
+            healthcheck_port=expected["healthcheck"]["port"],
+            healthcheck_uri=expected["healthcheck"]["uri"],
+            healthcheck_interval=expected["healthcheck"]["interval"],
+            healthcheck_timeout=expected["healthcheck"]["timeout"],
+            healthcheck_retries=expected["healthcheck"]["retries"],
+            healthcheck_tls_sni=expected["healthcheck"]["tls-sni"],
         )
-
-        actual_service = exo.compute._v2_request(
-            "GET",
-            "/load-balancer/{}/service/{}".format(nlb.id, service.id),
-            zone=zone.name,
-        )
-
-        assert service.id == actual_service["id"]
-        assert service.name == service_name
-        assert actual_service["name"] == service_name
-        assert service.description == test_description
-        assert actual_service["description"] == test_description
-        assert service.instance_pool.id == instance_pool.id
-        assert actual_service["instance-pool"]["id"] == instance_pool.id
-        assert service.port == service_port
-        assert actual_service["port"] == service_port
-        assert service.target_port == service_target_port
-        assert actual_service["target-port"] == service_target_port
-        assert service.protocol == service_protocol
-        assert actual_service["protocol"] == service_protocol
-        assert service.strategy == service_strategy
-        assert actual_service["strategy"] == service_strategy
-        assert service.healthcheck.mode == service_healthcheck_mode
-        assert actual_service["healthcheck"]["mode"] == service_healthcheck_mode
-        assert service.healthcheck.port == service_healthcheck_port
-        assert actual_service["healthcheck"]["port"] == service_healthcheck_port
-        assert service.healthcheck.uri == service_healthcheck_uri
-        assert actual_service["healthcheck"]["uri"] == service_healthcheck_uri
-        assert service.healthcheck.interval == service_healthcheck_interval
-        assert actual_service["healthcheck"]["interval"] == service_healthcheck_interval
-        assert service.healthcheck.timeout == service_healthcheck_timeout
-        assert actual_service["healthcheck"]["timeout"] == service_healthcheck_timeout
-        assert service.healthcheck.retries == service_healthcheck_retries
-        assert actual_service["healthcheck"]["retries"] == service_healthcheck_retries
-        assert service.healthcheck.tls_sni == service_healthcheck_tls_sni
-        assert actual_service["healthcheck"]["tls-sni"] == service_healthcheck_tls_sni
+        assert actual.id == expected["id"]
+        assert actual.name == expected["name"]
+        assert actual.description == expected["description"]
+        assert actual.instance_pool.id == instance_pool.res["id"]
+        assert actual.port == expected["port"]
+        assert actual.target_port == expected["target-port"]
+        assert actual.protocol == expected["protocol"]
+        assert actual.strategy == expected["strategy"]
+        assert actual.healthcheck.mode == expected["healthcheck"]["mode"]
+        assert actual.healthcheck.port == expected["healthcheck"]["port"]
+        assert actual.healthcheck.uri == expected["healthcheck"]["uri"]
+        assert actual.healthcheck.interval == expected["healthcheck"]["interval"]
+        assert actual.healthcheck.timeout == expected["healthcheck"]["timeout"]
+        assert actual.healthcheck.retries == expected["healthcheck"]["retries"]
+        assert actual.healthcheck.tls_sni == expected["healthcheck"]["tls-sni"]
 
     def test_update(self, exo, zone, nlb):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        nlb = NetworkLoadBalancer._from_api(exo.compute, nlb(), zone)
-        name_edited = nlb.name + "-edited"
-        description_edited = nlb.description + " (edited)"
+        zone = Zone._from_cs(zone())
+        nlb = NetworkLoadBalancer._from_api(exo.compute, nlb(), zone=zone)
+        nlb_name = _random_str()
+        nlb_description = _random_str()
+        operation_id = _random_uuid()
 
-        nlb.update(
-            name=name_edited,
-            description=description_edited,
+        def _assert_request(request, context):
+            body = json.loads(request.body)
+            assert body["name"] == nlb_name
+            assert body["description"] == nlb_description
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "id": operation_id,
+                "state": "success",
+                "reference": {"id": nlb.res["id"]},
+            }
+
+        exo.mock_put(
+            zone.res["name"], "load-balancer/{}".format(nlb.res["id"]), _assert_request
         )
+        exo.mock_get_operation(zone.res["name"], operation_id, nlb.res["id"])
 
-        res = exo.compute._v2_request("GET", "/load-balancer/" + nlb.id, zone=zone.name)
-        assert res["name"] == name_edited
-        assert nlb.name == name_edited
-        assert res["description"] == description_edited
-        assert nlb.description == description_edited
+        nlb.update(name=nlb_name, description=nlb_description)
+        assert nlb.name == nlb_name
+        assert nlb.description == nlb_description
 
     def test_delete(self, exo, zone, nlb):
-        zone = Zone._from_cs(zone("ch-gva-2"))
-        nlb = NetworkLoadBalancer._from_api(exo.compute, nlb(teardown=False), zone)
-        nlb_id = nlb.id
+        zone = Zone._from_cs(zone())
+        nlb = NetworkLoadBalancer._from_api(exo.compute, nlb(), zone=zone)
+        operation_id = _random_uuid()
+
+        def _assert_request(request, context):
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "id": operation_id,
+                "state": "success",
+                "reference": {"id": nlb.res["id"]},
+            }
+
+        exo.mock_delete(
+            zone.res["name"], "load-balancer/{}".format(nlb.res["id"]), _assert_request
+        )
+        exo.mock_get_operation(zone.res["name"], operation_id, nlb.res["id"])
 
         nlb.delete()
         assert nlb.id is None
 
-        with pytest.raises(ResourceNotFoundError) as excinfo:
-            res = exo.compute._v2_request("GET", "/load-balancer/" + nlb_id, zone.name)
-            assert res is None
-        assert excinfo.type == ResourceNotFoundError
+    def test_properties(
+        self,
+        exo,
+        zone,
+        instance_type,
+        instance_template,
+        instance_pool,
+        nlb,
+        nlb_service,
+    ):
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
 
-    def test_properties(self, exo, zone, instance_pool, nlb):
-        zone = Zone._from_cs(zone("ch-gva-2"))
+        zone = Zone._from_cs(zone())
         instance_pool = InstancePool._from_cs(
-            exo.compute, instance_pool(zone_id=zone.id)
+            exo.compute, instance_pool(zone_id=zone.id), zone=zone
         )
-        nlb = NetworkLoadBalancer._from_api(exo.compute, nlb(), zone)
+        nlb = NetworkLoadBalancer._from_api(
+            exo.compute,
+            nlb(services=[nlb_service(instance_pool=instance_pool.res["id"])]),
+            zone=zone,
+        )
 
-        res = exo.compute._v2_request_async(
-            "POST",
-            "/load-balancer/{}/service".format(nlb.id),
-            zone.name,
-            json={
-                "name": "test",
-                "instance-pool": {"id": instance_pool.id},
-                "port": 80,
-                "target-port": 80,
-                "protocol": "tcp",
-                "strategy": "round-robin",
-                "healthcheck": {
-                    "mode": "tcp",
-                    "port": 80,
-                    "interval": 10,
-                    "timeout": 5,
-                    "retries": 1,
-                },
+        exo.mock_get(
+            "?command=getInstancePool",
+            {
+                "getinstancepoolresponse": {
+                    "count": 1,
+                    "instancepool": [instance_pool.res],
+                }
             },
         )
-
-        service = NetworkLoadBalancerService._from_api(
-            exo.compute,
-            exo.compute._v2_request("GET", "/load-balancer/" + nlb.id, zone.name)[
-                "services"
-            ][0],
-            nlb,
+        exo.mock_get_v2(
+            zone.res["name"], "load-balancer/{}".format(nlb.res["id"]), nlb.res
         )
-        assert service is not None
 
         nlb_services = list(nlb.services)
         assert len(nlb_services) == 1
-        assert nlb_services[0].id == service.id
+        assert nlb_services[0].id == nlb.res["services"][0]["id"]
 
         nlb_state = nlb.state
         assert nlb_state == "running"

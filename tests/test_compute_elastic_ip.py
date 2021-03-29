@@ -2,151 +2,243 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from .conftest import _random_ip_address, _random_str, _random_uuid
 from exoscale.api.compute import *
+from urllib.parse import parse_qs, urlparse
 
 
 class TestComputeElasticIP:
-    def test_attach_instance(self, exo, eip, instance):
-        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
-        instance = Instance._from_cs(exo.compute, instance())
+    def test_attach_instance(
+        self, exo, zone, eip, instance_type, instance_template, instance
+    ):
+        exo.mock_list(
+            "listVolumes",
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+        )
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
+
+        zone = zone()
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip(), zone=Zone._from_cs(zone))
+        instance = Instance._from_cs(exo.compute, instance(), zone=Zone._from_cs(zone))
+
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["nicid"][0] == instance.res["nic"][0]["id"]
+            assert params["ipaddress"][0] == elastic_ip.res["ipaddress"]
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "addiptonicresponse": {"id": _random_uuid(), "jobid": _random_uuid()}
+            }
+
+        exo.mock_list("listNics", [instance.res["nic"][0]])
+        exo.mock_get("?command=addIpToNic", _assert_request)
+        exo.mock_query_async_job_result({"secondaryip": [instance.res["nic"][0]]})
 
         elastic_ip.attach_instance(instance)
 
-        res = exo.compute.cs.listNics(virtualmachineid=instance.id, fetch_list=True)
-        assert (
-            instance._default_nic(res)["secondaryip"][0]["ipaddress"]
-            == elastic_ip.address
+    def test_detach_instance(
+        self, exo, zone, eip, instance_type, instance_template, instance
+    ):
+        exo.mock_list(
+            "listVolumes",
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
         )
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
 
-    def test_detach_instance(self, exo, eip, instance):
-        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
-        instance = Instance._from_cs(exo.compute, instance())
+        zone = zone()
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip(), zone=Zone._from_cs(zone))
+        instance = Instance._from_cs(exo.compute, instance(), zone=Zone._from_cs(zone))
+        instance.res["nic"][0]["secondaryip"] = [elastic_ip.res]
 
-        res = exo.compute.cs.listNics(virtualmachineid=instance.id, fetch_list=True)
-        exo.compute.cs.addIpToNic(
-            nicid=instance._default_nic(res)["id"], ipaddress=elastic_ip.address
-        )
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["id"][0] == elastic_ip.res["id"]
 
-        res = exo.compute.cs.listNics(virtualmachineid=instance.id, fetch_list=True)
-        assert (
-            instance._default_nic(res)["secondaryip"][0]["ipaddress"]
-            == elastic_ip.address
-        )
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "removeipfromnicresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_list("listNics", instance.res["nic"])
+        exo.mock_get("?command=removeIpFromNic", _assert_request)
+        exo.mock_query_async_job_result({"secondaryip": [instance.res["nic"][0]]})
 
         elastic_ip.detach_instance(instance)
 
-        res = exo.compute.cs.listNics(virtualmachineid=instance.id, fetch_list=True)
-        assert "secondaryip" not in instance._default_nic(res)
+    def test_set_reverse_dns(self, exo, zone, eip):
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip(), zone=Zone._from_cs(zone()))
+        elastic_ip_reverse_dns = _random_str()
 
-    def test_set_reverse_dns(self, exo, eip, test_reverse_dns):
-        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["id"][0] == elastic_ip.res["id"]
+            assert params["domainname"][0] == elastic_ip_reverse_dns
 
-        elastic_ip.set_reverse_dns(record=test_reverse_dns)
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "removeipfromnicresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
 
-        res = exo.compute.cs.queryReverseDnsForPublicIpAddress(id=elastic_ip.id)
-        assert res["publicipaddress"]["reversedns"][0]["domainname"] == test_reverse_dns
+        exo.mock_get("?command=updateReverseDnsForPublicIpAddress", _assert_request)
+        exo.mock_query_async_job_result({"success": True})
 
-    def test_unset_reverse_dns(self, exo, eip, test_reverse_dns):
-        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
+        elastic_ip.set_reverse_dns(record=elastic_ip_reverse_dns)
 
-        res = exo.compute.cs.updateReverseDnsForPublicIpAddress(
-            id=elastic_ip.id, domainname=test_reverse_dns
-        )
-        assert res["publicipaddress"]["reversedns"][0]["domainname"] == test_reverse_dns
+    def test_unset_reverse_dns(self, exo, zone, eip):
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip(), zone=Zone._from_cs(zone()))
+
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["id"][0] == elastic_ip.res["id"]
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "removeipfromnicresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=deleteReverseDnsFromPublicIpAddress", _assert_request)
+        exo.mock_query_async_job_result({"success": True})
 
         elastic_ip.unset_reverse_dns()
 
-        res = exo.compute.cs.queryReverseDnsForPublicIpAddress(id=elastic_ip.id)
-        assert len(res["publicipaddress"]["reversedns"]) == 0
+    def test_update(self, exo, zone, eip):
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip(), zone=Zone._from_cs(zone()))
+        elastic_ip_description = _random_str()
+        elastic_ip_healthcheck_mode = "https"
+        elastic_ip_healthcheck_port = 443
+        elastic_ip_healthcheck_path = "/test"
+        elastic_ip_healthcheck_interval = 5
+        elastic_ip_healthcheck_timeout = 3
+        elastic_ip_healthcheck_strikes_ok = 2
+        elastic_ip_healthcheck_strikes_fail = 1
+        elastic_ip_healthcheck_tls_sni = "example.net"
+        elastic_ip_healthcheck_tls_skip_verify = True
 
-    def test_description_is_optional(self, exo, eip):
-        response = eip()
-        # The eip() fixture has a description set - del'ing it here is much cheaper
-        # than writing a new fixture just for this particular case.
-        del response["description"]
-        elastic_ip = ElasticIP._from_cs(exo.compute, response)
-        assert elastic_ip.description == ""
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["id"][0] == elastic_ip.res["id"]
+            assert params["description"][0] == elastic_ip_description
+            assert params["mode"][0] == elastic_ip_healthcheck_mode
+            assert params["port"][0] == str(elastic_ip_healthcheck_port)
+            assert params["path"][0] == str(elastic_ip_healthcheck_path)
+            assert params["interval"][0] == str(elastic_ip_healthcheck_interval)
+            assert params["strikes-ok"][0] == str(elastic_ip_healthcheck_strikes_ok)
+            assert params["strikes-fail"][0] == str(elastic_ip_healthcheck_strikes_fail)
+            assert params["timeout"][0] == str(elastic_ip_healthcheck_timeout)
+            assert params["tls-sni"][0] == elastic_ip_healthcheck_tls_sni
+            assert params["tls-skip-verify"][0] == str(
+                elastic_ip_healthcheck_tls_skip_verify
+            )
 
-    def test_update(self, exo, eip, test_description):
-        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
-        description_edited = test_description + " (edited)"
-        healthcheck_mode = "https"
-        healthcheck_port = 443
-        healthcheck_path = "/test"
-        healthcheck_interval = 5
-        healthcheck_timeout = 3
-        healthcheck_strikes_ok = 2
-        healthcheck_strikes_fail = 1
-        healthcheck_tls_sni = "example.net"
-        healthcheck_tls_skip_verify = True
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "removeipfromnicresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=updateIpAddress", _assert_request)
+        exo.mock_query_async_job_result({"success": True})
 
         elastic_ip.update(
-            description=description_edited,
-            healthcheck_mode=healthcheck_mode,
-            healthcheck_path=healthcheck_path,
-            healthcheck_port=healthcheck_port,
-            healthcheck_interval=healthcheck_interval,
-            healthcheck_timeout=healthcheck_timeout,
-            healthcheck_strikes_ok=healthcheck_strikes_ok,
-            healthcheck_strikes_fail=healthcheck_strikes_fail,
-            healthcheck_tls_sni=healthcheck_tls_sni,
-            healthcheck_tls_skip_verify=healthcheck_tls_skip_verify,
+            description=elastic_ip_description,
+            healthcheck_mode=elastic_ip_healthcheck_mode,
+            healthcheck_path=elastic_ip_healthcheck_path,
+            healthcheck_port=elastic_ip_healthcheck_port,
+            healthcheck_interval=elastic_ip_healthcheck_interval,
+            healthcheck_timeout=elastic_ip_healthcheck_timeout,
+            healthcheck_strikes_ok=elastic_ip_healthcheck_strikes_ok,
+            healthcheck_strikes_fail=elastic_ip_healthcheck_strikes_fail,
+            healthcheck_tls_sni=elastic_ip_healthcheck_tls_sni,
+            healthcheck_tls_skip_verify=elastic_ip_healthcheck_tls_skip_verify,
         )
-
-        [res] = exo.compute.cs.listPublicIpAddresses(id=elastic_ip.id, fetch_list=True)
-        assert res["description"] == description_edited
-        assert elastic_ip.description == description_edited
-        assert "healthcheck" in res.keys()
-        assert res["healthcheck"]["mode"] == healthcheck_mode
-        assert elastic_ip.healthcheck_mode == healthcheck_mode
-        assert res["healthcheck"]["path"] == healthcheck_path
-        assert elastic_ip.healthcheck_path == healthcheck_path
-        assert res["healthcheck"]["port"] == healthcheck_port
-        assert elastic_ip.healthcheck_port == healthcheck_port
-        assert res["healthcheck"]["interval"] == healthcheck_interval
-        assert elastic_ip.healthcheck_interval == healthcheck_interval
-        assert res["healthcheck"]["timeout"] == healthcheck_timeout
-        assert elastic_ip.healthcheck_timeout == healthcheck_timeout
-        assert res["healthcheck"]["strikes-ok"] == healthcheck_strikes_ok
-        assert elastic_ip.healthcheck_strikes_ok == healthcheck_strikes_ok
-        assert res["healthcheck"]["strikes-fail"] == healthcheck_strikes_fail
-        assert elastic_ip.healthcheck_strikes_fail == healthcheck_strikes_fail
-        assert res["healthcheck"]["tls-sni"] == healthcheck_tls_sni
-        assert elastic_ip.healthcheck_tls_sni == healthcheck_tls_sni
-        assert res["healthcheck"]["tls-skip-verify"] == healthcheck_tls_skip_verify
-        assert elastic_ip.healthcheck_tls_skip_verify == healthcheck_tls_skip_verify
-
-    def test_delete(self, exo, eip, instance):
-        elastic_ip = ElasticIP._from_cs(exo.compute, eip(teardown=False))
-        elastic_ip_id = elastic_ip.id
-        instance = Instance._from_cs(exo.compute, instance())
-
-        res = exo.compute.cs.listNics(virtualmachineid=instance.id, fetch_list=True)
-        exo.compute.cs.addIpToNic(
-            nicid=instance._default_nic(res)["id"], ipaddress=elastic_ip.address
+        assert elastic_ip.description == elastic_ip_description
+        assert elastic_ip.healthcheck_mode == elastic_ip_healthcheck_mode
+        assert elastic_ip.healthcheck_port == elastic_ip_healthcheck_port
+        assert elastic_ip.healthcheck_path == elastic_ip_healthcheck_path
+        assert elastic_ip.healthcheck_interval == elastic_ip_healthcheck_interval
+        assert elastic_ip.healthcheck_timeout == elastic_ip_healthcheck_timeout
+        assert elastic_ip.healthcheck_strikes_ok == elastic_ip_healthcheck_strikes_ok
+        assert (
+            elastic_ip.healthcheck_strikes_fail == elastic_ip_healthcheck_strikes_fail
         )
+        assert (
+            elastic_ip.healthcheck_tls_skip_verify
+            == elastic_ip_healthcheck_tls_skip_verify
+        )
+        assert elastic_ip.healthcheck_tls_sni == elastic_ip_healthcheck_tls_sni
 
-        elastic_ip.delete(detach_instances=True)
+    def test_delete(self, exo, zone, eip):
+        elastic_ip = ElasticIP._from_cs(exo.compute, eip(), zone=Zone._from_cs(zone()))
+
+        def _assert_request(request, context):
+            params = parse_qs(urlparse(request.url).query)
+            assert params["id"][0] == elastic_ip.res["id"]
+
+            context.status_code = 200
+            context.headers["Content-Type"] = "application/json"
+            return {
+                "removeipfromnicresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
+            }
+
+        exo.mock_get("?command=disassociateIpAddress", _assert_request)
+        exo.mock_query_async_job_result({"success": True})
+
+        elastic_ip.delete()
         assert elastic_ip.id is None
 
-        res = exo.compute.cs.listPublicIpAddresses(id=elastic_ip_id, fetch_list=True)
-        assert len(res) == 0
-
-    def test_properties(self, exo, eip, instance, test_reverse_dns):
-        elastic_ip = ElasticIP._from_cs(exo.compute, eip())
-        instance = Instance._from_cs(exo.compute, instance())
-
-        instance_nics = exo.compute.cs.listNics(
-            virtualmachineid=instance.id, fetch_list=True
+    def test_properties(
+        self, exo, zone, eip, instance_type, instance_template, instance
+    ):
+        exo.mock_list(
+            "listVolumes",
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
         )
-        default_nic = instance._default_nic(instance_nics)
-        exo.compute.cs.addIpToNic(nicid=default_nic["id"], ipaddress=elastic_ip.address)
+        exo.mock_list("listServiceOfferings", [instance_type()])
+        exo.mock_list("listTemplates", [instance_template()])
+
+        zone = zone()
+        elastic_ip_reverse_dns = _random_str()
+        elastic_ip = ElasticIP._from_cs(
+            exo.compute,
+            eip(reverse_dns=elastic_ip_reverse_dns),
+            zone=Zone._from_cs(zone),
+        )
+        instance = Instance._from_cs(exo.compute, instance(), zone=Zone._from_cs(zone))
+        instance.res["nic"][0]["secondaryip"] = [elastic_ip.res]
+
+        exo.mock_list("listVirtualMachines", [instance.res])
+        exo.mock_get(
+            "?command=queryReverseDnsForPublicIpAddress",
+            {
+                "queryreversednsforpublicipaddressresponse": {
+                    "publicipaddress": elastic_ip.res
+                }
+            },
+        )
 
         elastic_ip_instances = list(elastic_ip.instances)
         assert len(elastic_ip_instances) == 1
         assert elastic_ip_instances[0].name == instance.name
-
-        exo.compute.cs.updateReverseDnsForPublicIpAddress(
-            id=elastic_ip.id, domainname=test_reverse_dns
-        )
-        assert elastic_ip.reverse_dns == test_reverse_dns
+        assert elastic_ip.reverse_dns == elastic_ip_reverse_dns

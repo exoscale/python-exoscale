@@ -6,445 +6,560 @@ import pytest
 import random
 import string
 import time
+from boto3 import s3
+from botocore.stub import Stubber
 from datetime import datetime
+from urllib.parse import urljoin
+from uuid import uuid4
 
 _DEFAULT_ZONE_NAME = "ch-gva-2"
-_DEFAULT_ZONE_ID = "1128bd56-b4d9-4ac6-a7b9-c715b187ce11"
 
 
-def _random_str():
-    chars = string.ascii_lowercase + string.digits
-    return "".join(random.choice(chars) for i in range(10))
+def _random_str(length=10, charset=string.ascii_lowercase + string.digits):
+    return "".join(random.choice(charset) for i in range(length))
 
 
-@pytest.fixture(autouse=True, scope="module")
-def test_prefix():
-    return "test-python-exoscale"
+def _random_uuid():
+    return str(uuid4())
 
 
-@pytest.fixture(autouse=True, scope="module")
-def test_description():
-    return "Created by the python-exoscale library"
+def _random_ip_address(v=4):
+    from ipaddress import IPv4Address, IPv6Address
 
-
-@pytest.fixture(autouse=True, scope="module")
-def test_instance_service_offering_id():
-    # Micro
-    return "71004023-bb72-4a97-b1e9-bc66dfce9470"
-
-
-@pytest.fixture(autouse=True, scope="module")
-def test_instance_template_name():
-    return "Linux Ubuntu 18.04 LTS 64-bit"
-
-
-@pytest.fixture(autouse=True, scope="module")
-def test_instance_template_id():
-    # Linux Ubuntu 18.04 LTS 64-bit @ ch-gva-2
-    return "45346aba-6027-45bc-ad1e-bd1f563c2d84"
-
-
-@pytest.fixture(autouse=True, scope="module")
-def test_instance_user_data():
-    return "#cloud-config"
-
-
-@pytest.fixture(autouse=True, scope="module")
-def test_reverse_dns():
-    return "python.exoscale.com."
-
-
-@pytest.fixture(autouse=True, scope="function")
-def timing():
-    print(
-        "\n>>> {}: test started at {}".format(
-            os.environ.get("PYTEST_CURRENT_TEST"), datetime.now()
-        )
-    )
-    started = time.time()
-
-    yield
-
-    print(
-        "\n<<< {}: test stopped at {}".format(
-            os.environ.get("PYTEST_CURRENT_TEST"), datetime.now()
-        )
-    )
-
-    print("--- Test duration: {:0.2f}s\n".format(time.time() - started))
+    if v == 4:
+        return str(IPv4Address(random.randint(0, 2 ^ 32)))
+    else:
+        return str(IPv6Address(random.randint(0, 2 ^ 128 - 1)))
 
 
 @pytest.fixture(autouse=True, scope="function")
 def exo():
     import exoscale
+    import requests_mock
 
-    return exoscale.Exoscale()
+    class ExoscaleMock(exoscale.Exoscale):
+        def __init__(self, exo):
+            self.exo = exo
+
+            self.mocker = requests_mock.Mocker()
+            self.mocker.start()
+
+            self.boto_stub = Stubber(exo.storage.boto)
+            self.boto_stub.activate()
+
+        @property
+        def compute(self):
+            return self.exo.compute
+
+        @property
+        def iam(self):
+            return self.exo.iam
+
+        @property
+        def dns(self):
+            return self.exo.dns
+
+        @property
+        def storage(self):
+            return self.exo.storage
+
+        def mock_post(self, zone, url, resp):
+            self.mocker.post(
+                urljoin("https://api-{}.exoscale.com/v2.alpha/".format(zone), url),
+                json=resp,
+            )
+
+        def mock_put(self, zone, url, resp):
+            self.mocker.put(
+                urljoin("https://api-{}.exoscale.com/v2.alpha/".format(zone), url),
+                json=resp,
+            )
+
+        def mock_delete(self, zone, url, resp):
+            self.mocker.delete(
+                urljoin("https://api-{}.exoscale.com/v2.alpha/".format(zone), url),
+                json=resp,
+            )
+
+        # FIXME: this method shall be renamed into mock_get() once we've finished
+        # transitioning to the Public API V2.
+        def mock_get_v2(self, zone, url, resp):
+            self.mocker.get(
+                urljoin("https://api-{}.exoscale.com/v2.alpha/".format(zone), url),
+                json=resp,
+            )
+
+        def mock_get(self, url, resp, **kwargs):
+            self.mocker.get(
+                urljoin(self.exo.compute.endpoint, url),
+                json=resp,
+                headers={"Content-Type": "application/json"},
+                **kwargs
+            )
+
+        def mock_list(self, list_command, results=[]):
+            resources = {
+                "listAffinityGroups": {
+                    "res_key": "listaffinitygroupsresponse",
+                    "res_type": "affinitygroup",
+                },
+                "listApiKeys": {
+                    "res_key": "listapikeysreponse",
+                    "res_type": "apikey",
+                },
+                "listDnsDomainRecords": {
+                    "res_key": "listdnsdomainrecordsreponse",
+                    "res_type": "records",
+                },
+                "listDnsDomains": {
+                    "res_key": "listdnsdomainsreponse",
+                    "res_type": "dnsdomain",
+                },
+                "listInstancePools": {
+                    "res_key": "listinstancepoolsresponse",
+                    "res_type": "instancepool",
+                },
+                "listNetworks": {
+                    "res_key": "listnetworksresponse",
+                    "res_type": "network",
+                },
+                "listNics": {
+                    "res_key": "listnicsresponse",
+                    "res_type": "nic",
+                },
+                "listPublicIpAddresses": {
+                    "res_key": "listpublicipaddressesresponse",
+                    "res_type": "ipaddress",
+                },
+                "listSecurityGroups": {
+                    "res_key": "listsecuritygroupsresponse",
+                    "res_type": "securitygroups",
+                },
+                "listServiceOfferings": {
+                    "res_key": "listserviceofferingsresponse",
+                    "res_type": "serviceoffering",
+                },
+                "listSnapshots": {
+                    "res_key": "listsnapshotsresponse",
+                    "res_type": "snapshot",
+                },
+                "listSSHKeyPairs": {
+                    "res_key": "listsshkeypairsresponse",
+                    "res_type": "sshkeypair",
+                },
+                "listTemplates": {
+                    "res_key": "listtemplatesresponse",
+                    "res_type": "template",
+                },
+                "listVirtualMachines": {
+                    "res_key": "listvirtualmachinesreponse",
+                    "res_type": "virtualmachine",
+                },
+                "listVolumes": {
+                    "res_key": "listvolumesresponse",
+                    "res_type": "volume",
+                },
+                "listZones": {
+                    "res_key": "listzonesresponse",
+                    "res_type": "zone",
+                },
+            }
+
+            if list_command not in resources:
+                raise Exception("{} command not supported".format(list_command))
+
+            self.mock_get(
+                "?command={}".format(list_command),
+                {
+                    resources[list_command]["res_key"]: {
+                        "count": len(results),
+                        resources[list_command]["res_type"]: results,
+                    }
+                },
+            )
+
+        def mock_query_async_job_result(self, result=None):
+            self.mock_get(
+                "?command=queryAsyncJobResult",
+                {
+                    "queryasyncjobresultresponse": {
+                        "jobresult": result if result else {"success": True},
+                        "jobresultcode": 0,
+                        "jobstatus": 1,
+                    }
+                },
+            )
+
+        def mock_get_operation(self, zone, op_id, ref_id, result=None):
+            self.mocker.get(
+                "https://api-{}.exoscale.com/v2.alpha/operation/{}".format(zone, op_id),
+                json=result
+                if result
+                else {
+                    "id": op_id,
+                    "state": "success",
+                    "reference": {"id": ref_id},
+                },
+            )
+
+    return ExoscaleMock(exoscale.Exoscale(api_key="test", api_secret="test"))
 
 
 @pytest.fixture(autouse=True, scope="function")
-def zone(exo):
-    def _zone(name=_DEFAULT_ZONE_NAME):
-        return exo.compute.cs.listZones(name=name, fetch_list=True)[0]
+def zone():
+    def _zone(name=_DEFAULT_ZONE_NAME, **kwargs):
+        return {**{"id": _random_uuid(), "name": name}, **kwargs}
 
-    return _zone
-
-
-@pytest.fixture(autouse=True, scope="function")
-def instance_type(exo):
-    def _instance_type(id=None, name=None):
-        return exo.compute.cs.listServiceOfferings(id=id, name=name, fetch_list=True)[0]
-
-    return _instance_type
+    yield _zone
 
 
 @pytest.fixture(autouse=True, scope="function")
-def instance_template(exo):
-    def _instance_template(id=None, name=None, zone_id=None):
-        return exo.compute.cs.listTemplates(
-            id=id, name=name, zoneid=zone_id, fetch_list=True
-        )[0]
+def instance_type():
+    def _instance_type(**kwargs):
+        return {
+            **{
+                "id": _random_uuid(),
+                "name": "Medium",
+                "cpunumber": 2,
+                "memory": 4096,
+                "zoneid": kwargs.get("zone_id", _random_uuid()),
+            },
+            **kwargs,
+        }
 
-    return _instance_template
+    yield _instance_type
 
 
 @pytest.fixture(autouse=True, scope="function")
-def aag(exo, test_prefix, test_description):
-    anti_affinity_groups = []
+def instance_template():
+    def _instance_template(**kwargs):
+        return {
+            **{
+                "id": _random_uuid(),
+                "name": _random_str(),
+                "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%S+0000"),
+                "size": 10737418240,
+                "checksum": _random_str(length=32),
+                "sshkeyenabled": True,
+                "passwordenabled": True,
+                "bootmode": "legacy",
+                "zoneid": kwargs.get("zone_id", _random_uuid()),
+            },
+            **kwargs,
+        }
 
-    def _anti_affinity_group(name=None, description=test_description, teardown=True):
-        anti_affinity_group = exo.compute.cs.createAffinityGroup(
-            name=name if name else "-".join([test_prefix, _random_str()]),
-            description=description,
-            type="host anti-affinity",
-        )["affinitygroup"]
+    yield _instance_template
 
-        if teardown:
-            anti_affinity_groups.append(anti_affinity_group)
 
-        return anti_affinity_group
+@pytest.fixture(autouse=True, scope="function")
+def volume_snapshot():
+    def _volume_snapshot(**kwargs):
+        return {
+            **{
+                "id": _random_uuid(),
+                "name": _random_str(),
+                "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%S+0000"),
+                "volumeid": kwargs.get("volume_id", _random_uuid()),
+                "size": 10737418240,
+                "revertable": True,
+                "state": "exported",
+            },
+            **kwargs,
+        }
+
+    yield _volume_snapshot
+
+
+@pytest.fixture(autouse=True, scope="function")
+def aag():
+    def _anti_affinity_group(**kwargs):
+        return {
+            **{
+                "id": _random_uuid(),
+                "name": _random_str(),
+                "type": "host anti-affinity",
+            },
+            **kwargs,
+        }
 
     yield _anti_affinity_group
 
-    for anti_affinity_group in anti_affinity_groups:
-        res = exo.compute.cs.deleteAffinityGroup(id=anti_affinity_group["id"])
-        assert res["success"]
-
 
 @pytest.fixture(autouse=True, scope="function")
-def eip(exo, test_description):
-    elastic_ips = []
-
-    def _elastic_ip(
-        zone_id=_DEFAULT_ZONE_ID, description=test_description, teardown=True
-    ):
-        elastic_ip = exo.compute.cs.associateIpAddress(
-            zoneid=zone_id, description=description
-        )["ipaddress"]
-
-        if teardown:
-            elastic_ips.append(elastic_ip)
-
-        return elastic_ip
+def eip():
+    def _elastic_ip(**kwargs):
+        return {
+            **{
+                "id": _random_uuid(),
+                "ipaddress": _random_ip_address(),
+                "iselastic": True,
+                "zoneid": kwargs.get("zone_id", _random_uuid()),
+                "reversedns": [{"domainname": kwargs["reverse_dns"]}]
+                if "reverse_dns" in kwargs
+                else [],
+            },
+            **kwargs,
+        }
 
     yield _elastic_ip
 
-    for elastic_ip in elastic_ips:
-        res = exo.compute.cs.disassociateIpAddress(id=elastic_ip["id"])
-        assert res["success"]
-
 
 @pytest.fixture(autouse=True, scope="function")
-def instance(
-    exo,
-    test_prefix,
-    test_instance_service_offering_id,
-    test_instance_template_id,
-):
-    instances = []
-
-    def _instance(
-        name=None,
-        type_id=test_instance_service_offering_id,
-        template_id=test_instance_template_id,
-        zone_id=_DEFAULT_ZONE_ID,
-        volume_size=10,
-        security_groups=None,
-        anti_affinity_groups=None,
-        private_networks=None,
-        start=True,
-        teardown=True,
-    ):
-        instance = exo.compute.cs.deployVirtualMachine(
-            name=name if name else "-".join([test_prefix, _random_str()]),
-            displayname=name,
-            zoneid=zone_id,
-            templateid=template_id,
-            serviceofferingid=type_id,
-            root_disk_size=volume_size,
-            securitygroupids=security_groups,
-            affinitygroupids=anti_affinity_groups,
-            networkids=private_networks,
-            startvm=start,
-        )["virtualmachine"]
-
-        if teardown:
-            instances.append(instance)
-
-        return instance
+def instance():
+    def _instance(**kwargs):
+        return {
+            **{
+                "id": _random_uuid(),
+                "name": _random_str(),
+                "displayname": kwargs.get("name", _random_str()),
+                "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%S+0000"),
+                "zoneid": kwargs.get("zone_id", _random_uuid()),
+                "templateid": kwargs.get("template_id", _random_uuid()),
+                "serviceofferingid": kwargs.get("type_id", _random_uuid()),
+                "securitygroup": [
+                    {"id": id} for id in kwargs.get("security_group_ids", [])
+                ],
+                "affinitygroup": [
+                    {"id": id} for id in kwargs.get("anti_affinity_group_ids", [])
+                ],
+                "nic": [
+                    {
+                        "id": _random_uuid(),
+                        "isdefault": True,
+                        "ipaddress": _random_ip_address(),
+                        "ip6address": _random_ip_address(6),
+                        "networkid": _random_uuid(),
+                        "reversedns": [{"domainname": kwargs["reverse_dns"]}]
+                        if "reverse_dns" in kwargs
+                        else [],
+                    }
+                ]
+                + [
+                    {"id": _random_uuid(), "isdefault": False, "networkid": id}
+                    for id in kwargs.get("private_network_ids", [])
+                ],
+                "state": "Running",
+            },
+            **kwargs,
+        }
 
     yield _instance
 
-    for instance in instances:
-        exo.compute.cs.destroyVirtualMachine(id=instance["id"])
-
 
 @pytest.fixture(autouse=True, scope="function")
-def instance_pool(
-    exo,
-    test_prefix,
-    test_description,
-    test_instance_service_offering_id,
-    test_instance_template_id,
-    test_instance_user_data,
-):
-    instance_pools = []
+def instance_pool(instance):
+    def _instance_pool(**kwargs):
+        id = _random_uuid()
+        zone_id = _random_uuid()
+        type_id = _random_uuid()
+        template_id = _random_uuid()
+        rootdisksize = 10
+        security_group_ids = [{"id": id} for id in kwargs.get("security_group_ids", [])]
+        affinity_group_ids = [
+            {"id": id} for id in kwargs.get("anti_affinity_group_ids", [])
+        ]
+        network_ids = [{"id": id} for id in kwargs.get("private_network_ids", [])]
 
-    def _instance_pool(
-        zone_id=_DEFAULT_ZONE_ID,
-        name=None,
-        description=test_description,
-        size=1,
-        instance_type_id=test_instance_service_offering_id,
-        instance_template_id=test_instance_template_id,
-        security_groups=None,
-        anti_affinity_groups=None,
-        private_networks=None,
-        teardown=True,
-    ):
-        instance_pool = exo.compute.cs.createInstancePool(
-            zoneid=zone_id,
-            name=name if name else "-".join([test_prefix, _random_str()]),
-            description=description,
-            size=size,
-            serviceofferingid=instance_type_id,
-            templateid=instance_template_id,
-            securitygroupids=security_groups,
-            affinitygroupids=anti_affinity_groups,
-            networkids=private_networks,
-            user_data=test_instance_user_data,
-        )
-
-        if teardown:
-            instance_pools.append(instance_pool)
-
-        return instance_pool
+        return {
+            **{
+                "id": kwargs.get("id", id),
+                "name": _random_str(),
+                "size": 1,
+                "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%S+0000"),
+                "zoneid": kwargs.get("zone_id", zone_id),
+                "templateid": kwargs.get("template_id", template_id),
+                "serviceofferingid": kwargs.get("type_id", type_id),
+                "rootdisksize": kwargs.get("rootdisksize", rootdisksize),
+                "securitygroupids": security_group_ids,
+                "affinitygroupids": affinity_group_ids,
+                "networkids": network_ids,
+                "state": "running",
+                "virtualmachines": [
+                    instance(
+                        zone_id=kwargs.get("zone_id", zone_id),
+                        type_id=kwargs.get("type_id", type_id),
+                        template_id=kwargs.get("template_id", template_id),
+                        rootdisksize=kwargs.get("rootdisksize", rootdisksize),
+                        security_group_ids=security_group_ids,
+                        anti_affinity_group_ids=affinity_group_ids,
+                        private_network_ids=network_ids,
+                        manager="instancepool",
+                        managerid=kwargs.get("id", id),
+                    )
+                    for i in range(kwargs.get("size", 1))
+                ],
+            },
+            **kwargs,
+        }
 
     yield _instance_pool
 
-    for instance_pool in instance_pools:
-        exo.compute.cs.destroyInstancePool(
-            id=instance_pool["id"], zoneid=instance_pool["zoneid"]
-        )
-
 
 @pytest.fixture(autouse=True, scope="function")
-def nlb(exo, test_prefix, test_description):
-    nlbs = []
-
-    def _nlb(
-        name=None,
-        description=test_description,
-        zone_name=_DEFAULT_ZONE_NAME,
-        teardown=True,
-    ):
-        res = exo.compute._v2_request_async(
-            "POST",
-            "/load-balancer",
-            zone=zone_name,
-            json={
-                "name": name if name else "-".join([test_prefix, _random_str()]),
-                "description": description,
+def nlb():
+    def _nlb(**kwargs):
+        return {
+            **{
+                "id": _random_uuid(),
+                "name": _random_str(),
+                "created-at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "ip": _random_ip_address(),
+                "services": [],
+                "state": "running",
             },
-        )
-        nlb = exo.compute._v2_request(
-            "GET", "/load-balancer/" + res["reference"]["id"], zone_name
-        )
-        nlb["zone"] = zone_name  # Saving NLB zone for later use in teardown
-
-        if teardown:
-            nlbs.append(nlb)
-
-        return nlb
+            **kwargs,
+        }
 
     yield _nlb
 
-    for nlb in nlbs:
-        res = exo.compute._v2_request_async(
-            "DELETE", "/load-balancer/" + nlb["id"], nlb["zone"]
-        )
+
+@pytest.fixture(autouse=True, scope="function")
+def nlb_service():
+    def _nlb_service(**kwargs):
+        return {
+            **{
+                "id": _random_uuid(),
+                "name": _random_str(),
+                "instance-pool": {"id": _random_uuid()},
+                "protocol": "tcp",
+                "port": 80,
+                "target-port": 8080,
+                "strategy": "round-robin",
+                "healthcheck": {
+                    "mode": "tcp",
+                    "port": 8080,
+                    "interval": 10,
+                    "timeout": 5,
+                    "retries": 1,
+                },
+                "healthcheck-status": [
+                    {"public-ip": _random_ip_address(), "status": "success"}
+                ],
+                "state": "running",
+            },
+            **kwargs,
+        }
+
+    yield _nlb_service
 
 
 @pytest.fixture(autouse=True, scope="function")
-def privnet(exo, test_prefix, test_description):
-    private_networks = []
-
-    def _private_network(
-        name=None,
-        description=test_description,
-        zone_id=_DEFAULT_ZONE_ID,
-        start_ip=None,
-        end_ip=None,
-        netmask=None,
-        teardown=True,
-    ):
-        private_network = exo.compute.cs.createNetwork(
-            zoneid=zone_id,
-            name=name if name else "-".join([test_prefix, _random_str()]),
-            displaytext=description,
-            startip=start_ip,
-            endip=end_ip,
-            netmask=netmask,
-        )["network"]
-
-        if teardown:
-            private_networks.append(private_network)
-
-        return private_network
+def privnet():
+    def _private_network(**kwargs):
+        return {
+            **{
+                "id": _random_uuid(),
+                "name": _random_str(),
+                "displaytext": kwargs.get("description", ""),
+                "zoneid": _random_uuid(),
+            },
+            **kwargs,
+        }
 
     yield _private_network
 
-    for private_network in private_networks:
-        res = exo.compute.cs.deleteNetwork(id=private_network["id"])
-        assert res["success"]
-
 
 @pytest.fixture(autouse=True, scope="function")
-def sg(exo, test_prefix, test_description):
-    security_groups = []
-
-    def _security_group(name=None, description=test_description, teardown=True):
-        security_group = exo.compute.cs.createSecurityGroup(
-            name=name if name else "-".join([test_prefix, _random_str()]),
-            description=description,
-        )["securitygroup"]
-
-        if teardown:
-            security_groups.append(security_group)
-
-        return security_group
+def sg():
+    def _security_group(**kwargs):
+        return {
+            **{
+                "id": _random_uuid(),
+                "name": _random_str(),
+                "ingressrule": kwargs.get("ingress", []),
+                "egressrule": kwargs.get("egress", []),
+            },
+            **kwargs,
+        }
 
     yield _security_group
 
-    for security_group in security_groups:
-        # We check if there are instances still using the SG before trying to deleteing
-        # it: since it's not possible to delete a referenced SG we wait for a while
-        # before trying and hope for the best...
-        res = exo.compute.cs.deleteSecurityGroup(id=security_group["id"])
-        assert res["success"]
-
 
 @pytest.fixture(autouse=True, scope="function")
-def sshkey(exo, test_prefix):
-    ssh_keys = []
-
-    def _ssh_key(name=None, teardown=True):
-        ssh_key = exo.compute.cs.createSSHKeyPair(
-            name=name if name else "-".join([test_prefix, _random_str()])
-        )["keypair"]
-
-        if teardown:
-            ssh_keys.append(ssh_key)
-
-        return ssh_key
+def sshkey():
+    def _ssh_key(**kwargs):
+        return {
+            **{
+                "name": _random_str(),
+                "fingerprint": ":".join(
+                    ["{:02x}".format(random.randint(0, 255)) for i in range(16)]
+                ),
+                "privatekey": "-----BEGIN RSA PRIVATE KEY-----\n"
+                + "\n".join(
+                    [
+                        _random_str(
+                            64,
+                            charset=string.ascii_lowercase
+                            + string.ascii_uppercase
+                            + string.digits
+                            + "/+",
+                        )
+                        for i in range(10)
+                    ]
+                )
+                + "-----END RSA PRIVATE KEY-----\n",
+            },
+            **kwargs,
+        }
 
     yield _ssh_key
 
-    for ssh_key in ssh_keys:
-        res = exo.compute.cs.deleteSSHKeyPair(name=ssh_key["name"])
-        assert res["success"]
-
 
 @pytest.fixture(autouse=True, scope="function")
-def domain(exo, test_prefix):
-    domains = []
-
-    def _domain(name=None, teardown=True):
-        domain = exo.dns.cs.createDnsDomain(
-            name="-".join([test_prefix, _random_str()]) + ".net"
-        )["dnsdomain"]
-
-        if teardown:
-            domains.append(domain)
-
-        return domain
-
-    yield _domain
-
-    for domain in domains:
-        res = exo.dns.cs.deleteDnsDomain(id=domain["id"])
-        assert res["success"]
-
-
-@pytest.fixture(autouse=True, scope="function")
-def bucket(exo, test_prefix):
-    buckets = []
-
-    def _bucket(name=None, zone=None, acl="private", teardown=True):
-        bucket = exo.storage.boto.create_bucket(
-            Bucket=name if name else "-".join([test_prefix, _random_str()]),
-            CreateBucketConfiguration={
-                "LocationConstraint": _DEFAULT_ZONE_NAME if zone is None else zone
+def apikey():
+    def _api_key(**kwargs):
+        return {
+            **{
+                "name": _random_str(),
+                "key": _random_str(),
+                "type": "restricted" if "operations" in kwargs else "unrestricted",
             },
-            ACL=acl,
-        )["Location"].lstrip("/")
-
-        if teardown:
-            buckets.append(bucket)
-
-        return bucket
-
-    yield _bucket
-
-    for bucket in buckets:
-        res = exo.storage.boto.delete_bucket(Bucket=bucket)
-
-
-@pytest.fixture(autouse=True, scope="function")
-def runstatus_page(exo, test_prefix):
-    pages = []
-
-    def _page(name=None, teardown=True):
-        name = name if name else "-".join([test_prefix, _random_str()])
-        page = exo.runstatus._post(
-            url="/pages", json={"name": name, "subdomain": name}
-        ).json()
-
-        if teardown:
-            pages.append(page)
-
-        return page
-
-    yield _page
-
-    for page in pages:
-        res = exo.runstatus._delete(url="/pages/{p}".format(p=page["subdomain"]))
-
-
-@pytest.fixture(autouse=True, scope="function")
-def apikey(exo, test_prefix):
-    api_keys = []
-
-    def _api_key(name=None, teardown=True):
-        api_key = exo.iam.cs.createApiKey(
-            name=name if name else "-".join([test_prefix, _random_str()])
-        )["apikey"]
-
-        if teardown:
-            api_keys.append(api_key)
-
-        return api_key
+            **kwargs,
+        }
 
     yield _api_key
 
-    for api_key in api_keys:
-        res = exo.iam.cs.revokeApiKey(key=api_key["key"])
+
+@pytest.fixture(autouse=True, scope="function")
+def domain():
+    def _domain(**kwargs):
+        name = _random_str() + ".com"
+        created = datetime.now().strftime("%Y-%m-%dT%H:%M:%S+0000")
+
+        return {
+            **{
+                "autorenew": False,
+                "created": created,
+                "id": random.randint(1, 65535),
+                "name": name,
+                "private_whois": False,
+                "state": "hosted",
+                "unicodename": name,
+                "updated": created,
+            },
+            **kwargs,
+        }
+
+    yield _domain
+
+
+@pytest.fixture(autouse=True, scope="function")
+def domain_record():
+    def _domain_record(**kwargs):
+        created = datetime.now().strftime("%Y-%m-%dT%H:%M:%S+0000")
+
+        return {
+            **{
+                "created_at": created,
+                "id": random.randint(1, 65535),
+                "domain_id": random.randint(1, 65535),
+                "name": _random_str(),
+                "record_type": "A",
+                "content": _random_ip_address(),
+                "ttl": 3600,
+                "updated_at": created,
+            },
+            **kwargs,
+        }
+
+    yield _domain_record

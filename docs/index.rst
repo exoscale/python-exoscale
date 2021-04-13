@@ -19,6 +19,15 @@ with high-level Python bindings.
 Changelog
 ---------
 
+0.5.2 (2021-04-13)
+~~~~~~~~~~~~~~~~~~
+
+Fixes
+*****
+
+- compute: add missing `bootmode` parameter to `register_instance_template()` (#32)
+
+
 0.5.1 (2021-03-16)
 ~~~~~~~~~~~~~~~~~~
 

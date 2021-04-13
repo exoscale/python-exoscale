@@ -918,6 +918,7 @@ class InstanceTemplate(Resource):
         url,
         checksum,
         zone,
+        bootmode=None,
         description=None,
         username=None,
         disable_ssh_key=False,
@@ -935,6 +936,7 @@ class InstanceTemplate(Resource):
                 url=url,
                 checksum=checksum,
                 details=templateDetails,
+                bootmode=bootmode,
                 sshkeyenabled=False if disable_ssh_key else True,
                 passwordenabled=False if disable_password_reset else True,
                 fetch_result=True,
@@ -2722,6 +2724,7 @@ class ComputeAPI(API):
         url,
         checksum,
         zone,
+        bootmode="legacy",
         description=None,
         username=None,
         disable_ssh_key=False,
@@ -2737,6 +2740,7 @@ class ComputeAPI(API):
             checksum (str): the instance template disk image MD5 checksum
             username (str): an username to log into Compute instances using this
                 template
+            bootmode (str): the instance template boot mode (legacy|uefi)
             disable_ssh_key (bool): a flag indicating whether to disable SSH key
                 installation during Compute instance creation
             disable_password_reset (bool): a flag indicating whether to disable
@@ -2749,6 +2753,7 @@ class ComputeAPI(API):
             url=url,
             checksum=checksum,
             zone=zone,
+            bootmode=bootmode,
             username=username,
             disable_ssh_key=disable_ssh_key,
             disable_password_reset=disable_password_reset,

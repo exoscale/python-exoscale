@@ -875,6 +875,7 @@ class InstanceTemplate(Resource):
         zone (Zone): the zone in which the template is located
         date (datetime.datetime): the template creation date
         size (int): the template disk size
+        boot_mode (str): the template boot mode
         ssh_key_enabled (bool): a flag indicating whether the SSH key deployment is
             enabled
         password_reset_enabled (bool): a flag indicating whether the user password can
@@ -894,6 +895,7 @@ class InstanceTemplate(Resource):
     zone = attr.ib(repr=False)
     date = attr.ib(repr=False)
     size = attr.ib(repr=False)
+    boot_mode = attr.ib(repr=False)
     ssh_key_enabled = attr.ib(default=True, repr=False)
     password_reset_enabled = attr.ib(default=True, repr=False)
     username = attr.ib(default=None, repr=False)

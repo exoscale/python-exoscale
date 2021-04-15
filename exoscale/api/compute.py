@@ -626,13 +626,15 @@ class Instance(Resource):
                 id=self.id,
                 name=name if name is not None else None,
                 displayname=name if name is not None else None,
-                securitygroupids=list(i.id for i in security_groups)
-                if security_groups
-                else None,
                 userdata=b64encode(bytes(user_data, encoding="utf-8"))
                 if user_data
                 else None,
             )
+
+            if security_groups:
+                self.compute.cs.updateVirtualMachineSecurityGroups(
+                    id=self.id, securitygroupids=list(i.id for i in security_groups)
+                )
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 

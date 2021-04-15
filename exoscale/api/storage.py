@@ -371,7 +371,7 @@ class BucketFile(Resource):
             None
         """
 
-        if acl is None and acp is None:
+        if not (acl or acp):
             raise ValueError("either acl or acp must be specified")
 
         if acl != "" and acl not in _SUPPORTED_CANNED_ACLS:
@@ -383,11 +383,11 @@ class BucketFile(Resource):
 
         try:
             if acl != "":
-                res = self.storage.boto.put_object_acl(
+                self.storage.boto.put_object_acl(
                     Bucket=self.bucket.name, Key=self.path, ACL=acl
                 )
             else:
-                res = self.storage.boto.put_object_acl(
+                self.storage.boto.put_object_acl(
                     Bucket=self.bucket.name,
                     Key=self.path,
                     AccessControlPolicy=acp._to_s3(),
@@ -404,16 +404,11 @@ class BucketFile(Resource):
         """
 
         try:
-            res = self.storage.boto.delete_object(
-                Bucket=self.bucket.name, Key=self.path
-            )
+            self.storage.boto.delete_object(Bucket=self.bucket.name, Key=self.path)
         except Exception as e:
             raise APIException(e)
 
-        self.storage = None
-        self.res = None
-        self.path = None
-        self.bucket = None
+        self._reset()
 
 
 @attr.s
@@ -597,7 +592,8 @@ class Bucket(Resource):
         Delete files stored in the bucket.
 
         Parameters:
-            prefix (str): a path prefix to restrict files deletion to
+            prefix (str): a path prefix to restrict files deletion to. If not set,
+              all files stored in the bucket will be deleted.
 
         Returns:
             None
@@ -628,7 +624,7 @@ class Bucket(Resource):
         # Perform objects batch deletions
         try:
             for ob in batches:
-                res = self.storage.boto.delete_objects(
+                self.storage.boto.delete_objects(
                     Bucket=self.name, Delete={"Objects": ob}
                 )
         except Exception as e:
@@ -646,7 +642,7 @@ class Bucket(Resource):
             None
         """
 
-        if acl is None and acp is None:
+        if not (acl or acp):
             raise ValueError("either acl or acp must be specified")
 
         if acl != "" and acl not in _SUPPORTED_CANNED_ACLS:
@@ -658,9 +654,9 @@ class Bucket(Resource):
 
         try:
             if acl != "":
-                res = self.storage.boto.put_bucket_acl(Bucket=self.name, ACL=acl)
+                self.storage.boto.put_bucket_acl(Bucket=self.name, ACL=acl)
             else:
-                res = self.storage.boto.put_bucket_acl(
+                self.storage.boto.put_bucket_acl(
                     Bucket=self.name, AccessControlPolicy=acp._to_s3()
                 )
         except Exception as e:
@@ -678,7 +674,7 @@ class Bucket(Resource):
         """
 
         try:
-            res = self.storage.boto.put_bucket_cors(
+            self.storage.boto.put_bucket_cors(
                 Bucket=self.name,
                 CORSConfiguration={"CORSRules": list(r._to_s3() for r in rules)},
             )
@@ -698,9 +694,7 @@ class Bucket(Resource):
         except Exception as e:
             raise APIException(e)
 
-        self.storage = None
-        self.res = None
-        self.name = None
+        self._reset()
 
 
 class StorageAPI(API):
@@ -781,7 +775,7 @@ class StorageAPI(API):
             )
 
         try:
-            res = self.boto.create_bucket(
+            self.boto.create_bucket(
                 Bucket=name,
                 CreateBucketConfiguration={
                     "LocationConstraint": self.zone if zone is None else zone

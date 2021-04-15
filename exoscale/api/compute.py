@@ -58,11 +58,7 @@ class AntiAffinityGroup(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        self.compute = None
-        self.res = None
-        self.id = None
-        self.name = None
-        self.description = None
+        self._reset()
 
 
 @attr.s
@@ -348,9 +344,7 @@ class ElasticIP(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        # Reset all attributes
-        for k, v in self.__dict__.items():
-            setattr(self, k, None)
+        self._reset()
 
 
 @attr.s
@@ -838,17 +832,7 @@ class Instance(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        self.compute = None
-        self.res = None
-        self.id = None
-        self.name = None
-        self.creation_date = None
-        self.zone = None
-        self.type = None
-        self.template = None
-        self.ipv4_address = None
-        self.ipv6_address = None
-        self.ssh_key = None
+        self._reset()
 
     def _default_nic(self, nics):
         for nic in nics:
@@ -905,7 +889,8 @@ class InstanceTemplate(Resource):
             zone=zone,
             date=datetime.strptime(res["created"], "%Y-%m-%dT%H:%M:%S%z"),
             size=res["size"],
-            username=res.get("details", {}).get("username", None),
+            boot_mode=res["bootmode"],
+            username=(res.get("details") or {}).get("username", None),
             ssh_key_enabled=res["sshkeyenabled"],
             password_reset_enabled=res["passwordenabled"],
         )
@@ -932,7 +917,7 @@ class InstanceTemplate(Resource):
             res = compute.cs.registerCustomTemplate(
                 name=name,
                 displaytext=description,
-                zoneId=zone.id,
+                zoneid=zone.id,
                 url=url,
                 checksum=checksum,
                 details=templateDetails,
@@ -944,7 +929,7 @@ class InstanceTemplate(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        return cls._from_cs(compute, res["template"][0])
+        return cls._from_cs(compute, res["template"][0], zone=zone)
 
     def delete(self):
         """
@@ -959,15 +944,7 @@ class InstanceTemplate(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        self.compute = None
-        self.res = None
-        self.name = None
-        self.description = None
-        self.zone = None
-        self.date = None
-        self.ssh_key_enabled = None
-        self.password_reset_enabled = None
-        self.username = None
+        self._reset()
 
 
 @attr.s
@@ -1051,11 +1028,7 @@ class InstanceVolumeSnapshot(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        self.compute = None
-        self.res = None
-        self.id = None
-        self.date = None
-        self.size = None
+        self._reset()
 
     def export(self):
         """
@@ -1172,7 +1145,7 @@ class InstancePool(Resource):
                 id=self.id, zoneid=self.zone.id, fetch_list=True
             )
             for i in res.get("virtualmachines", []):
-                yield Instance._from_cs(self.compute, i)
+                yield Instance._from_cs(self.compute, i, zone=self.zone)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -1312,10 +1285,6 @@ class InstancePool(Resource):
             None
         """
 
-        instance_template_id = None
-        if instance_template is not None:
-            instance_template_id = instance_template.id
-
         instance_user_data_content = None
         if instance_user_data is not None:
             instance_user_data_content = b64encode(
@@ -1328,7 +1297,8 @@ class InstancePool(Resource):
                 zoneid=self.zone.id,
                 name=name,
                 description=description,
-                templateid=instance_template_id,
+                serviceofferingid=instance_type.id if instance_type else None,
+                templateid=instance_template.id if instance_template else None,
                 rootdisksize=instance_volume_size,
                 userdata=instance_user_data_content,
             )
@@ -1337,13 +1307,12 @@ class InstancePool(Resource):
 
         if name:
             self.name = name
-
         if description:
             self.description = description
-
+        if instance_type is not None:
+            self.instance_type = instance_type
         if instance_template is not None:
             self.instance_template = instance_template
-
         if instance_user_data_content:
             self.instance_user_data = instance_user_data_content
         if instance_volume_size is not None:
@@ -1372,16 +1341,8 @@ class InstancePool(Resource):
                         break
                     else:
                         raise APIException(e.error["errortext"], e.error)
-        self.compute = None
-        self.res = None
-        self.id = None
-        self.name = None
-        self.zone = None
-        self.size = None
-        self.instance_type = None
-        self.instance_template = None
-        self.instance_user_data = None
-        self.instance_volume_size = None
+
+        self._reset()
 
 
 @attr.s
@@ -1643,15 +1604,13 @@ class NetworkLoadBalancerService(Resource):
             None
         """
 
-        res = self.compute._v2_request_async(
+        self.compute._v2_request_async(
             "DELETE",
             "/load-balancer/{}/service/{}".format(self.nlb.id, self.id),
             self.nlb.zone.name,
         )
 
-        # Reset all attributes
-        for k, v in self.__dict__.items():
-            setattr(self, k, None)
+        self._reset()
 
 
 @attr.s
@@ -1685,7 +1644,7 @@ class NetworkLoadBalancer(Resource):
             id=res["id"],
             zone=zone,
             name=res["name"],
-            description=res["description"],
+            description=res.get("description"),
             creation_date=datetime.strptime(res["created-at"], "%Y-%m-%dT%H:%M:%SZ"),
             ip_address=res["ip"],
         )
@@ -1793,7 +1752,7 @@ class NetworkLoadBalancer(Resource):
         if healthcheck_port is None:
             healthcheck_port = target_port
 
-        res = self.compute._v2_request_async(
+        self.compute._v2_request_async(
             "POST",
             "/load-balancer/{}/service".format(self.id),
             zone=self.zone.name,
@@ -1837,7 +1796,7 @@ class NetworkLoadBalancer(Resource):
             None
         """
 
-        res = self.compute._v2_request_async(
+        self.compute._v2_request_async(
             "PUT",
             "/load-balancer/" + self.id,
             zone=self.zone.name,
@@ -1857,13 +1816,11 @@ class NetworkLoadBalancer(Resource):
             None
         """
 
-        res = self.compute._v2_request_async(
+        self.compute._v2_request_async(
             "DELETE", "/load-balancer/" + self.id, self.zone.name
         )
 
-        # Reset all attributes
-        for k, v in self.__dict__.items():
-            setattr(self, k, None)
+        self._reset()
 
 
 @attr.s
@@ -1906,7 +1863,7 @@ class PrivateNetwork(Resource):
             id=res["id"],
             zone=zone,
             name=res["name"],
-            description=res["displaytext"],
+            description=res.get("displaytext", ""),
             start_ip=res.get("startip", ""),
             end_ip=res.get("endip", ""),
             netmask=res.get("netmask", ""),
@@ -2006,15 +1963,7 @@ class PrivateNetwork(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        self.compute = None
-        self.res = None
-        self.id = None
-        self.name = None
-        self.zone = None
-        self.description = None
-        self.start_ip = None
-        self.end_ip = None
-        self.netmask = None
+        self._reset()
 
 
 @attr.s
@@ -2104,35 +2053,24 @@ class SecurityGroup(Resource):
 
         start_port, end_port = rule._parse_port()
 
+        rule_kwargs = {
+            "securitygroupid": self.id,
+            "description": rule.description,
+            "cidrlist": rule.network_cidr,
+            "startport": start_port,
+            "endport": end_port,
+            "icmpcode": rule.icmp_code,
+            "icmptype": rule.icmp_type,
+            "protocol": rule.protocol,
+        }
+        if rule.security_group:
+            rule_kwargs["usersecuritygrouplist"] = {"group": rule.security_group.name}
+
         try:
             if rule.type == "ingress":
-                self.compute.cs.authorizeSecurityGroupIngress(
-                    securitygroupid=self.id,
-                    description=rule.description,
-                    cidrlist=rule.network_cidr,
-                    startport=start_port,
-                    endport=end_port,
-                    icmpcode=rule.icmp_code,
-                    icmptype=rule.icmp_type,
-                    protocol=rule.protocol,
-                    usersecuritygrouplist={"group": rule.security_group.name}
-                    if rule.security_group
-                    else None,
-                )
+                self.compute.cs.authorizeSecurityGroupIngress(**rule_kwargs)
             else:
-                self.compute.cs.authorizeSecurityGroupEgress(
-                    securitygroupid=self.id,
-                    description=rule.description,
-                    cidrlist=rule.network_cidr,
-                    startport=start_port,
-                    endport=end_port,
-                    icmpcode=rule.icmp_code,
-                    icmptype=rule.icmp_type,
-                    protocol=rule.protocol,
-                    usersecuritygrouplist={"group": rule.security_group.name}
-                    if rule.security_group
-                    else None,
-                )
+                self.compute.cs.authorizeSecurityGroupEgress(**rule_kwargs)
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -2149,11 +2087,7 @@ class SecurityGroup(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        self.compute = None
-        self.res = None
-        self.id = None
-        self.name = None
-        self.description = None
+        self._reset()
 
 
 @attr.s
@@ -2256,15 +2190,8 @@ class SecurityGroupRule:
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        self.type = None
-        self.id = None
-        self.description = None
-        self.network_cidr = None
-        self.security_group = None
-        self.port = None
-        self.protocol = None
-        self.icmp_code = None
-        self.icmp_type = None
+        for k, v in self.__dict__.items():
+            setattr(self, k, None)
 
     def _parse_port(self):
         """
@@ -2327,10 +2254,7 @@ class SSHKey(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        self.res = None
-        self.name = None
-        self.fingerprint = None
-        self.private_key = None
+        self._reset()
 
 
 @attr.s

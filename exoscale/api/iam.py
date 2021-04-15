@@ -55,12 +55,7 @@ class APIKey(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        self.res = None
-        self.name = None
-        self.key = None
-        self.secret = None
-        self.operations = None
-        self.type = None
+        self._reset()
 
 
 class IamAPI(API):
@@ -79,7 +74,7 @@ class IamAPI(API):
         self,
         key,
         secret,
-        endpoint="https://api.exoscale.com/compute",
+        endpoint="https://api.exoscale.com/v1",
         max_retries=None,
         trace=False,
     ):
@@ -170,7 +165,7 @@ class IamAPI(API):
          list all supported operations of an API key.
 
         Returns:
-             [str]: list of operations for the current API key
+            [str]: list of operations for the current API key
         """
 
         try:

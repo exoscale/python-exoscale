@@ -116,6 +116,14 @@ class Resource(object):
 
     res = attr.ib(repr=False)
 
+    def _reset(self):
+        """
+        Reset all attributes.
+        """
+
+        for k, v in self.__dict__.items():
+            setattr(self, k, None)
+
 
 @attr.s
 class APIException(Exception):

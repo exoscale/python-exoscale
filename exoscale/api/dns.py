@@ -85,7 +85,7 @@ class Domain(Resource):
             ttl (int): the DNS domain record TTL
 
         Returns:
-            None
+            DomainRecord: the DNS record created
         """
 
         if type not in _SUPPORTED_RECORD_TYPES:
@@ -96,7 +96,7 @@ class Domain(Resource):
             )
 
         try:
-            self.dns.cs.createDnsDomainRecord(
+            res = self.dns.cs.createDnsDomainRecord(
                 name=self.name,
                 record_name=name,
                 record_type=type,
@@ -106,6 +106,8 @@ class Domain(Resource):
             )
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
+
+        return DomainRecord._from_cs(self.dns, res, self)
 
     def delete(self):
         """

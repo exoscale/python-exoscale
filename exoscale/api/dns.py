@@ -120,11 +120,7 @@ class Domain(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        self.dns = None
-        self.res = None
-        self.id = None
-        self.name = None
-        self.unicode_name = None
+        self._reset()
 
 
 @attr.s
@@ -162,7 +158,7 @@ class DomainRecord(Resource):
             type=res["record_type"],
             name=res["name"],
             content=res["content"],
-            priority=res["priority"],
+            priority=res.get("priority"),
             ttl=res["ttl"],
         )
 
@@ -211,15 +207,7 @@ class DomainRecord(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        self.dns = None
-        self.res = None
-        self.id = None
-        self.domain = None
-        self.type = None
-        self.name = None
-        self.content = None
-        self.priority = None
-        self.ttl = None
+        self._reset()
 
 
 class DnsAPI(API):

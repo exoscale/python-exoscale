@@ -7,7 +7,7 @@ This submodule represents the Exoscale Compute API.
 import json
 import sys
 import time
-from base64 import b64encode
+from base64 import b64decode, b64encode
 from datetime import datetime
 
 import attr
@@ -569,6 +569,27 @@ class Instance(Resource):
             raise APIException(e.error["errortext"], e.error)
 
         return res["state"].lower()
+
+    @property
+    def user_data(self):
+        """
+        Cloud-init user data of the instance.
+
+        Returns:
+            str: the current instance cloud-init user data
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        try:
+            res = self.compute.cs.getVirtualMachineUserData(virtualmachineid=self.id)
+        except CloudStackApiException as e:
+            raise APIException(e.error["errortext"], e.error)
+
+        if "userdata" in res["virtualmachineuserdata"]:
+            return b64decode(res["virtualmachineuserdata"]["userdata"]).decode("utf-8")
 
     @property
     def instance_pool(self):

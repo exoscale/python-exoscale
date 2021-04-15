@@ -1287,6 +1287,7 @@ class InstancePool(Resource):
         self,
         name=None,
         description=None,
+        instance_type=None,
         instance_template=None,
         instance_volume_size=None,
         instance_user_data=None,
@@ -1297,6 +1298,8 @@ class InstancePool(Resource):
         Parameters:
             name (str): an Instance Pool name
             description (str): an Instance Pool description
+            instance_type (InstanceType): an instance type to use for
+                Compute instance members
             instance_template (InstanceTemplate): an instance template to use for
                 Compute instance members
             instance_volume_size (int): the Compute instance members storage volume

@@ -19,6 +19,24 @@ with high-level Python bindings.
 Changelog
 ---------
 
+0.6.0 (2021-04-21)
+~~~~~~~~~~~~~~~~~~
+
+Features
+********
+
+- compute: the ``SecurityGroup.update()`` now updates the Compute instance Security
+  Groups membership live without requiring to stop the instance
+- compute: add ``Instance.user_data`` property
+- compute: add ``InstanceTemplate.boot_mode`` attribute
+- dns: ``create_dns_record()`` now returns the created record
+
+Fixes
+*****
+
+- compute: don't crash when an Instance Template doesn't have details metadata
+
+
 0.5.2 (2021-04-13)
 ~~~~~~~~~~~~~~~~~~
 

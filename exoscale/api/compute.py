@@ -637,7 +637,7 @@ class Instance(Resource):
         """
 
         if self.res.get("manager") == "instancepool":
-            return self.compute.get_instance_pool(self.zone, self.res["managerid"])
+            return self.compute.get_instance_pool(self.zone, id=self.res["managerid"])
 
     def update(self, name=None, security_groups=None, user_data=None):
         """
@@ -1138,50 +1138,68 @@ class InstancePool(Resource):
     A Compute Instance Pool.
 
     Attributes:
-        id (str): the Instance Pool unique identifier
-        name (str): the Instance Pool name
         description (str): the Instance Pool description
-        zone (Zone): the zone in which the Instance Pool is located
-        size (int): the number of Compute instance members the Instance Pool manages
-        instance_type (InstanceType): the type of instances managed by this instance
-            pool
-        instance_template (InstanceTemplate): the template to be used when this instance
-            pool creates new instances.
-        instance_user_data (InstanceTemplate): The base64-encoded instances user
-            data, when the Instance Pool creates new instances
+        id (str): the Instance Pool unique identifier
+        instance_deploy_target (DeployTarget): the Deploy Target used to create new
+            Compute instances
+        instance_ipv6_enabled (bool): a flag indicating whether IPv6 is must be enabled
+            when creating new Compute instances
+        instance_prefix (str): the prefix applied to created Compute instances name
+        instance_ssh_key (SSHKey): the SSH key to be deployed when creating new Compute
+            instances
+        instance_template (InstanceTemplate): the template to be used when this Instance
+            Pool creates new instances.
+        instance_type (InstanceType): the type of instances managed by this Instance
+            Pool
+        instance_user_data (InstanceTemplate): The base64-encoded instances user data,
+            when the Instance Pool creates new instances
         instance_volume_size (int): the storage volume capacity in bytes to set when
-            this Instance Pool creates new instances.
+            this Instance Pool creates new instances
+        name (str): the Instance Pool name
+        size (int): the number of Compute instance members the Instance Pool manages
+        zone (Zone): the zone in which the Instance Pool is located
     """
 
     compute = attr.ib(repr=False)
-    res = attr.ib(repr=False)
     id = attr.ib()
-    name = attr.ib()
-    zone = attr.ib(repr=False)
-    size = attr.ib(repr=False)
-    instance_type = attr.ib(repr=False)
     instance_template = attr.ib(repr=False)
+    instance_type = attr.ib(repr=False)
     instance_user_data = attr.ib(repr=False)
     instance_volume_size = attr.ib(repr=False)
+    name = attr.ib()
+    res = attr.ib(repr=False)
+    size = attr.ib(repr=False)
+    zone = attr.ib(repr=False)
     description = attr.ib(default=None, repr=False)
+    instance_deploy_target = attr.ib(default=None, repr=False)
+    instance_ipv6_enabled = attr.ib(default=False, repr=False)
+    instance_prefix = attr.ib(default="pool", repr=False)
+    instance_ssh_key = attr.ib(default=None, repr=False)
 
     @classmethod
-    def _from_cs(cls, compute, res, zone=None):
-        if zone is None:
-            zone = compute.get_zone(id=res["zoneid"])
-
+    def _from_api(cls, compute, res, zone):
         return cls(
-            compute,
-            res,
-            id=res["id"],
-            name=res["name"],
+            compute=compute,
             description=res.get("description"),
-            zone=zone,
+            id=res["id"],
+            instance_deploy_target=None
+            if "deploy-target" not in res
+            else compute.get_deploy_target(zone, id=res["deploy-target"]["id"]),
+            instance_ipv6_enabled=res["ipv6-enabled"],
+            instance_prefix=res["instance-prefix"],
+            instance_ssh_key=None
+            if "ssh-key" not in res
+            else compute.get_ssh_key(res["ssh-key"]),
+            instance_template=compute.get_instance_template(
+                zone, id=res["template"]["id"]
+            ),
+            instance_type=compute.get_instance_type(id=res["instance-type"]["id"]),
+            instance_user_data=res.get("user-data"),
+            instance_volume_size=res["disk-size"],
+            name=res["name"],
+            res=res,
             size=res["size"],
-            instance_type=compute.get_instance_type(id=res["serviceofferingid"]),
-            instance_template=compute.get_instance_template(zone, id=res["templateid"]),
-            instance_user_data=res.get("userdata"),
-            instance_volume_size=res["rootdisksize"],
+            zone=zone,
         )
 
     @property
@@ -1197,14 +1215,12 @@ class InstancePool(Resource):
             latency.
         """
 
-        try:
-            [res] = self.compute.cs.getInstancePool(
-                id=self.id, zoneid=self.zone.id, fetch_list=True
-            )
-            for i in res.get("virtualmachines", []):
-                yield Instance._from_cs(self.compute, i, zone=self.zone)
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
+        res = self.compute._v2_request(
+            "GET", "/instance-pool/" + self.id, self.zone.name
+        )
+
+        for i in res["instances"]:
+            yield self.compute.get_instance(self.zone, id=i["id"])
 
     @property
     def anti_affinity_groups(self):
@@ -1219,14 +1235,12 @@ class InstancePool(Resource):
             latency.
         """
 
-        try:
-            [res] = self.compute.cs.getInstancePool(
-                id=self.id, zoneid=self.zone.id, fetch_list=True
-            )
-            for aagid in res.get("affinitygroupids", []):
-                yield self.compute.get_anti_affinity_group(id=aagid)
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
+        res = self.compute._v2_request(
+            "GET", "/instance-pool/" + self.id, self.zone.name
+        )
+
+        for i in res.get("anti-affinity-groups", []):
+            yield self.compute.get_anti_affinity_group(id=i["id"])
 
     @property
     def security_groups(self):
@@ -1241,14 +1255,12 @@ class InstancePool(Resource):
             latency.
         """
 
-        try:
-            [res] = self.compute.cs.getInstancePool(
-                id=self.id, zoneid=self.zone.id, fetch_list=True
-            )
-            for sgid in res.get("securitygroupids", []):
-                yield self.compute.get_security_group(id=sgid)
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
+        res = self.compute._v2_request(
+            "GET", "/instance-pool/" + self.id, self.zone.name
+        )
+
+        for i in res.get("security-groups", []):
+            yield self.compute.get_security_group(id=i["id"])
 
     @property
     def private_networks(self):
@@ -1263,14 +1275,32 @@ class InstancePool(Resource):
             latency.
         """
 
-        try:
-            [res] = self.compute.cs.getInstancePool(
-                id=self.id, zoneid=self.zone.id, fetch_list=True
-            )
-            for nid in res.get("networkids", []):
-                yield self.compute.get_private_network(zone=self.zone, id=nid)
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
+        res = self.compute._v2_request(
+            "GET", "/instance-pool/" + self.id, self.zone.name
+        )
+
+        for i in res.get("private-networks", []):
+            yield self.compute.get_private_network(self.zone, id=i["id"])
+
+    @property
+    def elastic_ips(self):
+        """
+        Elastic IP attached to the instances.
+
+        Yields:
+            ElasticIP: the next Elastic IP attached to the instances
+
+        Note:
+            This property value is dynamically retrieved from the API, incurring extra
+            latency.
+        """
+
+        res = self.compute._v2_request(
+            "GET", "/instance-pool/" + self.id, self.zone.name
+        )
+
+        for i in res.get("elastic-ips", []):
+            yield self.compute.get_elastic_ip(self.zone, id=i["id"])
 
     @property
     def state(self):
@@ -1285,12 +1315,9 @@ class InstancePool(Resource):
             latency.
         """
 
-        try:
-            [res] = self.compute.cs.getInstancePool(
-                id=self.id, zoneid=self.zone.id, fetch_list=True
-            )
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
+        res = self.compute._v2_request(
+            "GET", "/instance-pool/" + self.id, self.zone.name
+        )
 
         return res["state"].lower()
 
@@ -1298,8 +1325,13 @@ class InstancePool(Resource):
         """
         Scale the Instance Pool up or down.
 
+        Note: in case of a scale-down you should use the evict() method, allowing you
+        to specify which specific instance should be evicted from the Instance Pool
+        rather than leaving the decision to the orchestrator.
+
         Parameters:
-            size (int): the number of Compute instance members the pool must manage
+            size (int): the number of Compute instance members the Instance Pool must
+                manage
 
         Returns:
             None
@@ -1308,23 +1340,52 @@ class InstancePool(Resource):
         if size <= 0:
             raise ValueError("size must be > 0")
 
-        try:
-            self.compute.cs.scaleInstancePool(
-                id=self.id, zoneid=self.zone.id, size=size
-            )
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
+        self.compute._v2_request_async(
+            "PUT",
+            "/instance-pool/{}:scale".format(self.id),
+            zone=self.zone.name,
+            json={"size": size},
+        )
 
         self.size = size
+
+    def evict(self, instances):
+        """
+        Evict members from the Instance Pool.
+
+        Parameters:
+            instances ([Instance]): the list of Compute instances to evict from the
+                Instance Pool
+
+        Returns:
+            None
+        """
+
+        self.compute._v2_request_async(
+            "PUT",
+            "/instance-pool/{}:evict".format(self.id),
+            zone=self.zone.name,
+            json={"instances": [i.id for i in instances]},
+        )
+
+        self.size = self.size - len(instances)
 
     def update(
         self,
         name=None,
         description=None,
-        instance_type=None,
+        instance_anti_affinity_groups=None,
+        instance_deploy_target=None,
+        instance_elastic_ips=None,
+        instance_enable_ipv6=False,
+        instance_prefix=None,
+        instance_private_networks=None,
+        instance_security_groups=None,
+        instance_ssh_key=None,
         instance_template=None,
-        instance_volume_size=None,
+        instance_type=None,
         instance_user_data=None,
+        instance_volume_size=None,
     ):
         """
         Update the Instance Pool properties.
@@ -1345,40 +1406,85 @@ class InstancePool(Resource):
             None
         """
 
+        data = {}
+
+        if name is not None:
+            data["name"] = name
+
+        if description is not None:
+            data["description"] = description
+
+        if instance_anti_affinity_groups is not None:
+            data["anti-affinity-groups"] = [
+                {"id": i.id} for i in instance_anti_affinity_groups
+            ]
+
+        if instance_deploy_target is not None:
+            data["deploy-target"] = {"id": instance_deploy_target.id}
+
+        if instance_elastic_ips is not None:
+            data["elastic-ips"] = [{"id": i.id} for i in instance_elastic_ips]
+
+        if instance_enable_ipv6 is not None:
+            data["ipv6-enabled"] = instance_enable_ipv6
+
+        if instance_prefix is not None:
+            data["instance-prefix"] = instance_prefix
+
+        if instance_private_networks is not None:
+            data["private-networks"] = [{"id": i.id} for i in instance_private_networks]
+
+        if instance_security_groups is not None:
+            data["security-groups"] = [{"id": i.id} for i in instance_security_groups]
+
+        if instance_ssh_key is not None:
+            data["ssh-key"] = instance_ssh_key.name
+
+        if instance_template is not None:
+            data["template"] = {"id": instance_template.id}
+
+        if instance_type is not None:
+            data["instance-type"] = {"id": instance_type.id}
+
         instance_user_data_content = None
         if instance_user_data is not None:
             instance_user_data_content = b64encode(
                 bytes(instance_user_data, encoding="utf-8")
-            )
+            ).decode("ascii")
+            data["user-data"] = instance_user_data_content
 
-        try:
-            self.compute.cs.updateInstancePool(
-                id=self.id,
-                zoneid=self.zone.id,
-                name=name,
-                description=description,
-                serviceofferingid=instance_type.id if instance_type else None,
-                templateid=instance_template.id if instance_template else None,
-                rootdisksize=instance_volume_size,
-                userdata=instance_user_data_content,
-            )
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
+        if instance_volume_size is not None:
+            data["disk-size"] = instance_volume_size
 
-        if name:
+        self.compute._v2_request_async(
+            "PUT",
+            "/instance-pool/" + self.id,
+            zone=self.zone.name,
+            json=data,
+        )
+
+        if name is not None:
             self.name = name
-        if description:
+        if description is not None:
             self.description = description
-        if instance_type is not None:
-            self.instance_type = instance_type
+        if instance_deploy_target is not None:
+            self.instance_deploy_target = instance_deploy_target
+        if instance_enable_ipv6 is not None:
+            self.instance_ipv6_enabled = instance_enable_ipv6
+        if instance_prefix is not None:
+            self.instance_prefix = instance_prefix
+        if instance_ssh_key is not None:
+            self.instance_ssh_key = instance_ssh_key
         if instance_template is not None:
             self.instance_template = instance_template
-        if instance_user_data_content:
+        if instance_type is not None:
+            self.instance_type = instance_type
+        if instance_user_data_content is not None:
             self.instance_user_data = instance_user_data_content
         if instance_volume_size is not None:
             self.instance_volume_size = instance_volume_size
 
-    def delete(self, wait=True, max_poll=300):
+    def delete(self):
         """
         Delete the Instance Pool.
 
@@ -1386,21 +1492,9 @@ class InstancePool(Resource):
             None
         """
 
-        try:
-            self.compute.cs.destroyInstancePool(id=self.id, zoneid=self.zone.id)
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
-
-        if wait:
-            for _ in range(max_poll):
-                time.sleep(1)
-                try:
-                    self.compute.cs.getInstancePool(id=self.id, zoneid=self.zone.id)
-                except CloudStackApiException as e:
-                    if e.error["errorcode"] == 404:
-                        break
-                    else:
-                        raise APIException(e.error["errortext"], e.error)
+        self.compute._v2_request_async(
+            "DELETE", "/instance-pool/" + self.id, self.zone.name
+        )
 
         self._reset()
 
@@ -1491,7 +1585,7 @@ class NetworkLoadBalancerService(Resource):
             name=res["name"],
             description=res.get("description"),
             instance_pool=compute.get_instance_pool(
-                nlb.zone, res["instance-pool"]["id"]
+                nlb.zone, id=res["instance-pool"]["id"]
             ),
             port=res["port"],
             target_port=res["target-port"],
@@ -2895,129 +2989,143 @@ class ComputeAPI(API):
         size,
         instance_type,
         instance_template,
-        instance_volume_size=10,
         instance_anti_affinity_groups=None,
-        instance_security_groups=None,
+        instance_deploy_target=None,
+        instance_elastic_ips=None,
+        instance_enable_ipv6=False,
+        instance_prefix="pool",
         instance_private_networks=None,
+        instance_security_groups=None,
         instance_ssh_key=None,
         instance_user_data=None,
+        instance_volume_size=10,
         description=None,
     ):
         """
-        Create a Compute Instance Pool.
+        Create an Instance Pool.
 
         Parameters:
             zone (Zone): the zone in which to create the Instance Pool
             name (str): the name of the Instance Pool
-            description (str): a description of the Instance Pool
-            size (int): the number of Compute instance members the pool must manage
-            instance_type (InstanceType): the Compute instance members type
+            size (int): the number of Compute instance members the Instance Pool must
+                manage
             instance_template (InstanceTemplate): the Compute instance template to use
-                for members
-            instance_volume_size (int): the Compute instance members storage volume
-                size in GB
-            instance_private_networks ([PrivateNetwork]): a list of Private Networks to
-                attach the Compute instance members to
+                when creating Compute instance members
             instance_anti_affinity_groups ([AntiAffinityGroup]): a list of Anti-Affinity
                 Groups to attach the Compute instance members to
+            instance_deploy_target ([DeployTarget]): a Deploy Target to deploy Compute
+                instance members to
+            instance_elastic_ips ([ElasticIP]): a list of Elastic IPs to attach the
+                Compute instance members to
+            instance_enable_ipv6 (bool): a flag indicating whether IPv6 should be
+                enabled when creating Compute instances
+            instance_prefix (str): the string to prefix Compute instance members name
+                with
+            instance_private_networks ([PrivateNetwork]): a list of Private Networks to
+                attach the Compute instance members to
             instance_security_groups ([SecurityGroup]): a list of Security Groups to
                 attach the Compute instance members to
             instance_ssh_key (SSHKey): a SSH Key to deploy on the Compute instance
                 members
+            instance_type (InstanceType): the Compute instance members type
             instance_user_data (str): a cloud-init user data configuration to apply to
                 the Compute instance members
+            instance_volume_size (int): the Compute instance members storage volume size
+                in GB
+            description (str): a description of the Instance Pool
 
         Returns:
-            InstancePool: the Compute Instance Pool created
+            InstancePool: the Instance Pool created
         """
 
         if size <= 0:
             raise ValueError("size must be > 0")
 
-        instance_anti_affinity_group_ids = None
+        data = {}
+
         if instance_anti_affinity_groups:
-            instance_anti_affinity_group_ids = [
-                i.id for i in instance_anti_affinity_groups
+            data["anti-affinity-groups"] = [
+                {"id": i.id} for i in instance_anti_affinity_groups
             ]
 
-        instance_security_group_ids = None
-        if instance_security_groups:
-            instance_security_group_ids = [i.id for i in instance_security_groups]
+        if instance_elastic_ips:
+            data["elastic-ips"] = [{"id": i.id} for i in instance_elastic_ips]
 
-        instance_private_network_ids = None
         if instance_security_groups:
-            instance_private_network_ids = [i.id for i in instance_private_networks]
+            data["security-groups"] = [{"id": i.id} for i in instance_security_groups]
 
-        instance_ssh_key_name = None
+        if instance_security_groups:
+            data["private-networks"] = [{"id": i.id} for i in instance_private_networks]
+
         if instance_ssh_key:
-            instance_ssh_key_name = instance_ssh_key.name
+            data["ssh-key"] = instance_ssh_key.name
+
+        if instance_deploy_target:
+            data["deploy-target"] = {"id": instance_deploy_target.id}
 
         instance_user_data_content = None
         if instance_user_data is not None:
             instance_user_data_content = b64encode(
                 bytes(instance_user_data, encoding="utf-8")
-            )
+            ).decode("ascii")
 
-        try:
-            res = self.cs.createInstancePool(
-                name=name,
-                description=description,
-                size=size,
-                zoneid=zone.id,
-                serviceofferingid=instance_type.id,
-                templateid=instance_template.id,
-                rootdisksize=instance_volume_size,
-                affinitygroupids=instance_anti_affinity_group_ids,
-                securitygroupids=instance_security_group_ids,
-                networkids=instance_private_network_ids,
-                keypair=instance_ssh_key_name,
-                userdata=instance_user_data_content,
-            )
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
+        res = self._v2_request_async(
+            "POST",
+            "/instance-pool",
+            zone=zone.name,
+            json={
+                "description": description,
+                "disk-size": instance_volume_size,
+                "instance-prefix": instance_prefix,
+                "instance-type": {"id": instance_type.id},
+                "ipv6-enabled": instance_enable_ipv6,
+                "name": name,
+                "size": size,
+                "template": {"id": instance_template.id},
+                "user-data": instance_user_data_content,
+                **data,
+            },
+        )
 
-        return InstancePool._from_cs(self, res, zone=zone)
+        return self.get_instance_pool(zone, id=res["reference"]["id"])
 
     def list_instance_pools(self, zone, **kwargs):
         """
-        List Compute Instance Pools.
+        List Instance Pools.
 
         Parameters:
             zone (Zone): a zone to restrict results to
 
         Yields:
-            InstancePool: the next Compute Instance Pool
+            InstancePool: the next Instance Pool
         """
 
-        try:
-            _list = self.cs.listInstancePools(zoneid=zone.id, fetch_list=True, **kwargs)
+        _list = self._v2_request("GET", "/instance-pool", zone.name)
 
-            for i in _list:
-                yield InstancePool._from_cs(self, i, zone=zone)
-        except CloudStackApiException as e:
-            raise APIException(e.error["errortext"], e.error)
+        for i in _list["instance-pools"]:
+            yield InstancePool._from_api(compute=self, res=i, zone=zone)
 
-    def get_instance_pool(self, zone, id):
+    def get_instance_pool(self, zone, name=None, id=None):
         """
         Get an Instance Pool.
 
         Parameters:
             zone (Zone): the zone in which the Instance Pool is located in
             id (str): an Instance Pool identifier
+            name (str): an Instance Pool name
 
         Returns:
             InstancePool: an Instance Pool
         """
 
-        try:
-            [res] = self.cs.getInstancePool(id=id, zoneid=zone.id, fetch_list=True)
-        except CloudStackApiException as e:
-            if "does not exist" in e.error["errortext"]:
-                raise ResourceNotFoundError
-            else:
-                raise APIException(e.error["errortext"], e.error)
+        if id is None and name is None:
+            raise ValueError("either id or name must be specifed")
 
-        return InstancePool._from_cs(self, res, zone=zone)
+        for ip in self.list_instance_pools(zone):
+            if ip.id == id or ip.name == name:
+                return ip
+
+        raise ResourceNotFoundError
 
     ### Network Load Balancer
 

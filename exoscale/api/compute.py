@@ -62,6 +62,38 @@ class AntiAffinityGroup(Resource):
 
 
 @attr.s
+class DeployTarget(Resource):
+    """
+    A Deploy Target.
+
+    Attributes:
+        id (str): the Deploy Target unique identifier
+        zone (Zone): the zone in which the Deploy Target is located
+        name (str): the Deploy Target name
+        description (str): the Deploy Target description
+        typ (str): the Deploy Target type
+    """
+
+    res = attr.ib(repr=False)
+    id = attr.ib()
+    zone = attr.ib(repr=False)
+    name = attr.ib()
+    typ = attr.ib(repr=False)
+    description = attr.ib(default=None, repr=False)
+
+    @classmethod
+    def _from_api(cls, res, zone):
+        return cls(
+            res,
+            id=res["id"],
+            zone=zone,
+            name=res["name"],
+            description=res.get("description"),
+            typ=res["type"],
+        )
+
+
+@attr.s
 class ElasticIP(Resource):
     """
     An Elastic IP.
@@ -2419,6 +2451,45 @@ class ComputeAPI(API):
             raise ResourceNotFoundError
 
         return anti_affinity_groups[0]
+
+    ## Deploy Target
+
+    def list_deploy_targets(self, zone):
+        """
+        List Deploy Targets.
+
+        Parameters:
+            zone (Zone): the zone to list in
+
+        Yields:
+            DeployTarget: the next Deploy Target
+        """
+
+        _list = self._v2_request("GET", "/deploy-target", zone.name)
+
+        for i in _list["deploy-targets"]:
+            yield DeployTarget._from_api(i, zone)
+
+    def get_deploy_target(self, zone, name=None, id=None):
+        """
+        Get a Deploy Target.
+
+        Parameters:
+            name (str): a Deploy Target name
+            id (str): a Deploy Target unique identifier
+
+        Returns:
+            DeployTarget: a Deploy Target
+        """
+
+        if id is None and name is None:
+            raise ValueError("either id or name must be specifed")
+
+        for dt in self.list_deploy_targets(zone):
+            if dt.id == id or dt.name == name:
+                return dt
+
+        raise ResourceNotFoundError
 
     ### Elastic IP
 

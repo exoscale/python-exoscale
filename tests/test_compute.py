@@ -78,6 +78,43 @@ class TestCompute:
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
+    ## Deploy Target
+
+    def test_list_deploy_targets(self, exo, zone, dt):
+        zone = zone()
+        expected = dt()
+
+        exo.mock_get_v2(zone["name"], "deploy-target", {"deploy-targets": [expected]})
+        actual = list(exo.compute.list_deploy_targets(zone=Zone._from_cs(zone)))
+        assert len(actual) == 1
+        assert actual[0].id == expected["id"]
+
+    def test_get_deploy_target(self, exo, zone, dt):
+        zone = zone()
+        deploy_target_name = _random_str()
+        deploy_target_description = _random_str()
+        expected = dt(name=deploy_target_name, description=deploy_target_description)
+
+        exo.mock_get_v2(zone["name"], "deploy-target", {"deploy-targets": [expected]})
+        actual = exo.compute.get_deploy_target(
+            zone=Zone._from_cs(zone), id=expected["id"]
+        )
+        assert actual.id == expected["id"]
+        assert actual.name == deploy_target_name
+        assert actual.description == deploy_target_description
+
+        actual = exo.compute.get_deploy_target(
+            zone=Zone._from_cs(zone), name=expected["name"]
+        )
+        assert actual.id == expected["id"]
+
+        with pytest.raises(ResourceNotFoundError) as excinfo:
+            actual = exo.compute.get_deploy_target(
+                zone=Zone._from_cs(zone), id="lolnope"
+            )
+            assert actual is None
+        assert excinfo.type == ResourceNotFoundError
+
     ### Elastic IP
 
     def test_create_elastic_ip(self, exo, zone, eip):

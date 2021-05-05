@@ -286,6 +286,19 @@ def aag():
 
 
 @pytest.fixture(autouse=True, scope="function")
+def dt():
+    def _deploy_target(**kwargs):
+        return {
+            "id": _random_uuid(),
+            "name": _random_str(),
+            "type": "dedicated",
+            **kwargs,
+        }
+
+    yield _deploy_target
+
+
+@pytest.fixture(autouse=True, scope="function")
 def eip():
     def _elastic_ip(**kwargs):
         return {

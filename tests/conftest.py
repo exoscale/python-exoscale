@@ -115,10 +115,6 @@ def exo():
                     "res_key": "listdnsdomainsreponse",
                     "res_type": "dnsdomain",
                 },
-                "listInstancePools": {
-                    "res_key": "listinstancepoolsresponse",
-                    "res_type": "instancepool",
-                },
                 "listNetworks": {
                     "res_key": "listnetworksresponse",
                     "res_type": "network",
@@ -286,6 +282,21 @@ def aag():
 
 
 @pytest.fixture(autouse=True, scope="function")
+def dt():
+    def _deploy_target(**kwargs):
+        return {
+            **{
+                "id": _random_uuid(),
+                "name": _random_str(),
+                "type": "dedicated",
+            },
+            **kwargs,
+        }
+
+    yield _deploy_target
+
+
+@pytest.fixture(autouse=True, scope="function")
 def eip():
     def _elastic_ip(**kwargs):
         return {
@@ -349,44 +360,34 @@ def instance():
 @pytest.fixture(autouse=True, scope="function")
 def instance_pool(instance):
     def _instance_pool(**kwargs):
-        id = _random_uuid()
-        zone_id = _random_uuid()
-        type_id = _random_uuid()
-        template_id = _random_uuid()
-        rootdisksize = 10
-        security_group_ids = [{"id": id} for id in kwargs.get("security_group_ids", [])]
-        affinity_group_ids = [
-            {"id": id} for id in kwargs.get("anti_affinity_group_ids", [])
-        ]
-        network_ids = [{"id": id} for id in kwargs.get("private_network_ids", [])]
+        id = kwargs.get("id", _random_uuid())
+        size = kwargs.get("size", 1)
 
         return {
             **{
-                "id": kwargs.get("id", id),
+                "id": id,
                 "name": _random_str(),
-                "size": 1,
-                "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%S+0000"),
-                "zoneid": kwargs.get("zone_id", zone_id),
-                "templateid": kwargs.get("template_id", template_id),
-                "serviceofferingid": kwargs.get("type_id", type_id),
-                "rootdisksize": kwargs.get("rootdisksize", rootdisksize),
-                "securitygroupids": security_group_ids,
-                "affinitygroupids": affinity_group_ids,
-                "networkids": network_ids,
+                "size": size,
+                "created-at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "template": kwargs.get("template", {"id": _random_uuid()}),
+                "instance-type": kwargs.get("instance-type", {"id": _random_uuid()}),
+                "instance-prefix": "pool",
+                "disk-size": kwargs.get("disk-size", 10),
+                "ipv6-enabled": False,
                 "state": "running",
-                "virtualmachines": [
-                    instance(
-                        zone_id=kwargs.get("zone_id", zone_id),
-                        type_id=kwargs.get("type_id", type_id),
-                        template_id=kwargs.get("template_id", template_id),
-                        rootdisksize=kwargs.get("rootdisksize", rootdisksize),
-                        security_group_ids=security_group_ids,
-                        anti_affinity_group_ids=affinity_group_ids,
-                        private_network_ids=network_ids,
-                        manager="instancepool",
-                        managerid=kwargs.get("id", id),
-                    )
-                    for i in range(kwargs.get("size", 1))
+                "instances": [
+                    {
+                        "id": _random_uuid(),
+                        "name": "{}-{}-{}".format(
+                            kwargs.get("instance-prefix", "pool"),
+                            id[:5],
+                            _random_str(5),
+                        ),
+                        "created-at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                        "manager": {"type": "instancepool", "id": kwargs.get("id", id)},
+                        "state": "running",
+                    }
+                    for i in range(size)
                 ],
             },
             **kwargs,

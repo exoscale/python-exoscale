@@ -115,10 +115,6 @@ def exo():
                     "res_key": "listdnsdomainsreponse",
                     "res_type": "dnsdomain",
                 },
-                "listInstancePools": {
-                    "res_key": "listinstancepoolsresponse",
-                    "res_type": "instancepool",
-                },
                 "listNetworks": {
                     "res_key": "listnetworksresponse",
                     "res_type": "network",
@@ -274,11 +270,9 @@ def volume_snapshot():
 def aag():
     def _anti_affinity_group(**kwargs):
         return {
-            **{
-                "id": _random_uuid(),
-                "name": _random_str(),
-                "type": "host anti-affinity",
-            },
+            "id": _random_uuid(),
+            "name": _random_str(),
+            "type": "host anti-affinity",
             **kwargs,
         }
 
@@ -302,15 +296,13 @@ def dt():
 def eip():
     def _elastic_ip(**kwargs):
         return {
-            **{
-                "id": _random_uuid(),
-                "ipaddress": _random_ip_address(),
-                "iselastic": True,
-                "zoneid": kwargs.get("zone_id", _random_uuid()),
-                "reversedns": [{"domainname": kwargs["reverse_dns"]}]
-                if "reverse_dns" in kwargs
-                else [],
-            },
+            "id": _random_uuid(),
+            "ipaddress": _random_ip_address(),
+            "iselastic": True,
+            "zoneid": kwargs.get("zone_id", _random_uuid()),
+            "reversedns": [{"domainname": kwargs["reverse_dns"]}]
+            if "reverse_dns" in kwargs
+            else [],
             **kwargs,
         }
 
@@ -321,38 +313,36 @@ def eip():
 def instance():
     def _instance(**kwargs):
         return {
-            **{
-                "id": _random_uuid(),
-                "name": _random_str(),
-                "displayname": kwargs.get("name", _random_str()),
-                "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%S+0000"),
-                "zoneid": kwargs.get("zone_id", _random_uuid()),
-                "templateid": kwargs.get("template_id", _random_uuid()),
-                "serviceofferingid": kwargs.get("type_id", _random_uuid()),
-                "securitygroup": [
-                    {"id": id} for id in kwargs.get("security_group_ids", [])
-                ],
-                "affinitygroup": [
-                    {"id": id} for id in kwargs.get("anti_affinity_group_ids", [])
-                ],
-                "nic": [
-                    {
-                        "id": _random_uuid(),
-                        "isdefault": True,
-                        "ipaddress": _random_ip_address(),
-                        "ip6address": _random_ip_address(6),
-                        "networkid": _random_uuid(),
-                        "reversedns": [{"domainname": kwargs["reverse_dns"]}]
-                        if "reverse_dns" in kwargs
-                        else [],
-                    }
-                ]
-                + [
-                    {"id": _random_uuid(), "isdefault": False, "networkid": id}
-                    for id in kwargs.get("private_network_ids", [])
-                ],
-                "state": "Running",
-            },
+            "id": _random_uuid(),
+            "name": _random_str(),
+            "displayname": kwargs.get("name", _random_str()),
+            "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%S+0000"),
+            "zoneid": kwargs.get("zone_id", _random_uuid()),
+            "templateid": kwargs.get("template_id", _random_uuid()),
+            "serviceofferingid": kwargs.get("type_id", _random_uuid()),
+            "securitygroup": [
+                {"id": id} for id in kwargs.get("security_group_ids", [])
+            ],
+            "affinitygroup": [
+                {"id": id} for id in kwargs.get("anti_affinity_group_ids", [])
+            ],
+            "nic": [
+                {
+                    "id": _random_uuid(),
+                    "isdefault": True,
+                    "ipaddress": _random_ip_address(),
+                    "ip6address": _random_ip_address(6),
+                    "networkid": _random_uuid(),
+                    "reversedns": [{"domainname": kwargs["reverse_dns"]}]
+                    if "reverse_dns" in kwargs
+                    else [],
+                }
+            ]
+            + [
+                {"id": _random_uuid(), "isdefault": False, "networkid": id}
+                for id in kwargs.get("private_network_ids", [])
+            ],
+            "state": "Running",
             **kwargs,
         }
 
@@ -362,46 +352,34 @@ def instance():
 @pytest.fixture(autouse=True, scope="function")
 def instance_pool(instance):
     def _instance_pool(**kwargs):
-        id = _random_uuid()
-        zone_id = _random_uuid()
-        type_id = _random_uuid()
-        template_id = _random_uuid()
-        rootdisksize = 10
-        security_group_ids = [{"id": id} for id in kwargs.get("security_group_ids", [])]
-        affinity_group_ids = [
-            {"id": id} for id in kwargs.get("anti_affinity_group_ids", [])
-        ]
-        network_ids = [{"id": id} for id in kwargs.get("private_network_ids", [])]
+        id = kwargs.get("id", _random_uuid())
+        size = kwargs.get("size", 1)
 
         return {
-            **{
-                "id": kwargs.get("id", id),
-                "name": _random_str(),
-                "size": 1,
-                "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%S+0000"),
-                "zoneid": kwargs.get("zone_id", zone_id),
-                "templateid": kwargs.get("template_id", template_id),
-                "serviceofferingid": kwargs.get("type_id", type_id),
-                "rootdisksize": kwargs.get("rootdisksize", rootdisksize),
-                "securitygroupids": security_group_ids,
-                "affinitygroupids": affinity_group_ids,
-                "networkids": network_ids,
-                "state": "running",
-                "virtualmachines": [
-                    instance(
-                        zone_id=kwargs.get("zone_id", zone_id),
-                        type_id=kwargs.get("type_id", type_id),
-                        template_id=kwargs.get("template_id", template_id),
-                        rootdisksize=kwargs.get("rootdisksize", rootdisksize),
-                        security_group_ids=security_group_ids,
-                        anti_affinity_group_ids=affinity_group_ids,
-                        private_network_ids=network_ids,
-                        manager="instancepool",
-                        managerid=kwargs.get("id", id),
-                    )
-                    for i in range(kwargs.get("size", 1))
-                ],
-            },
+            "id": id,
+            "name": _random_str(),
+            "size": size,
+            "created-at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "template": kwargs.get("template", {"id": _random_uuid()}),
+            "instance-type": kwargs.get("instance-type", {"id": _random_uuid()}),
+            "instance-prefix": "pool",
+            "disk-size": kwargs.get("disk-size", 10),
+            "ipv6-enabled": False,
+            "state": "running",
+            "instances": [
+                {
+                    "id": _random_uuid(),
+                    "name": "{}-{}-{}".format(
+                        kwargs.get("instance-prefix", "pool"),
+                        id[:5],
+                        _random_str(5),
+                    ),
+                    "created-at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "manager": {"type": "instancepool", "id": kwargs.get("id", id)},
+                    "state": "running",
+                }
+                for i in range(size)
+            ],
             **kwargs,
         }
 
@@ -430,26 +408,24 @@ def nlb():
 def nlb_service():
     def _nlb_service(**kwargs):
         return {
-            **{
-                "id": _random_uuid(),
-                "name": _random_str(),
-                "instance-pool": {"id": _random_uuid()},
-                "protocol": "tcp",
-                "port": 80,
-                "target-port": 8080,
-                "strategy": "round-robin",
-                "healthcheck": {
-                    "mode": "tcp",
-                    "port": 8080,
-                    "interval": 10,
-                    "timeout": 5,
-                    "retries": 1,
-                },
-                "healthcheck-status": [
-                    {"public-ip": _random_ip_address(), "status": "success"}
-                ],
-                "state": "running",
+            "id": _random_uuid(),
+            "name": _random_str(),
+            "instance-pool": {"id": _random_uuid()},
+            "protocol": "tcp",
+            "port": 80,
+            "target-port": 8080,
+            "strategy": "round-robin",
+            "healthcheck": {
+                "mode": "tcp",
+                "port": 8080,
+                "interval": 10,
+                "timeout": 5,
+                "retries": 1,
             },
+            "healthcheck-status": [
+                {"public-ip": _random_ip_address(), "status": "success"}
+            ],
+            "state": "running",
             **kwargs,
         }
 
@@ -460,12 +436,10 @@ def nlb_service():
 def privnet():
     def _private_network(**kwargs):
         return {
-            **{
-                "id": _random_uuid(),
-                "name": _random_str(),
-                "displaytext": kwargs.get("description", ""),
-                "zoneid": _random_uuid(),
-            },
+            "id": _random_uuid(),
+            "name": _random_str(),
+            "displaytext": kwargs.get("description", ""),
+            "zoneid": _random_uuid(),
             **kwargs,
         }
 
@@ -476,12 +450,10 @@ def privnet():
 def sg():
     def _security_group(**kwargs):
         return {
-            **{
-                "id": _random_uuid(),
-                "name": _random_str(),
-                "ingressrule": kwargs.get("ingress", []),
-                "egressrule": kwargs.get("egress", []),
-            },
+            "id": _random_uuid(),
+            "name": _random_str(),
+            "ingressrule": kwargs.get("ingress", []),
+            "egressrule": kwargs.get("egress", []),
             **kwargs,
         }
 
@@ -492,26 +464,24 @@ def sg():
 def sshkey():
     def _ssh_key(**kwargs):
         return {
-            **{
-                "name": _random_str(),
-                "fingerprint": ":".join(
-                    ["{:02x}".format(random.randint(0, 255)) for i in range(16)]
-                ),
-                "privatekey": "-----BEGIN RSA PRIVATE KEY-----\n"
-                + "\n".join(
-                    [
-                        _random_str(
-                            64,
-                            charset=string.ascii_lowercase
-                            + string.ascii_uppercase
-                            + string.digits
-                            + "/+",
-                        )
-                        for i in range(10)
-                    ]
-                )
-                + "-----END RSA PRIVATE KEY-----\n",
-            },
+            "name": _random_str(),
+            "fingerprint": ":".join(
+                ["{:02x}".format(random.randint(0, 255)) for i in range(16)]
+            ),
+            "privatekey": "-----BEGIN RSA PRIVATE KEY-----\n"
+            + "\n".join(
+                [
+                    _random_str(
+                        64,
+                        charset=string.ascii_lowercase
+                        + string.ascii_uppercase
+                        + string.digits
+                        + "/+",
+                    )
+                    for i in range(10)
+                ]
+            )
+            + "-----END RSA PRIVATE KEY-----\n",
             **kwargs,
         }
 
@@ -522,11 +492,9 @@ def sshkey():
 def apikey():
     def _api_key(**kwargs):
         return {
-            **{
-                "name": _random_str(),
-                "key": _random_str(),
-                "type": "restricted" if "operations" in kwargs else "unrestricted",
-            },
+            "name": _random_str(),
+            "key": _random_str(),
+            "type": "restricted" if "operations" in kwargs else "unrestricted",
             **kwargs,
         }
 
@@ -540,16 +508,14 @@ def domain():
         created = datetime.now().strftime("%Y-%m-%dT%H:%M:%S+0000")
 
         return {
-            **{
-                "autorenew": False,
-                "created": created,
-                "id": random.randint(1, 65535),
-                "name": name,
-                "private_whois": False,
-                "state": "hosted",
-                "unicodename": name,
-                "updated": created,
-            },
+            "autorenew": False,
+            "created": created,
+            "id": random.randint(1, 65535),
+            "name": name,
+            "private_whois": False,
+            "state": "hosted",
+            "unicodename": name,
+            "updated": created,
             **kwargs,
         }
 
@@ -562,16 +528,14 @@ def domain_record():
         created = datetime.now().strftime("%Y-%m-%dT%H:%M:%S+0000")
 
         return {
-            **{
-                "created_at": created,
-                "id": random.randint(1, 65535),
-                "domain_id": random.randint(1, 65535),
-                "name": _random_str(),
-                "record_type": "A",
-                "content": _random_ip_address(),
-                "ttl": 3600,
-                "updated_at": created,
-            },
+            "created_at": created,
+            "id": random.randint(1, 65535),
+            "domain_id": random.randint(1, 65535),
+            "name": _random_str(),
+            "record_type": "A",
+            "content": _random_ip_address(),
+            "ttl": 3600,
+            "updated_at": created,
             **kwargs,
         }
 

@@ -22,40 +22,30 @@ class TestComputeNetworkLoadBalancer:
         exo.mock_list("listTemplates", [instance_template()])
 
         zone = Zone._from_cs(zone())
-        instance_pool = InstancePool._from_cs(
-            exo.compute, instance_pool(zone_id=zone.id), zone=zone
-        )
+        instance_pool = InstancePool._from_api(exo.compute, instance_pool(), zone=zone)
         operation_id = _random_uuid()
 
         expected = nlb_service(
-            name=_random_str(),
-            description=_random_str(),
-            instance_pool=instance_pool.res["id"],
-            port=443,
-            target_port=8443,
-            protocol="tcp",
-            strategy="source-hash",
-            healthcheck={
-                "mode": "https",
-                "port": 8443,
-                "uri": "/health",
-                "interval": 10,
-                "timeout": 5,
-                "retries": 1,
-                "tls-sni": "example.net",
-            },
+            **{
+                "name": _random_str(),
+                "description": _random_str(),
+                "instance-pool": {"id": instance_pool.res["id"]},
+                "port": 443,
+                "target_port": 8443,
+                "protocol": "tcp",
+                "strategy": "source-hash",
+                "healthcheck": {
+                    "mode": "https",
+                    "port": 8443,
+                    "uri": "/health",
+                    "interval": 10,
+                    "timeout": 5,
+                    "retries": 1,
+                    "tls-sni": "example.net",
+                },
+            }
         )
         nlb = NetworkLoadBalancer._from_api(exo.compute, nlb(), zone=zone)
-
-        exo.mock_get(
-            "?command=getInstancePool",
-            {
-                "getinstancepoolresponse": {
-                    "count": 1,
-                    "instancepool": [instance_pool.res],
-                }
-            },
-        )
 
         def _assert_request(request, context):
             body = json.loads(request.body)
@@ -85,6 +75,9 @@ class TestComputeNetworkLoadBalancer:
         )
         exo.mock_get_operation(zone.res["name"], operation_id, nlb.res["id"])
 
+        exo.mock_get_v2(
+            zone.res["name"], "instance-pool", {"instance-pools": [instance_pool.res]}
+        )
         exo.mock_get_v2(
             zone.res["name"], "load-balancer/{}".format(nlb.res["id"]), nlb.res
         )
@@ -186,23 +179,19 @@ class TestComputeNetworkLoadBalancer:
         exo.mock_list("listTemplates", [instance_template()])
 
         zone = Zone._from_cs(zone())
-        instance_pool = InstancePool._from_cs(
-            exo.compute, instance_pool(zone_id=zone.id), zone=zone
-        )
+        instance_pool = InstancePool._from_api(exo.compute, instance_pool(), zone=zone)
         nlb = NetworkLoadBalancer._from_api(
             exo.compute,
-            nlb(services=[nlb_service(instance_pool=instance_pool.res["id"])]),
+            nlb(
+                services=[
+                    nlb_service(**{"instance-pool": {"id": instance_pool.res["id"]}})
+                ]
+            ),
             zone=zone,
         )
 
-        exo.mock_get(
-            "?command=getInstancePool",
-            {
-                "getinstancepoolresponse": {
-                    "count": 1,
-                    "instancepool": [instance_pool.res],
-                }
-            },
+        exo.mock_get_v2(
+            zone.res["name"], "instance-pool", {"instance-pools": [instance_pool.res]}
         )
         exo.mock_get_v2(
             zone.res["name"], "load-balancer/{}".format(nlb.res["id"]), nlb.res

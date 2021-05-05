@@ -544,6 +544,8 @@ class TestCompute:
         aag,
         sg,
         privnet,
+        eip,
+        dt,
         sshkey,
         instance_type,
         instance_template,
@@ -555,93 +557,115 @@ class TestCompute:
         anti_affinity_group = aag()
         private_network = privnet()
         security_group = sg()
+        elastic_ip = eip()
         ssh_key = sshkey()
+        deploy_target = dt()
         instance_pool_name = _random_str()
         instance_pool_description = _random_str()
         instance_pool_size = 1
-        instances_volume_size = 20
-        instance_pool_creation_date = datetime.now(tz=timezone.utc).strftime(
-            "%Y-%m-%dT%H:%M:%S+0000"
-        )
+        instance_volume_size = 20
+        instance_prefix = _random_str()
         instance_pool_userdata = _random_str()
+        instance_pool_userdata_encoded = b64encode(
+            bytes(instance_pool_userdata, encoding="utf-8")
+        ).decode("ascii")
+        operation_id = _random_uuid()
 
         expected = instance_pool(
-            zone_id=zone["id"],
-            name=instance_pool_name,
-            description=instance_pool_description,
-            created=instance_pool_creation_date,
-            type_id=instance_type["id"],
-            template_id=instance_template["id"],
-            rootdisksize=instances_volume_size,
-            security_group_ids=[security_group["id"]],
-            anti_affinity_group_ids=[anti_affinity_group["id"]],
-            private_network_ids=[private_network["id"]],
-            keypair=ssh_key["name"],
-            userdata=instance_pool_userdata,
+            **{
+                "anti-affinity-groups": [{"id": anti_affinity_group["id"]}],
+                "deploy-target": {"id": deploy_target["id"]},
+                "description": instance_pool_description,
+                "disk-size": instance_volume_size,
+                "elastic-ips": [{"id": elastic_ip["id"]}],
+                "instance-prefix": instance_prefix,
+                "instance-type": {"id": instance_type["id"]},
+                "ipv6-enabled": True,
+                "name": instance_pool_name,
+                "private_networks": [{"id": private_network["id"]}],
+                "security-groups": [{"id": security_group["id"]}],
+                "ssh-key": ssh_key["name"],
+                "template": {"id": instance_template["id"]},
+                "user-data": instance_pool_userdata_encoded,
+            }
         )
 
         def _assert_request(request, context):
-            params = parse_qs(urlparse(request.url).query)
-            assert params["zoneid"][0] == expected["zoneid"]
-            assert params["name"][0] == instance_pool_name
-            assert params["size"][0] == str(expected["size"])
-            assert params["templateid"][0] == expected["templateid"]
-            assert params["serviceofferingid"][0] == expected["serviceofferingid"]
-            assert params["securitygroupids"] == [security_group["id"]]
-            assert params["affinitygroupids"] == [anti_affinity_group["id"]]
-            assert params["networkids"] == [private_network["id"]]
-            assert params["keypair"][0] == expected["keypair"]
-            assert (
-                b64decode(params["userdata"][0]).decode("utf-8") == expected["userdata"]
-            )
+            body = json.loads(request.body)
+            assert body["anti-affinity-groups"][0]["id"] == anti_affinity_group["id"]
+            assert body["deploy-target"]["id"] == deploy_target["id"]
+            assert body["description"] == instance_pool_description
+            assert body["disk-size"] == instance_volume_size
+            assert body["elastic-ips"][0]["id"] == elastic_ip["id"]
+            assert body["instance-type"]["id"] == instance_type["id"]
+            assert body["ipv6-enabled"] == True
+            assert body["name"] == instance_pool_name
+            assert body["private-networks"][0]["id"] == private_network["id"]
+            assert body["security-groups"][0]["id"] == security_group["id"]
+            assert body["size"] == instance_pool_size
+            assert body["ssh-key"] == ssh_key["name"]
+            assert body["template"]["id"] == instance_template["id"]
+            assert body["user-data"] == instance_pool_userdata_encoded
 
             context.status_code = 200
             context.headers["Content-Type"] = "application/json"
             return {
-                "createinstancepoolresponse": {
-                    "id": _random_uuid(),
-                    "jobid": _random_uuid(),
-                }
+                "id": operation_id,
+                "state": "success",
+                "reference": {"id": expected["id"]},
             }
 
-        exo.mock_get("?command=createInstancePool", _assert_request)
-        exo.mock_query_async_job_result(expected)
         exo.mock_list("listServiceOfferings", [instance_type])
+        exo.mock_list("listSSHKeyPairs", [ssh_key])
         exo.mock_list("listTemplates", [instance_template])
+        exo.mock_post(zone["name"], "instance-pool", _assert_request)
+        exo.mock_get_operation(zone["name"], operation_id, expected["id"])
+        exo.mock_get_v2(
+            zone["name"], "deploy-target", {"deploy-targets": [deploy_target]}
+        )
+        exo.mock_get_v2(zone["name"], "instance-pool", {"instance-pools": [expected]})
 
         actual = exo.compute.create_instance_pool(
             zone=Zone._from_cs(zone),
             name=instance_pool_name,
-            size=instance_pool_size,
             description=instance_pool_description,
-            instance_type=InstanceType._from_cs(instance_type),
-            instance_template=InstanceTemplate._from_cs(
-                exo.compute, instance_template, Zone._from_cs(zone)
-            ),
-            instance_volume_size=instances_volume_size,
-            instance_security_groups=[
-                SecurityGroup._from_cs(exo.compute, security_group)
-            ],
+            size=instance_pool_size,
             instance_anti_affinity_groups=[
                 AntiAffinityGroup._from_cs(exo.compute, anti_affinity_group)
             ],
+            instance_deploy_target=DeployTarget._from_api(deploy_target, zone),
+            instance_elastic_ips=[
+                ElasticIP._from_cs(exo.compute, elastic_ip, Zone._from_cs(zone))
+            ],
+            instance_enable_ipv6=True,
             instance_private_networks=[
                 PrivateNetwork._from_cs(
                     exo.compute, private_network, Zone._from_cs(zone)
                 )
             ],
+            instance_security_groups=[
+                SecurityGroup._from_cs(exo.compute, security_group)
+            ],
             instance_ssh_key=SSHKey._from_cs(exo.compute, ssh_key),
+            instance_template=InstanceTemplate._from_cs(
+                exo.compute, instance_template, Zone._from_cs(zone)
+            ),
+            instance_type=InstanceType._from_cs(instance_type),
             instance_user_data=instance_pool_userdata,
+            instance_volume_size=instance_volume_size,
         )
         assert actual.zone.id == zone["id"]
         assert actual.id == expected["id"]
         assert actual.name == instance_pool_name
         assert actual.description == instance_pool_description
-        assert actual.size == instance_pool_size
-        assert actual.instance_type.id == instance_type["id"]
+        assert actual.instance_deploy_target.id == deploy_target["id"]
+        assert actual.instance_ipv6_enabled == True
+        assert actual.instance_prefix == instance_prefix
         assert actual.instance_template.id == instance_template["id"]
-        assert actual.instance_volume_size == instances_volume_size
-        assert actual.instance_user_data == instance_pool_userdata
+        assert actual.instance_type.id == instance_type["id"]
+        assert actual.instance_user_data == instance_pool_userdata_encoded
+        assert actual.instance_volume_size == instance_volume_size
+        assert actual.size == instance_pool_size
 
     def test_list_instance_pools(
         self, exo, zone, instance_type, instance_template, instance_pool
@@ -651,8 +675,8 @@ class TestCompute:
 
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
+        exo.mock_get_v2(zone["name"], "instance-pool", {"instance-pools": [expected]})
 
-        exo.mock_list("listInstancePools", [expected])
         actual = list(exo.compute.list_instance_pools(zone=Zone._from_cs(zone)))
         assert len(actual) == 1
         assert actual[0].id == expected["id"]
@@ -666,21 +690,22 @@ class TestCompute:
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
-        exo.mock_get(
-            "?command=getInstancePool&id={}".format(expected["id"]),
-            {"listinstancepoolsresponse": {"count": 1, "instancepool": [expected]}},
+        exo.mock_get_v2(zone["name"], "instance-pool", {"instance-pools": [expected]})
+        actual = exo.compute.get_instance_pool(
+            zone=Zone._from_cs(zone), id=expected["id"]
         )
-        actual = exo.compute.get_instance_pool(Zone._from_cs(zone), id=expected["id"])
+        assert actual.id == expected["id"]
+
+        actual = exo.compute.get_instance_pool(
+            zone=Zone._from_cs(zone), name=expected["name"]
+        )
         assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            exo.mocker.get(
-                urljoin(exo.compute.endpoint, "?command=getInstancePool&id=lolnope"),
-                status_code=404,
-                json={"errorresponse": {"errortext": "entity does not exist"}},
-                headers={"Content-Type": "application/json"},
+            actual = exo.compute.get_instance_pool(
+                zone=Zone._from_cs(zone), id="lolnope"
             )
-            actual = exo.compute.get_instance_pool(Zone._from_cs(zone), id="lolnope")
+            assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
     ### Network Load Balancer
@@ -715,6 +740,7 @@ class TestCompute:
         exo.mock_post(zone["name"], "load-balancer", _assert_request)
         exo.mock_get_operation(zone["name"], operation_id, expected["id"])
         exo.mock_get_v2(zone["name"], "load-balancer", {"load-balancers": [expected]})
+
         actual = exo.compute.create_network_load_balancer(
             zone=Zone._from_cs(zone),
             name=nlb_name,

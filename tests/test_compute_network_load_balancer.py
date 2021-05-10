@@ -76,11 +76,9 @@ class TestComputeNetworkLoadBalancer:
         exo.mock_get_operation(zone.res["name"], operation_id, nlb.res["id"])
 
         exo.mock_get_v2(
-            zone.res["name"], "instance-pool", {"instance-pools": [instance_pool.res]}
+            zone.res["name"], "instance-pool/" + instance_pool.id, instance_pool.res
         )
-        exo.mock_get_v2(
-            zone.res["name"], "load-balancer/{}".format(nlb.res["id"]), nlb.res
-        )
+        exo.mock_get_v2(zone.res["name"], "load-balancer/" + nlb.id, nlb.res)
 
         actual = nlb.add_service(
             name=expected["name"],
@@ -134,9 +132,7 @@ class TestComputeNetworkLoadBalancer:
                 "reference": {"id": nlb.res["id"]},
             }
 
-        exo.mock_put(
-            zone.res["name"], "load-balancer/{}".format(nlb.res["id"]), _assert_request
-        )
+        exo.mock_put(zone.res["name"], "load-balancer/" + nlb.id, _assert_request)
         exo.mock_get_operation(zone.res["name"], operation_id, nlb.res["id"])
 
         nlb.update(name=nlb_name, description=nlb_description)
@@ -157,9 +153,7 @@ class TestComputeNetworkLoadBalancer:
                 "reference": {"id": nlb.res["id"]},
             }
 
-        exo.mock_delete(
-            zone.res["name"], "load-balancer/{}".format(nlb.res["id"]), _assert_request
-        )
+        exo.mock_delete(zone.res["name"], "load-balancer/" + nlb.id, _assert_request)
         exo.mock_get_operation(zone.res["name"], operation_id, nlb.res["id"])
 
         nlb.delete()
@@ -191,11 +185,9 @@ class TestComputeNetworkLoadBalancer:
         )
 
         exo.mock_get_v2(
-            zone.res["name"], "instance-pool", {"instance-pools": [instance_pool.res]}
+            zone.res["name"], "instance-pool/" + instance_pool.id, instance_pool.res
         )
-        exo.mock_get_v2(
-            zone.res["name"], "load-balancer/{}".format(nlb.res["id"]), nlb.res
-        )
+        exo.mock_get_v2(zone.res["name"], "load-balancer/" + nlb.id, nlb.res)
 
         nlb_services = list(nlb.services)
         assert len(nlb_services) == 1

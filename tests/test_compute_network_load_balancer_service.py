@@ -74,11 +74,9 @@ class TestComputeNetworkLoadBalancerService:
         exo.mock_get_operation(zone.res["name"], operation_id, nlb.res["id"])
 
         exo.mock_get_v2(
-            zone.res["name"], "instance-pool", {"instance-pools": [instance_pool.res]}
+            zone.res["name"], "instance-pool/" + instance_pool.id, instance_pool.res
         )
-        exo.mock_get_v2(
-            zone.res["name"], "load-balancer/{}".format(nlb.res["id"]), nlb.res
-        )
+        exo.mock_get_v2(zone.res["name"], "load-balancer/" + nlb.id, nlb.res)
 
         nlb_service = list(nlb.services)[0]
         nlb_service.update(
@@ -149,11 +147,9 @@ class TestComputeNetworkLoadBalancerService:
         exo.mock_get_operation(zone.res["name"], operation_id, nlb.res["id"])
 
         exo.mock_get_v2(
-            zone.res["name"], "instance-pool", {"instance-pools": [instance_pool.res]}
+            zone.res["name"], "instance-pool/" + instance_pool.id, instance_pool.res
         )
-        exo.mock_get_v2(
-            zone.res["name"], "load-balancer/{}".format(nlb.res["id"]), nlb.res
-        )
+        exo.mock_get_v2(zone.res["name"], "load-balancer/" + nlb.id, nlb.res)
 
         nlb_service = list(nlb.services)[0]
         nlb_service.delete()
@@ -180,11 +176,9 @@ class TestComputeNetworkLoadBalancerService:
         )
 
         exo.mock_get_v2(
-            zone.res["name"], "instance-pool", {"instance-pools": [instance_pool.res]}
+            zone.res["name"], "instance-pool/" + instance_pool.id, instance_pool.res
         )
-        exo.mock_get_v2(
-            zone.res["name"], "load-balancer/{}".format(nlb.res["id"]), nlb.res
-        )
+        exo.mock_get_v2(zone.res["name"], "load-balancer/" + nlb.id, nlb.res)
         exo.mock_get_v2(
             zone.res["name"],
             "load-balancer/{}/service/{}".format(nlb.res["id"], nlb_service["id"]),

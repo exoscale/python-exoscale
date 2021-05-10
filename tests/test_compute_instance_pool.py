@@ -145,11 +145,7 @@ class TestComputeInstancePool:
                 "reference": {"id": instance_pool.res["id"]},
             }
 
-        exo.mock_put(
-            zone["name"],
-            "instance-pool/{}".format(instance_pool.res["id"]),
-            _assert_request,
-        )
+        exo.mock_put(zone["name"], "instance-pool/" + instance_pool.id, _assert_request)
         exo.mock_get_operation(zone["name"], operation_id, instance_pool.res["id"])
 
         instance_pool.update(
@@ -211,9 +207,7 @@ class TestComputeInstancePool:
             }
 
         exo.mock_delete(
-            zone["name"],
-            "instance-pool/{}".format(instance_pool.res["id"]),
-            _assert_request,
+            zone["name"], "instance-pool/" + instance_pool.id, _assert_request
         )
         exo.mock_get_operation(zone["name"], operation_id, instance_pool.res["id"])
 
@@ -266,7 +260,7 @@ class TestComputeInstancePool:
         exo.mock_list("listPublicIpAddresses", [elastic_ip])
         exo.mock_list("listVirtualMachines", [instance])
         exo.mock_get_v2(
-            zone["name"], "instance-pool/{}".format(instance_pool.id), instance_pool.res
+            zone["name"], "instance-pool/" + instance_pool.id, instance_pool.res
         )
 
         instance_pool_instances = list(instance_pool.instances)

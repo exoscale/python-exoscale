@@ -96,6 +96,7 @@ class TestCompute:
         expected = dt(name=deploy_target_name, description=deploy_target_description)
 
         exo.mock_get_v2(zone["name"], "deploy-target", {"deploy-targets": [expected]})
+        exo.mock_get_v2(zone["name"], "deploy-target/" + expected["id"], expected)
         actual = exo.compute.get_deploy_target(
             zone=Zone._from_cs(zone), id=expected["id"]
         )
@@ -110,7 +111,7 @@ class TestCompute:
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
             actual = exo.compute.get_deploy_target(
-                zone=Zone._from_cs(zone), id="lolnope"
+                zone=Zone._from_cs(zone), name="lolnope"
             )
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
@@ -623,7 +624,11 @@ class TestCompute:
         exo.mock_get_v2(
             zone["name"], "deploy-target", {"deploy-targets": [deploy_target]}
         )
+        exo.mock_get_v2(
+            zone["name"], "deploy-target/" + deploy_target["id"], deploy_target
+        )
         exo.mock_get_v2(zone["name"], "instance-pool", {"instance-pools": [expected]})
+        exo.mock_get_v2(zone["name"], "instance-pool/" + expected["id"], expected)
 
         actual = exo.compute.create_instance_pool(
             zone=Zone._from_cs(zone),
@@ -690,20 +695,24 @@ class TestCompute:
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
-        exo.mock_get_v2(zone["name"], "instance-pool", {"instance-pools": [expected]})
+        exo.mock_get_v2(zone["name"], "instance-pool/" + expected["id"], expected)
         actual = exo.compute.get_instance_pool(
             zone=Zone._from_cs(zone), id=expected["id"]
         )
         assert actual.id == expected["id"]
 
+        exo.mock_get_v2(zone["name"], "instance-pool", {"instance-pools": [expected]})
         actual = exo.compute.get_instance_pool(
             zone=Zone._from_cs(zone), name=expected["name"]
         )
         assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
+            exo.mock_get_v2(
+                zone["name"], "instance-pool", {"instance-pools": [expected]}
+            )
             actual = exo.compute.get_instance_pool(
-                zone=Zone._from_cs(zone), id="lolnope"
+                zone=Zone._from_cs(zone), name="lolnope"
             )
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
@@ -739,7 +748,7 @@ class TestCompute:
 
         exo.mock_post(zone["name"], "load-balancer", _assert_request)
         exo.mock_get_operation(zone["name"], operation_id, expected["id"])
-        exo.mock_get_v2(zone["name"], "load-balancer", {"load-balancers": [expected]})
+        exo.mock_get_v2(zone["name"], "load-balancer/" + expected["id"], expected)
 
         actual = exo.compute.create_network_load_balancer(
             zone=Zone._from_cs(zone),
@@ -765,12 +774,13 @@ class TestCompute:
         zone = zone()
         expected = nlb(zone=zone["name"])
 
-        exo.mock_get_v2(zone["name"], "load-balancer", {"load-balancers": [expected]})
+        exo.mock_get_v2(zone["name"], "load-balancer/" + expected["id"], expected)
         actual = exo.compute.get_network_load_balancer(
             zone=Zone._from_cs(zone), id=expected["id"]
         )
         assert actual.id == expected["id"]
 
+        exo.mock_get_v2(zone["name"], "load-balancer", {"load-balancers": [expected]})
         actual = exo.compute.get_network_load_balancer(
             zone=Zone._from_cs(zone), name=expected["name"]
         )
@@ -778,7 +788,7 @@ class TestCompute:
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
             actual = exo.compute.get_network_load_balancer(
-                zone=Zone._from_cs(zone), id="lolnope"
+                zone=Zone._from_cs(zone), name="lolnope"
             )
             assert actual is None
         assert excinfo.type == ResourceNotFoundError

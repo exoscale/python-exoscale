@@ -2579,9 +2579,15 @@ class ComputeAPI(API):
         if id is None and name is None:
             raise ValueError("either id or name must be specifed")
 
-        for dt in self.list_deploy_targets(zone):
-            if dt.id == id or dt.name == name:
-                return dt
+        if id:
+            res = self._v2_request("GET", "/deploy-target/" + id, zone.name)
+            return DeployTarget._from_api(res=res, zone=zone)
+
+        _list = self._v2_request("GET", "/deploy-target", zone.name)
+        for i in _list["deploy-targets"]:
+            if i["name"] == name:
+                res = self._v2_request("GET", "/deploy-target/" + i["id"], zone.name)
+                return DeployTarget._from_api(res=res, zone=zone)
 
         raise ResourceNotFoundError
 
@@ -3121,9 +3127,15 @@ class ComputeAPI(API):
         if id is None and name is None:
             raise ValueError("either id or name must be specifed")
 
-        for ip in self.list_instance_pools(zone):
-            if ip.id == id or ip.name == name:
-                return ip
+        if id:
+            res = self._v2_request("GET", "/instance-pool/" + id, zone.name)
+            return InstancePool._from_api(compute=self, res=res, zone=zone)
+
+        _list = self._v2_request("GET", "/instance-pool", zone.name)
+        for i in _list["instance-pools"]:
+            if i["name"] == name:
+                res = self._v2_request("GET", "/instance-pool/" + i["id"], zone.name)
+                return InstancePool._from_api(compute=self, res=res, zone=zone)
 
         raise ResourceNotFoundError
 
@@ -3182,9 +3194,15 @@ class ComputeAPI(API):
         if id is None and name is None:
             raise ValueError("either id or name must be specifed")
 
-        for nlb in self.list_network_load_balancers(zone):
-            if nlb.id == id or nlb.name == name:
-                return nlb
+        if id:
+            res = self._v2_request("GET", "/load-balancer/" + id, zone.name)
+            return NetworkLoadBalancer._from_api(compute=self, res=res, zone=zone)
+
+        _list = self._v2_request("GET", "/load-balancer", zone.name)
+        for i in _list["load-balancers"]:
+            if i["name"] == name:
+                res = self._v2_request("GET", "/load-balancer/" + i["id"], zone.name)
+                return NetworkLoadBalancer._from_api(compute=self, res=res, zone=zone)
 
         raise ResourceNotFoundError
 

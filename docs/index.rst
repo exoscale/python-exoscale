@@ -19,6 +19,27 @@ with high-level Python bindings.
 Changelog
 ---------
 
+0.7.0 (2021-05-11)
+~~~~~~~~~~~~~~~~~~
+
+Features
+********
+
+- compute: add support for Deploy Targets resources
+- compute: Instance Pools now support Elastic IP attachment, Instance Prefix and
+- Deploy Targets
+- compute: the ``InstancePool.update()`` method now supports updating Anti-Affinity
+  Groups, IPv6 enabling, Security Groups, Private Networks and SSH Key.
+- compute: new ``InstancePool.evict()`` method
+
+Changes
+*******
+
+- compute: the ``get_instance_pool()`` method now accepts either of ``name``/``id``
+  parameters
+- compute: the ``InstancePool.delete()`` method ``wait``/``max_poll`` parameters have
+  been removed
+
 0.6.0 (2021-04-21)
 ~~~~~~~~~~~~~~~~~~
 

@@ -65,19 +65,19 @@ def exo():
 
         def mock_post(self, zone, url, resp):
             self.mocker.post(
-                urljoin("https://api-{}.exoscale.com/v2.alpha/".format(zone), url),
+                urljoin("https://api-{}.exoscale.com/v2/".format(zone), url),
                 json=resp,
             )
 
         def mock_put(self, zone, url, resp):
             self.mocker.put(
-                urljoin("https://api-{}.exoscale.com/v2.alpha/".format(zone), url),
+                urljoin("https://api-{}.exoscale.com/v2/".format(zone), url),
                 json=resp,
             )
 
         def mock_delete(self, zone, url, resp):
             self.mocker.delete(
-                urljoin("https://api-{}.exoscale.com/v2.alpha/".format(zone), url),
+                urljoin("https://api-{}.exoscale.com/v2/".format(zone), url),
                 json=resp,
             )
 
@@ -85,7 +85,7 @@ def exo():
         # transitioning to the Public API V2.
         def mock_get_v2(self, zone, url, resp):
             self.mocker.get(
-                urljoin("https://api-{}.exoscale.com/v2.alpha/".format(zone), url),
+                urljoin("https://api-{}.exoscale.com/v2/".format(zone), url),
                 json=resp,
             )
 
@@ -188,7 +188,7 @@ def exo():
 
         def mock_get_operation(self, zone, op_id, ref_id, result=None):
             self.mocker.get(
-                "https://api-{}.exoscale.com/v2.alpha/operation/{}".format(zone, op_id),
+                "https://api-{}.exoscale.com/v2/operation/{}".format(zone, op_id),
                 json=result
                 if result
                 else {

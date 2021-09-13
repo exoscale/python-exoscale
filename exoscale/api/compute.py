@@ -3491,11 +3491,9 @@ class ComputeAPI(API):
             raise RequestError(str(res.text))
 
     def _v2_request(self, method, path, zone=None, **kwargs):
-        base_url = "https://api.exoscale/v2.alpha"
+        base_url = "https://api.exoscale/v2"
         if zone:
-            base_url = "https://{}-{}.exoscale.com/v2.alpha".format(
-                self.environment, zone
-            )
+            base_url = "https://{}-{}.exoscale.com/v2".format(self.environment, zone)
 
         return API.send(
             self,

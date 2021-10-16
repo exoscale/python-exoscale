@@ -3060,7 +3060,7 @@ class ComputeAPI(API):
         if instance_security_groups:
             data["security-groups"] = [{"id": i.id} for i in instance_security_groups]
 
-        if instance_security_groups:
+        if instance_private_networks:
             data["private-networks"] = [{"id": i.id} for i in instance_private_networks]
 
         if instance_ssh_key:

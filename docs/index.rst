@@ -16,8 +16,18 @@ with high-level Python bindings.
   usage
   modules
 
+
 Changelog
 ---------
+
+0.7.1 (2021-10-18)
+~~~~~~~~~~~~~~~~~~
+
+Fixes
+*****
+
+- compute: fix `instance_private_networks` arg check in `create_instance_pool()` method
+
 
 0.7.0 (2021-05-11)
 ~~~~~~~~~~~~~~~~~~
@@ -39,6 +49,7 @@ Changes
   parameters
 - compute: the ``InstancePool.delete()`` method ``wait``/``max_poll`` parameters have
   been removed
+
 
 0.6.0 (2021-04-21)
 ~~~~~~~~~~~~~~~~~~

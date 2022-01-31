@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import attr
 import os
 import pathlib
 import toml
+from attr import field
 from .api.compute import ComputeAPI
 from .api.dns import DnsAPI
 from .api.storage import StorageAPI
@@ -67,13 +67,17 @@ class Exoscale:
     ):
         # Load settings from a configuration file profile
         config_file = (
-            config_file if config_file else os.getenv(_CONFIG_FILE_ENVVAR, None)
+            config_file
+            if config_file
+            else os.getenv(_CONFIG_FILE_ENVVAR, None)
         )
         if config_file:
             with open(config_file) as f:
                 self._config = toml.load(f)
 
-        if not getattr(self, "_config", None) and os.path.exists(_DEFAULT_CONFIG_FILE):
+        if not getattr(self, "_config", None) and os.path.exists(
+            _DEFAULT_CONFIG_FILE
+        ):
             with open(_DEFAULT_CONFIG_FILE) as f:
                 self._config = toml.load(f)
 
@@ -81,10 +85,14 @@ class Exoscale:
             profile = self._get_profile(profile)
             for k in {"name", "api_key", "api_secret"}:
                 if k not in profile:
-                    raise ConfigurationError('profile missing "{}" key'.format(k))
+                    raise ConfigurationError(
+                        'profile missing "{}" key'.format(k)
+                    )
 
             api_key = profile["api_key"] if not api_key else api_key
-            api_secret = profile["api_secret"] if not api_secret else api_secret
+            api_secret = (
+                profile["api_secret"] if not api_secret else api_secret
+            )
             compute_api_endpoint = (
                 profile.get("compute_api_endpoint", None)
                 if not compute_api_endpoint
@@ -101,7 +109,9 @@ class Exoscale:
                 else storage_api_endpoint
             )
             storage_zone = (
-                profile.get("storage_zone", None) if not storage_zone else storage_zone
+                profile.get("storage_zone", None)
+                if not storage_zone
+                else storage_zone
             )
             runstatus_api_endpoint = (
                 profile.get("runstatus_api_endpoint", None)
@@ -116,7 +126,9 @@ class Exoscale:
 
         # Fallback: load settings from environment variables
         api_key = api_key if api_key else os.getenv(_API_KEY_ENVVAR, None)
-        api_secret = api_secret if api_secret else os.getenv(_API_SECRET_ENVVAR, None)
+        api_secret = (
+            api_secret if api_secret else os.getenv(_API_SECRET_ENVVAR, None)
+        )
         compute_api_endpoint = (
             compute_api_endpoint
             if compute_api_endpoint
@@ -133,7 +145,9 @@ class Exoscale:
             else os.getenv(_STORAGE_API_ENDPOINT_ENVVAR, None)
         )
         storage_zone = (
-            storage_zone if storage_zone else os.getenv(_STORAGE_ZONE_ENVVAR, None)
+            storage_zone
+            if storage_zone
+            else os.getenv(_STORAGE_ZONE_ENVVAR, None)
         )
         runstatus_api_endpoint = (
             runstatus_api_endpoint
@@ -205,7 +219,10 @@ class Exoscale:
         self.iam = IamAPI(**kwargs)
 
     def _get_profile(self, profile=None):
-        if "profiles" not in self._config or len(self._config["profiles"]) == 0:
+        if (
+            "profiles" not in self._config
+            or len(self._config["profiles"]) == 0
+        ):
             raise ConfigurationError("no profiles configured")
 
         if profile or "default_profile" in self._config:
@@ -232,4 +249,4 @@ class ConfigurationError(Exception):
     A generic configuration error.
     """
 
-    reason = attr.ib()
+    reason = field()

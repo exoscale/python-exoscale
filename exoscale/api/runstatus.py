@@ -4,12 +4,16 @@
 This submodule represents the Exoscale Runstatus API.
 """
 
-import attr
 from datetime import datetime
 from exoscale_auth import ExoscaleAuth
 from . import API, Resource, APIException, RequestError, ResourceNotFoundError
+from attr import define, field
 
-_SUPPORTED_INCIDENT_STATES = {"major_outage", "partial_outage", "degraded_performance"}
+_SUPPORTED_INCIDENT_STATES = {
+    "major_outage",
+    "partial_outage",
+    "degraded_performance",
+}
 _SUPPORTED_INCIDENT_STATUSES = {"investigating", "identified", "monitoring"}
 _SUPPORTED_MAINTENANCE_STATUSES = {"scheduled", "in-progress"}
 
@@ -25,7 +29,7 @@ def rstime_to_datetime(rstime):
         return datetime.strptime(rstime, "%Y-%m-%dT%H:%M:%SZ")
 
 
-@attr.s
+@define
 class Service(Resource):
     """
     A Runstatus service.
@@ -36,16 +40,20 @@ class Service(Resource):
         page (Page): the page the incident belongs to
     """
 
-    runstatus = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    name = attr.ib()
-    page = attr.ib(repr=False)
+    runstatus = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    name = field()
+    page = field(repr=False)
 
     @classmethod
     def _from_rs(cls, runstatus, res, page):
         return cls(
-            runstatus, res, id=res["url"].split("/")[-1], name=res["name"], page=page
+            runstatus,
+            res,
+            id=res["url"].split("/")[-1],
+            name=res["name"],
+            page=page,
         )
 
     @property
@@ -89,7 +97,7 @@ class Service(Resource):
         self.page = None
 
 
-@attr.s
+@define
 class IncidentEvent(Resource):
     """
     A Runstatus incident event.
@@ -102,16 +110,16 @@ class IncidentEvent(Resource):
         incident (Incident): the incident the event belongs to
     """
 
-    runstatus = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    date = attr.ib(repr=False)
-    description = attr.ib(repr=False)
-    status = attr.ib(repr=False)
-    state = attr.ib(repr=False)
-    incident = attr.ib(repr=False)
+    runstatus = field(repr=False)
+    res = field(repr=False)
+    date = field(repr=False)
+    description = field(repr=False)
+    status = field(repr=False)
+    state = field(repr=False)
+    incident = field(repr=False)
 
 
-@attr.s
+@define
 class Incident(Resource):
     """
     A Runstatus incident.
@@ -127,16 +135,16 @@ class Incident(Resource):
         page (Page): the page the incident belongs to
     """
 
-    runstatus = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    page = attr.ib(repr=False)
-    state = attr.ib(repr=False)
-    status = attr.ib(repr=False)
-    start_date = attr.ib(repr=False)
-    end_date = attr.ib(default=None, repr=False)
-    title = attr.ib(default=None, repr=False)
-    services = attr.ib(default=None, repr=False)
+    runstatus = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    page = field(repr=False)
+    state = field(repr=False)
+    status = field(repr=False)
+    start_date = field(repr=False)
+    end_date = field(default=None, repr=False)
+    title = field(default=None, repr=False)
+    services = field(default=None, repr=False)
 
     @classmethod
     def _from_rs(cls, runstatus, res, page):
@@ -169,7 +177,9 @@ class Incident(Resource):
         """
 
         res = self.runstatus._get(
-            url="/pages/{p}/incidents/{i}/events".format(p=self.page.name, i=self.id)
+            url="/pages/{p}/incidents/{i}/events".format(
+                p=self.page.name, i=self.id
+            )
         )
 
         for i in res.json().get("results", []):
@@ -211,7 +221,9 @@ class Incident(Resource):
             )
 
         self.runstatus._post(
-            url="/pages/{p}/incidents/{i}/events".format(p=self.page.name, i=self.id),
+            url="/pages/{p}/incidents/{i}/events".format(
+                p=self.page.name, i=self.id
+            ),
             json={
                 "text": description,
                 "status": status if status is not None else self.status,
@@ -262,12 +274,18 @@ class Incident(Resource):
         """
 
         self.runstatus._post(
-            url="/pages/{p}/incidents/{i}/events".format(p=self.page.name, i=self.id),
-            json={"text": description, "status": "resolved", "state": "operational"},
+            url="/pages/{p}/incidents/{i}/events".format(
+                p=self.page.name, i=self.id
+            ),
+            json={
+                "text": description,
+                "status": "resolved",
+                "state": "operational",
+            },
         )
 
 
-@attr.s
+@define
 class MaintenanceEvent(Resource):
     """
     A Runstatus maintenance event.
@@ -279,15 +297,15 @@ class MaintenanceEvent(Resource):
         maintenance (Maintenance): the maintenance the event belongs to
     """
 
-    runstatus = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    date = attr.ib(repr=False)
-    description = attr.ib(repr=False)
-    status = attr.ib(repr=False)
-    maintenance = attr.ib(repr=False)
+    runstatus = field(repr=False)
+    res = field(repr=False)
+    date = field(repr=False)
+    description = field(repr=False)
+    status = field(repr=False)
+    maintenance = field(repr=False)
 
 
-@attr.s
+@define
 class Maintenance(Resource):
     """
     A Runstatus maintenance.
@@ -303,16 +321,16 @@ class Maintenance(Resource):
         page (Page): the page the maintenance belongs to
     """
 
-    runstatus = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    page = attr.ib(repr=False)
-    status = attr.ib(repr=False)
-    start_date = attr.ib(repr=False)
-    end_date = attr.ib(repr=False)
-    title = attr.ib(default=None, repr=False)
-    description = attr.ib(default=None, repr=False)
-    services = attr.ib(default=None, repr=False)
+    runstatus = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    page = field(repr=False)
+    status = field(repr=False)
+    start_date = field(repr=False)
+    end_date = field(repr=False)
+    title = field(default=None, repr=False)
+    description = field(default=None, repr=False)
+    services = field(default=None, repr=False)
 
     @classmethod
     def _from_rs(cls, runstatus, res, page):
@@ -343,7 +361,9 @@ class Maintenance(Resource):
         """
 
         res = self.runstatus._get(
-            url="/pages/{p}/maintenances/{m}/events".format(p=self.page.name, m=self.id)
+            url="/pages/{p}/maintenances/{m}/events".format(
+                p=self.page.name, m=self.id
+            )
         )
 
         for i in res.json().get("results", []):
@@ -368,7 +388,10 @@ class Maintenance(Resource):
             None
         """
 
-        if status is not None and status not in _SUPPORTED_MAINTENANCE_STATUSES:
+        if (
+            status is not None
+            and status not in _SUPPORTED_MAINTENANCE_STATUSES
+        ):
             raise ValueError(
                 "unsupported status; supported statuses are: {}".format(
                     ",".join(_SUPPORTED_MAINTENANCE_STATUSES)
@@ -422,7 +445,9 @@ class Maintenance(Resource):
             json["end_date"] = end_date.isoformat()
 
         self.runstatus._patch(
-            url="/pages/{p}/maintenances/{i}".format(p=self.page.name, i=self.id),
+            url="/pages/{p}/maintenances/{i}".format(
+                p=self.page.name, i=self.id
+            ),
             json=json,
         )
 
@@ -456,7 +481,7 @@ class Maintenance(Resource):
         )
 
 
-@attr.s
+@define
 class Page(Resource):
     """
     A Runstatus page.
@@ -474,14 +499,14 @@ class Page(Resource):
         database): https://en.wikipedia.org/wiki/Tz_database
     """
 
-    runstatus = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    name = attr.ib()
-    title = attr.ib(default=None, repr=False)
-    default_status_message = attr.ib(default=None, repr=False)
-    custom_domain = attr.ib(default=None, repr=False)
-    time_zone = attr.ib(default=None, repr=False)
+    runstatus = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    name = field()
+    title = field(default=None, repr=False)
+    default_status_message = field(default=None, repr=False)
+    custom_domain = field(default=None, repr=False)
+    time_zone = field(default=None, repr=False)
 
     @classmethod
     def _from_rs(cls, runstatus, res):
@@ -500,7 +525,9 @@ class Page(Resource):
             latency.
         """
 
-        res = self.runstatus._get(url="/pages/{p}/services".format(p=self.name))
+        res = self.runstatus._get(
+            url="/pages/{p}/services".format(p=self.name)
+        )
 
         for i in res.json().get("results", []):
             yield Service._from_rs(self.runstatus, i, page=self)
@@ -533,7 +560,9 @@ class Page(Resource):
             latency.
         """
 
-        res = self.runstatus._get(url="/pages/{p}/incidents".format(p=self.name))
+        res = self.runstatus._get(
+            url="/pages/{p}/incidents".format(p=self.name)
+        )
 
         for i in res.json().get("results", []):
             yield Incident._from_rs(self.runstatus, i, self)
@@ -594,12 +623,16 @@ class Page(Resource):
             latency.
         """
 
-        res = self.runstatus._get(url="/pages/{p}/maintenances".format(p=self.name))
+        res = self.runstatus._get(
+            url="/pages/{p}/maintenances".format(p=self.name)
+        )
 
         for i in res.json().get("results", []):
             yield Maintenance._from_rs(self.runstatus, i, self)
 
-    def add_maintenance(self, title, description, start_date, end_date, services=None):
+    def add_maintenance(
+        self, title, description, start_date, end_date, services=None
+    ):
         """
         Open a new maintenance.
 
@@ -720,7 +753,9 @@ class RunstatusAPI(API):
         self.auth = ExoscaleAuth(self.key, self.secret)
 
     def __repr__(self):
-        return "RunstatusAPI(endpoint='{}' key='{}')".format(self.endpoint, self.key)
+        return "RunstatusAPI(endpoint='{}' key='{}')".format(
+            self.endpoint, self.key
+        )
 
     def __str__(self):
         return self.__repr__()
@@ -751,7 +786,10 @@ class RunstatusAPI(API):
         """
 
         return API.send(
-            self, auth=self.auth, hooks={"response": self._check_api_response}, **kwargs
+            self,
+            auth=self.auth,
+            hooks={"response": self._check_api_response},
+            **kwargs
         )
 
     def _get(self, url, **kwargs):
@@ -823,10 +861,12 @@ class RunstatusAPI(API):
         """
 
         return self._send(
-            method="DELETE", url=self.endpoint + "/" + url.lstrip("/"), **kwargs
+            method="DELETE",
+            url=self.endpoint + "/" + url.lstrip("/"),
+            **kwargs
         )
 
-    ## Page
+    # Page
 
     def create_page(self, name):
         """

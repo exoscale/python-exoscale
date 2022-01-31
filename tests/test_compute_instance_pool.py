@@ -1,15 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pytest
+import json
 from .conftest import _random_str, _random_uuid
-from base64 import b64decode
-from exoscale.api.compute import *
-from urllib.parse import parse_qs, urlparse
+from base64 import b64encode
+from exoscale.api.compute import (
+    AntiAffinityGroup,
+    DeployTarget,
+    ElasticIP,
+    Instance,
+    InstancePool,
+    InstanceTemplate,
+    InstanceType,
+    PrivateNetwork,
+    SSHKey,
+    SecurityGroup,
+    Zone,
+)
 
 
 class TestComputeInstancePool:
-    def test_scale(self, exo, zone, instance_type, instance_template, instance_pool):
+    def test_scale(
+        self, exo, zone, instance_type, instance_template, instance_pool
+    ):
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
@@ -37,17 +50,25 @@ class TestComputeInstancePool:
             "instance-pool/{}:scale".format(instance_pool.res["id"]),
             _assert_request,
         )
-        exo.mock_get_operation(zone["name"], operation_id, instance_pool.res["id"])
+        exo.mock_get_operation(
+            zone["name"], operation_id, instance_pool.res["id"]
+        )
 
         instance_pool.scale(instance_pool_size)
         assert instance_pool.size == instance_pool_size
 
     def test_evict(
-        self, exo, zone, instance_type, instance_template, instance, instance_pool
+        self,
+        exo,
+        zone,
+        instance_type,
+        instance_template,
+        instance,
+        instance_pool,
     ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
@@ -56,7 +77,9 @@ class TestComputeInstancePool:
         instance_pool = InstancePool._from_api(
             exo.compute, instance_pool(size=2), zone=Zone._from_cs(zone)
         )
-        instance = Instance._from_cs(exo.compute, instance(), zone=Zone._from_cs(zone))
+        instance = Instance._from_cs(
+            exo.compute, instance(), zone=Zone._from_cs(zone)
+        )
         operation_id = _random_uuid()
 
         def _assert_request(request, context):
@@ -76,7 +99,9 @@ class TestComputeInstancePool:
             "instance-pool/{}:evict".format(instance_pool.res["id"]),
             _assert_request,
         )
-        exo.mock_get_operation(zone["name"], operation_id, instance_pool.res["id"])
+        exo.mock_get_operation(
+            zone["name"], operation_id, instance_pool.res["id"]
+        )
 
         instance_pool.evict([instance])
         assert instance_pool.size == 1
@@ -122,14 +147,17 @@ class TestComputeInstancePool:
 
         def _assert_request(request, context):
             body = json.loads(request.body)
-            assert body["anti-affinity-groups"][0]["id"] == anti_affinity_group["id"]
+            assert (
+                body["anti-affinity-groups"][0]["id"]
+                == anti_affinity_group["id"]
+            )
             assert body["deploy-target"]["id"] == deploy_target["id"]
             assert body["description"] == instance_pool_description
             assert body["disk-size"] == instance_volume_size
             assert body["elastic-ips"][0]["id"] == elastic_ip["id"]
             assert body["instance-prefix"] == instance_prefix
             assert body["instance-type"]["id"] == instance_type["id"]
-            assert body["ipv6-enabled"] == True
+            assert body["ipv6-enabled"] is True
             assert body["name"] == instance_pool_name
             assert body["private-networks"][0]["id"] == private_network["id"]
             assert body["security-groups"][0]["id"] == security_group["id"]
@@ -145,8 +173,12 @@ class TestComputeInstancePool:
                 "reference": {"id": instance_pool.res["id"]},
             }
 
-        exo.mock_put(zone["name"], "instance-pool/" + instance_pool.id, _assert_request)
-        exo.mock_get_operation(zone["name"], operation_id, instance_pool.res["id"])
+        exo.mock_put(
+            zone["name"], "instance-pool/" + instance_pool.id, _assert_request
+        )
+        exo.mock_get_operation(
+            zone["name"], operation_id, instance_pool.res["id"]
+        )
 
         instance_pool.update(
             name=instance_pool_name,
@@ -156,7 +188,9 @@ class TestComputeInstancePool:
             ],
             instance_deploy_target=DeployTarget._from_api(deploy_target, zone),
             instance_elastic_ips=[
-                ElasticIP._from_cs(exo.compute, elastic_ip, Zone._from_cs(zone))
+                ElasticIP._from_cs(
+                    exo.compute, elastic_ip, Zone._from_cs(zone)
+                )
             ],
             instance_enable_ipv6=True,
             instance_prefix=instance_prefix,
@@ -179,15 +213,19 @@ class TestComputeInstancePool:
         assert instance_pool.name == instance_pool_name
         assert instance_pool.description == instance_pool_description
         assert instance_pool.instance_deploy_target.id == deploy_target["id"]
-        assert instance_pool.instance_ipv6_enabled == True
+        assert instance_pool.instance_ipv6_enabled is True
         assert instance_pool.instance_prefix == instance_prefix
         assert instance_pool.instance_ssh_key.name == ssh_key["name"]
         assert instance_pool.instance_template.id == instance_template["id"]
         assert instance_pool.instance_type.id == instance_type["id"]
-        assert instance_pool.instance_user_data == instance_pool_userdata_encoded
+        assert (
+            instance_pool.instance_user_data == instance_pool_userdata_encoded
+        )
         assert instance_pool.instance_volume_size == instance_volume_size
 
-    def test_delete(self, exo, zone, instance_type, instance_template, instance_pool):
+    def test_delete(
+        self, exo, zone, instance_type, instance_template, instance_pool
+    ):
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
@@ -209,7 +247,9 @@ class TestComputeInstancePool:
         exo.mock_delete(
             zone["name"], "instance-pool/" + instance_pool.id, _assert_request
         )
-        exo.mock_get_operation(zone["name"], operation_id, instance_pool.res["id"])
+        exo.mock_get_operation(
+            zone["name"], operation_id, instance_pool.res["id"]
+        )
 
         instance_pool.delete()
         assert instance_pool.id is None
@@ -229,7 +269,7 @@ class TestComputeInstancePool:
     ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
@@ -244,7 +284,9 @@ class TestComputeInstancePool:
             instance_pool(
                 **{
                     "size": 1,
-                    "anti-affinity-groups": [{"id": anti_affinity_group["id"]}],
+                    "anti-affinity-groups": [
+                        {"id": anti_affinity_group["id"]}
+                    ],
                     "elastic-ips": [{"id": elastic_ip["id"]}],
                     "private-networks": [{"id": private_network["id"]}],
                     "security-groups": [{"id": security_group["id"]}],
@@ -260,16 +302,23 @@ class TestComputeInstancePool:
         exo.mock_list("listPublicIpAddresses", [elastic_ip])
         exo.mock_list("listVirtualMachines", [instance])
         exo.mock_get_v2(
-            zone["name"], "instance-pool/" + instance_pool.id, instance_pool.res
+            zone["name"],
+            "instance-pool/" + instance_pool.id,
+            instance_pool.res,
         )
 
         instance_pool_instances = list(instance_pool.instances)
         assert len(instance_pool_instances) == 1
         assert instance_pool_instances[0].id == instance["id"]
 
-        instance_pool_anti_affinity_groups = list(instance_pool.anti_affinity_groups)
+        instance_pool_anti_affinity_groups = list(
+            instance_pool.anti_affinity_groups
+        )
         assert len(instance_pool_anti_affinity_groups) == 1
-        assert instance_pool_anti_affinity_groups[0].id == anti_affinity_group["id"]
+        assert (
+            instance_pool_anti_affinity_groups[0].id
+            == anti_affinity_group["id"]
+        )
 
         instance_pool_security_groups = list(instance_pool.security_groups)
         assert len(instance_pool_security_groups) == 1

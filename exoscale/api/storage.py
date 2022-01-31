@@ -4,11 +4,11 @@
 This submodule represents the Exoscale Storage API.
 """
 
-import attr
 import boto3
 import botocore
 import logging
 from . import API, Resource, APIException, ResourceNotFoundError
+from attr import define, field
 from os.path import basename
 
 _DEFAULT_ZONE = "ch-gva-2"
@@ -23,10 +23,12 @@ _SUPPORTED_CANNED_ACLS = {
 }
 
 ACL_ALL_USERS = "http://acs.amazonaws.com/groups/global/AllUsers"
-ACL_AUTHENTICATED_USERS = "http://acs.amazonaws.com/groups/global/AuthenticatedUsers"
+ACL_AUTHENTICATED_USERS = (
+    "http://acs.amazonaws.com/groups/global/AuthenticatedUsers"
+)
 
 
-@attr.s
+@define
 class CORSRule(Resource):
     """
     A Storage bucket CORS rule.
@@ -39,12 +41,12 @@ class CORSRule(Resource):
         max_age_seconds (int): time in seconds that a browser can cache OPTIONS reponse
     """
 
-    res = attr.ib(repr=False)
-    allowed_headers = attr.ib(default=None, repr=False)
-    allowed_methods = attr.ib(default=None, repr=False)
-    allowed_origins = attr.ib(default=None, repr=False)
-    expose_headers = attr.ib(default=None, repr=False)
-    max_age_seconds = attr.ib(default=None, repr=False)
+    res = field(repr=False)
+    allowed_headers = field(default=None, repr=False)
+    allowed_methods = field(default=None, repr=False)
+    allowed_origins = field(default=None, repr=False)
+    expose_headers = field(default=None, repr=False)
+    max_age_seconds = field(default=None, repr=False)
 
     @classmethod
     def _from_s3(cls, res):
@@ -82,7 +84,7 @@ class CORSRule(Resource):
         return cors_rule
 
 
-@attr.s
+@define
 class AccessControlPolicy(Resource):
     """
     A Storage Access Control Policy.
@@ -96,13 +98,13 @@ class AccessControlPolicy(Resource):
         write_acp (str): Access Control Policy write permission grant
     """
 
-    res = attr.ib(repr=False)
-    owner = attr.ib()
-    full_control = attr.ib(default=None, repr=False)
-    read = attr.ib(default=None, repr=False)
-    write = attr.ib(default=None, repr=False)
-    read_acp = attr.ib(default=None, repr=False)
-    write_acp = attr.ib(default=None, repr=False)
+    res = field(repr=False)
+    owner = field()
+    full_control = field(default=None, repr=False)
+    read = field(default=None, repr=False)
+    write = field(default=None, repr=False)
+    read_acp = field(default=None, repr=False)
+    write_acp = field(default=None, repr=False)
 
     @classmethod
     def _from_s3(cls, res):
@@ -133,7 +135,10 @@ class AccessControlPolicy(Resource):
             .. _boto3 AccessControlPolicy format: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.put_bucket_acl
         """
 
-        acp = {"Owner": {"ID": self.owner, "DisplayName": self.owner}, "Grants": []}
+        acp = {
+            "Owner": {"ID": self.owner, "DisplayName": self.owner},
+            "Grants": [],
+        }
 
         if self.full_control is not None:
             acp["Grants"].append(
@@ -144,11 +149,17 @@ class AccessControlPolicy(Resource):
             )
         if self.read is not None:
             acp["Grants"].append(
-                {"Grantee": self._grantee_to_s3(self.read), "Permission": "READ"}
+                {
+                    "Grantee": self._grantee_to_s3(self.read),
+                    "Permission": "READ",
+                }
             )
         if self.write is not None:
             acp["Grants"].append(
-                {"Grantee": self._grantee_to_s3(self.write), "Permission": "WRITE"}
+                {
+                    "Grantee": self._grantee_to_s3(self.write),
+                    "Permission": "WRITE",
+                }
             )
         if self.read_acp is not None:
             acp["Grants"].append(
@@ -201,10 +212,14 @@ class AccessControlPolicy(Resource):
                 uri = ACL_AUTHENTICATED_USERS
             return {"Type": "Group", "URI": uri}
         else:
-            return {"Type": "CanonicalUser", "ID": grantee, "DisplayName": grantee}
+            return {
+                "Type": "CanonicalUser",
+                "ID": grantee,
+                "DisplayName": grantee,
+            }
 
 
-@attr.s
+@define
 class BucketFile(Resource):
     """
     A file stored in Storage bucket.
@@ -214,10 +229,10 @@ class BucketFile(Resource):
         bucket (Bucket): the bucket the file is stored into
     """
 
-    storage = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    path = attr.ib()
-    bucket = attr.ib(repr=False)
+    storage = field(repr=False)
+    res = field(repr=False)
+    path = field()
+    bucket = field(repr=False)
 
     @property
     def content(self):
@@ -244,7 +259,9 @@ class BucketFile(Resource):
         """
 
         try:
-            res = self.storage.boto.get_object(Bucket=self.bucket.name, Key=self.path)
+            res = self.storage.boto.get_object(
+                Bucket=self.bucket.name, Key=self.path
+            )
         except Exception as e:
             raise APIException(e)
 
@@ -267,7 +284,9 @@ class BucketFile(Resource):
             return self.res["Size"]
 
         try:
-            res = self.storage.boto.get_object(Bucket=self.bucket.name, Key=self.path)
+            res = self.storage.boto.get_object(
+                Bucket=self.bucket.name, Key=self.path
+            )
         except Exception as e:
             raise APIException(e)
 
@@ -295,7 +314,9 @@ class BucketFile(Resource):
             return self.res["LastModified"]
 
         try:
-            res = self.storage.boto.get_object(Bucket=self.bucket.name, Key=self.path)
+            res = self.storage.boto.get_object(
+                Bucket=self.bucket.name, Key=self.path
+            )
         except Exception as e:
             raise APIException(e)
 
@@ -338,7 +359,9 @@ class BucketFile(Resource):
         """
 
         try:
-            res = self.storage.boto.get_object(Bucket=self.bucket.name, Key=self.path)
+            res = self.storage.boto.get_object(
+                Bucket=self.bucket.name, Key=self.path
+            )
         except Exception as e:
             raise APIException(e)
 
@@ -404,14 +427,16 @@ class BucketFile(Resource):
         """
 
         try:
-            self.storage.boto.delete_object(Bucket=self.bucket.name, Key=self.path)
+            self.storage.boto.delete_object(
+                Bucket=self.bucket.name, Key=self.path
+            )
         except Exception as e:
             raise APIException(e)
 
         self._reset()
 
 
-@attr.s
+@define
 class Bucket(Resource):
     """
     A Storage bucket.
@@ -420,9 +445,9 @@ class Bucket(Resource):
         name (str): the Storage bucket name
     """
 
-    storage = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    name = attr.ib()
+    storage = field(repr=False)
+    res = field(repr=False)
+    name = field()
 
     @property
     def acl(self):
@@ -502,7 +527,9 @@ class Bucket(Resource):
             zone=self.zone, bucket=self.name
         )
 
-    def put_file(self, src, dst=None, metadata=None, acl=None, transferConfig=None):
+    def put_file(
+        self, src, dst=None, metadata=None, acl=None, transferConfig=None
+    ):
         """
         Store a file in the bucket.
 
@@ -560,7 +587,9 @@ class Bucket(Resource):
         try:
             paginator = self.storage.boto.get_paginator("list_objects_v2")
             pages = paginator.paginate(
-                Bucket=self.name, Prefix=prefix, PaginationConfig={"PageSize": 100}
+                Bucket=self.name,
+                Prefix=prefix,
+                PaginationConfig={"PageSize": 100},
             )
             for page in pages:
                 for i in page["Contents"]:
@@ -676,7 +705,9 @@ class Bucket(Resource):
         try:
             self.storage.boto.put_bucket_cors(
                 Bucket=self.name,
-                CORSConfiguration={"CORSRules": list(r._to_s3() for r in rules)},
+                CORSConfiguration={
+                    "CORSRules": list(r._to_s3() for r in rules)
+                },
             )
         except Exception as e:
             raise APIException(e)
@@ -690,7 +721,7 @@ class Bucket(Resource):
         """
 
         try:
-            res = self.storage.boto.delete_bucket(Bucket=self.name)
+            self.storage.boto.delete_bucket(Bucket=self.name)
         except Exception as e:
             raise APIException(e)
 
@@ -711,11 +742,19 @@ class StorageAPI(API):
     """
 
     def __init__(
-        self, key, secret, endpoint=None, zone=None, max_retries=None, trace=False
+        self,
+        key,
+        secret,
+        endpoint=None,
+        zone=None,
+        max_retries=None,
+        trace=False,
     ):
         self.zone = _DEFAULT_ZONE if zone is None else zone
         endpoint = (
-            "https://sos-{}.exo.io".format(self.zone) if endpoint is None else endpoint
+            "https://sos-{}.exo.io".format(self.zone)
+            if endpoint is None
+            else endpoint
         )
         max_retries = 3 if max_retries is None else max_retries
         super().__init__(

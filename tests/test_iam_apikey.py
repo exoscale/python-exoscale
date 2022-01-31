@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pytest
-from exoscale.api.iam import *
-from urllib.parse import parse_qs, urljoin, urlparse
+from exoscale.api.iam import APIKey
+from urllib.parse import parse_qs, urlparse
 
 
 class TestIAMAPIKey:

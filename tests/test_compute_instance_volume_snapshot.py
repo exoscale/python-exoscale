@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pytest
-from .conftest import _random_str, _random_uuid
-from exoscale.api.compute import *
+from .conftest import _random_uuid
+from exoscale.api.compute import Instance, InstanceVolumeSnapshot, Zone
 from urllib.parse import parse_qs, urlparse
 
 
 class TestComputeInstanceVolumeSnapshot:
     def test_export(self, exo, zone, volume_snapshot):
-        snapshot = InstanceVolumeSnapshot._from_cs(exo.compute, volume_snapshot())
+        snapshot = InstanceVolumeSnapshot._from_cs(
+            exo.compute, volume_snapshot()
+        )
 
         def _assert_request(request, context):
             params = parse_qs(urlparse(request.url).query)
@@ -30,11 +31,17 @@ class TestComputeInstanceVolumeSnapshot:
         snapshot.export()
 
     def test_revert(
-        self, exo, zone, volume_snapshot, instance_type, instance_template, instance
+        self,
+        exo,
+        zone,
+        volume_snapshot,
+        instance_type,
+        instance_template,
+        instance,
     ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
@@ -42,7 +49,9 @@ class TestComputeInstanceVolumeSnapshot:
         instance = Instance._from_cs(
             exo.compute, instance(), zone=Zone._from_cs(zone())
         )
-        snapshot = InstanceVolumeSnapshot._from_cs(exo.compute, volume_snapshot())
+        snapshot = InstanceVolumeSnapshot._from_cs(
+            exo.compute, volume_snapshot()
+        )
 
         def _assert_request(request, context):
             params = parse_qs(urlparse(request.url).query)
@@ -63,7 +72,9 @@ class TestComputeInstanceVolumeSnapshot:
         snapshot.revert()
 
     def test_delete(self, exo, volume_snapshot):
-        snapshot = InstanceVolumeSnapshot._from_cs(exo.compute, volume_snapshot())
+        snapshot = InstanceVolumeSnapshot._from_cs(
+            exo.compute, volume_snapshot()
+        )
 
         def _assert_request(request, context):
             params = parse_qs(urlparse(request.url).query)
@@ -85,7 +96,9 @@ class TestComputeInstanceVolumeSnapshot:
         assert snapshot.id is None
 
     def test_properties(self, exo, volume_snapshot):
-        snapshot = InstanceVolumeSnapshot._from_cs(exo.compute, volume_snapshot())
+        snapshot = InstanceVolumeSnapshot._from_cs(
+            exo.compute, volume_snapshot()
+        )
 
         exo.mock_list("listSnapshots", [snapshot.res])
 

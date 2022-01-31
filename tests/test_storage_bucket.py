@@ -3,8 +3,7 @@
 
 import pytest
 from .conftest import _random_str
-from datetime import datetime
-from exoscale.api.storage import *
+from exoscale.api.storage import AccessControlPolicy, Bucket, CORSRule
 from botocore.stub import ANY
 
 
@@ -37,16 +36,8 @@ class TestStorageBucket:
 
         exo.boto_stub.add_response(
             "list_objects_v2",
-            {
-                "Contents": [
-                    {"Key": "test/file"},
-                ],
-            },
-            {
-                "Bucket": bucket.name,
-                "Prefix": "test/",
-                "MaxKeys": ANY,
-            },
+            {"Contents": [{"Key": "test/file"}]},
+            {"Bucket": bucket.name, "Prefix": "test/", "MaxKeys": ANY},
         )
 
         actual = list(bucket.list_files(prefix="test/"))
@@ -60,10 +51,7 @@ class TestStorageBucket:
         exo.boto_stub.add_response(
             "get_object",
             {"ResponseMetadata": {}},
-            {
-                "Bucket": bucket.name,
-                "Key": file_path,
-            },
+            {"Bucket": bucket.name, "Key": file_path},
         )
 
         file = bucket.get_file(file_path)
@@ -76,16 +64,8 @@ class TestStorageBucket:
 
         exo.boto_stub.add_response(
             "list_objects_v2",
-            {
-                "Contents": [
-                    {"Key": file_path},
-                ],
-            },
-            {
-                "Bucket": bucket.name,
-                "Prefix": file_path,
-                "MaxKeys": ANY,
-            },
+            {"Contents": [{"Key": file_path}]},
+            {"Bucket": bucket.name, "Prefix": file_path, "MaxKeys": ANY},
         )
 
         exo.boto_stub.add_response(
@@ -123,10 +103,7 @@ class TestStorageBucket:
         exo.boto_stub.add_response(
             "put_bucket_acl",
             {},
-            {
-                "Bucket": bucket.name,
-                "ACL": bucket_acl,
-            },
+            {"Bucket": bucket.name, "ACL": bucket_acl},
         )
         bucket.set_acl(acl=bucket_acl)
 
@@ -234,9 +211,7 @@ class TestStorageBucket:
         exo.boto_stub.add_response(
             "delete_bucket",
             {},
-            {
-                "Bucket": bucket.name,
-            },
+            {"Bucket": bucket.name},
         )
 
         bucket.delete()
@@ -258,7 +233,9 @@ class TestStorageBucket:
             {"LocationConstraint": bucket_zone},
             {"Bucket": bucket.name},
         )
-        assert bucket.url == "https://sos-{}.exo.io/{}".format(bucket_zone, bucket.name)
+        assert bucket.url == "https://sos-{}.exo.io/{}".format(
+            bucket_zone, bucket.name
+        )
 
         expected_acp = AccessControlPolicy(
             {},
@@ -320,9 +297,7 @@ class TestStorageBucket:
                 },
                 "ResponseMetadata": {},
             },
-            {
-                "Bucket": bucket.name,
-            },
+            {"Bucket": bucket.name},
         )
         actual_acp = bucket.acl
         assert actual_acp.full_control == expected_acp.full_control
@@ -352,14 +327,26 @@ class TestStorageBucket:
                     }
                 ]
             },
-            {
-                "Bucket": bucket.name,
-            },
+            {"Bucket": bucket.name},
         )
         expected_cors = list(bucket.cors)
         assert len(expected_cors) == 1
-        assert expected_cors[0].allowed_headers == actual_cors_rule.allowed_headers
-        assert expected_cors[0].allowed_methods == actual_cors_rule.allowed_methods
-        assert expected_cors[0].allowed_origins == actual_cors_rule.allowed_origins
-        assert expected_cors[0].expose_headers == actual_cors_rule.expose_headers
-        assert expected_cors[0].max_age_seconds == actual_cors_rule.max_age_seconds
+        assert (
+            expected_cors[0].allowed_headers
+            == actual_cors_rule.allowed_headers
+        )
+        assert (
+            expected_cors[0].allowed_methods
+            == actual_cors_rule.allowed_methods
+        )
+        assert (
+            expected_cors[0].allowed_origins
+            == actual_cors_rule.allowed_origins
+        )
+        assert (
+            expected_cors[0].expose_headers == actual_cors_rule.expose_headers
+        )
+        assert (
+            expected_cors[0].max_age_seconds
+            == actual_cors_rule.max_age_seconds
+        )

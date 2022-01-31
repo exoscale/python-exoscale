@@ -4,12 +4,12 @@
 This submodule represents the Exoscale IAM API.
 """
 
-import attr
 from . import API, Resource, APIException, ResourceNotFoundError
+from attr import define, field
 from cs import CloudStack, CloudStackApiException
 
 
-@attr.s
+@define
 class APIKey(Resource):
     """
     An API key.
@@ -22,13 +22,13 @@ class APIKey(Resource):
         operations ([str]): a list of allowed API operations
     """
 
-    iam = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    name = attr.ib()
-    key = attr.ib()
-    type = attr.ib()
-    secret = attr.ib(repr=False)
-    operations = attr.ib(repr=False)
+    iam = field(repr=False)
+    res = field(repr=False)
+    name = field()
+    key = field()
+    type = field()
+    secret = field(repr=False)
+    operations = field(repr=False)
 
     @classmethod
     def _from_cs(cls, iam, res):
@@ -91,7 +91,10 @@ class IamAPI(API):
             secret=secret,
             endpoint=endpoint,
             session=self.session,
-            headers={**self.session.headers, **{"User-Agent": self.user_agent}},
+            headers={
+                **self.session.headers,
+                **{"User-Agent": self.user_agent},
+            },
             trace=self.trace,
             fetch_result=True,
         )
@@ -102,7 +105,7 @@ class IamAPI(API):
     def __str__(self):
         return self.__repr__()
 
-    ### API key
+    # API key
 
     def create_api_key(self, name, operations=None):
         """

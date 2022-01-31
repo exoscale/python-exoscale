@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pytest
 from .conftest import _random_str
-from exoscale.api.dns import *
+from exoscale.api.dns import Domain, DomainRecord
 from urllib.parse import parse_qs, urlparse
 
 

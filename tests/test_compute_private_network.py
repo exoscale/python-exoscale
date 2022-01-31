@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pytest
 from .conftest import _random_str, _random_uuid
-from exoscale.api.compute import *
+from exoscale.api.compute import Instance, PrivateNetwork, Zone
 from urllib.parse import parse_qs, urlparse
 
 
@@ -13,7 +12,7 @@ class TestComputePrivateNetwork:
     ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
@@ -22,7 +21,9 @@ class TestComputePrivateNetwork:
         private_network = PrivateNetwork._from_cs(
             exo.compute, privnet(), zone=Zone._from_cs(zone)
         )
-        instance = Instance._from_cs(exo.compute, instance(), zone=Zone._from_cs(zone))
+        instance = Instance._from_cs(
+            exo.compute, instance(), zone=Zone._from_cs(zone)
+        )
 
         def _assert_request(request, context):
             params = parse_qs(urlparse(request.url).query)
@@ -48,7 +49,7 @@ class TestComputePrivateNetwork:
     ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
@@ -156,13 +157,15 @@ class TestComputePrivateNetwork:
     ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
         zone = Zone._from_cs(zone())
-        private_network = PrivateNetwork._from_cs(exo.compute, privnet(), zone=zone)
+        private_network = PrivateNetwork._from_cs(
+            exo.compute, privnet(), zone=zone
+        )
         instance = Instance._from_cs(
             exo.compute,
             instance(private_network_ids=private_network.res["id"]),

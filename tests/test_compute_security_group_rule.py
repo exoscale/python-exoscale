@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pytest
-from .conftest import _random_str, _random_uuid
-from exoscale.api.compute import *
+from .conftest import _random_uuid
+from exoscale.api.compute import SecurityGroup, SecurityGroupRule
 from urllib.parse import parse_qs, urlparse
 
 
@@ -37,7 +36,10 @@ class TestComputeSecurityGroupRule:
 
         def _assert_request_ingress(request, context):
             params = parse_qs(urlparse(request.url).query)
-            assert params["id"][0] == security_group.res["ingressrule"][0]["ruleid"]
+            assert (
+                params["id"][0]
+                == security_group.res["ingressrule"][0]["ruleid"]
+            )
 
             context.status_code = 200
             context.headers["Content-Type"] = "application/json"
@@ -48,7 +50,9 @@ class TestComputeSecurityGroupRule:
                 }
             }
 
-        exo.mock_get("?command=revokeSecurityGroupIngress", _assert_request_ingress)
+        exo.mock_get(
+            "?command=revokeSecurityGroupIngress", _assert_request_ingress
+        )
         exo.mock_query_async_job_result({"success": True})
 
         ingress_rule = list(security_group.ingress_rules)[0]
@@ -57,7 +61,10 @@ class TestComputeSecurityGroupRule:
 
         def _assert_request_egress(request, context):
             params = parse_qs(urlparse(request.url).query)
-            assert params["id"][0] == security_group.res["egressrule"][0]["ruleid"]
+            assert (
+                params["id"][0]
+                == security_group.res["egressrule"][0]["ruleid"]
+            )
 
             context.status_code = 200
             context.headers["Content-Type"] = "application/json"
@@ -68,7 +75,9 @@ class TestComputeSecurityGroupRule:
                 }
             }
 
-        exo.mock_get("?command=revokeSecurityGroupEgress", _assert_request_egress)
+        exo.mock_get(
+            "?command=revokeSecurityGroupEgress", _assert_request_egress
+        )
         exo.mock_query_async_job_result({"success": True})
 
         egress_rule = list(security_group.egress_rules)[0]

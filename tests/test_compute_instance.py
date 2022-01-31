@@ -1,18 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pytest
 from .conftest import _random_str, _random_uuid
 from base64 import b64encode
-from exoscale.api.compute import *
+from exoscale.api.compute import (
+    AntiAffinityGroup,
+    ElasticIP,
+    Instance,
+    InstanceType,
+    InstanceVolumeSnapshot,
+    PrivateNetwork,
+    SecurityGroup,
+    Zone,
+)
 from urllib.parse import parse_qs, urlparse
 
 
 class TestComputeInstance:
-    def test_update(self, exo, zone, sg, instance_type, instance_template, instance):
+    def test_update(
+        self, exo, zone, sg, instance_type, instance_template, instance
+    ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
@@ -21,7 +31,6 @@ class TestComputeInstance:
             exo.compute, instance(), zone=Zone._from_cs(zone())
         )
         instance_name = _random_str()
-        instance_user_data = _random_str()
         security_group = SecurityGroup._from_cs(exo.compute, sg())
 
         def _assert_request_vm(request, context):
@@ -63,16 +72,20 @@ class TestComputeInstance:
         instance.update(name=instance_name, security_groups=[security_group])
         assert instance.name == instance_name
 
-    def test_scale(self, exo, zone, instance_type, instance_template, instance):
+    def test_scale(
+        self, exo, zone, instance_type, instance_template, instance
+    ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
         instance = Instance._from_cs(
-            exo.compute, instance(type_id=_random_uuid()), zone=Zone._from_cs(zone())
+            exo.compute,
+            instance(type_id=_random_uuid()),
+            zone=Zone._from_cs(zone()),
         )
         instance_type = InstanceType._from_cs(instance_type())
 
@@ -96,16 +109,20 @@ class TestComputeInstance:
         instance.scale(type=instance_type)
         assert instance.type.id == instance_type.id
 
-    def test_start(self, exo, zone, instance_type, instance_template, instance):
+    def test_start(
+        self, exo, zone, instance_type, instance_template, instance
+    ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
         instance = Instance._from_cs(
-            exo.compute, instance(type_id=_random_uuid()), zone=Zone._from_cs(zone())
+            exo.compute,
+            instance(type_id=_random_uuid()),
+            zone=Zone._from_cs(zone()),
         )
 
         def _assert_request(request, context):
@@ -129,13 +146,15 @@ class TestComputeInstance:
     def test_stop(self, exo, zone, instance_type, instance_template, instance):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
         instance = Instance._from_cs(
-            exo.compute, instance(type_id=_random_uuid()), zone=Zone._from_cs(zone())
+            exo.compute,
+            instance(type_id=_random_uuid()),
+            zone=Zone._from_cs(zone()),
         )
 
         def _assert_request(request, context):
@@ -156,16 +175,20 @@ class TestComputeInstance:
 
         instance.stop()
 
-    def test_reboot(self, exo, zone, instance_type, instance_template, instance):
+    def test_reboot(
+        self, exo, zone, instance_type, instance_template, instance
+    ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
         instance = Instance._from_cs(
-            exo.compute, instance(type_id=_random_uuid()), zone=Zone._from_cs(zone())
+            exo.compute,
+            instance(type_id=_random_uuid()),
+            zone=Zone._from_cs(zone()),
         )
 
         def _assert_request(request, context):
@@ -186,17 +209,25 @@ class TestComputeInstance:
 
         instance.reboot()
 
-    def test_resize_volume(self, exo, zone, instance_type, instance_template, instance):
-        instance_volume = {"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}
+    def test_resize_volume(
+        self, exo, zone, instance_type, instance_template, instance
+    ):
+        instance_volume = {
+            "id": _random_uuid(),
+            "type": "ROOT",
+            "size": 10 * 1024**3,
+        }
         exo.mock_list("listVolumes", [instance_volume])
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
         instance = Instance._from_cs(
-            exo.compute, instance(type_id=_random_uuid()), zone=Zone._from_cs(zone())
+            exo.compute,
+            instance(type_id=_random_uuid()),
+            zone=Zone._from_cs(zone()),
         )
         instance_volume_size = 20
-        instance_volume_size_bytes = 20 * 1024 ** 3
+        instance_volume_size_bytes = 20 * 1024**3
 
         def _assert_request(request, context):
             params = parse_qs(urlparse(request.url).query)
@@ -224,22 +255,38 @@ class TestComputeInstance:
 
         instance.resize_volume(instance_volume_size)
 
-        res = exo.compute.cs.listVolumes(virtualmachineid=instance.id, fetch_list=True)
+        # FIXME add assertion here
+        exo.compute.cs.listVolumes(
+            virtualmachineid=instance.id, fetch_list=True
+        )
         assert instance.volume_size == instance_volume_size_bytes
 
     def test_snapshot_volume(
-        self, exo, zone, instance_type, instance_template, instance, volume_snapshot
+        self,
+        exo,
+        zone,
+        instance_type,
+        instance_template,
+        instance,
+        volume_snapshot,
     ):
-        instance_volume = {"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}
-        instance_volume_snapshot = volume_snapshot(volume_id=instance_volume["id"])
+        instance_volume = {
+            "id": _random_uuid(),
+            "type": "ROOT",
+            "size": 10 * 1024**3,
+        }
+        instance_volume_snapshot = volume_snapshot(
+            volume_id=instance_volume["id"]
+        )
         exo.mock_list("listVolumes", [instance_volume])
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
         instance = Instance._from_cs(
-            exo.compute, instance(type_id=_random_uuid()), zone=Zone._from_cs(zone())
+            exo.compute,
+            instance(type_id=_random_uuid()),
+            zone=Zone._from_cs(zone()),
         )
-        instance_volume_size = 20
 
         def _assert_request(request, context):
             params = parse_qs(urlparse(request.url).query)
@@ -265,14 +312,18 @@ class TestComputeInstance:
     ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
         zone = zone()
-        elastic_ip = ElasticIP._from_cs(exo.compute, eip(), zone=Zone._from_cs(zone))
-        instance = Instance._from_cs(exo.compute, instance(), zone=Zone._from_cs(zone))
+        elastic_ip = ElasticIP._from_cs(
+            exo.compute, eip(), zone=Zone._from_cs(zone)
+        )
+        instance = Instance._from_cs(
+            exo.compute, instance(), zone=Zone._from_cs(zone)
+        )
 
         def _assert_request(request, context):
             params = parse_qs(urlparse(request.url).query)
@@ -282,12 +333,17 @@ class TestComputeInstance:
             context.status_code = 200
             context.headers["Content-Type"] = "application/json"
             return {
-                "addiptonicresponse": {"id": _random_uuid(), "jobid": _random_uuid()}
+                "addiptonicresponse": {
+                    "id": _random_uuid(),
+                    "jobid": _random_uuid(),
+                }
             }
 
         exo.mock_list("listNics", [instance.res["nic"][0]])
         exo.mock_get("?command=addIpToNic", _assert_request)
-        exo.mock_query_async_job_result({"secondaryip": [instance.res["nic"][0]]})
+        exo.mock_query_async_job_result(
+            {"secondaryip": [instance.res["nic"][0]]}
+        )
 
         instance.attach_elastic_ip(elastic_ip=elastic_ip)
 
@@ -296,14 +352,18 @@ class TestComputeInstance:
     ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
         zone = zone()
-        elastic_ip = ElasticIP._from_cs(exo.compute, eip(), zone=Zone._from_cs(zone))
-        instance = Instance._from_cs(exo.compute, instance(), zone=Zone._from_cs(zone))
+        elastic_ip = ElasticIP._from_cs(
+            exo.compute, eip(), zone=Zone._from_cs(zone)
+        )
+        instance = Instance._from_cs(
+            exo.compute, instance(), zone=Zone._from_cs(zone)
+        )
         instance.res["nic"][0]["secondaryip"] = [elastic_ip.res]
 
         def _assert_request(request, context):
@@ -321,7 +381,9 @@ class TestComputeInstance:
 
         exo.mock_list("listNics", instance.res["nic"])
         exo.mock_get("?command=removeIpFromNic", _assert_request)
-        exo.mock_query_async_job_result({"secondaryip": [instance.res["nic"][0]]})
+        exo.mock_query_async_job_result(
+            {"secondaryip": [instance.res["nic"][0]]}
+        )
 
         instance.detach_elastic_ip(elastic_ip)
 
@@ -330,7 +392,7 @@ class TestComputeInstance:
     ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
@@ -339,7 +401,9 @@ class TestComputeInstance:
         private_network = PrivateNetwork._from_cs(
             exo.compute, privnet(), zone=Zone._from_cs(zone)
         )
-        instance = Instance._from_cs(exo.compute, instance(), zone=Zone._from_cs(zone))
+        instance = Instance._from_cs(
+            exo.compute, instance(), zone=Zone._from_cs(zone)
+        )
 
         def _assert_request(request, context):
             params = parse_qs(urlparse(request.url).query)
@@ -365,7 +429,7 @@ class TestComputeInstance:
     ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
@@ -405,7 +469,7 @@ class TestComputeInstance:
     ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
@@ -429,7 +493,9 @@ class TestComputeInstance:
                 }
             }
 
-        exo.mock_get("?command=updateReverseDnsForVirtualMachine", _assert_request)
+        exo.mock_get(
+            "?command=updateReverseDnsForVirtualMachine", _assert_request
+        )
         exo.mock_query_async_job_result({"success": True})
 
         instance.set_reverse_dns(record=instance_reverse_dns)
@@ -439,7 +505,7 @@ class TestComputeInstance:
     ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
@@ -461,15 +527,19 @@ class TestComputeInstance:
                 }
             }
 
-        exo.mock_get("?command=deleteReverseDnsFromVirtualMachine", _assert_request)
+        exo.mock_get(
+            "?command=deleteReverseDnsFromVirtualMachine", _assert_request
+        )
         exo.mock_query_async_job_result({"success": True})
 
         instance.unset_reverse_dns()
 
-    def test_delete(self, exo, zone, instance_type, instance_template, instance):
+    def test_delete(
+        self, exo, zone, instance_type, instance_template, instance
+    ):
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
@@ -510,14 +580,20 @@ class TestComputeInstance:
         instance_template,
         instance,
     ):
-        instance_volume = {"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}
+        instance_volume = {
+            "id": _random_uuid(),
+            "type": "ROOT",
+            "size": 10 * 1024**3,
+        }
         exo.mock_list("listVolumes", [instance_volume])
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
         zone = Zone._from_cs(zone())
         anti_affinity_group = AntiAffinityGroup._from_cs(exo.compute, aag())
-        private_network = PrivateNetwork._from_cs(exo.compute, privnet(), zone=zone)
+        private_network = PrivateNetwork._from_cs(
+            exo.compute, privnet(), zone=zone
+        )
         security_group = SecurityGroup._from_cs(exo.compute, sg())
         instance_user_data = _random_str()
         instance_reverse_dns = _random_str()

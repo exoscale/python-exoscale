@@ -4,21 +4,24 @@
 This submodule represents the Exoscale Compute API.
 """
 
-import json
-import sys
-import time
 from base64 import b64decode, b64encode
 from datetime import datetime
 
-import attr
-import requests
+from attr import asdict, define, field
 from cs import CloudStack, CloudStackApiException
 from exoscale_auth import ExoscaleV2Auth
 
-from . import API, APIException, RequestError, Resource, ResourceNotFoundError, polling
+from . import (
+    API,
+    APIException,
+    RequestError,
+    Resource,
+    ResourceNotFoundError,
+    polling,
+)
 
 
-@attr.s
+@define
 class AntiAffinityGroup(Resource):
     """
     An Anti-Affinity Group.
@@ -29,11 +32,11 @@ class AntiAffinityGroup(Resource):
         description (str): the Anti-Affinity Group description
     """
 
-    compute = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    name = attr.ib()
-    description = attr.ib(default="", repr=False)
+    compute = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    name = field()
+    description = field(default="", repr=False)
 
     @classmethod
     def _from_cs(cls, compute, res):
@@ -61,7 +64,7 @@ class AntiAffinityGroup(Resource):
         self._reset()
 
 
-@attr.s
+@define
 class DeployTarget(Resource):
     """
     A Deploy Target.
@@ -74,12 +77,12 @@ class DeployTarget(Resource):
         typ (str): the Deploy Target type
     """
 
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    zone = attr.ib(repr=False)
-    name = attr.ib()
-    typ = attr.ib(repr=False)
-    description = attr.ib(default=None, repr=False)
+    res = field(repr=False)
+    id = field()
+    zone = field(repr=False)
+    name = field()
+    typ = field(repr=False)
+    description = field(default=None, repr=False)
 
     @classmethod
     def _from_api(cls, res, zone):
@@ -93,7 +96,7 @@ class DeployTarget(Resource):
         )
 
 
-@attr.s
+@define
 class ElasticIP(Resource):
     """
     An Elastic IP.
@@ -119,21 +122,21 @@ class ElasticIP(Resource):
             for HTTPS healthchecks
     """
 
-    compute = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    zone = attr.ib(repr=False)
-    address = attr.ib()
-    description = attr.ib(default=None, repr=False)
-    healthcheck_mode = attr.ib(default=None, repr=False)
-    healthcheck_port = attr.ib(default=None, repr=False)
-    healthcheck_path = attr.ib(default=None, repr=False)
-    healthcheck_interval = attr.ib(default=None, repr=False)
-    healthcheck_timeout = attr.ib(default=None, repr=False)
-    healthcheck_strikes_ok = attr.ib(default=None, repr=False)
-    healthcheck_strikes_fail = attr.ib(default=None, repr=False)
-    healthcheck_tls_sni = attr.ib(default=None, repr=False)
-    healthcheck_tls_skip_verify = attr.ib(default=None, repr=False)
+    compute = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    zone = field(repr=False)
+    address = field()
+    description = field(default=None, repr=False)
+    healthcheck_mode = field(default=None, repr=False)
+    healthcheck_port = field(default=None, repr=False)
+    healthcheck_path = field(default=None, repr=False)
+    healthcheck_interval = field(default=None, repr=False)
+    healthcheck_timeout = field(default=None, repr=False)
+    healthcheck_strikes_ok = field(default=None, repr=False)
+    healthcheck_strikes_fail = field(default=None, repr=False)
+    healthcheck_tls_sni = field(default=None, repr=False)
+    healthcheck_tls_skip_verify = field(default=None, repr=False)
 
     @classmethod
     def _from_cs(cls, compute, res, zone=None):
@@ -150,13 +153,21 @@ class ElasticIP(Resource):
             healthcheck_mode=res.get("healthcheck", {}).get("mode", None),
             healthcheck_port=res.get("healthcheck", {}).get("port", None),
             healthcheck_path=res.get("healthcheck", {}).get("path", None),
-            healthcheck_interval=res.get("healthcheck", {}).get("interval", None),
-            healthcheck_timeout=res.get("healthcheck", {}).get("timeout", None),
-            healthcheck_strikes_ok=res.get("healthcheck", {}).get("strikes-ok", None),
+            healthcheck_interval=res.get("healthcheck", {}).get(
+                "interval", None
+            ),
+            healthcheck_timeout=res.get("healthcheck", {}).get(
+                "timeout", None
+            ),
+            healthcheck_strikes_ok=res.get("healthcheck", {}).get(
+                "strikes-ok", None
+            ),
             healthcheck_strikes_fail=res.get("healthcheck", {}).get(
                 "strikes-fail", None
             ),
-            healthcheck_tls_sni=res.get("healthcheck", {}).get("tls-sni", None),
+            healthcheck_tls_sni=res.get("healthcheck", {}).get(
+                "tls-sni", None
+            ),
             healthcheck_tls_skip_verify=res.get("healthcheck", {}).get(
                 "tls-skip-verify", None
             ),
@@ -274,10 +285,14 @@ class ElasticIP(Resource):
             healthcheck_path if healthcheck_path else self.healthcheck_path
         )
         self.healthcheck_interval = (
-            healthcheck_interval if healthcheck_interval else self.healthcheck_interval
+            healthcheck_interval
+            if healthcheck_interval
+            else self.healthcheck_interval
         )
         self.healthcheck_timeout = (
-            healthcheck_timeout if healthcheck_timeout else self.healthcheck_timeout
+            healthcheck_timeout
+            if healthcheck_timeout
+            else self.healthcheck_timeout
         )
         self.healthcheck_strikes_ok = (
             healthcheck_strikes_ok
@@ -290,7 +305,9 @@ class ElasticIP(Resource):
             else self.healthcheck_strikes_fail
         )
         self.healthcheck_tls_sni = (
-            healthcheck_tls_sni if healthcheck_tls_sni else self.healthcheck_tls_sni
+            healthcheck_tls_sni
+            if healthcheck_tls_sni
+            else self.healthcheck_tls_sni
         )
         self.healthcheck_tls_skip_verify = (
             healthcheck_tls_skip_verify
@@ -379,7 +396,7 @@ class ElasticIP(Resource):
         self._reset()
 
 
-@attr.s
+@define
 class Instance(Resource):
     """
     A Compute instance.
@@ -399,19 +416,19 @@ class Instance(Resource):
         or None if no SSH key specified during instance creation
     """
 
-    compute = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    name = attr.ib()
-    creation_date = attr.ib(repr=False)
-    zone = attr.ib(repr=False)
-    type = attr.ib(repr=False)
-    template = attr.ib(repr=False)
-    volume_id = attr.ib(repr=False)
-    volume_size = attr.ib(repr=False)
-    ipv4_address = attr.ib(repr=False)
-    ipv6_address = attr.ib(default=None, repr=False)
-    ssh_key = attr.ib(default=None, repr=False)
+    compute = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    name = field()
+    creation_date = field(repr=False)
+    zone = field(repr=False)
+    type = field(repr=False)
+    template = field(repr=False)
+    volume_id = field(repr=False)
+    volume_size = field(repr=False)
+    ipv4_address = field(repr=False)
+    ipv6_address = field(default=None, repr=False)
+    ssh_key = field(default=None, repr=False)
 
     @classmethod
     def _from_cs(cls, compute, res, zone=None):
@@ -419,7 +436,9 @@ class Instance(Resource):
             zone = compute.get_zone(id=res["zoneid"])
 
         try:
-            _list = compute.cs.listVolumes(virtualmachineid=res["id"], fetch_list=True)
+            _list = compute.cs.listVolumes(
+                virtualmachineid=res["id"], fetch_list=True
+            )
             volume_res = _list[0]
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
@@ -429,7 +448,9 @@ class Instance(Resource):
             res,
             id=res["id"],
             name=res["displayname"],
-            creation_date=datetime.strptime(res["created"], "%Y-%m-%dT%H:%M:%S%z"),
+            creation_date=datetime.strptime(
+                res["created"], "%Y-%m-%dT%H:%M:%S%z"
+            ),
             zone=zone,
             type=compute.get_instance_type(id=res["serviceofferingid"]),
             template=compute.get_instance_template(zone, id=res["templateid"]),
@@ -483,7 +504,9 @@ class Instance(Resource):
 
         try:
             # FIXME: use `iselastic=True` filter
-            _list = self.compute.cs.listNics(virtualmachineid=self.id, fetch_list=True)
+            _list = self.compute.cs.listNics(
+                virtualmachineid=self.id, fetch_list=True
+            )
             default_nic = self._default_nic(_list)
             for a in default_nic.get("secondaryip", []):
                 yield self.compute.get_elastic_ip(
@@ -506,7 +529,9 @@ class Instance(Resource):
         """
 
         try:
-            _list = self.compute.cs.listNics(virtualmachineid=self.id, fetch_list=True)
+            _list = self.compute.cs.listNics(
+                virtualmachineid=self.id, fetch_list=True
+            )
             for nic in _list:
                 if nic["isdefault"]:
                     continue
@@ -534,7 +559,9 @@ class Instance(Resource):
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        reverse_dns = self._default_nic(res["virtualmachine"]["nic"])["reversedns"]
+        reverse_dns = self._default_nic(res["virtualmachine"]["nic"])[
+            "reversedns"
+        ]
         if reverse_dns:
             return reverse_dns[0]["domainname"]
 
@@ -596,7 +623,9 @@ class Instance(Resource):
         """
 
         try:
-            [res] = self.compute.cs.listVirtualMachines(id=self.id, fetch_list=True)
+            [res] = self.compute.cs.listVirtualMachines(
+                id=self.id, fetch_list=True
+            )
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -616,12 +645,16 @@ class Instance(Resource):
         """
 
         try:
-            res = self.compute.cs.getVirtualMachineUserData(virtualmachineid=self.id)
+            res = self.compute.cs.getVirtualMachineUserData(
+                virtualmachineid=self.id
+            )
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
         if "userdata" in res["virtualmachineuserdata"]:
-            return b64decode(res["virtualmachineuserdata"]["userdata"]).decode("utf-8")
+            return b64decode(res["virtualmachineuserdata"]["userdata"]).decode(
+                "utf-8"
+            )
 
     @property
     def instance_pool(self):
@@ -637,7 +670,9 @@ class Instance(Resource):
         """
 
         if self.res.get("manager") == "instancepool":
-            return self.compute.get_instance_pool(self.zone, id=self.res["managerid"])
+            return self.compute.get_instance_pool(
+                self.zone, id=self.res["managerid"]
+            )
 
     def update(self, name=None, security_groups=None, user_data=None):
         """
@@ -665,7 +700,8 @@ class Instance(Resource):
 
             if security_groups:
                 self.compute.cs.updateVirtualMachineSecurityGroups(
-                    id=self.id, securitygroupids=list(i.id for i in security_groups)
+                    id=self.id,
+                    securitygroupids=list(i.id for i in security_groups),
                 )
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
@@ -685,7 +721,9 @@ class Instance(Resource):
         """
 
         try:
-            self.compute.cs.scaleVirtualMachine(id=self.id, serviceofferingid=type.id)
+            self.compute.cs.scaleVirtualMachine(
+                id=self.id, serviceofferingid=type.id
+            )
             self.type = type
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
@@ -775,7 +813,9 @@ class Instance(Resource):
         """
 
         try:
-            _list = self.compute.cs.listNics(virtualmachineid=self.id, fetch_list=True)
+            _list = self.compute.cs.listNics(
+                virtualmachineid=self.id, fetch_list=True
+            )
             default_nic = self._default_nic(_list)
             self.compute.cs.addIpToNic(
                 nicid=default_nic["id"], ipaddress=elastic_ip.address
@@ -795,7 +835,9 @@ class Instance(Resource):
         """
 
         try:
-            _list = self.compute.cs.listNics(virtualmachineid=self.id, fetch_list=True)
+            _list = self.compute.cs.listNics(
+                virtualmachineid=self.id, fetch_list=True
+            )
             default_nic = self._default_nic(_list)
             for a in default_nic.get("secondaryip", []):
                 if a["ipaddress"] == elastic_ip.address:
@@ -834,7 +876,9 @@ class Instance(Resource):
 
         try:
             [res] = self.compute.cs.listNics(
-                virtualmachineid=self.id, networkid=private_network.id, fetch_list=True
+                virtualmachineid=self.id,
+                networkid=private_network.id,
+                fetch_list=True,
             )
 
             self.compute.cs.removeNicFromVirtualMachine(
@@ -895,7 +939,7 @@ class Instance(Resource):
                 return nic
 
 
-@attr.s
+@define
 class InstanceTemplate(Resource):
     """
     A Compute instance template.
@@ -919,18 +963,18 @@ class InstanceTemplate(Resource):
         .. _Python datetime module: https://docs.python.org/3/library/datetime.html
     """
 
-    compute = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    name = attr.ib()
-    description = attr.ib(repr=False)
-    zone = attr.ib(repr=False)
-    date = attr.ib(repr=False)
-    size = attr.ib(repr=False)
-    boot_mode = attr.ib(repr=False)
-    ssh_key_enabled = attr.ib(default=True, repr=False)
-    password_reset_enabled = attr.ib(default=True, repr=False)
-    username = attr.ib(default=None, repr=False)
+    compute = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    name = field()
+    description = field(repr=False)
+    zone = field(repr=False)
+    date = field(repr=False)
+    size = field(repr=False)
+    boot_mode = field(repr=False)
+    ssh_key_enabled = field(default=True, repr=False)
+    password_reset_enabled = field(default=True, repr=False)
+    username = field(default=None, repr=False)
 
     @classmethod
     def _from_cs(cls, compute, res, zone=None):
@@ -1004,7 +1048,7 @@ class InstanceTemplate(Resource):
         self._reset()
 
 
-@attr.s
+@define
 class InstanceVolumeSnapshot(Resource):
     """
     A Compute instance storage volume snapshot.
@@ -1020,11 +1064,11 @@ class InstanceVolumeSnapshot(Resource):
         .. _Python datetime module: https://docs.python.org/3/library/datetime.html
     """
 
-    compute = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    date = attr.ib(repr=False)
-    size = attr.ib(repr=False)
+    compute = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    date = field(repr=False)
+    size = field(repr=False)
 
     @classmethod
     def _from_cs(cls, compute, res):
@@ -1103,7 +1147,7 @@ class InstanceVolumeSnapshot(Resource):
         return res
 
 
-@attr.s
+@define
 class InstanceType(Resource):
     """
     A Compute instance type.
@@ -1115,11 +1159,11 @@ class InstanceType(Resource):
         memory (int): the amount of RAM allocated in MB
     """
 
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    name = attr.ib()
-    cpu = attr.ib(repr=False)
-    memory = attr.ib(repr=False)
+    res = field(repr=False)
+    id = field()
+    name = field()
+    cpu = field(repr=False)
+    memory = field(repr=False)
 
     @classmethod
     def _from_cs(cls, res):
@@ -1132,7 +1176,7 @@ class InstanceType(Resource):
         )
 
 
-@attr.s
+@define
 class InstancePool(Resource):
     """
     A Compute Instance Pool.
@@ -1160,21 +1204,21 @@ class InstancePool(Resource):
         zone (Zone): the zone in which the Instance Pool is located
     """
 
-    compute = attr.ib(repr=False)
-    id = attr.ib()
-    instance_template = attr.ib(repr=False)
-    instance_type = attr.ib(repr=False)
-    instance_user_data = attr.ib(repr=False)
-    instance_volume_size = attr.ib(repr=False)
-    name = attr.ib()
-    res = attr.ib(repr=False)
-    size = attr.ib(repr=False)
-    zone = attr.ib(repr=False)
-    description = attr.ib(default=None, repr=False)
-    instance_deploy_target = attr.ib(default=None, repr=False)
-    instance_ipv6_enabled = attr.ib(default=False, repr=False)
-    instance_prefix = attr.ib(default="pool", repr=False)
-    instance_ssh_key = attr.ib(default=None, repr=False)
+    compute = field(repr=False)
+    id = field()
+    instance_template = field(repr=False)
+    instance_type = field(repr=False)
+    instance_user_data = field(repr=False)
+    instance_volume_size = field(repr=False)
+    name = field()
+    res = field(repr=False)
+    size = field(repr=False)
+    zone = field(repr=False)
+    description = field(default=None, repr=False)
+    instance_deploy_target = field(default=None, repr=False)
+    instance_ipv6_enabled = field(default=False, repr=False)
+    instance_prefix = field(default="pool", repr=False)
+    instance_ssh_key = field(default=None, repr=False)
 
     @classmethod
     def _from_api(cls, compute, res, zone):
@@ -1184,7 +1228,9 @@ class InstancePool(Resource):
             id=res["id"],
             instance_deploy_target=None
             if "deploy-target" not in res
-            else compute.get_deploy_target(zone, id=res["deploy-target"]["id"]),
+            else compute.get_deploy_target(
+                zone, id=res["deploy-target"]["id"]
+            ),
             instance_ipv6_enabled=res["ipv6-enabled"],
             instance_prefix=res["instance-prefix"],
             instance_ssh_key=None
@@ -1193,7 +1239,9 @@ class InstancePool(Resource):
             instance_template=compute.get_instance_template(
                 zone, id=res["template"]["id"]
             ),
-            instance_type=compute.get_instance_type(id=res["instance-type"]["id"]),
+            instance_type=compute.get_instance_type(
+                id=res["instance-type"]["id"]
+            ),
             instance_user_data=res.get("user-data"),
             instance_volume_size=res["disk-size"],
             name=res["name"],
@@ -1432,10 +1480,14 @@ class InstancePool(Resource):
             data["instance-prefix"] = instance_prefix
 
         if instance_private_networks is not None:
-            data["private-networks"] = [{"id": i.id} for i in instance_private_networks]
+            data["private-networks"] = [
+                {"id": i.id} for i in instance_private_networks
+            ]
 
         if instance_security_groups is not None:
-            data["security-groups"] = [{"id": i.id} for i in instance_security_groups]
+            data["security-groups"] = [
+                {"id": i.id} for i in instance_security_groups
+            ]
 
         if instance_ssh_key is not None:
             data["ssh-key"] = instance_ssh_key.name
@@ -1499,7 +1551,7 @@ class InstancePool(Resource):
         self._reset()
 
 
-@attr.s
+@define
 class NetworkLoadBalancerServiceHealthcheck(Resource):
     """
     A Network Load Balancer service healthcheck.
@@ -1517,14 +1569,14 @@ class NetworkLoadBalancerServiceHealthcheck(Resource):
         tls_sni (str): the TLS SNI domain to present for HTTPS healthchecks
     """
 
-    res = attr.ib(repr=False)
-    mode = attr.ib()
-    port = attr.ib()
-    uri = attr.ib(default=None, repr=False)
-    interval = attr.ib(default=None, repr=False)
-    timeout = attr.ib(default=None, repr=False)
-    retries = attr.ib(default=None, repr=False)
-    tls_sni = attr.ib(default=None, repr=False)
+    res = field(repr=False)
+    mode = field()
+    port = field()
+    uri = field(default=None, repr=False)
+    interval = field(default=None, repr=False)
+    timeout = field(default=None, repr=False)
+    retries = field(default=None, repr=False)
+    tls_sni = field(default=None, repr=False)
 
     @classmethod
     def _from_api(cls, res):
@@ -1540,7 +1592,7 @@ class NetworkLoadBalancerServiceHealthcheck(Resource):
         )
 
 
-@attr.s
+@define
 class NetworkLoadBalancerService(Resource):
     """
     A Network Load Balancer service.
@@ -1562,18 +1614,18 @@ class NetworkLoadBalancerService(Resource):
             service healthcheck
     """
 
-    compute = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    nlb = attr.ib(repr=False)
-    id = attr.ib()
-    name = attr.ib()
-    instance_pool = attr.ib(repr=False)
-    port = attr.ib(repr=False)
-    target_port = attr.ib(repr=False)
-    protocol = attr.ib(repr=False)
-    strategy = attr.ib(repr=False)
-    healthcheck = attr.ib(repr=False)
-    description = attr.ib(default="", repr=False)
+    compute = field(repr=False)
+    res = field(repr=False)
+    nlb = field(repr=False)
+    id = field()
+    name = field()
+    instance_pool = field(repr=False)
+    port = field(repr=False)
+    target_port = field(repr=False)
+    protocol = field(repr=False)
+    strategy = field(repr=False)
+    healthcheck = field(repr=False)
+    description = field(default="", repr=False)
 
     @classmethod
     def _from_api(cls, compute, res, nlb):
@@ -1695,8 +1747,12 @@ class NetworkLoadBalancerService(Resource):
                 "target-port": target_port
                 if target_port is not None
                 else self.target_port,
-                "protocol": protocol if protocol is not None else self.protocol,
-                "strategy": strategy if strategy is not None else self.strategy,
+                "protocol": protocol
+                if protocol is not None
+                else self.protocol,
+                "strategy": strategy
+                if strategy is not None
+                else self.strategy,
                 "healthcheck": {
                     "mode": healthcheck_mode
                     if healthcheck_mode is not None
@@ -1767,7 +1823,7 @@ class NetworkLoadBalancerService(Resource):
         self._reset()
 
 
-@attr.s
+@define
 class NetworkLoadBalancer(Resource):
     """
     A Network Load Balancer.
@@ -1781,14 +1837,14 @@ class NetworkLoadBalancer(Resource):
         zone (Zone): the zone in which the Network Load Balancer is located
     """
 
-    compute = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    name = attr.ib()
-    creation_date = attr.ib(repr=False)
-    ip_address = attr.ib(repr=False)
-    zone = attr.ib(repr=False)
-    description = attr.ib(default="", repr=False)
+    compute = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    name = field()
+    creation_date = field(repr=False)
+    ip_address = field(repr=False)
+    zone = field(repr=False)
+    description = field(default="", repr=False)
 
     @classmethod
     def _from_api(cls, compute, res, zone):
@@ -1799,7 +1855,9 @@ class NetworkLoadBalancer(Resource):
             zone=zone,
             name=res["name"],
             description=res.get("description"),
-            creation_date=datetime.strptime(res["created-at"], "%Y-%m-%dT%H:%M:%SZ"),
+            creation_date=datetime.strptime(
+                res["created-at"], "%Y-%m-%dT%H:%M:%SZ"
+            ),
             ip_address=res["ip"],
         )
 
@@ -1977,7 +2035,7 @@ class NetworkLoadBalancer(Resource):
         self._reset()
 
 
-@attr.s
+@define
 class PrivateNetwork(Resource):
     """
     A Private Network.
@@ -1996,15 +2054,15 @@ class PrivateNetwork(Resource):
         "managed" mode.
     """
 
-    compute = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    name = attr.ib()
-    zone = attr.ib(repr=False)
-    description = attr.ib(default="", repr=False)
-    start_ip = attr.ib(default=None, repr=False)
-    end_ip = attr.ib(default=None, repr=False)
-    netmask = attr.ib(default=None, repr=False)
+    compute = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    name = field()
+    zone = field(repr=False)
+    description = field(default="", repr=False)
+    start_ip = field(default=None, repr=False)
+    end_ip = field(default=None, repr=False)
+    netmask = field(default=None, repr=False)
 
     @classmethod
     def _from_cs(cls, compute, res, zone=None):
@@ -2039,7 +2097,12 @@ class PrivateNetwork(Resource):
         return self.compute.list_instances(zone=self.zone, networkid=self.id)
 
     def update(
-        self, name=None, description=None, start_ip=None, end_ip=None, netmask=None
+        self,
+        name=None,
+        description=None,
+        start_ip=None,
+        end_ip=None,
+        netmask=None,
     ):
         """
         Update the Private Network properties.
@@ -2120,7 +2183,7 @@ class PrivateNetwork(Resource):
         self._reset()
 
 
-@attr.s
+@define
 class SecurityGroup(Resource):
     """
     A Security Group.
@@ -2131,11 +2194,11 @@ class SecurityGroup(Resource):
         description (str): the Security Group description
     """
 
-    compute = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    name = attr.ib()
-    description = attr.ib(default="", repr=False)
+    compute = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    name = field()
+    description = field(default="", repr=False)
 
     @classmethod
     def _from_cs(cls, compute, res):
@@ -2161,7 +2224,9 @@ class SecurityGroup(Resource):
         """
 
         try:
-            [res] = self.compute.cs.listSecurityGroups(id=self.id, fetch_list=True)
+            [res] = self.compute.cs.listSecurityGroups(
+                id=self.id, fetch_list=True
+            )
             for rule in res.get("ingressrule", []):
                 yield SecurityGroupRule._from_cs(
                     type="ingress", compute=self.compute, res=rule
@@ -2183,7 +2248,9 @@ class SecurityGroup(Resource):
         """
 
         try:
-            [res] = self.compute.cs.listSecurityGroups(id=self.id, fetch_list=True)
+            [res] = self.compute.cs.listSecurityGroups(
+                id=self.id, fetch_list=True
+            )
             for rule in res.get("egressrule", []):
                 yield SecurityGroupRule._from_cs(
                     type="egress", compute=self.compute, res=rule
@@ -2218,7 +2285,9 @@ class SecurityGroup(Resource):
             "protocol": rule.protocol,
         }
         if rule.security_group:
-            rule_kwargs["usersecuritygrouplist"] = {"group": rule.security_group.name}
+            rule_kwargs["usersecuritygrouplist"] = {
+                "group": rule.security_group.name
+            }
 
         try:
             if rule.type == "ingress":
@@ -2244,7 +2313,7 @@ class SecurityGroup(Resource):
         self._reset()
 
 
-@attr.s
+@define
 class SecurityGroupRule:
     """
     A Security Group rule.
@@ -2263,23 +2332,24 @@ class SecurityGroupRule:
         icmp_type (int): an ICMP type to match
     """
 
-    type = attr.ib()
-    compute = attr.ib(default=None, repr=False)
-    id = attr.ib(default=None)
-    description = attr.ib(default=None, repr=False)
-    network_cidr = attr.ib(default=None, repr=False)
-    security_group = attr.ib(default=None, repr=False)
-    port = attr.ib(default=None, repr=False)
-    protocol = attr.ib(default="tcp", repr=False)
-    icmp_code = attr.ib(default=None, repr=False)
-    icmp_type = attr.ib(default=None, repr=False)
+    type = field()
+    compute = field(default=None, repr=False)
+    id = field(default=None)
+    description = field(default=None, repr=False)
+    network_cidr = field(default=None, repr=False)
+    security_group = field(default=None, repr=False)
+    port = field(default=None, repr=False)
+    protocol = field(default="tcp", repr=False)
+    icmp_code = field(default=None, repr=False)
+    icmp_type = field(default=None, repr=False)
 
     @classmethod
     def _from_cs(cls, compute, res, type):
         port = str(res.get("startport", ""))
         port = (
             "-".join([port, str(res["endport"])])
-            if res.get("startport", None) is not None and str(res["endport"]) != port
+            if res.get("startport", None) is not None
+            and str(res["endport"]) != port
             else port
         )
 
@@ -2289,7 +2359,9 @@ class SecurityGroupRule:
             id=res["ruleid"],
             description=res.get("description", None),
             network_cidr=res.get("cidr", None),
-            security_group=compute.get_security_group(name=res["securitygroupname"])
+            security_group=compute.get_security_group(
+                name=res["securitygroupname"]
+            )
             if "securitygroupname" in res
             else None,
             port=port,
@@ -2344,7 +2416,7 @@ class SecurityGroupRule:
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
-        for k, v in self.__dict__.items():
+        for k in asdict(self):
             setattr(self, k, None)
 
     def _parse_port(self):
@@ -2360,7 +2432,9 @@ class SecurityGroupRule:
             return None, None
 
         start_port, end_port = (
-            self.port.split("-", maxsplit=1) if "-" in self.port else (self.port, None)
+            self.port.split("-", maxsplit=1)
+            if "-" in self.port
+            else (self.port, None)
         )
         if not end_port:
             end_port = start_port
@@ -2368,7 +2442,7 @@ class SecurityGroupRule:
         return int(start_port), int(end_port)
 
 
-@attr.s
+@define
 class SSHKey(Resource):
     """
     A SSH key.
@@ -2379,11 +2453,11 @@ class SSHKey(Resource):
         private_key (str): the SSH private key, or None if registered SSH key
     """
 
-    compute = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    name = attr.ib()
-    fingerprint = attr.ib()
-    private_key = attr.ib(default=None, repr=False)
+    compute = field(repr=False)
+    res = field(repr=False)
+    name = field()
+    fingerprint = field()
+    private_key = field(default=None, repr=False)
 
     @classmethod
     def _from_cs(cls, compute, res):
@@ -2411,7 +2485,7 @@ class SSHKey(Resource):
         self._reset()
 
 
-@attr.s
+@define
 class Zone(Resource):
     """
     An Exoscale zone.
@@ -2421,9 +2495,9 @@ class Zone(Resource):
         name (str): the zone name
     """
 
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    name = attr.ib()
+    res = field(repr=False)
+    id = field()
+    name = field()
 
     @classmethod
     def _from_cs(cls, res):
@@ -2466,18 +2540,23 @@ class ComputeAPI(API):
             secret=secret,
             endpoint=endpoint,
             session=self.session,
-            headers={**self.session.headers, **{"User-Agent": self.user_agent}},
+            headers={
+                **self.session.headers,
+                **{"User-Agent": self.user_agent},
+            },
             trace=self.trace,
             fetch_result=True,
         )
 
     def __repr__(self):
-        return "ComputeAPI(endpoint='{}' key='{}')".format(self.endpoint, self.key)
+        return "ComputeAPI(endpoint='{}' key='{}')".format(
+            self.endpoint, self.key
+        )
 
     def __str__(self):
         return self.__repr__()
 
-    ### Anti-Affinity Group
+    # Anti-Affinity Group
 
     def create_anti_affinity_group(self, name, description=""):
         """
@@ -2546,7 +2625,7 @@ class ComputeAPI(API):
 
         return anti_affinity_groups[0]
 
-    ## Deploy Target
+    # Deploy Target
 
     def list_deploy_targets(self, zone):
         """
@@ -2586,12 +2665,14 @@ class ComputeAPI(API):
         _list = self._v2_request("GET", "/deploy-target", zone.name)
         for i in _list["deploy-targets"]:
             if i["name"] == name:
-                res = self._v2_request("GET", "/deploy-target/" + i["id"], zone.name)
+                res = self._v2_request(
+                    "GET", "/deploy-target/" + i["id"], zone.name
+                )
                 return DeployTarget._from_api(res=res, zone=zone)
 
         raise ResourceNotFoundError
 
-    ### Elastic IP
+    # Elastic IP
 
     def create_elastic_ip(
         self,
@@ -2705,7 +2786,9 @@ class ComputeAPI(API):
             raise ValueError("either id or address must be specifed")
 
         try:
-            elastic_ips = list(self.list_elastic_ips(zone, id=id, ipaddress=address))
+            elastic_ips = list(
+                self.list_elastic_ips(zone, id=id, ipaddress=address)
+            )
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
@@ -2716,7 +2799,7 @@ class ComputeAPI(API):
 
         return elastic_ips[0]
 
-    ### Instance
+    # Instance
 
     def create_instance(
         self,
@@ -2828,7 +2911,9 @@ class ComputeAPI(API):
             raise ValueError("either id or ip_address must be specifed")
 
         try:
-            instances = list(self.list_instances(zone, id=id, ipaddress=ip_address))
+            instances = list(
+                self.list_instances(zone, id=id, ipaddress=ip_address)
+            )
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
@@ -2839,7 +2924,7 @@ class ComputeAPI(API):
 
         return instances[0]
 
-    ### Instance Template
+    # Instance Template
 
     def register_instance_template(
         self,
@@ -2882,7 +2967,9 @@ class ComputeAPI(API):
             disable_password_reset=disable_password_reset,
         )
 
-    def list_instance_templates(self, zone, name=None, type="exoscale", **kwargs):
+    def list_instance_templates(
+        self, zone, name=None, type="exoscale", **kwargs
+    ):
         """
         List instance templates.
 
@@ -2930,7 +3017,9 @@ class ComputeAPI(API):
         """
 
         try:
-            instance_templates = list(self.list_instance_templates(zone, id=id))
+            instance_templates = list(
+                self.list_instance_templates(zone, id=id)
+            )
         except APIException as e:
             if "does not exist" in e.error["errortext"]:
                 raise ResourceNotFoundError
@@ -2941,7 +3030,7 @@ class ComputeAPI(API):
 
         return instance_templates[0]
 
-    ### Instance Type
+    # Instance Type
 
     def list_instance_types(self, **kwargs):
         """
@@ -2986,7 +3075,7 @@ class ComputeAPI(API):
 
         return instance_types[0]
 
-    ### Instance Pool
+    # Instance Pool
 
     def create_instance_pool(
         self,
@@ -3058,10 +3147,14 @@ class ComputeAPI(API):
             data["elastic-ips"] = [{"id": i.id} for i in instance_elastic_ips]
 
         if instance_security_groups:
-            data["security-groups"] = [{"id": i.id} for i in instance_security_groups]
+            data["security-groups"] = [
+                {"id": i.id} for i in instance_security_groups
+            ]
 
         if instance_private_networks:
-            data["private-networks"] = [{"id": i.id} for i in instance_private_networks]
+            data["private-networks"] = [
+                {"id": i.id} for i in instance_private_networks
+            ]
 
         if instance_ssh_key:
             data["ssh-key"] = instance_ssh_key.name
@@ -3134,12 +3227,14 @@ class ComputeAPI(API):
         _list = self._v2_request("GET", "/instance-pool", zone.name)
         for i in _list["instance-pools"]:
             if i["name"] == name:
-                res = self._v2_request("GET", "/instance-pool/" + i["id"], zone.name)
+                res = self._v2_request(
+                    "GET", "/instance-pool/" + i["id"], zone.name
+                )
                 return InstancePool._from_api(compute=self, res=res, zone=zone)
 
         raise ResourceNotFoundError
 
-    ### Network Load Balancer
+    # Network Load Balancer
 
     def create_network_load_balancer(self, zone, name, description=""):
         """
@@ -3196,20 +3291,32 @@ class ComputeAPI(API):
 
         if id:
             res = self._v2_request("GET", "/load-balancer/" + id, zone.name)
-            return NetworkLoadBalancer._from_api(compute=self, res=res, zone=zone)
+            return NetworkLoadBalancer._from_api(
+                compute=self, res=res, zone=zone
+            )
 
         _list = self._v2_request("GET", "/load-balancer", zone.name)
         for i in _list["load-balancers"]:
             if i["name"] == name:
-                res = self._v2_request("GET", "/load-balancer/" + i["id"], zone.name)
-                return NetworkLoadBalancer._from_api(compute=self, res=res, zone=zone)
+                res = self._v2_request(
+                    "GET", "/load-balancer/" + i["id"], zone.name
+                )
+                return NetworkLoadBalancer._from_api(
+                    compute=self, res=res, zone=zone
+                )
 
         raise ResourceNotFoundError
 
-    ### Private Network
+    # Private Network
 
     def create_private_network(
-        self, zone, name, description="", start_ip=None, end_ip=None, netmask=None
+        self,
+        zone,
+        name,
+        description="",
+        start_ip=None,
+        end_ip=None,
+        netmask=None,
     ):
         """
         Create a Private Network.
@@ -3254,7 +3361,9 @@ class ComputeAPI(API):
         """
 
         try:
-            _list = self.cs.listNetworks(fetch_list=True, zoneid=zone.id, **kwargs)
+            _list = self.cs.listNetworks(
+                fetch_list=True, zoneid=zone.id, **kwargs
+            )
 
             for i in _list:
                 yield PrivateNetwork._from_cs(self, i, zone=zone)
@@ -3285,7 +3394,7 @@ class ComputeAPI(API):
 
         return private_networks[0]
 
-    ### Security Group
+    # Security Group
 
     def create_security_group(self, name, description=""):
         """
@@ -3300,7 +3409,9 @@ class ComputeAPI(API):
         """
 
         try:
-            res = self.cs.createSecurityGroup(name=name, description=description)
+            res = self.cs.createSecurityGroup(
+                name=name, description=description
+            )
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -3351,7 +3462,7 @@ class ComputeAPI(API):
 
         return security_groups[0]
 
-    ### SSH Key
+    # SSH Key
 
     def create_ssh_key(self, name):
         """
@@ -3429,7 +3540,7 @@ class ComputeAPI(API):
 
         return ssh_keys[0]
 
-    ### Zone
+    # Zone
 
     def list_zones(self, **kwargs):
         """
@@ -3474,7 +3585,7 @@ class ComputeAPI(API):
 
         return zones[0]
 
-    ### V2 API
+    # V2 API
 
     def _v2_check_response(self, res, *args, **kwargs):
         """
@@ -3493,7 +3604,9 @@ class ComputeAPI(API):
     def _v2_request(self, method, path, zone=None, **kwargs):
         base_url = "https://api.exoscale/v2"
         if zone:
-            base_url = "https://{}-{}.exoscale.com/v2".format(self.environment, zone)
+            base_url = "https://{}-{}.exoscale.com/v2".format(
+                self.environment, zone
+            )
 
         return API.send(
             self,

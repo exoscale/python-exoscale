@@ -1,17 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import json
 import pytest
 from .conftest import _random_str, _random_uuid
-from base64 import b64decode
+from base64 import b64encode
 from datetime import datetime, timezone
 from exoscale.api import ResourceNotFoundError
-from exoscale.api.compute import *
-from urllib.parse import parse_qs, urljoin, urlparse
+from exoscale.api.compute import (
+    AntiAffinityGroup,
+    DeployTarget,
+    ElasticIP,
+    InstanceTemplate,
+    InstanceType,
+    PrivateNetwork,
+    SecurityGroup,
+    SSHKey,
+    Zone,
+)
+from urllib.parse import parse_qs, urlparse
 
 
 class TestCompute:
-    ### Anti-Affinity Group
+    # Anti-Affinity Group
     def test_create_anti_affinity_group(self, exo, aag):
         anti_affinity_group_name = _random_str()
         anti_affinity_group_description = _random_str()
@@ -38,7 +49,8 @@ class TestCompute:
         exo.mock_query_async_job_result({"affinitygroup": expected})
 
         actual = exo.compute.create_anti_affinity_group(
-            name=anti_affinity_group_name, description=anti_affinity_group_description
+            name=anti_affinity_group_name,
+            description=anti_affinity_group_description,
         )
         assert actual.id == expected["id"]
         assert actual.name == expected["name"]
@@ -57,14 +69,24 @@ class TestCompute:
 
         exo.mock_get(
             "?command=listAffinityGroups&id={}".format(expected["id"]),
-            {"listaffinitygroupsresponse": {"count": 1, "affinitygroup": [expected]}},
+            {
+                "listaffinitygroupsresponse": {
+                    "count": 1,
+                    "affinitygroup": [expected],
+                }
+            },
         )
         actual = exo.compute.get_anti_affinity_group(id=expected["id"])
         assert actual.id == expected["id"]
 
         exo.mock_get(
             "?command=listAffinityGroups&name={}".format(expected["name"]),
-            {"listaffinitygroupsresponse": {"count": 1, "affinitygroup": [expected]}},
+            {
+                "listaffinitygroupsresponse": {
+                    "count": 1,
+                    "affinitygroup": [expected],
+                }
+            },
         )
         actual = exo.compute.get_anti_affinity_group(name=expected["name"])
         assert actual.id == expected["id"]
@@ -78,14 +100,18 @@ class TestCompute:
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
-    ## Deploy Target
+    # Deploy Target
 
     def test_list_deploy_targets(self, exo, zone, dt):
         zone = zone()
         expected = dt()
 
-        exo.mock_get_v2(zone["name"], "deploy-target", {"deploy-targets": [expected]})
-        actual = list(exo.compute.list_deploy_targets(zone=Zone._from_cs(zone)))
+        exo.mock_get_v2(
+            zone["name"], "deploy-target", {"deploy-targets": [expected]}
+        )
+        actual = list(
+            exo.compute.list_deploy_targets(zone=Zone._from_cs(zone))
+        )
         assert len(actual) == 1
         assert actual[0].id == expected["id"]
 
@@ -93,10 +119,16 @@ class TestCompute:
         zone = zone()
         deploy_target_name = _random_str()
         deploy_target_description = _random_str()
-        expected = dt(name=deploy_target_name, description=deploy_target_description)
+        expected = dt(
+            name=deploy_target_name, description=deploy_target_description
+        )
 
-        exo.mock_get_v2(zone["name"], "deploy-target", {"deploy-targets": [expected]})
-        exo.mock_get_v2(zone["name"], "deploy-target/" + expected["id"], expected)
+        exo.mock_get_v2(
+            zone["name"], "deploy-target", {"deploy-targets": [expected]}
+        )
+        exo.mock_get_v2(
+            zone["name"], "deploy-target/" + expected["id"], expected
+        )
         actual = exo.compute.get_deploy_target(
             zone=Zone._from_cs(zone), id=expected["id"]
         )
@@ -116,7 +148,7 @@ class TestCompute:
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
-    ### Elastic IP
+    # Elastic IP
 
     def test_create_elastic_ip(self, exo, zone, eip):
         zone = Zone._from_cs(zone())
@@ -145,12 +177,18 @@ class TestCompute:
             assert params["mode"][0] == expected["healthcheck"]["mode"]
             assert params["port"][0] == str(expected["healthcheck"]["port"])
             assert params["path"][0] == str(expected["healthcheck"]["path"])
-            assert params["interval"][0] == str(expected["healthcheck"]["interval"])
-            assert params["strikes-ok"][0] == str(expected["healthcheck"]["strikes-ok"])
+            assert params["interval"][0] == str(
+                expected["healthcheck"]["interval"]
+            )
+            assert params["strikes-ok"][0] == str(
+                expected["healthcheck"]["strikes-ok"]
+            )
             assert params["strikes-fail"][0] == str(
                 expected["healthcheck"]["strikes-fail"]
             )
-            assert params["timeout"][0] == str(expected["healthcheck"]["timeout"])
+            assert params["timeout"][0] == str(
+                expected["healthcheck"]["timeout"]
+            )
             assert params["tls-sni"][0] == expected["healthcheck"]["tls-sni"]
             assert params["tls-skip-verify"][0] == str(
                 expected["healthcheck"]["tls-skip-verify"]
@@ -179,7 +217,9 @@ class TestCompute:
             healthcheck_strikes_ok=expected["healthcheck"]["strikes-ok"],
             healthcheck_strikes_fail=expected["healthcheck"]["strikes-fail"],
             healthcheck_tls_sni=expected["healthcheck"]["tls-sni"],
-            healthcheck_tls_skip_verify=expected["healthcheck"]["tls-skip-verify"],
+            healthcheck_tls_skip_verify=expected["healthcheck"][
+                "tls-skip-verify"
+            ],
         )
         assert actual.zone == zone
         assert actual.address == expected["ipaddress"]
@@ -187,11 +227,17 @@ class TestCompute:
         assert actual.healthcheck_mode == expected["healthcheck"]["mode"]
         assert actual.healthcheck_port == expected["healthcheck"]["port"]
         assert actual.healthcheck_path == expected["healthcheck"]["path"]
-        assert actual.healthcheck_interval == expected["healthcheck"]["interval"]
-        assert actual.healthcheck_timeout == expected["healthcheck"]["timeout"]
-        assert actual.healthcheck_strikes_ok == expected["healthcheck"]["strikes-ok"]
         assert (
-            actual.healthcheck_strikes_fail == expected["healthcheck"]["strikes-fail"]
+            actual.healthcheck_interval == expected["healthcheck"]["interval"]
+        )
+        assert actual.healthcheck_timeout == expected["healthcheck"]["timeout"]
+        assert (
+            actual.healthcheck_strikes_ok
+            == expected["healthcheck"]["strikes-ok"]
+        )
+        assert (
+            actual.healthcheck_strikes_fail
+            == expected["healthcheck"]["strikes-fail"]
         )
         assert actual.healthcheck_tls_sni == expected["healthcheck"]["tls-sni"]
         assert (
@@ -214,16 +260,30 @@ class TestCompute:
 
         exo.mock_get(
             "?command=listPublicIpAddresses&id={}".format(expected["id"]),
-            {"listpublicipaddressesresponse": {"count": 1, "ipaddress": [expected]}},
+            {
+                "listpublicipaddressesresponse": {
+                    "count": 1,
+                    "ipaddress": [expected],
+                }
+            },
         )
         actual = exo.compute.get_elastic_ip(zone, id=expected["id"])
         assert actual.id == expected["id"]
 
         exo.mock_get(
-            "?command=listPublicIpAddresses&ipaddress={}".format(expected["ipaddress"]),
-            {"listpublicipaddressesresponse": {"count": 1, "ipaddress": [expected]}},
+            "?command=listPublicIpAddresses&ipaddress={}".format(
+                expected["ipaddress"]
+            ),
+            {
+                "listpublicipaddressesresponse": {
+                    "count": 1,
+                    "ipaddress": [expected],
+                }
+            },
         )
-        actual = exo.compute.get_elastic_ip(zone, address=expected["ipaddress"])
+        actual = exo.compute.get_elastic_ip(
+            zone, address=expected["ipaddress"]
+        )
         assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
@@ -235,7 +295,7 @@ class TestCompute:
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
-    ### Instance
+    # Instance
 
     def test_create_instance(
         self,
@@ -258,7 +318,7 @@ class TestCompute:
         ssh_key = sshkey()
         instance_name = _random_str()
         instance_volume_size = 20
-        instance_volume_size_bytes = instance_volume_size * 1024 ** 3
+        instance_volume_size_bytes = instance_volume_size * 1024**3
         instance_creation_date = datetime.now(tz=timezone.utc).strftime(
             "%Y-%m-%dT%H:%M:%S+0000"
         )
@@ -280,7 +340,9 @@ class TestCompute:
             assert params["zoneid"][0] == expected["zoneid"]
             assert params["name"][0] == expected["name"]
             assert params["templateid"][0] == expected["templateid"]
-            assert params["serviceofferingid"][0] == expected["serviceofferingid"]
+            assert (
+                params["serviceofferingid"][0] == expected["serviceofferingid"]
+            )
             assert params["securitygroupids"] == [security_group["id"]]
             assert params["affinitygroupids"] == [anti_affinity_group["id"]]
             assert params["networkids"] == [private_network["id"]]
@@ -316,9 +378,13 @@ class TestCompute:
             zone=Zone._from_cs(zone),
             name=instance_name,
             type=InstanceType._from_cs(instance_type),
-            template=InstanceTemplate._from_cs(exo.compute, instance_template, zone),
+            template=InstanceTemplate._from_cs(
+                exo.compute, instance_template, zone
+            ),
             volume_size=20,
-            security_groups=[SecurityGroup._from_cs(exo.compute, security_group)],
+            security_groups=[
+                SecurityGroup._from_cs(exo.compute, security_group)
+            ],
             anti_affinity_groups=[
                 AntiAffinityGroup._from_cs(exo.compute, anti_affinity_group)
             ],
@@ -356,7 +422,7 @@ class TestCompute:
 
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
@@ -366,20 +432,27 @@ class TestCompute:
         assert len(actual) == 1
         assert actual[0].id == expected["id"]
 
-    def test_get_instance(self, exo, zone, instance_type, instance_template, instance):
+    def test_get_instance(
+        self, exo, zone, instance_type, instance_template, instance
+    ):
         zone = Zone._from_cs(zone())
         expected = instance()
 
         exo.mock_list(
             "listVolumes",
-            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024 ** 3}],
+            [{"id": _random_uuid(), "type": "ROOT", "size": 10 * 1024**3}],
         )
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
         exo.mock_get(
             "?command=listVirtualMachines&id={}".format(expected["id"]),
-            {"listvirtualmachinesresponse": {"count": 1, "virtualmachine": [expected]}},
+            {
+                "listvirtualmachinesresponse": {
+                    "count": 1,
+                    "virtualmachine": [expected],
+                }
+            },
         )
         actual = exo.compute.get_instance(zone=zone, id=expected["id"])
         assert actual.id == expected["id"]
@@ -388,7 +461,12 @@ class TestCompute:
             "?command=listVirtualMachines&ipaddress={}".format(
                 expected["nic"][0]["ipaddress"]
             ),
-            {"listvirtualmachinesresponse": {"count": 1, "virtualmachine": [expected]}},
+            {
+                "listvirtualmachinesresponse": {
+                    "count": 1,
+                    "virtualmachine": [expected],
+                }
+            },
         )
         actual = exo.compute.get_instance(
             zone=zone, ip_address=expected["nic"][0]["ipaddress"]
@@ -405,7 +483,7 @@ class TestCompute:
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
-    ### Instance Template
+    # Instance Template
 
     def test_register_instance_template(self, exo, zone, instance_template):
         zone = Zone._from_cs(zone())
@@ -425,9 +503,14 @@ class TestCompute:
             assert params["url"][0] == url
             assert params["checksum"][0] == expected["checksum"]
             assert params["bootmode"][0] == boot_mode
-            assert params["details[0].username"][0] == expected["details"]["username"]
+            assert (
+                params["details[0].username"][0]
+                == expected["details"]["username"]
+            )
             assert params["sshkeyenabled"][0] == str(expected["sshkeyenabled"])
-            assert params["passwordenabled"][0] == str(expected["passwordenabled"])
+            assert params["passwordenabled"][0] == str(
+                expected["passwordenabled"]
+            )
 
             context.status_code = 200
             context.headers["Content-Type"] = "application/json"
@@ -484,13 +567,14 @@ class TestCompute:
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
             exo.mock_get(
-                "?command=listTemplates&id=lolnope", {"listtemplatesresponse": {}}
+                "?command=listTemplates&id=lolnope",
+                {"listtemplatesresponse": {}},
             )
             actual = exo.compute.get_instance_template(zone, id="lolnope")
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
-    ### Instance Type
+    # Instance Type
 
     def test_list_instance_types(self, exo, instance_type):
         expected = instance_type()
@@ -536,7 +620,7 @@ class TestCompute:
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
-    ### Instance Pool
+    # Instance Pool
 
     def test_create_instance_pool(
         self,
@@ -593,13 +677,16 @@ class TestCompute:
 
         def _assert_request(request, context):
             body = json.loads(request.body)
-            assert body["anti-affinity-groups"][0]["id"] == anti_affinity_group["id"]
+            assert (
+                body["anti-affinity-groups"][0]["id"]
+                == anti_affinity_group["id"]
+            )
             assert body["deploy-target"]["id"] == deploy_target["id"]
             assert body["description"] == instance_pool_description
             assert body["disk-size"] == instance_volume_size
             assert body["elastic-ips"][0]["id"] == elastic_ip["id"]
             assert body["instance-type"]["id"] == instance_type["id"]
-            assert body["ipv6-enabled"] == True
+            assert body["ipv6-enabled"] is True
             assert body["name"] == instance_pool_name
             assert body["private-networks"][0]["id"] == private_network["id"]
             assert body["security-groups"][0]["id"] == security_group["id"]
@@ -627,8 +714,12 @@ class TestCompute:
         exo.mock_get_v2(
             zone["name"], "deploy-target/" + deploy_target["id"], deploy_target
         )
-        exo.mock_get_v2(zone["name"], "instance-pool", {"instance-pools": [expected]})
-        exo.mock_get_v2(zone["name"], "instance-pool/" + expected["id"], expected)
+        exo.mock_get_v2(
+            zone["name"], "instance-pool", {"instance-pools": [expected]}
+        )
+        exo.mock_get_v2(
+            zone["name"], "instance-pool/" + expected["id"], expected
+        )
 
         actual = exo.compute.create_instance_pool(
             zone=Zone._from_cs(zone),
@@ -640,7 +731,9 @@ class TestCompute:
             ],
             instance_deploy_target=DeployTarget._from_api(deploy_target, zone),
             instance_elastic_ips=[
-                ElasticIP._from_cs(exo.compute, elastic_ip, Zone._from_cs(zone))
+                ElasticIP._from_cs(
+                    exo.compute, elastic_ip, Zone._from_cs(zone)
+                )
             ],
             instance_enable_ipv6=True,
             instance_private_networks=[
@@ -664,7 +757,7 @@ class TestCompute:
         assert actual.name == instance_pool_name
         assert actual.description == instance_pool_description
         assert actual.instance_deploy_target.id == deploy_target["id"]
-        assert actual.instance_ipv6_enabled == True
+        assert actual.instance_ipv6_enabled is True
         assert actual.instance_prefix == instance_prefix
         assert actual.instance_template.id == instance_template["id"]
         assert actual.instance_type.id == instance_type["id"]
@@ -680,9 +773,13 @@ class TestCompute:
 
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
-        exo.mock_get_v2(zone["name"], "instance-pool", {"instance-pools": [expected]})
+        exo.mock_get_v2(
+            zone["name"], "instance-pool", {"instance-pools": [expected]}
+        )
 
-        actual = list(exo.compute.list_instance_pools(zone=Zone._from_cs(zone)))
+        actual = list(
+            exo.compute.list_instance_pools(zone=Zone._from_cs(zone))
+        )
         assert len(actual) == 1
         assert actual[0].id == expected["id"]
 
@@ -695,13 +792,17 @@ class TestCompute:
         exo.mock_list("listServiceOfferings", [instance_type()])
         exo.mock_list("listTemplates", [instance_template()])
 
-        exo.mock_get_v2(zone["name"], "instance-pool/" + expected["id"], expected)
+        exo.mock_get_v2(
+            zone["name"], "instance-pool/" + expected["id"], expected
+        )
         actual = exo.compute.get_instance_pool(
             zone=Zone._from_cs(zone), id=expected["id"]
         )
         assert actual.id == expected["id"]
 
-        exo.mock_get_v2(zone["name"], "instance-pool", {"instance-pools": [expected]})
+        exo.mock_get_v2(
+            zone["name"], "instance-pool", {"instance-pools": [expected]}
+        )
         actual = exo.compute.get_instance_pool(
             zone=Zone._from_cs(zone), name=expected["name"]
         )
@@ -717,7 +818,7 @@ class TestCompute:
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
-    ### Network Load Balancer
+    # Network Load Balancer
 
     def test_create_network_load_balancer(self, exo, zone, nlb):
         zone = zone()
@@ -748,7 +849,9 @@ class TestCompute:
 
         exo.mock_post(zone["name"], "load-balancer", _assert_request)
         exo.mock_get_operation(zone["name"], operation_id, expected["id"])
-        exo.mock_get_v2(zone["name"], "load-balancer/" + expected["id"], expected)
+        exo.mock_get_v2(
+            zone["name"], "load-balancer/" + expected["id"], expected
+        )
 
         actual = exo.compute.create_network_load_balancer(
             zone=Zone._from_cs(zone),
@@ -758,15 +861,22 @@ class TestCompute:
         assert actual.zone.name == zone["name"]
         assert actual.name == expected["name"]
         assert actual.description == expected["description"]
-        assert actual.creation_date.strftime("%Y-%m-%dT%H:%M:%SZ") == nlb_creation_date
+        assert (
+            actual.creation_date.strftime("%Y-%m-%dT%H:%M:%SZ")
+            == nlb_creation_date
+        )
         assert actual.ip_address == expected["ip"]
 
     def test_list_network_load_balancers(self, exo, zone, nlb):
         zone = zone()
         expected = nlb(zone=zone["name"])
 
-        exo.mock_get_v2(zone["name"], "load-balancer", {"load-balancers": [expected]})
-        actual = list(exo.compute.list_network_load_balancers(zone=Zone._from_cs(zone)))
+        exo.mock_get_v2(
+            zone["name"], "load-balancer", {"load-balancers": [expected]}
+        )
+        actual = list(
+            exo.compute.list_network_load_balancers(zone=Zone._from_cs(zone))
+        )
         assert len(actual) == 1
         assert actual[0].id == expected["id"]
 
@@ -774,13 +884,17 @@ class TestCompute:
         zone = zone()
         expected = nlb(zone=zone["name"])
 
-        exo.mock_get_v2(zone["name"], "load-balancer/" + expected["id"], expected)
+        exo.mock_get_v2(
+            zone["name"], "load-balancer/" + expected["id"], expected
+        )
         actual = exo.compute.get_network_load_balancer(
             zone=Zone._from_cs(zone), id=expected["id"]
         )
         assert actual.id == expected["id"]
 
-        exo.mock_get_v2(zone["name"], "load-balancer", {"load-balancers": [expected]})
+        exo.mock_get_v2(
+            zone["name"], "load-balancer", {"load-balancers": [expected]}
+        )
         actual = exo.compute.get_network_load_balancer(
             zone=Zone._from_cs(zone), name=expected["name"]
         )
@@ -793,7 +907,7 @@ class TestCompute:
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
-    ### Private Network
+    # Private Network
 
     def test_create_private_network(self, exo, zone, privnet):
         zone = zone()
@@ -851,7 +965,9 @@ class TestCompute:
         expected = privnet()
 
         exo.mock_list("listNetworks", [expected])
-        actual = list(exo.compute.list_private_networks(zone=Zone._from_cs(zone)))
+        actual = list(
+            exo.compute.list_private_networks(zone=Zone._from_cs(zone))
+        )
         assert len(actual) == 1
         assert actual[0].id == expected["id"]
 
@@ -863,18 +979,23 @@ class TestCompute:
             "?command=listNetworks&id={}".format(expected["id"]),
             {"listnetworksresponse": {"count": 1, "network": [expected]}},
         )
-        actual = exo.compute.get_private_network(Zone._from_cs(zone), id=expected["id"])
+        actual = exo.compute.get_private_network(
+            Zone._from_cs(zone), id=expected["id"]
+        )
         assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
             exo.mock_get(
-                "?command=listNetworks&id=lolnope", {"listnetworksresponse": {}}
+                "?command=listNetworks&id=lolnope",
+                {"listnetworksresponse": {}},
             )
-            actual = exo.compute.get_private_network(Zone._from_cs(zone), id="lolnope")
+            actual = exo.compute.get_private_network(
+                Zone._from_cs(zone), id="lolnope"
+            )
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
-    ### Security Group
+    # Security Group
 
     def test_create_security_group(self, exo, sg):
         security_group_name = _random_str()
@@ -920,14 +1041,26 @@ class TestCompute:
 
         exo.mock_get(
             "?command=listSecurityGroups&id={}".format(expected["id"]),
-            {"listsecuritygroupsresponse": {"count": 1, "securitygroups": [expected]}},
+            {
+                "listsecuritygroupsresponse": {
+                    "count": 1,
+                    "securitygroups": [expected],
+                }
+            },
         )
         actual = exo.compute.get_security_group(id=expected["id"])
         assert actual.id == expected["id"]
 
         exo.mock_get(
-            "?command=listSecurityGroups&securitygroupname={}".format(expected["name"]),
-            {"listsecuritygroupsresponse": {"count": 1, "securitygroups": [expected]}},
+            "?command=listSecurityGroups&securitygroupname={}".format(
+                expected["name"]
+            ),
+            {
+                "listsecuritygroupsresponse": {
+                    "count": 1,
+                    "securitygroups": [expected],
+                }
+            },
         )
         actual = exo.compute.get_security_group(name=expected["name"])
         assert actual.id == expected["id"]
@@ -941,7 +1074,7 @@ class TestCompute:
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
-    ### SSH Key
+    # SSH Key
 
     def test_create_ssh_key(self, exo, sshkey):
         ssh_key_name = _random_str()
@@ -1005,21 +1138,27 @@ class TestCompute:
 
         exo.mock_get(
             "?command=listSSHKeyPairs&name={}".format(expected["name"]),
-            {"listsshkeypairsresponse": {"count": 1, "sshkeypair": [expected]}},
+            {
+                "listsshkeypairsresponse": {
+                    "count": 1,
+                    "sshkeypair": [expected],
+                }
+            },
         )
         actual = exo.compute.get_ssh_key(name=ssh_key_name)
         assert actual.name == expected["name"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
             exo.mock_get(
-                "?command=listSSHKeyPairs&name=lolnope", {"listsshkeypairsresponse": {}}
+                "?command=listSSHKeyPairs&name=lolnope",
+                {"listsshkeypairsresponse": {}},
             )
 
             actual = exo.compute.get_ssh_key(name="lolnope")
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
-    ### Zone
+    # Zone
 
     def test_list_zones(self, exo):
         expected_zones = [

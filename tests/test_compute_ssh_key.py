@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pytest
 from .conftest import _random_uuid
-from exoscale.api.compute import *
+from exoscale.api.compute import SSHKey
 from urllib.parse import parse_qs, urlparse
 
 

@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pytest
-from exoscale.api.compute import *
-from urllib.parse import parse_qs, urljoin, urlparse
+from exoscale.api.compute import AntiAffinityGroup
+from urllib.parse import parse_qs, urlparse
 from .conftest import _random_uuid
 
 

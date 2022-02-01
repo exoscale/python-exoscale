@@ -3,13 +3,17 @@
 
 import pytest
 from .conftest import _random_str
-from datetime import datetime
 from exoscale.api import ResourceNotFoundError
-from exoscale.api.storage import *
+from exoscale.api.storage import (
+    ACL_ALL_USERS,
+    ACL_AUTHENTICATED_USERS,
+    AccessControlPolicy,
+    CORSRule,
+)
 
 
 class TestStorage:
-    ### Bucket
+    # Bucket
 
     def test_create_bucket(self, exo, zone):
         zone = zone()
@@ -22,7 +26,9 @@ class TestStorage:
             {
                 "Bucket": bucket_name,
                 "ACL": bucket_acl,
-                "CreateBucketConfiguration": {"LocationConstraint": zone["name"]},
+                "CreateBucketConfiguration": {
+                    "LocationConstraint": zone["name"]
+                },
             },
         )
 
@@ -33,7 +39,8 @@ class TestStorage:
 
     def test_list_buckets(self, exo):
         exo.boto_stub.add_response(
-            "list_buckets", {"Buckets": [{"Name": _random_str()} for i in range(3)]}
+            "list_buckets",
+            {"Buckets": [{"Name": _random_str()} for i in range(3)]},
         )
 
         actual = list(exo.storage.list_buckets())
@@ -56,7 +63,7 @@ class TestStorage:
             assert actual is None
         assert excinfo.type == ResourceNotFoundError
 
-    ### CORSRule
+    # CORSRule
 
     def test_cors_rule_from_s3(self):
         cors_rule_allowed_headers = ["*"]
@@ -108,7 +115,7 @@ class TestStorage:
             "MaxAgeSeconds": cors_rule_max_age_seconds,
         }
 
-    ### AccessControlPolicy
+    # AccessControlPolicy
 
     def test_access_control_policy_grantee_from_s3(self):
         grantee_id = _random_str()
@@ -117,10 +124,7 @@ class TestStorage:
         with pytest.raises(ValueError) as excinfo:
             AccessControlPolicy._grantee_from_s3(
                 None,
-                {
-                    "URI": "lolnope",
-                    "Type": "Group",
-                },
+                {"URI": "lolnope", "Type": "Group"},
             )
         assert excinfo.type == ValueError
 
@@ -159,7 +163,9 @@ class TestStorage:
         actual = AccessControlPolicy._grantee_to_s3(None, "ALL_USERS")
         assert actual == {"Type": "Group", "URI": ACL_ALL_USERS}
 
-        actual = AccessControlPolicy._grantee_to_s3(None, "AUTHENTICATED_USERS")
+        actual = AccessControlPolicy._grantee_to_s3(
+            None, "AUTHENTICATED_USERS"
+        )
         assert actual == {"Type": "Group", "URI": ACL_AUTHENTICATED_USERS}
 
     def test_access_control_policy_from_s3(self):
@@ -212,10 +218,7 @@ class TestStorage:
                     "Permission": "WRITE_ACP",
                 },
             ],
-            "Owner": {
-                "DisplayName": acp_owner,
-                "ID": acp_owner,
-            },
+            "Owner": {"DisplayName": acp_owner, "ID": acp_owner},
         }
 
         actual = AccessControlPolicy._from_s3(acp)
@@ -287,8 +290,5 @@ class TestStorage:
                     "Permission": "WRITE_ACP",
                 },
             ],
-            "Owner": {
-                "DisplayName": acp_owner,
-                "ID": acp_owner,
-            },
+            "Owner": {"DisplayName": acp_owner, "ID": acp_owner},
         }

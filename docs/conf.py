@@ -13,7 +13,7 @@
 # import os
 import sys
 from datetime import datetime
-from sphinx_markdown_parser.parser import MarkdownParser
+from sphinx_markdown_parser.parser import MarkdownParser  # noqa
 
 sys.path.insert(0, "exoscale")
 
@@ -58,7 +58,10 @@ pygments_style = "sphinx"
 #
 html_theme = "sphinx_rtd_theme"
 
-html_theme_options = {"logo_only": True, "style_nav_header_background": "#da291c"}
+html_theme_options = {
+    "logo_only": True,
+    "style_nav_header_background": "#da291c",
+}
 
 using_rtd_theme = True
 

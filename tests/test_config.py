@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from exoscale import *
+from exoscale import ConfigurationError, Exoscale
 
 _ALICE_API_KEY = "alice_api_key"
 _ALICE_API_SECRET = "alice_api_secret"

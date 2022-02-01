@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pytest
 from .conftest import _random_str, _random_uuid
-from exoscale.api.compute import *
+from exoscale.api.compute import SecurityGroup, SecurityGroupRule
 from urllib.parse import parse_qs, urlparse
 
 
@@ -16,7 +15,9 @@ class TestComputeSecurityGroup:
         rule_protocol_ingress = "tcp"
         rule_port_egress = "53"
         rule_protocol_egress = "udp"
-        security_group_default = SecurityGroup._from_cs(exo.compute, sg(name="default"))
+        security_group_default = SecurityGroup._from_cs(
+            exo.compute, sg(name="default")
+        )
         security_group = SecurityGroup._from_cs(exo.compute, sg())
 
         def _assert_request_ingress(request, context):
@@ -40,14 +41,18 @@ class TestComputeSecurityGroup:
                 }
             }
 
-        exo.mock_get("?command=authorizeSecurityGroupIngress", _assert_request_ingress)
+        exo.mock_get(
+            "?command=authorizeSecurityGroupIngress", _assert_request_ingress
+        )
         exo.mock_query_async_job_result({"success": True})
 
         security_group.add_rule(
             SecurityGroupRule.ingress(
                 description=rule_description,
                 security_group=security_group_default,
-                port="{}-{}".format(rule_start_port_ingress, rule_end_port_ingress),
+                port="{}-{}".format(
+                    rule_start_port_ingress, rule_end_port_ingress
+                ),
                 protocol=rule_protocol_ingress,
             )
         )
@@ -70,7 +75,9 @@ class TestComputeSecurityGroup:
                 }
             }
 
-        exo.mock_get("?command=authorizeSecurityGroupEgress", _assert_request_egress)
+        exo.mock_get(
+            "?command=authorizeSecurityGroupEgress", _assert_request_egress
+        )
         exo.mock_query_async_job_result({"success": True})
 
         security_group.add_rule(
@@ -105,7 +112,7 @@ class TestComputeSecurityGroup:
         assert security_group.id is None
 
     def test_properties(self, exo, sg):
-        security_group_default = SecurityGroup._from_cs(exo.compute, sg(name="default"))
+        SecurityGroup._from_cs(exo.compute, sg(name="default"))
         security_group = SecurityGroup._from_cs(
             exo.compute,
             sg(

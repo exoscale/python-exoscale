@@ -3,19 +3,20 @@
 
 import pytest
 from exoscale.api import ResourceNotFoundError
-from exoscale.api.iam import *
 from .conftest import _random_str
 from urllib.parse import parse_qs, urljoin, urlparse
 
 
 class TestIAM:
-    ### API key
+    # API key
 
     def test_create_api_key(self, exo, apikey):
         api_key_name = _random_str()
         api_key_operations = ["compute/listZones"]
         expected = apikey(
-            name=api_key_name, secret=_random_str(), operations=api_key_operations
+            name=api_key_name,
+            secret=_random_str(),
+            operations=api_key_operations,
         )
 
         def _assert_request(request, context):

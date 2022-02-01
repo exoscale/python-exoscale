@@ -4,8 +4,8 @@
 This submodule represents the Exoscale DNS API.
 """
 
-import attr
 from . import API, Resource, APIException, ResourceNotFoundError
+from attr import define, field
 from cs import CloudStack, CloudStackApiException
 
 _SUPPORTED_RECORD_TYPES = {
@@ -31,7 +31,7 @@ _SUPPORTED_RECORD_TYPES = {
 }
 
 
-@attr.s
+@define
 class Domain(Resource):
     """
     A DNS domain.
@@ -41,16 +41,20 @@ class Domain(Resource):
         name (str): the DNS domain name
     """
 
-    dns = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    name = attr.ib()
-    unicode_name = attr.ib(repr=False)
+    dns = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    name = field()
+    unicode_name = field(repr=False)
 
     @classmethod
     def _from_cs(cls, dns, res):
         return cls(
-            dns, res, id=res["id"], name=res["name"], unicode_name=res["unicodename"]
+            dns,
+            res,
+            id=res["id"],
+            name=res["name"],
+            unicode_name=res["unicodename"],
         )
 
     @property
@@ -67,7 +71,9 @@ class Domain(Resource):
         """
 
         try:
-            _list = self.dns.cs.listDnsDomainRecords(id=self.id, fetch_list=True)
+            _list = self.dns.cs.listDnsDomainRecords(
+                id=self.id, fetch_list=True
+            )
             for i in _list:
                 yield DomainRecord._from_cs(self.dns, domain=self, res=i)
         except CloudStackApiException as e:
@@ -125,7 +131,7 @@ class Domain(Resource):
         self._reset()
 
 
-@attr.s
+@define
 class DomainRecord(Resource):
     """
     A DNS domain record.
@@ -140,15 +146,15 @@ class DomainRecord(Resource):
         ttl (int): the DNS domain record TTL
     """
 
-    dns = attr.ib(repr=False)
-    res = attr.ib(repr=False)
-    id = attr.ib()
-    domain = attr.ib(repr=False)
-    type = attr.ib()
-    name = attr.ib(repr=False)
-    content = attr.ib(repr=False)
-    priority = attr.ib(default=None, repr=False)
-    ttl = attr.ib(default=3600, repr=False)
+    dns = field(repr=False)
+    res = field(repr=False)
+    id = field()
+    domain = field(repr=False)
+    type = field()
+    name = field(repr=False)
+    content = field(repr=False)
+    priority = field(default=None, repr=False)
+    ttl = field(default=3600, repr=False)
 
     @classmethod
     def _from_cs(cls, dns, res, domain):
@@ -205,7 +211,9 @@ class DomainRecord(Resource):
         """
 
         try:
-            self.dns.cs.deleteDnsDomainRecord(id=self.domain.id, record_id=self.id)
+            self.dns.cs.deleteDnsDomainRecord(
+                id=self.domain.id, record_id=self.id
+            )
         except CloudStackApiException as e:
             raise APIException(e.error["errortext"], e.error)
 
@@ -245,7 +253,10 @@ class DnsAPI(API):
             secret=secret,
             endpoint=endpoint,
             session=self.session,
-            headers={**self.session.headers, **{"User-Agent": self.user_agent}},
+            headers={
+                **self.session.headers,
+                **{"User-Agent": self.user_agent},
+            },
             trace=self.trace,
             fetch_result=True,
         )
@@ -256,7 +267,7 @@ class DnsAPI(API):
     def __str__(self):
         return self.__repr__()
 
-    ### Domain
+    # Domain
 
     def create_domain(self, name):
         """

@@ -4,13 +4,15 @@
 import pytest
 from .conftest import _random_str
 from datetime import datetime
-from exoscale.api.storage import *
+from exoscale.api.storage import AccessControlPolicy, Bucket, BucketFile
 
 
 class TestStorageBucketFile:
     def test_set_acl(self, exo):
         bucket = Bucket(exo.storage, {}, _random_str())
-        bucket_file = BucketFile(exo.storage, {}, path=_random_str(), bucket=bucket)
+        bucket_file = BucketFile(
+            exo.storage, {}, path=_random_str(), bucket=bucket
+        )
 
         bucket_file_acl = "public-read"
         bucket_file_acp = AccessControlPolicy(
@@ -103,15 +105,14 @@ class TestStorageBucketFile:
 
     def test_delete(self, exo):
         bucket = Bucket(exo.storage, {}, _random_str())
-        bucket_file = BucketFile(exo.storage, {}, path=_random_str(), bucket=bucket)
+        bucket_file = BucketFile(
+            exo.storage, {}, path=_random_str(), bucket=bucket
+        )
 
         exo.boto_stub.add_response(
             "delete_object",
             {},
-            {
-                "Bucket": bucket.name,
-                "Key": bucket_file.path,
-            },
+            {"Bucket": bucket.name, "Key": bucket_file.path},
         )
 
         bucket_file.delete()
@@ -136,10 +137,7 @@ class TestStorageBucketFile:
         exo.boto_stub.add_response(
             "get_object",
             {"ContentLength": len(file.read_text())},
-            {
-                "Bucket": bucket.name,
-                "Key": bucket_file.path,
-            },
+            {"Bucket": bucket.name, "Key": bucket_file.path},
         )
         assert bucket_file.size == len(file.read_text())
 
@@ -147,10 +145,7 @@ class TestStorageBucketFile:
         exo.boto_stub.add_response(
             "get_object",
             {"Metadata": bucket_file_metadata},
-            {
-                "Bucket": bucket.name,
-                "Key": bucket_file.path,
-            },
+            {"Bucket": bucket.name, "Key": bucket_file.path},
         )
         assert bucket_file.metadata == bucket_file_metadata
 
@@ -158,10 +153,7 @@ class TestStorageBucketFile:
             exo.boto_stub.add_response(
                 "get_object",
                 {"Body": f},
-                {
-                    "Bucket": bucket.name,
-                    "Key": bucket_file.path,
-                },
+                {"Bucket": bucket.name, "Key": bucket_file.path},
             )
             assert bucket_file.content == f
 
@@ -234,10 +226,7 @@ class TestStorageBucketFile:
                 },
                 "ResponseMetadata": {},
             },
-            {
-                "Bucket": bucket.name,
-                "Key": bucket_file.path,
-            },
+            {"Bucket": bucket.name, "Key": bucket_file.path},
         )
         actual_acp = bucket_file.acl
         assert actual_acp.full_control == expected_acp.full_control

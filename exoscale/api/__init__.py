@@ -7,17 +7,17 @@ Note:
 """
 
 
-import attr
 import pkg_resources
 import platform
 import requests
 import sys
+from attr import asdict, define, field
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from requests.utils import default_user_agent as requests_user_agent
 
 
-@attr.s
+@define
 class API(object):
     """
     An Exoscale API client.
@@ -33,13 +33,13 @@ class API(object):
         trace (bool): API request/response tracing flag
     """
 
-    endpoint = attr.ib()
-    key = attr.ib()
-    secret = attr.ib(repr=False)
-    trace = attr.ib(default=False, repr=False)
-    session = attr.ib(default=requests.Session(), repr=False)
-    max_retries = attr.ib(default=3, repr=False)
-    retry_backoff_factor = attr.ib(default=0.3, repr=False)
+    endpoint = field()
+    key = field()
+    secret = field(repr=False)
+    trace = field(default=False, repr=False)
+    session = field(default=requests.Session(), repr=False)
+    max_retries = field(default=3, repr=False)
+    retry_backoff_factor = field(default=0.3, repr=False)
 
     def __attrs_post_init__(self):
         # HTTP session-related settings
@@ -51,7 +51,9 @@ class API(object):
             "{python_implementation}/{python_version} "
             "{os_name}/{os_version}"
         ).format(
-            python_exoscale_version=pkg_resources.get_distribution("exoscale").version,
+            python_exoscale_version=pkg_resources.get_distribution(
+                "exoscale"
+            ).version,
             cs_version=pkg_resources.get_distribution("cs").version,
             requests_user_agent=requests_user_agent(),
             python_implementation=platform.python_implementation(),
@@ -89,7 +91,10 @@ class API(object):
                 ">>> {method} {url}".format(method=req.method, url=req.url),
                 file=sys.stderr,
             )
-            print("    headers:{headers}".format(headers=req.headers), file=sys.stderr)
+            print(
+                "    headers:{headers}".format(headers=req.headers),
+                file=sys.stderr,
+            )
             if req.body:
                 print("    body:{body}".format(body=req.body), file=sys.stderr)
 
@@ -102,47 +107,50 @@ class API(object):
                 ),
                 file=sys.stderr,
             )
-            print("    headers:{headers}".format(headers=res.headers), file=sys.stderr)
+            print(
+                "    headers:{headers}".format(headers=res.headers),
+                file=sys.stderr,
+            )
             print("    body:{body}".format(body=res.text), file=sys.stderr)
 
         return res
 
 
-@attr.s
+@define
 class Resource(object):
     """
     A resource returned by the Exoscale API.
     """
 
-    res = attr.ib(repr=False)
+    res = field(repr=False)
 
     def _reset(self):
         """
         Reset all attributes.
         """
 
-        for k, v in self.__dict__.items():
+        for k in asdict(self):
             setattr(self, k, None)
 
 
-@attr.s
+@define
 class APIException(Exception):
     """
     A generic API error.
     """
 
-    reason = attr.ib()
-    error = attr.ib(default=None, repr=False)
+    reason = field()
+    error = field(default=None, repr=False)
 
 
-@attr.s
+@define
 class RequestError(Exception):
     """
     An API request error.
     """
 
-    reason = attr.ib()
-    error = attr.ib(default=None, repr=False)
+    reason = field()
+    error = field(default=None, repr=False)
 
 
 class ResourceNotFoundError(APIException):

@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os
 import pytest
 import random
 import string
-import time
-from boto3 import s3
 from botocore.stub import Stubber
 from datetime import datetime
 from urllib.parse import urljoin
@@ -97,7 +94,7 @@ def exo():
                 **kwargs
             )
 
-        def mock_list(self, list_command, results=[]):
+        def mock_list(self, list_command, results=()):
             resources = {
                 "listAffinityGroups": {
                     "res_key": "listaffinitygroupsresponse",
@@ -162,7 +159,9 @@ def exo():
             }
 
             if list_command not in resources:
-                raise Exception("{} command not supported".format(list_command))
+                raise Exception(
+                    "{} command not supported".format(list_command)
+                )
 
             self.mock_get(
                 "?command={}".format(list_command),
@@ -188,7 +187,9 @@ def exo():
 
         def mock_get_operation(self, zone, op_id, ref_id, result=None):
             self.mocker.get(
-                "https://api-{}.exoscale.com/v2/operation/{}".format(zone, op_id),
+                "https://api-{}.exoscale.com/v2/operation/{}".format(
+                    zone, op_id
+                ),
                 json=result
                 if result
                 else {
@@ -361,7 +362,9 @@ def instance_pool(instance):
             "size": size,
             "created-at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
             "template": kwargs.get("template", {"id": _random_uuid()}),
-            "instance-type": kwargs.get("instance-type", {"id": _random_uuid()}),
+            "instance-type": kwargs.get(
+                "instance-type", {"id": _random_uuid()}
+            ),
             "instance-prefix": "pool",
             "disk-size": kwargs.get("disk-size", 10),
             "ipv6-enabled": False,
@@ -374,8 +377,13 @@ def instance_pool(instance):
                         id[:5],
                         _random_str(5),
                     ),
-                    "created-at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
-                    "manager": {"type": "instancepool", "id": kwargs.get("id", id)},
+                    "created-at": datetime.now().strftime(
+                        "%Y-%m-%dT%H:%M:%SZ"
+                    ),
+                    "manager": {
+                        "type": "instancepool",
+                        "id": kwargs.get("id", id),
+                    },
                     "state": "running",
                 }
                 for i in range(size)

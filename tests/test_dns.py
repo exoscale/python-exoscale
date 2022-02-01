@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from exoscale.api.dns import *
+from exoscale.api.dns import ResourceNotFoundError
 from .conftest import _random_str
 from urllib.parse import parse_qs, urlparse
 
 
 class TestDNS:
-    ### Domain
+    # Domain
 
     def test_create_domain(self, exo, domain):
         domain_name = _random_str() + ".com"
@@ -49,7 +49,9 @@ class TestDNS:
         assert actual.id == expected["id"]
 
         with pytest.raises(ResourceNotFoundError) as excinfo:
-            exo.mock_get("?command=listDnsDomains", {"listdnsdomainsreponse": {}})
+            exo.mock_get(
+                "?command=listDnsDomains", {"listdnsdomainsreponse": {}}
+            )
             actual = exo.dns.get_domain(name="lolnope")
             assert actual is None
         assert excinfo.type == ResourceNotFoundError

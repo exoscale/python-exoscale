@@ -12,7 +12,31 @@ on:
     - 'v**' # Don't run CI tests on release tags
 
 jobs:
-  CI:
+  tests:
+    name: Tests on ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.7', '3.8', '3.9', '3.10']
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: "Install dependencies"
+      run: |
+        python -VV
+        python -m site
+        python -m pip install -U pip wheel setuptools
+        python -m pip install -U tox tox-gh-actions
+    - name: Tests
+      run: tox
+      env:
+        EXOSCALE_API_KEY: ${{ secrets.EXOSCALE_API_KEY }}
+        EXOSCALE_API_SECRET: ${{ secrets.EXOSCALE_API_SECRET }}
+  lint:
+    name: Linting
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -29,12 +53,3 @@ jobs:
       run: |
         black --check --diff .
         flake8 .
-    - name: Tests
-      run: |
-        pip install -r requirements.dev.txt
-        pip install -e .
-        pytest -x -s -vvv -k 'not runstatus' tests/
-        # Runstatus-related tests disabled until api.runstatus.com supports IAM API keys
-      env:
-        EXOSCALE_API_KEY: ${{ secrets.EXOSCALE_API_KEY }}
-        EXOSCALE_API_SECRET: ${{ secrets.EXOSCALE_API_SECRET }}

@@ -1,12 +1,10 @@
 from setuptools import setup, find_packages
 
-INSTALL_REQUIRES = []
 with open("requirements.txt", "r", encoding="utf-8") as f:
-    INSTALL_REQUIRES = list(i.rstrip() for i in f.readlines())
+    INSTALL_REQUIRES = [i.rstrip() for i in f.readlines()]
 
-EXTRA_REQUIRE = []
 with open("requirements.dev.txt", "r", encoding="utf-8") as f:
-    EXTRA_REQUIRE = list(i.rstrip() for i in f.readlines())
+    EXTRAS_REQUIRE = {"tests": [i.rstrip() for i in f.readlines()]}
 
 with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
@@ -35,7 +33,7 @@ setup(
     ],
     python_requires=">=3.6",
     install_requires=INSTALL_REQUIRES,
-    extra_require=EXTRA_REQUIRE,
+    extras_require=EXTRAS_REQUIRE,
     tests_require=["pytest>=5.0.0"],
     include_package_data=True,
 )

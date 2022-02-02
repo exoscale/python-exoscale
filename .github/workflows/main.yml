@@ -12,8 +12,8 @@ on:
     - 'v**' # Don't run CI tests on release tags
 
 jobs:
-  CI:
-    name: CI on ${{ matrix.python-version }}
+  tests:
+    name: Tests on ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -29,13 +29,27 @@ jobs:
         python -VV
         python -m site
         python -m pip install -U pip wheel setuptools
-        python -m pip install -U black flake8 flake8-import-order flake8-bugbear tox tox-gh-actions
-    - name: Lint
-      run: |
-        black --check --diff .
-        flake8 .
+        python -m pip install -U tox tox-gh-actions
     - name: Tests
       run: tox
       env:
         EXOSCALE_API_KEY: ${{ secrets.EXOSCALE_API_KEY }}
         EXOSCALE_API_SECRET: ${{ secrets.EXOSCALE_API_SECRET }}
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: "Install dependencies"
+      run: |
+        python -VV
+        python -m site
+        python -m pip install -U pip wheel setuptools
+        python -m pip install -U black flake8 flake8-import-order flake8-bugbear
+    - name: Lint
+      run: |
+        black --check --diff .
+        flake8 .

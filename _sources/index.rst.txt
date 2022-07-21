@@ -20,6 +20,15 @@ with high-level Python bindings.
 Changelog
 ---------
 
+0.7.2 (2022-07-21)
+~~~~~~~~~~~~~~~~~~
+
+Fixes
+*****
+
+- compute: fix `ssh_key` format in `create_instance_pool()` method
+
+
 0.7.1 (2021-10-18)
 ~~~~~~~~~~~~~~~~~~
 

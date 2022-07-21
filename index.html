@@ -121,16 +121,25 @@ with high-level Python bindings.</p>
 <section id="changelog">
 <h2>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading"></a></h2>
 <section id="id1">
-<h3>0.7.1 (2021-10-18)<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<h3>0.7.2 (2022-07-21)<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <section id="fixes">
 <h4>Fixes<a class="headerlink" href="#fixes" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p>compute: fix <cite>ssh_key</cite> format in <cite>create_instance_pool()</cite> method</p></li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h3>0.7.1 (2021-10-18)<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<section id="id3">
+<h4>Fixes<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>compute: fix <cite>instance_private_networks</cite> arg check in <cite>create_instance_pool()</cite> method</p></li>
 </ul>
 </section>
 </section>
-<section id="id2">
-<h3>0.7.0 (2021-05-11)<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<section id="id4">
+<h3>0.7.0 (2021-05-11)<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
 <section id="features">
 <h4>Features<a class="headerlink" href="#features" title="Permalink to this heading"></a></h4>
 <ul class="simple">
@@ -152,10 +161,10 @@ been removed</p></li>
 </ul>
 </section>
 </section>
-<section id="id3">
-<h3>0.6.0 (2021-04-21)<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
-<section id="id4">
-<h4>Features<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h4>
+<section id="id5">
+<h3>0.6.0 (2021-04-21)<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<section id="id6">
+<h4>Features<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>compute: the <code class="docutils literal notranslate"><span class="pre">SecurityGroup.update()</span></code> now updates the Compute instance Security
 Groups membership live without requiring to stop the instance</p></li>
@@ -164,74 +173,74 @@ Groups membership live without requiring to stop the instance</p></li>
 <li><p>dns: <code class="docutils literal notranslate"><span class="pre">create_dns_record()</span></code> now returns the created record</p></li>
 </ul>
 </section>
-<section id="id5">
-<h4>Fixes<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h4>
+<section id="id7">
+<h4>Fixes<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>compute: don’t crash when an Instance Template doesn’t have details metadata</p></li>
 </ul>
 </section>
 </section>
-<section id="id6">
-<h3>0.5.2 (2021-04-13)<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
-<section id="id7">
-<h4>Fixes<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h4>
+<section id="id8">
+<h3>0.5.2 (2021-04-13)<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
+<section id="id9">
+<h4>Fixes<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>compute: add missing <cite>bootmode</cite> parameter to <cite>register_instance_template()</cite> (#32)</p></li>
 </ul>
 </section>
 </section>
-<section id="id8">
-<h3>0.5.1 (2021-03-16)<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
-<section id="id9">
-<h4>Fixes<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h4>
+<section id="id10">
+<h3>0.5.1 (2021-03-16)<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h3>
+<section id="id11">
+<h4>Fixes<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>Exclude tests from Python packaging</p></li>
 </ul>
 </section>
 </section>
-<section id="id10">
-<h3>0.5.0 (2021-03-15)<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h3>
-<section id="id11">
-<h4>Features<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h4>
+<section id="id12">
+<h3>0.5.0 (2021-03-15)<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h3>
+<section id="id13">
+<h4>Features<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>compute: add Anti-Affinity Groups support to Instance Pools (#27)</p></li>
 </ul>
 </section>
-<section id="id12">
-<h4>Fixes<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h4>
+<section id="id14">
+<h4>Fixes<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>Rely on pathlib for home lookup (#29)</p></li>
 <li><p>compute: don’t crash when listing instances generated from templates (#28)</p></li>
 </ul>
 </section>
 </section>
-<section id="id13">
-<h3>0.4.0 (2020-12-07)<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h3>
-<section id="id14">
-<h4>Features<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h4>
+<section id="id15">
+<h3>0.4.0 (2020-12-07)<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h3>
+<section id="id16">
+<h4>Features<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>compute: add support for Network Load Balancers</p></li>
 <li><p>compute: add support for Elastic IP HTTPS health checking</p></li>
 <li><p>compute: add support for snapshot exporting</p></li>
 </ul>
 </section>
-<section id="id15">
-<h4>Changes<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h4>
+<section id="id17">
+<h4>Changes<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>compute: <cite>get_instance_pool()</cite> arguments order</p></li>
 </ul>
 </section>
 </section>
-<section id="id16">
-<h3>0.3.0 (2020-01-22)<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h3>
+<section id="id18">
+<h3>0.3.0 (2020-01-22)<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h3>
 <section id="new">
 <h4>New<a class="headerlink" href="#new" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>Add support for IAM (<code class="docutils literal notranslate"><span class="pre">iam</span></code> submodule)</p></li>
 </ul>
 </section>
-<section id="id17">
-<h4>Features<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h4>
+<section id="id19">
+<h4>Features<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>Allow HTTP session retry policy to be user configurable</p></li>
 <li><p>compute: add support for Instance Pools</p></li>
@@ -239,30 +248,30 @@ Groups membership live without requiring to stop the instance</p></li>
 <li><p>compute: add Instance <code class="docutils literal notranslate"><span class="pre">creation_date</span></code> attribute</p></li>
 </ul>
 </section>
-<section id="id18">
-<h4>Fixes<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h4>
+<section id="id20">
+<h4>Fixes<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>storage: fix failing integration tests</p></li>
 <li><p>storage: honor global client settings</p></li>
 </ul>
 </section>
 </section>
-<section id="id19">
-<h3>0.2.0 (2019-10-09)<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h3>
-<section id="id20">
-<h4>Features<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h4>
+<section id="id21">
+<h3>0.2.0 (2019-10-09)<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h3>
+<section id="id22">
+<h4>Features<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>storage: add Bucket/BucketFile <code class="docutils literal notranslate"><span class="pre">url</span></code> attribute</p></li>
 </ul>
 </section>
-<section id="id21">
-<h4>Fixes<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h4>
+<section id="id23">
+<h4>Fixes<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>compute: fix unhandled exception in <code class="docutils literal notranslate"><span class="pre">get_*</span></code> functions</p></li>
 </ul>
 </section>
-<section id="id22">
-<h4>Changes<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h4>
+<section id="id24">
+<h4>Changes<a class="headerlink" href="#id24" title="Permalink to this heading"></a></h4>
 <ul class="simple">
 <li><p>compute: <code class="docutils literal notranslate"><span class="pre">create_instance()</span></code> function <em>root_disk_size</em> parameter has been renamed
 to <em>volume_size</em></p></li>
@@ -277,8 +286,8 @@ to <em>volume_size</em></p></li>
 </ul>
 </section>
 </section>
-<section id="id23">
-<h3>0.1.1 (2019-09-12)<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h3>
+<section id="id25">
+<h3>0.1.1 (2019-09-12)<a class="headerlink" href="#id25" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Initial release</p></li>
 </ul>

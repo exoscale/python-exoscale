@@ -669,7 +669,7 @@ class TestCompute:
                 "name": instance_pool_name,
                 "private_networks": [{"id": private_network["id"]}],
                 "security-groups": [{"id": security_group["id"]}],
-                "ssh-key": ssh_key["name"],
+                "ssh-key": {"name": ssh_key["name"]},
                 "template": {"id": instance_template["id"]},
                 "user-data": instance_pool_userdata_encoded,
             }
@@ -691,7 +691,7 @@ class TestCompute:
             assert body["private-networks"][0]["id"] == private_network["id"]
             assert body["security-groups"][0]["id"] == security_group["id"]
             assert body["size"] == instance_pool_size
-            assert body["ssh-key"] == ssh_key["name"]
+            assert body["ssh-key"]["name"] == ssh_key["name"]
             assert body["template"]["id"] == instance_template["id"]
             assert body["user-data"] == instance_pool_userdata_encoded
 

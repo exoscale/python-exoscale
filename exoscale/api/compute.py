@@ -1235,7 +1235,7 @@ class InstancePool(Resource):
             instance_prefix=res["instance-prefix"],
             instance_ssh_key=None
             if "ssh-key" not in res
-            else compute.get_ssh_key(res["ssh-key"]),
+            else compute.get_ssh_key(res["ssh-key"]["name"]),
             instance_template=compute.get_instance_template(
                 zone, id=res["template"]["id"]
             ),
@@ -3138,6 +3138,9 @@ class ComputeAPI(API):
 
         data = {}
 
+        if description:
+            data["description"] = description
+
         if instance_anti_affinity_groups:
             data["anti-affinity-groups"] = [
                 {"id": i.id} for i in instance_anti_affinity_groups
@@ -3157,14 +3160,13 @@ class ComputeAPI(API):
             ]
 
         if instance_ssh_key:
-            data["ssh-key"] = instance_ssh_key.name
+            data["ssh-key"] = {"name": instance_ssh_key.name}
 
         if instance_deploy_target:
             data["deploy-target"] = {"id": instance_deploy_target.id}
 
-        instance_user_data_content = None
-        if instance_user_data is not None:
-            instance_user_data_content = b64encode(
+        if instance_user_data:
+            data["user-data"] = b64encode(
                 bytes(instance_user_data, encoding="utf-8")
             ).decode("ascii")
 
@@ -3173,7 +3175,6 @@ class ComputeAPI(API):
             "/instance-pool",
             zone=zone.name,
             json={
-                "description": description,
                 "disk-size": instance_volume_size,
                 "instance-prefix": instance_prefix,
                 "instance-type": {"id": instance_type.id},
@@ -3181,7 +3182,6 @@ class ComputeAPI(API):
                 "name": name,
                 "size": size,
                 "template": {"id": instance_template.id},
-                "user-data": instance_user_data_content,
                 **data,
             },
         )

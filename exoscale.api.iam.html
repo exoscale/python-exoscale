@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>exoscale.api.iam module &mdash; python-exoscale 2022-07-21 documentation</title>
+      <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="exoscale.api.polling module" href="exoscale.api.polling.html" />
+    <link rel="prev" title="exoscale.api.dns module" href="exoscale.api.dns.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #da291c" >
+            <a href="index.html">
+            <img src="_static/logo-exoscale-white-201711.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2022-07-21
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="exoscale.html">exoscale package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="exoscale.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="exoscale.api.html">exoscale.api package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="exoscale.html#module-exoscale">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #da291c" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">python-exoscale</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">API</a> &raquo;</li>
+          <li><a href="exoscale.html">exoscale package</a> &raquo;</li>
+          <li><a href="exoscale.api.html">exoscale.api package</a> &raquo;</li>
+      <li>exoscale.api.iam module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/exoscale.api.iam.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-exoscale.api.iam">
+<span id="exoscale-api-iam-module"></span><h1>exoscale.api.iam module<a class="headerlink" href="#module-exoscale.api.iam" title="Permalink to this heading"></a></h1>
+<p>This submodule represents the Exoscale IAM API.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="exoscale.api.iam.APIKey">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exoscale.api.iam.</span></span><span class="sig-name descname"><span class="pre">APIKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">res</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.iam.APIKey" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="exoscale.api.html#exoscale.api.Resource" title="exoscale.api.Resource"><code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code></a></p>
+<p>An API key.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.APIKey.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#exoscale.api.iam.APIKey.name" title="Permalink to this definition"></a></dt>
+<dd><p>the API key display name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.APIKey.key">
+<span class="sig-name descname"><span class="pre">key</span></span><a class="headerlink" href="#exoscale.api.iam.APIKey.key" title="Permalink to this definition"></a></dt>
+<dd><p>the API key unique identifier</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.APIKey.type">
+<span class="sig-name descname"><span class="pre">type</span></span><a class="headerlink" href="#exoscale.api.iam.APIKey.type" title="Permalink to this definition"></a></dt>
+<dd><p>the API key type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.APIKey.secret">
+<span class="sig-name descname"><span class="pre">secret</span></span><a class="headerlink" href="#exoscale.api.iam.APIKey.secret" title="Permalink to this definition"></a></dt>
+<dd><p>the API key secret</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.APIKey.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><a class="headerlink" href="#exoscale.api.iam.APIKey.operations" title="Permalink to this definition"></a></dt>
+<dd><p>a list of allowed API operations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.APIKey.iam">
+<span class="sig-name descname"><span class="pre">iam</span></span><a class="headerlink" href="#exoscale.api.iam.APIKey.iam" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">key</span></span><a class="headerlink" href="#id0" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#id1" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">operations</span></span><a class="headerlink" href="#id2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.APIKey.res">
+<span class="sig-name descname"><span class="pre">res</span></span><a class="headerlink" href="#exoscale.api.iam.APIKey.res" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.iam.APIKey.revoke">
+<span class="sig-name descname"><span class="pre">revoke</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.iam.APIKey.revoke" title="Permalink to this definition"></a></dt>
+<dd><p>Revoke the API key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">secret</span></span><a class="headerlink" href="#id3" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">type</span></span><a class="headerlink" href="#id4" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="exoscale.api.iam.IamAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exoscale.api.iam.</span></span><span class="sig-name descname"><span class="pre">IamAPI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://api.exoscale.com/v1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_retries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.iam.IamAPI" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="exoscale.api.html#exoscale.api.API" title="exoscale.api.API"><code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code></a></p>
+<p>An Exoscale IAM API client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – the API key unique identifier</p></li>
+<li><p><strong>secret</strong> (<em>str</em>) – the IAM API secret</p></li>
+<li><p><strong>endpoint</strong> (<em>str</em>) – the IAM API endpoint</p></li>
+<li><p><strong>max_retries</strong> (<em>int</em>) – the API HTTP session retry policy number of retries to allow</p></li>
+<li><p><strong>trace</strong> (<em>bool</em>) – API request/response tracing flag</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.iam.IamAPI.create_api_key">
+<span class="sig-name descname"><span class="pre">create_api_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.iam.IamAPI.create_api_key" title="Permalink to this definition"></a></dt>
+<dd><p>Create an API key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – the API key name</p></li>
+<li><p><strong>operations</strong> (<em>str</em>) – a comma-separated list of allowed API operations</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the API key created</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#exoscale.api.iam.APIKey" title="exoscale.api.iam.APIKey">APIKey</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.IamAPI.endpoint">
+<span class="sig-name descname"><span class="pre">endpoint</span></span><a class="headerlink" href="#exoscale.api.iam.IamAPI.endpoint" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.iam.IamAPI.get_api_key">
+<span class="sig-name descname"><span class="pre">get_api_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.iam.IamAPI.get_api_key" title="Permalink to this definition"></a></dt>
+<dd><p>Get an API key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – the API key unique identifier</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an API key</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#exoscale.api.iam.APIKey" title="exoscale.api.iam.APIKey">APIKey</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.IamAPI.key">
+<span class="sig-name descname"><span class="pre">key</span></span><a class="headerlink" href="#exoscale.api.iam.IamAPI.key" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.iam.IamAPI.list_api_key_operations">
+<span class="sig-name descname"><span class="pre">list_api_key_operations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.iam.IamAPI.list_api_key_operations" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><p>list all supported operations of an API key.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of operations for the current API key</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.iam.IamAPI.list_api_keys">
+<span class="sig-name descname"><span class="pre">list_api_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.iam.IamAPI.list_api_keys" title="Permalink to this definition"></a></dt>
+<dd><p>List API keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Yields<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>APIKey</em> – the next API key</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.IamAPI.max_retries">
+<span class="sig-name descname"><span class="pre">max_retries</span></span><a class="headerlink" href="#exoscale.api.iam.IamAPI.max_retries" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.IamAPI.retry_backoff_factor">
+<span class="sig-name descname"><span class="pre">retry_backoff_factor</span></span><a class="headerlink" href="#exoscale.api.iam.IamAPI.retry_backoff_factor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.IamAPI.secret">
+<span class="sig-name descname"><span class="pre">secret</span></span><a class="headerlink" href="#exoscale.api.iam.IamAPI.secret" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.IamAPI.session">
+<span class="sig-name descname"><span class="pre">session</span></span><a class="headerlink" href="#exoscale.api.iam.IamAPI.session" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exoscale.api.iam.IamAPI.trace">
+<span class="sig-name descname"><span class="pre">trace</span></span><a class="headerlink" href="#exoscale.api.iam.IamAPI.trace" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="exoscale.api.dns.html" class="btn btn-neutral float-left" title="exoscale.api.dns module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="exoscale.api.polling.html" class="btn btn-neutral float-right" title="exoscale.api.polling module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2022, The Exoscale team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

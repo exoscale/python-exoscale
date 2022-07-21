@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration &mdash; python-exoscale 2022-07-21 documentation</title>
+      <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="python-exoscale library documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #da291c" >
+            <a href="index.html">
+            <img src="_static/logo-exoscale-white-201711.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2022-07-21
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#class-parameters">Class parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-file">Configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment variables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #da291c" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">python-exoscale</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/configuration.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h1>
+<p>The python-exoscale library can be configured using class parameters, a
+configuration file or environment variables.</p>
+<section id="class-parameters">
+<h2>Class parameters<a class="headerlink" href="#class-parameters" title="Permalink to this heading"></a></h2>
+<p>See the <code class="docutils literal notranslate"><span class="pre">Exoscale</span></code> <a class="reference external" href="/exoscale.html#exoscale.Exoscale">class documentation</a> for configuration-related
+parameters.</p>
+</section>
+<section id="configuration-file">
+<h2>Configuration file<a class="headerlink" href="#configuration-file" title="Permalink to this heading"></a></h2>
+<p>The configuration file format is <a class="reference external" href="https://github.com/toml-lang/toml">TOML</a>, the expected structure is:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="n">default_profile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;alice&quot;</span><span class="w"></span>
+
+<span class="k">[[profiles]]</span><span class="w"></span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;alice&quot;</span><span class="w"></span>
+<span class="n">api_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;EXOa1b2c3...&quot;</span><span class="w"></span>
+<span class="n">api_secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;...&quot;</span><span class="w"></span>
+
+<span class="k">[[profiles]]</span><span class="w"></span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bob&quot;</span><span class="w"></span>
+<span class="n">api_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;EXOd5e6f7...&quot;</span><span class="w"></span>
+<span class="n">api_secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;...&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">[[profiles]]</span></code> entry is a dictionary supporting the following key/values
+(keys marked with a “*” are required):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>*: the name of the profile</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">api_key</span></code>*: the profile Exoscale client API key</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">api_secret</span></code>*: the profile Exoscale client API secret</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">storage_zone</span></code>: an Exoscale Object Storage zone (required for using the
+Storage API)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compute_api_endpoint</span></code>: an alternative Exoscale Compute API endpoint</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dns_api_endpoint</span></code>: an alternative Exoscale DNS API endpoint</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">storage_api_endpoint</span></code>: an alternative Exoscale Storage API endpoint</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">runstatus_api_endpoint</span></code>: an alternative Exoscale Runstatus API endpoint</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iam_api_endpoint</span></code>: an alternative Exoscale IAM API endpoint</p></li>
+</ul>
+</section>
+<section id="environment-variables">
+<h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this heading"></a></h2>
+<p>The following environment variables can be used in place of a configuration
+file:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EXOSCALE_API_KEY</span></code>: a Exoscale client API key</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EXOSCALE_API_SECRET</span></code>: a Exoscale client API secret</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EXOSCALE_COMPUTE_API_ENDPOINT</span></code>: an alternative Exoscale Compute API endpoint</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EXOSCALE_DNS_API_ENDPOINT</span></code>: an alternative Exoscale DNS API endpoint</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EXOSCALE_RUNSTATUS_API_ENDPOINT</span></code>: an alternative Exoscale Runstatus API
+endpoint</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EXOSCALE_IAM_API_ENDPOINT</span></code>: an alternative Exoscale IAM API endpoint</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EXOSCALE_STORAGE_API_ENDPOINT</span></code>: an alternative Exoscale Storage API endpoint</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EXOSCALE_STORAGE_ZONE</span></code>: an Exoscale Storage zone</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EXOSCALE_CONFIG_FILE</span></code>: an alternative configuration file location (default:
+<code class="docutils literal notranslate"><span class="pre">$HOME/.exoscale/config.toml</span></code>)</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="python-exoscale library documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2022, The Exoscale team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>exoscale.api.polling module &mdash; python-exoscale 2022-07-21 documentation</title>
+      <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="exoscale.api.runstatus module" href="exoscale.api.runstatus.html" />
+    <link rel="prev" title="exoscale.api.iam module" href="exoscale.api.iam.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #da291c" >
+            <a href="index.html">
+            <img src="_static/logo-exoscale-white-201711.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2022-07-21
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="exoscale.html">exoscale package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="exoscale.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="exoscale.api.html">exoscale.api package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="exoscale.html#module-exoscale">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #da291c" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">python-exoscale</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">API</a> &raquo;</li>
+          <li><a href="exoscale.html">exoscale package</a> &raquo;</li>
+          <li><a href="exoscale.api.html">exoscale.api package</a> &raquo;</li>
+      <li>exoscale.api.polling module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/exoscale.api.polling.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-exoscale.api.polling">
+<span id="exoscale-api-polling-module"></span><h1>exoscale.api.polling module<a class="headerlink" href="#module-exoscale.api.polling" title="Permalink to this heading"></a></h1>
+<p>From <a class="reference external" href="https://github.com/justiniso/polling">https://github.com/justiniso/polling</a></p>
+<p>The MIT License (MIT)</p>
+<p>Copyright (c) 2015 Justin Iso</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="exoscale.api.polling.MaxCallException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exoscale.api.polling.</span></span><span class="sig-name descname"><span class="pre">MaxCallException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.polling.MaxCallException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#exoscale.api.polling.PollingException" title="exoscale.api.polling.PollingException"><code class="xref py py-class docutils literal notranslate"><span class="pre">PollingException</span></code></a></p>
+<p>Exception raised if maximum number of iterations is exceeded</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="exoscale.api.polling.PollingException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exoscale.api.polling.</span></span><span class="sig-name descname"><span class="pre">PollingException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.polling.PollingException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Base exception that stores all return values of attempted polls</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="exoscale.api.polling.TimeoutException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exoscale.api.polling.</span></span><span class="sig-name descname"><span class="pre">TimeoutException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.polling.TimeoutException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#exoscale.api.polling.PollingException" title="exoscale.api.polling.PollingException"><code class="xref py py-class docutils literal notranslate"><span class="pre">PollingException</span></code></a></p>
+<p>Exception raised if polling function times out</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="exoscale.api.polling.is_truthy">
+<span class="sig-prename descclassname"><span class="pre">exoscale.api.polling.</span></span><span class="sig-name descname"><span class="pre">is_truthy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.polling.is_truthy" title="Permalink to this definition"></a></dt>
+<dd><p>Use this function to test if a return value is truthy</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="exoscale.api.polling.poll">
+<span class="sig-prename descclassname"><span class="pre">exoscale.api.polling.</span></span><span class="sig-name descname"><span class="pre">poll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_tries=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_success=&lt;function</span> <span class="pre">is_truthy&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_function=&lt;function</span> <span class="pre">step_constant&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_exceptions=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poll_forever=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect_values=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.polling.poll" title="Permalink to this definition"></a></dt>
+<dd><p>Poll by calling a target function until a certain condition is met. You must specify at least a target
+function to be called and the step – base wait time between each function call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>step</strong> – Step defines the amount of time to wait (in seconds)</p></li>
+<li><p><strong>args</strong> – Arguments to be passed to the target function</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Keyword arguments to be passed to the target function</p></li>
+<li><p><strong>timeout</strong> – The target function will be called until the time elapsed is greater than the maximum timeout</p></li>
+</ul>
+</dd>
+</dl>
+<p>(in seconds). NOTE that the actual execution time of the function <em>can</em> exceed the time specified in the timeout.
+For instance, if the target function takes 10 seconds to execute and the timeout is 21 seconds, the polling
+function will take a total of 30 seconds (two iterations of the target –20s which is less than the timeout–21s,
+and a final iteration)
+:param max_tries: Maximum number of times the target function will be called before failing
+:param check_success: A callback function that accepts the return value of the target function. It should
+return true if you want the polling function to stop and return this value. It should return false if you want it
+to continue executing. The default is a callback that tests for truthiness (anything not False, 0, or empty
+collection).
+:param step_function: A callback function that accepts each iteration’s “step.” By default, this is constant,
+but you can also pass a function that will increase or decrease the step. As an example, you can increase the wait
+time between calling the target function by 10 seconds every iteration until the step is 100 seconds–at which
+point it should remain constant at 100 seconds</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">my_step_function</span><span class="p">(</span><span class="n">step</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">step</span> <span class="o">+=</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ignore_exceptions</strong> (<em>tuple</em>) – You can specify a tuple of exceptions that should be caught and ignored on every</p>
+</dd>
+</dl>
+<p>iteration. If the target function raises one of these exceptions, it will be caught and the exception
+instance will be pushed to the queue of values collected during polling. Any other exceptions raised will be
+raised as normal.
+:param poll_forever: If set to true, this function will retry until an exception is raised or the target’s
+return value satisfies the check_success function. If this is not set, then a timeout or a max_tries must be set.
+:type collect_values: Queue
+:param collect_values: By default, polling will create a new Queue to store all of the target’s return values.
+Optionally, you can specify your own queue to collect these values for access to it outside of function scope.
+:return: Polling will return first value from the target function that meets the condions of the check_success
+callback. By default, this will be the first value that is not None, 0, False, ‘’, or an empty collection.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="exoscale.api.polling.step_constant">
+<span class="sig-prename descclassname"><span class="pre">exoscale.api.polling.</span></span><span class="sig-name descname"><span class="pre">step_constant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.polling.step_constant" title="Permalink to this definition"></a></dt>
+<dd><p>Use this function when you want the step to remain fixed in every iteration (typically good for
+instances when you know approximately how long the function should poll for)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="exoscale.api.polling.step_linear_double">
+<span class="sig-prename descclassname"><span class="pre">exoscale.api.polling.</span></span><span class="sig-name descname"><span class="pre">step_linear_double</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.polling.step_linear_double" title="Permalink to this definition"></a></dt>
+<dd><p>Use this function when you want the step to double each iteration (e.g. like the way ArrayList works in
+Java). Note that this can result in very long poll times after a few iterations</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="exoscale.api.iam.html" class="btn btn-neutral float-left" title="exoscale.api.iam module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="exoscale.api.runstatus.html" class="btn btn-neutral float-right" title="exoscale.api.runstatus module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2022, The Exoscale team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

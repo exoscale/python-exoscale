@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; python-exoscale 2022-07-21 documentation</title>
+      <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="modules.html" />
+    <link rel="prev" title="Configuration" href="configuration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #da291c" >
+            <a href="index.html">
+            <img src="_static/logo-exoscale-white-201711.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2022-07-21
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#compute-api">Compute API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dns-api">DNS API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#storage-api">Storage API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#runstatus-api">Runstatus API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #da291c" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">python-exoscale</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
+<p>Here are some practical library usage examples.</p>
+<section id="compute-api">
+<h2>Compute API<a class="headerlink" href="#compute-api" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">exoscale</span>
+
+<span class="n">exo</span> <span class="o">=</span> <span class="n">exoscale</span><span class="o">.</span><span class="n">Exoscale</span><span class="p">()</span>
+
+<span class="n">zone_gva2</span> <span class="o">=</span> <span class="n">exo</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">get_zone</span><span class="p">(</span><span class="s2">&quot;ch-gva-2&quot;</span><span class="p">)</span>
+
+<span class="n">security_group_web</span> <span class="o">=</span> <span class="n">exo</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">create_security_group</span><span class="p">(</span><span class="s2">&quot;web&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="n">exoscale</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">SecurityGroupRule</span><span class="o">.</span><span class="n">ingress</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;HTTP&quot;</span><span class="p">,</span>
+        <span class="n">network_cidr</span><span class="o">=</span><span class="s2">&quot;0.0.0.0/0&quot;</span><span class="p">,</span>
+        <span class="n">port</span><span class="o">=</span><span class="s2">&quot;80&quot;</span><span class="p">,</span>
+        <span class="n">protocol</span><span class="o">=</span><span class="s2">&quot;tcp&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">exoscale</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">SecurityGroupRule</span><span class="o">.</span><span class="n">ingress</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;HTTPS&quot;</span><span class="p">,</span>
+        <span class="n">network_cidr</span><span class="o">=</span><span class="s2">&quot;0.0.0.0/0&quot;</span><span class="p">,</span>
+        <span class="n">port</span><span class="o">=</span><span class="s2">&quot;443&quot;</span><span class="p">,</span>
+        <span class="n">protocol</span><span class="o">=</span><span class="s2">&quot;tcp&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">]:</span>
+    <span class="n">security_group_web</span><span class="o">.</span><span class="n">add_rule</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+
+<span class="n">elastic_ip</span> <span class="o">=</span> <span class="n">exo</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">create_elastic_ip</span><span class="p">(</span><span class="n">zone_gva2</span><span class="p">)</span>
+
+<span class="n">instance</span> <span class="o">=</span> <span class="n">exo</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">create_instance</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;web1&quot;</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="n">zone_gva2</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">exo</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">get_instance_type</span><span class="p">(</span><span class="s2">&quot;medium&quot;</span><span class="p">),</span>
+    <span class="n">template</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span>
+        <span class="n">exo</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">list_instance_templates</span><span class="p">(</span>
+            <span class="n">zone_gva2</span><span class="p">,</span>
+            <span class="s2">&quot;Linux Ubuntu 18.04 LTS 64-bit&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">volume_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">security_groups</span><span class="o">=</span><span class="p">[</span><span class="n">security_group_web</span><span class="p">],</span>
+    <span class="n">user_data</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;#cloud-config</span>
+<span class="s2">package_upgrade: true</span>
+<span class="s2">packages:</span>
+<span class="s2">- nginx</span>
+<span class="s2">- php7.2-fpm</span>
+<span class="s2">write_files:</span>
+<span class="s2">- path: /etc/netplan/51-eip.yaml</span>
+<span class="s2">  content: |</span>
+<span class="s2">    network:</span>
+<span class="s2">      version: 2</span>
+<span class="s2">      renderer: networkd</span>
+<span class="s2">      ethernets:</span>
+<span class="s2">        lo:</span>
+<span class="s2">          match:</span>
+<span class="s2">            name: lo</span>
+<span class="s2">          addresses:</span>
+<span class="s2">            - </span><span class="si">{eip}</span><span class="s2">/32</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">eip</span><span class="o">=</span><span class="n">elastic_ip</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">instance</span><span class="o">.</span><span class="n">attach_elastic_ip</span><span class="p">(</span><span class="n">elastic_ip</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">exo</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">list_instances</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2"> </span><span class="si">{zone}</span><span class="s2"> </span><span class="si">{ip}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">zone</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">zone</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">ip</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">ipv4_address</span><span class="p">,</span>
+    <span class="p">))</span>
+
+<span class="c1"># ...</span>
+
+<span class="n">instance</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<span class="n">elastic_ip</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<span class="n">security_group</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="dns-api">
+<h2>DNS API<a class="headerlink" href="#dns-api" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">exoscale</span>
+
+<span class="n">domain</span> <span class="o">=</span> <span class="n">exo</span><span class="o">.</span><span class="n">dns</span><span class="o">.</span><span class="n">create_domain</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;unicorns.net&quot;</span><span class="p">)</span>
+<span class="n">domain</span><span class="o">.</span><span class="n">add_record</span><span class="p">(</span><span class="s2">&quot;srv1&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;1.2.3.4&quot;</span><span class="p">)</span>
+<span class="n">domain</span><span class="o">.</span><span class="n">add_record</span><span class="p">(</span><span class="s2">&quot;www&quot;</span><span class="p">,</span> <span class="s2">&quot;CNAME&quot;</span><span class="p">,</span> <span class="s2">&quot;srv1.</span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="p">(</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">domain</span><span class="o">.</span><span class="n">records</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;SOA&quot;</span><span class="p">,</span> <span class="s2">&quot;NS&quot;</span><span class="p">}):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="storage-api">
+<h2>Storage API<a class="headerlink" href="#storage-api" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">exoscale</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="n">exo</span> <span class="o">=</span> <span class="n">exoscale</span><span class="o">.</span><span class="n">Exoscale</span><span class="p">()</span>
+
+<span class="n">backups_bucket</span> <span class="o">=</span> <span class="n">exo</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s2">&quot;backups&quot;</span><span class="p">,</span> <span class="n">zone</span><span class="o">=</span><span class="s2">&quot;ch-gva-2&quot;</span><span class="p">)</span>
+
+<span class="n">backups</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/tmp/backups&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">backups</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+    <span class="n">backups_bucket</span><span class="o">.</span><span class="n">put_file</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+
+<span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">backups_bucket</span><span class="o">.</span><span class="n">list_files</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">today</span> <span class="o">-</span> <span class="n">f</span><span class="o">.</span><span class="n">last_modification_date</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">365</span><span class="p">):</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="runstatus-api">
+<h2>Runstatus API<a class="headerlink" href="#runstatus-api" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">exoscale</span>
+
+<span class="n">exo</span> <span class="o">=</span> <span class="n">exoscale</span><span class="o">.</span><span class="n">Exoscale</span><span class="p">()</span>
+
+<span class="n">page</span> <span class="o">=</span> <span class="n">exo</span><span class="o">.</span><span class="n">runstatus</span><span class="o">.</span><span class="n">create_page</span><span class="p">(</span><span class="s2">&quot;unicorns-net&quot;</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Unicorns Networks&quot;</span><span class="p">,</span> <span class="n">custom_domain</span><span class="o">=</span><span class="s2">&quot;status.unicorns.net&quot;</span><span class="p">)</span>
+
+<span class="n">exo</span><span class="o">.</span><span class="n">dns</span><span class="o">.</span><span class="n">get_domain</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;unicorns.net&quot;</span><span class="p">)</span><span class="o">.</span>
+    <span class="n">add_record</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;CNAME&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;unicorns-net.runstat.us.&quot;</span><span class="p">)</span>
+
+<span class="n">page</span><span class="o">.</span><span class="n">add_service</span><span class="p">(</span><span class="s2">&quot;Candy&quot;</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">add_service</span><span class="p">(</span><span class="s2">&quot;Rainbows&quot;</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">add_service</span><span class="p">(</span><span class="s2">&quot;Magic&quot;</span><span class="p">)</span>
+
+<span class="c1"># ...</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Services:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">page</span><span class="o">.</span><span class="n">services</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">state</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ongoing Incidents:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">page</span><span class="o">.</span><span class="n">incidents</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">end_date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">{}</span><span class="s2">] </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">start_date</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">title</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="configuration.html" class="btn btn-neutral float-left" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2022, The Exoscale team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

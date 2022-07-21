@@ -1,0 +1,7 @@
+exoscale.api.iam module
+=======================
+
+.. automodule:: exoscale.api.iam
+   :members:
+   :undoc-members:
+   :show-inheritance:

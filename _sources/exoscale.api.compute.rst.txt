@@ -1,0 +1,7 @@
+exoscale.api.compute module
+===========================
+
+.. automodule:: exoscale.api.compute
+   :members:
+   :undoc-members:
+   :show-inheritance:

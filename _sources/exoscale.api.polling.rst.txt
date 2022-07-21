@@ -1,0 +1,7 @@
+exoscale.api.polling module
+===========================
+
+.. automodule:: exoscale.api.polling
+   :members:
+   :undoc-members:
+   :show-inheritance:

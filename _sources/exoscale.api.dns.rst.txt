@@ -1,0 +1,7 @@
+exoscale.api.dns module
+=======================
+
+.. automodule:: exoscale.api.dns
+   :members:
+   :undoc-members:
+   :show-inheritance:

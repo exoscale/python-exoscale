@@ -1,0 +1,23 @@
+exoscale.api package
+====================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   exoscale.api.compute
+   exoscale.api.dns
+   exoscale.api.iam
+   exoscale.api.polling
+   exoscale.api.runstatus
+   exoscale.api.storage
+
+Module contents
+---------------
+
+.. automodule:: exoscale.api
+   :members:
+   :undoc-members:
+   :show-inheritance:

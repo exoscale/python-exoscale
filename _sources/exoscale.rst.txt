@@ -1,0 +1,18 @@
+exoscale package
+================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 10
+
+   exoscale.api
+
+Module contents
+---------------
+
+.. automodule:: exoscale
+   :members:
+   :undoc-members:
+   :show-inheritance:

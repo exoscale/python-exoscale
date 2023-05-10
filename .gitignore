@@ -1,6 +1,4 @@
 build/
-docs/modules.rst
-docs/exoscale*rst
 __pycache__
 *.egg-info
 .venv

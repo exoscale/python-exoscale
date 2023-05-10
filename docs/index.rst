@@ -14,11 +14,16 @@ with high-level Python bindings.
 
   configuration
   usage
-  modules
+  v2
 
 
 Changelog
 ---------
+
+0.8.0 (TBD)
+
+- Add `exoscale.api.v2.Client`: a low-level API client targeting the Exoscale
+  V2 API.
 
 0.7.1 (2021-10-18)
 ~~~~~~~~~~~~~~~~~~

@@ -1,0 +1,26 @@
+---
+name: Update bundled openapi definition
+
+"on":
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *'  # At :00 every hour
+
+jobs:
+  scheduled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: Fetch latest OpenAPI definition
+        run: |-
+          curl https://openapi-v2.exoscale.com/source.json | ./.sort-enums.py | jq > exoscale/openapi.json
+      - name: Commit and push if changed
+        run: |-
+          git config user.name "Automated"
+          git config user.email "actions@users.noreply.github.com"
+          git add exoscale/openapi.json
+          timestamp=$(date -u)
+          git commit -m "OpenAPI spec update: ${timestamp}" || exit 0
+          git push

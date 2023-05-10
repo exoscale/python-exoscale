@@ -88,4 +88,4 @@ html_use_index = False
 # If true, the index is split into individual pages for each letter.
 html_split_index = False
 
-html_context = {"css_files": ["_static/theme_overrides.css"]}
+html_css_files = ["theme_overrides.css"]

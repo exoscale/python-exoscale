@@ -1,3 +1,59 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "exoscale"
+authors = [{name="Exoscale", email="support@exoscale.com"}]
+license = "ISC"
+description = "Clients for Exoscale IaaS APIs"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "attrs>=20.1.0",
+    "boto3>=1.9.176",
+    "cs>=2.7.1",
+    "requests-exoscale-auth>=1.1.2",
+    "requests>=2.22.0",
+    "toml>=0.10.0",
+]
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/exoscale/python-exoscale"
+"Bug Tracker" = "https://github.com/exoscale/python-exoscale/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest-timeout>=1.4.2",
+    "pytest>=5.0.0",
+    "recommonmark>=0.5.0",
+    "requests-mock>=1.8.0",
+    "sphinx-markdown-parser>=0.1.1",
+    "sphinx-rtd-theme>=0.4.3",
+    "sphinx>=2.1.2",
+]
+
+[tool.hatch.version]
+path = "exoscale/__init__.py"
+
+[tool.hatch.build]
+include = [
+    "exoscale/*",
+]
+
 [tool.black]
 line-length = 79
 exclude = "exoscale/api/polling.py"

@@ -23,7 +23,7 @@ sys.path.insert(0, "exoscale")
 project = "python-exoscale"
 copyright = "2018-{}, The Exoscale team".format(datetime.now().year)
 author = "Exoscale"
-version = datetime.now().strftime("%Y-%m-%d")
+version = "0.8.0"
 release = version
 
 

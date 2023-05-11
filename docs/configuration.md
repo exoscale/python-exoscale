@@ -1,4 +1,6 @@
-# Configuration
+# [deprecated] Configuration
+
+**This document refers to deprecated code paths that will be removed in future releases. It is advised to switch to the [V2 API bindings](v2.html).**
 
 The python-exoscale library can be configured using class parameters, a
 configuration file or environment variables.

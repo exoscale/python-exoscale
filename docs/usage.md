@@ -1,4 +1,6 @@
-# Usage
+# [deprecated] High-level bindings usage
+
+**This document refers to deprecated code paths that will be removed in future releases. It is advised to switch to the [V2 API bindings](v2.html).**
 
 Here are some practical library usage examples.
 

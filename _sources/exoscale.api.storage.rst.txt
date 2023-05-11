@@ -1,7 +1,0 @@
-exoscale.api.storage module
-===========================
-
-.. automodule:: exoscale.api.storage
-   :members:
-   :undoc-members:
-   :show-inheritance:

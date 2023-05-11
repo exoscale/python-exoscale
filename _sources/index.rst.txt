@@ -7,27 +7,24 @@ with high-level Python bindings.
 .. _Exoscale: https://www.exoscale.com/
 
 .. note::
-   This library is compatible with Python 3.6+ only.
+   This library is compatible with Python 3.7+ only.
 
 .. toctree::
   :maxdepth: 10
 
   configuration
   usage
-  modules
+  v2
 
 
 Changelog
 ---------
 
-0.7.2 (2022-07-21)
+0.8.0 (2023-05-11)
 ~~~~~~~~~~~~~~~~~~
 
-Fixes
-*****
-
-- compute: fix `ssh_key` format in `create_instance_pool()` method
-
+- Add `exoscale.api.v2.Client`: a low-level API client targeting the Exoscale
+  V2 API.
 
 0.7.1 (2021-10-18)
 ~~~~~~~~~~~~~~~~~~

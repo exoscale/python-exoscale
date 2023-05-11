@@ -1,7 +1,0 @@
-exoscale.api.runstatus module
-=============================
-
-.. automodule:: exoscale.api.runstatus
-   :members:
-   :undoc-members:
-   :show-inheritance:

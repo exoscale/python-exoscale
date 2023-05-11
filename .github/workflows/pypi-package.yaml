@@ -24,6 +24,7 @@ jobs:
     name: Upload package to pypi.org
     runs-on: ubuntu-latest
     needs: build-package
+    environment: release
     steps:
       - name: Download packages built by previous step
         uses: actions/download-artifact@v3

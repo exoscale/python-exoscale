@@ -16,8 +16,7 @@ jobs:
           python -VV
           python -m site
           python -m pip install -U pip wheel setuptools
-          python -m pip install -U -r requirements.dev.txt
-          python -m pip install -e .
+          python -m pip install -e .[dev]
           make html
       - name: Publish
         uses: JamesIves/github-pages-deploy-action@v4

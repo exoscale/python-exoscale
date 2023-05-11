@@ -1,0 +1,34 @@
+---
+name: Build and upload PyPI package
+
+"on":
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build-package:
+    name: Build and verify package
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: hynek/build-and-inspect-python-package@v1
+
+  release-pypi:
+    name: Upload package to pypi.org
+    runs-on: ubuntu-latest
+    needs: build-package
+    steps:
+      - name: Download packages built by previous step
+        uses: actions/download-artifact@v3
+        with:
+          name: Packages
+          path: dist
+      - name: Upload package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

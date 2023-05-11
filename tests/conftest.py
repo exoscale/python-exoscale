@@ -91,7 +91,7 @@ def exo():
                 urljoin(self.exo.compute.endpoint, url),
                 json=resp,
                 headers={"Content-Type": "application/json"},
-                **kwargs
+                **kwargs,
             )
 
         def mock_list(self, list_command, results=()):

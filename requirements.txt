@@ -1,6 +1,0 @@
-attrs>=20.1.0
-boto3>=1.9.176
-cs>=2.7.1
-requests-exoscale-auth>=1.1.2
-requests>=2.22.0
-toml>=0.10.0

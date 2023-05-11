@@ -789,7 +789,7 @@ class RunstatusAPI(API):
             self,
             auth=self.auth,
             hooks={"response": self._check_api_response},
-            **kwargs
+            **kwargs,
         )
 
     def _get(self, url, **kwargs):
@@ -825,7 +825,7 @@ class RunstatusAPI(API):
             method="POST",
             url=self.endpoint + "/" + url.lstrip("/"),
             json=json,
-            **kwargs
+            **kwargs,
         )
 
     def _patch(self, url, json, **kwargs):
@@ -845,7 +845,7 @@ class RunstatusAPI(API):
             method="PATCH",
             url=self.endpoint + "/" + url.lstrip("/"),
             json=json,
-            **kwargs
+            **kwargs,
         )
 
     def _delete(self, url, **kwargs):
@@ -863,7 +863,7 @@ class RunstatusAPI(API):
         return self._send(
             method="DELETE",
             url=self.endpoint + "/" + url.lstrip("/"),
-            **kwargs
+            **kwargs,
         )
 
     # Page

@@ -20,7 +20,8 @@ with high-level Python bindings.
 Changelog
 ---------
 
-0.8.0 (TBD)
+0.8.0 (2023-05-11)
+~~~~~~~~~~~~~~~~~~
 
 - Add `exoscale.api.v2.Client`: a low-level API client targeting the Exoscale
   V2 API.

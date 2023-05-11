@@ -1,0 +1,11 @@
+V2 API
+======
+
+This modules contains a low-level client targeting the Exoscale OpenAPI-based
+V2 API. This client is dynamically generated from the OpenAPI definition
+shipped with the package.
+
+.. autoclass:: exoscale.api.v2.Client
+   :members:
+   :undoc-members:
+   :special-members: __init__

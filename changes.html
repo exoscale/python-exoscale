@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Changelog &mdash; python-exoscale 0.8.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="[deprecated] Configuration" href="configuration.html" />
+    <link rel="prev" title="V2 API bindings" href="v2.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #da291c" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo-exoscale-white-201711.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="v2.html">V2 API bindings</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">0.8.0 (2023-05-11)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">0.7.1 (2021-10-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fixes">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">0.7.0 (2021-05-11)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changes">Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">0.6.0 (2021-04-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">0.5.2 (2021-04-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">0.5.1 (2021-03-16)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id10">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">0.5.0 (2021-03-15)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id12">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">0.4.0 (2020-12-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id15">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id17">0.3.0 (2020-01-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new">New</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id20">0.2.0 (2019-10-09)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id21">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id22">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id23">Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id24">0.1.1 (2019-09-12)</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">[deprecated] Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">[deprecated] High-level bindings usage</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #da291c" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">python-exoscale</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Changelog</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/changes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading"></a></h1>
+<section id="id1">
+<h2>0.8.0 (2023-05-11)<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Add <cite>exoscale.api.v2.Client</cite>: a low-level API client targeting the Exoscale
+V2 API.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>0.7.1 (2021-10-18)<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<section id="fixes">
+<h3>Fixes<a class="headerlink" href="#fixes" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>compute: fix <cite>instance_private_networks</cite> arg check in <cite>create_instance_pool()</cite> method</p></li>
+</ul>
+</section>
+</section>
+<section id="id3">
+<h2>0.7.0 (2021-05-11)<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<section id="features">
+<h3>Features<a class="headerlink" href="#features" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>compute: add support for Deploy Targets resources</p></li>
+<li><p>compute: Instance Pools now support Elastic IP attachment, Instance Prefix and</p></li>
+<li><p>Deploy Targets</p></li>
+<li><p>compute: the <code class="docutils literal notranslate"><span class="pre">InstancePool.update()</span></code> method now supports updating Anti-Affinity
+Groups, IPv6 enabling, Security Groups, Private Networks and SSH Key.</p></li>
+<li><p>compute: new <code class="docutils literal notranslate"><span class="pre">InstancePool.evict()</span></code> method</p></li>
+</ul>
+</section>
+<section id="changes">
+<h3>Changes<a class="headerlink" href="#changes" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>compute: the <code class="docutils literal notranslate"><span class="pre">get_instance_pool()</span></code> method now accepts either of <code class="docutils literal notranslate"><span class="pre">name</span></code>/<code class="docutils literal notranslate"><span class="pre">id</span></code>
+parameters</p></li>
+<li><p>compute: the <code class="docutils literal notranslate"><span class="pre">InstancePool.delete()</span></code> method <code class="docutils literal notranslate"><span class="pre">wait</span></code>/<code class="docutils literal notranslate"><span class="pre">max_poll</span></code> parameters have
+been removed</p></li>
+</ul>
+</section>
+</section>
+<section id="id4">
+<h2>0.6.0 (2021-04-21)<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<section id="id5">
+<h3>Features<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>compute: the <code class="docutils literal notranslate"><span class="pre">SecurityGroup.update()</span></code> now updates the Compute instance Security
+Groups membership live without requiring to stop the instance</p></li>
+<li><p>compute: add <code class="docutils literal notranslate"><span class="pre">Instance.user_data</span></code> property</p></li>
+<li><p>compute: add <code class="docutils literal notranslate"><span class="pre">InstanceTemplate.boot_mode</span></code> attribute</p></li>
+<li><p>dns: <code class="docutils literal notranslate"><span class="pre">create_dns_record()</span></code> now returns the created record</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>Fixes<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>compute: don’t crash when an Instance Template doesn’t have details metadata</p></li>
+</ul>
+</section>
+</section>
+<section id="id7">
+<h2>0.5.2 (2021-04-13)<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
+<section id="id8">
+<h3>Fixes<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>compute: add missing <cite>bootmode</cite> parameter to <cite>register_instance_template()</cite> (#32)</p></li>
+</ul>
+</section>
+</section>
+<section id="id9">
+<h2>0.5.1 (2021-03-16)<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h2>
+<section id="id10">
+<h3>Fixes<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Exclude tests from Python packaging</p></li>
+</ul>
+</section>
+</section>
+<section id="id11">
+<h2>0.5.0 (2021-03-15)<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h2>
+<section id="id12">
+<h3>Features<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>compute: add Anti-Affinity Groups support to Instance Pools (#27)</p></li>
+</ul>
+</section>
+<section id="id13">
+<h3>Fixes<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Rely on pathlib for home lookup (#29)</p></li>
+<li><p>compute: don’t crash when listing instances generated from templates (#28)</p></li>
+</ul>
+</section>
+</section>
+<section id="id14">
+<h2>0.4.0 (2020-12-07)<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h2>
+<section id="id15">
+<h3>Features<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>compute: add support for Network Load Balancers</p></li>
+<li><p>compute: add support for Elastic IP HTTPS health checking</p></li>
+<li><p>compute: add support for snapshot exporting</p></li>
+</ul>
+</section>
+<section id="id16">
+<h3>Changes<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>compute: <cite>get_instance_pool()</cite> arguments order</p></li>
+</ul>
+</section>
+</section>
+<section id="id17">
+<h2>0.3.0 (2020-01-22)<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h2>
+<section id="new">
+<h3>New<a class="headerlink" href="#new" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Add support for IAM (<code class="docutils literal notranslate"><span class="pre">iam</span></code> submodule)</p></li>
+</ul>
+</section>
+<section id="id18">
+<h3>Features<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Allow HTTP session retry policy to be user configurable</p></li>
+<li><p>compute: add support for Instance Pools</p></li>
+<li><p>compute: add support for Elastic IP descriptions</p></li>
+<li><p>compute: add Instance <code class="docutils literal notranslate"><span class="pre">creation_date</span></code> attribute</p></li>
+</ul>
+</section>
+<section id="id19">
+<h3>Fixes<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>storage: fix failing integration tests</p></li>
+<li><p>storage: honor global client settings</p></li>
+</ul>
+</section>
+</section>
+<section id="id20">
+<h2>0.2.0 (2019-10-09)<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h2>
+<section id="id21">
+<h3>Features<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>storage: add Bucket/BucketFile <code class="docutils literal notranslate"><span class="pre">url</span></code> attribute</p></li>
+</ul>
+</section>
+<section id="id22">
+<h3>Fixes<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>compute: fix unhandled exception in <code class="docutils literal notranslate"><span class="pre">get_*</span></code> functions</p></li>
+</ul>
+</section>
+<section id="id23">
+<h3>Changes<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>compute: <code class="docutils literal notranslate"><span class="pre">create_instance()</span></code> function <em>root_disk_size</em> parameter has been renamed
+to <em>volume_size</em></p></li>
+<li><p>compute: <code class="docutils literal notranslate"><span class="pre">get_elastic_ip()</span></code> function now requires a <em>zone</em> parameter</p></li>
+<li><p>compute: <code class="docutils literal notranslate"><span class="pre">get_instance_template()</span></code> function now requires a <em>zone</em> parameter</p></li>
+<li><p>compute: <code class="docutils literal notranslate"><span class="pre">get_instance()</span></code> function now requires a <em>zone</em> parameter</p></li>
+<li><p>compute: <code class="docutils literal notranslate"><span class="pre">get_private_network()</span></code> function now requires a <em>zone</em> parameter</p></li>
+<li><p>compute: <code class="docutils literal notranslate"><span class="pre">list_elastic_ips()</span></code> function now requires a <em>zone</em> parameter</p></li>
+<li><p>compute: <code class="docutils literal notranslate"><span class="pre">list_instance_templates()</span></code> function now requires a <em>zone</em> parameter</p></li>
+<li><p>compute: <code class="docutils literal notranslate"><span class="pre">list_instances()</span></code> function now requires a <em>zone</em> parameter</p></li>
+<li><p>compute: <code class="docutils literal notranslate"><span class="pre">list_private_networks()</span></code> function now requires a <em>zone</em> parameter</p></li>
+</ul>
+</section>
+</section>
+<section id="id24">
+<h2>0.1.1 (2019-09-12)<a class="headerlink" href="#id24" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Initial release</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="v2.html" class="btn btn-neutral float-left" title="V2 API bindings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="configuration.html" class="btn btn-neutral float-right" title="[deprecated] Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2023, The Exoscale team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

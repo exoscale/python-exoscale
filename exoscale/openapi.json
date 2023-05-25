@@ -671,7 +671,7 @@
       },
       "dbaas-pg-database-name": {
         "type": "string",
-        "maxLength": 40,
+        "maxLength": 63,
         "minLength": 1
       },
       "instance-type": {
@@ -873,6 +873,13 @@
           "state": {
             "$ref": "#/components/schemas/enum-service-state",
             "description": "State of the service"
+          },
+          "databases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/dbaas-mysql-database-name"
+            },
+            "description": "List of MySQL databases"
           },
           "ip-filter": {
             "type": "array",
@@ -2038,6 +2045,11 @@
           "type": "string"
         }
       },
+      "dbaas-mysql-database-name": {
+        "type": "string",
+        "maxLength": 64,
+        "minLength": 1
+      },
       "dbaas-service-maintenance": {
         "type": "object",
         "properties": {
@@ -2213,7 +2225,7 @@
                   "description": "Connection URI for the DB pool"
                 },
                 "database": {
-                  "$ref": "#/components/schemas/dbaas-pg-database-name",
+                  "$ref": "#/components/schemas/dbaas-database-name",
                   "description": "Service database name"
                 },
                 "mode": {
@@ -2259,7 +2271,7 @@
           "databases": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/dbaas-pg-database-name"
+              "$ref": "#/components/schemas/dbaas-database-name"
             },
             "description": "List of PostgreSQL databases"
           },
@@ -4990,6 +5002,11 @@
         ],
         "description": "Service component information objects"
       },
+      "dbaas-database-name": {
+        "type": "string",
+        "maxLength": 40,
+        "minLength": 1
+      },
       "dbaas-user-username": {
         "type": "string",
         "maxLength": 64,
@@ -6150,7 +6167,7 @@
                     "description": "Connection pool name"
                   },
                   "database-name": {
-                    "$ref": "#/components/schemas/dbaas-pg-database-name",
+                    "$ref": "#/components/schemas/dbaas-database-name",
                     "description": "Service database name"
                   },
                   "mode": {
@@ -7586,6 +7603,46 @@
         "parameters": [],
         "summary": "List Compute instance Types",
         "operationId": "list-instance-types"
+      }
+    },
+    "/dbaas-postgres/{service-name}/database/{database-name}": {
+      "delete": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "database-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-pg-database-name"
+            }
+          }
+        ],
+        "summary": "Delete a DBaaS Postgres database",
+        "operationId": "delete-dbaas-pg-database"
       }
     },
     "/dbaas-postgres/{name}/migration/stop": {
@@ -10191,6 +10248,67 @@
         "operationId": "reset-load-balancer-service-field"
       }
     },
+    "/dbaas-postgres/{service-name}/database": {
+      "post": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          }
+        ],
+        "summary": "Create a DBaaS Postgres database",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "database-name": {
+                    "$ref": "#/components/schemas/dbaas-database-name",
+                    "description": "Service database name"
+                  },
+                  "lc-collate": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "description": "Default string sort order (LC_COLLATE) for PostgreSQL database"
+                  },
+                  "lc-ctype": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "description": "Default character classification (LC_CTYPE) for PostgreSQL database"
+                  }
+                },
+                "required": [
+                  "database-name"
+                ]
+              }
+            }
+          }
+        },
+        "operationId": "create-dbaas-pg-database"
+      }
+    },
     "/security-group/{id}/rules": {
       "post": {
         "tags": [
@@ -10954,6 +11072,46 @@
         ],
         "summary": "Retrieve DNS domain zone file",
         "operationId": "get-dns-domain-zone-file"
+      }
+    },
+    "/dbaas-mysql/{service-name}/database/{database-name}": {
+      "delete": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "database-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-mysql-database-name"
+            }
+          }
+        ],
+        "summary": "Delete a DBaaS MySQL database",
+        "operationId": "delete-dbaas-mysql-database"
       }
     },
     "/security-group/{id}:remove-source": {
@@ -13616,7 +13774,7 @@
                 "type": "object",
                 "properties": {
                   "database-name": {
-                    "$ref": "#/components/schemas/dbaas-pg-database-name",
+                    "$ref": "#/components/schemas/dbaas-database-name",
                     "description": "Service database name"
                   },
                   "mode": {
@@ -13985,6 +14143,57 @@
         ],
         "summary": "Delete a DBaaS service",
         "operationId": "delete-dbaas-service"
+      }
+    },
+    "/dbaas-mysql/{service-name}/database": {
+      "post": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          }
+        ],
+        "summary": "Create a DBaaS MySQL database",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "database-name": {
+                    "$ref": "#/components/schemas/dbaas-database-name",
+                    "description": "Service database name"
+                  }
+                },
+                "required": [
+                  "database-name"
+                ]
+              }
+            }
+          }
+        },
+        "operationId": "create-dbaas-mysql-database"
       }
     },
     "/template": {

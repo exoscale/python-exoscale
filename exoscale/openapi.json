@@ -855,6 +855,10 @@
             },
             "description": "Service integrations"
           },
+          "zone": {
+            "type": "string",
+            "description": "The zone where the service is running"
+          },
           "node-states": {
             "type": "array",
             "items": {
@@ -1091,6 +1095,10 @@
               "$ref": "#/components/schemas/dbaas-integration"
             },
             "description": "Service integrations"
+          },
+          "zone": {
+            "type": "string",
+            "description": "The zone where the service is running"
           },
           "node-states": {
             "type": "array",
@@ -2203,6 +2211,10 @@
               "$ref": "#/components/schemas/dbaas-integration"
             },
             "description": "Service integrations"
+          },
+          "zone": {
+            "type": "string",
+            "description": "The zone where the service is running"
           },
           "node-states": {
             "type": "array",
@@ -3645,6 +3657,10 @@
             },
             "description": "Service integrations"
           },
+          "zone": {
+            "type": "string",
+            "description": "The zone where the service is running"
+          },
           "node-states": {
             "type": "array",
             "items": {
@@ -4023,6 +4039,10 @@
             },
             "description": "Service integrations"
           },
+          "zone": {
+            "type": "string",
+            "description": "The zone where the service is running"
+          },
           "node-states": {
             "type": "array",
             "items": {
@@ -4311,6 +4331,10 @@
               "$ref": "#/components/schemas/dbaas-integration"
             },
             "description": "Service integrations"
+          },
+          "zone": {
+            "type": "string",
+            "description": "The zone where the service is running"
           },
           "node-states": {
             "type": "array",
@@ -4772,6 +4796,10 @@
               "$ref": "#/components/schemas/dbaas-integration"
             },
             "description": "Service integrations"
+          },
+          "zone": {
+            "type": "string",
+            "description": "The zone where the service is running"
           },
           "name": {
             "$ref": "#/components/schemas/dbaas-service-name",
@@ -6471,7 +6499,10 @@
                       "type": "object",
                       "properties": {
                         "type": {
-                          "$ref": "#/components/schemas/enum-integration-types",
+                          "type": "string",
+                          "enum": [
+                            "read_replica"
+                          ],
                           "description": "Integration type"
                         },
                         "source-service": {
@@ -6491,7 +6522,7 @@
                         "type"
                       ]
                     },
-                    "description": "Service integrations to enable for the service. Some integration types affect how a service is created and they must be provided as part of the creation call instead of being defined later."
+                    "description": "Service integrations to be enabled when creating the service."
                   },
                   "ip-filter": {
                     "type": "array",
@@ -7760,34 +7791,6 @@
                   "kafka-rest-enabled": {
                     "type": "boolean",
                     "description": "Enable Kafka-REST service"
-                  },
-                  "integrations": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "$ref": "#/components/schemas/enum-integration-types",
-                          "description": "Integration type"
-                        },
-                        "source-service": {
-                          "$ref": "#/components/schemas/dbaas-service-name",
-                          "description": "A source service"
-                        },
-                        "dest-service": {
-                          "$ref": "#/components/schemas/dbaas-service-name",
-                          "description": "A destination service"
-                        },
-                        "settings": {
-                          "type": "object",
-                          "description": "Integration settings"
-                        }
-                      },
-                      "required": [
-                        "type"
-                      ]
-                    },
-                    "description": "Service integrations to enable for the service. Some integration types affect how a service is created and they must be provided as part of the creation call instead of being defined later."
                   },
                   "kafka-connect-enabled": {
                     "type": "boolean",
@@ -13129,6 +13132,11 @@
                     "$ref": "#/components/schemas/labels",
                     "description": "Cluster labels"
                   },
+                  "oidc": {
+                    "$ref": "#/components/schemas/sks-oidc",
+                    "nullable": true,
+                    "description": "Cluster OpenID configmap"
+                  },
                   "auto-upgrade": {
                     "type": "boolean",
                     "description": "Enable auto upgrade of the control plane to the latest patch version available"
@@ -14768,34 +14776,6 @@
                     "type": "boolean",
                     "description": "Service is protected against termination and powering off"
                   },
-                  "integrations": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "$ref": "#/components/schemas/enum-integration-types",
-                          "description": "Integration type"
-                        },
-                        "source-service": {
-                          "$ref": "#/components/schemas/dbaas-service-name",
-                          "description": "A source service"
-                        },
-                        "dest-service": {
-                          "$ref": "#/components/schemas/dbaas-service-name",
-                          "description": "A destination service"
-                        },
-                        "settings": {
-                          "type": "object",
-                          "description": "Integration settings"
-                        }
-                      },
-                      "required": [
-                        "type"
-                      ]
-                    },
-                    "description": "Service integrations to enable for the service. Some integration types affect how a service is created and they must be provided as part of the creation call instead of being defined later."
-                  },
                   "fork-from-service": {
                     "$ref": "#/components/schemas/dbaas-service-name",
                     "description": "Service to fork from"
@@ -15123,34 +15103,6 @@
                     "minimum": 0,
                     "exclusiveMinimum": false,
                     "description": "Maximum number of indexes to keep before deleting the oldest one"
-                  },
-                  "integrations": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "$ref": "#/components/schemas/enum-integration-types",
-                          "description": "Integration type"
-                        },
-                        "source-service": {
-                          "$ref": "#/components/schemas/dbaas-service-name",
-                          "description": "A source service"
-                        },
-                        "dest-service": {
-                          "$ref": "#/components/schemas/dbaas-service-name",
-                          "description": "A destination service"
-                        },
-                        "settings": {
-                          "type": "object",
-                          "description": "Integration settings"
-                        }
-                      },
-                      "required": [
-                        "type"
-                      ]
-                    },
-                    "description": "Service integrations to enable for the service. Some integration types affect how a service is created and they must be provided as part of the creation call instead of being defined later."
                   },
                   "keep-index-refresh-interval": {
                     "type": "boolean",
@@ -15884,53 +15836,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "integrations": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "$ref": "#/components/schemas/enum-integration-types",
-                          "description": "Integration type"
-                        },
-                        "source-service": {
-                          "$ref": "#/components/schemas/dbaas-service-name",
-                          "description": "A source service"
-                        },
-                        "dest-service": {
-                          "$ref": "#/components/schemas/dbaas-service-name",
-                          "description": "A destination service"
-                        },
-                        "settings": {
-                          "type": "object",
-                          "description": "Integration settings"
-                        }
-                      },
-                      "required": [
-                        "type"
-                      ]
-                    },
-                    "description": "Service integrations to enable for the service. Some integration types affect how a service is created and they must be provided as part of the creation call instead of being defined later."
-                  },
-                  "redis-settings": {
-                    "type": "object",
-                    "description": "Redis.conf settings"
-                  },
-                  "ip-filter": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    },
-                    "description": "Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'"
-                  },
-                  "termination-protection": {
-                    "type": "boolean",
-                    "description": "Service is protected against termination and powering off"
-                  },
-                  "fork-from-service": {
-                    "$ref": "#/components/schemas/dbaas-service-name",
-                    "description": "Service to fork from"
-                  },
                   "maintenance": {
                     "type": "object",
                     "properties": {
@@ -15961,16 +15866,22 @@
                     ],
                     "description": "Automatic maintenance settings"
                   },
-                  "recovery-backup-name": {
-                    "type": "string",
-                    "minLength": 1,
-                    "description": "Name of a backup to recover from for services that support backup names"
-                  },
                   "plan": {
                     "type": "string",
                     "maxLength": 128,
                     "minLength": 1,
                     "description": "Subscription plan"
+                  },
+                  "termination-protection": {
+                    "type": "boolean",
+                    "description": "Service is protected against termination and powering off"
+                  },
+                  "ip-filter": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'"
                   },
                   "migration": {
                     "type": "object",
@@ -16028,6 +15939,19 @@
                       "port"
                     ],
                     "description": "Migrate data from existing server"
+                  },
+                  "redis-settings": {
+                    "type": "object",
+                    "description": "Redis.conf settings"
+                  },
+                  "fork-from-service": {
+                    "$ref": "#/components/schemas/dbaas-service-name",
+                    "description": "Service to fork from"
+                  },
+                  "recovery-backup-name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Name of a backup to recover from for services that support backup names"
                   }
                 },
                 "required": [
@@ -16358,7 +16282,10 @@
                       "type": "object",
                       "properties": {
                         "type": {
-                          "$ref": "#/components/schemas/enum-integration-types",
+                          "type": "string",
+                          "enum": [
+                            "read_replica"
+                          ],
                           "description": "Integration type"
                         },
                         "source-service": {
@@ -16378,7 +16305,7 @@
                         "type"
                       ]
                     },
-                    "description": "Service integrations to enable for the service. Some integration types affect how a service is created and they must be provided as part of the creation call instead of being defined later."
+                    "description": "Service integrations to be enabled when creating the service."
                   },
                   "timescaledb-settings": {
                     "type": "object",

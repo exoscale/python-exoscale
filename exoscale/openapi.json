@@ -589,11 +589,10 @@
           "id": {
             "type": "string",
             "format": "uuid",
-            "readOnly": true,
             "description": "Instance ID"
           }
         },
-        "description": "Instance"
+        "description": "Target Instance"
       },
       "dns-domain": {
         "type": "object",
@@ -3515,8 +3514,8 @@
         "type": "string",
         "enum": [
           "datasource",
-          "metrics",
-          "read_replica"
+          "logs",
+          "metrics"
         ]
       },
       "template": {
@@ -16554,8 +16553,7 @@
                 "type": "object",
                 "properties": {
                   "integration-type": {
-                    "type": "string",
-                    "minLength": 1,
+                    "$ref": "#/components/schemas/enum-integration-types",
                     "description": "Integration type"
                   },
                   "source-service": {

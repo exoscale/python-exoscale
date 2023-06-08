@@ -583,6 +583,18 @@
         },
         "description": "Access key resource"
       },
+      "instance-target": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "description": "Instance ID"
+          }
+        },
+        "description": "Instance"
+      },
       "dns-domain": {
         "type": "object",
         "properties": {
@@ -12363,7 +12375,7 @@
                 "type": "object",
                 "properties": {
                   "instance": {
-                    "$ref": "#/components/schemas/instance",
+                    "$ref": "#/components/schemas/instance-target",
                     "description": "Compute instance"
                   }
                 },
@@ -13004,7 +13016,7 @@
                 "type": "object",
                 "properties": {
                   "instance": {
-                    "$ref": "#/components/schemas/instance",
+                    "$ref": "#/components/schemas/instance-target",
                     "description": "Compute instance"
                   }
                 },

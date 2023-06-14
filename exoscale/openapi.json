@@ -9533,6 +9533,8 @@
                   },
                   "name": {
                     "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
                     "description": "IAM API Key Name"
                   }
                 },
@@ -10727,6 +10729,8 @@
                 "properties": {
                   "description": {
                     "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
                     "description": "IAM Role description"
                   },
                   "permissions": {
@@ -17124,10 +17128,14 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "maxLength": 191,
+                    "minLength": 1,
                     "description": "IAM Role name"
                   },
                   "description": {
                     "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
                     "description": "IAM Role description"
                   },
                   "permissions": {
@@ -17143,7 +17151,7 @@
                   },
                   "editable": {
                     "type": "boolean",
-                    "description": "Make IAM Role editable (default: true)"
+                    "description": "Sets if the IAM Role Policy is editable or not (default: true). This setting cannot be changed after creation"
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",

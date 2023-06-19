@@ -8187,9 +8187,9 @@
             }
           }
         },
-        "description": "This operation creates a new IAM Access Key, which can either be restricted to specific API operations or unrestricted. The corresponding secret is only available in the response returned by this operation, the caller must take care of storing it safely as there is no other way to retrieve it.",
+        "description": "This operation creates a legacy IAM Access Key, to create a key for use with IAM roles use the api-key endpoint.The corresponding secret is only available in the response returned by this operation, the caller must take care of storing it safely as there is no other way to retrieve it.",
         "parameters": [],
-        "summary": "Create an IAM Access Key",
+        "summary": "Create a legacy IAM Access Key",
         "requestBody": {
           "required": true,
           "content": {
@@ -9518,7 +9518,7 @@
         },
         "description": null,
         "parameters": [],
-        "summary": "Create a new v3 API key",
+        "summary": "Create a new API key",
         "requestBody": {
           "required": true,
           "content": {
@@ -9574,7 +9574,7 @@
         },
         "description": null,
         "parameters": [],
-        "summary": "List v3 API keys",
+        "summary": "List API keys",
         "operationId": "list-api-keys"
       }
     },
@@ -10176,7 +10176,7 @@
             }
           }
         ],
-        "summary": "Delete a v3 API key",
+        "summary": "Delete an API key",
         "operationId": "delete-api-key"
       },
       "get": {
@@ -10206,7 +10206,7 @@
             }
           }
         ],
-        "summary": "Get v3 API key",
+        "summary": "Get API key",
         "operationId": "get-api-key"
       }
     },
@@ -13605,6 +13605,7 @@
                   },
                   "user-data": {
                     "type": "string",
+                    "maxLength": 32768,
                     "minLength": 1,
                     "description": "Instance Cloud-init user-data"
                   },
@@ -16883,6 +16884,7 @@
                   },
                   "user-data": {
                     "type": "string",
+                    "maxLength": 32768,
                     "minLength": 1,
                     "description": "Instance Cloud-init user-data"
                   },

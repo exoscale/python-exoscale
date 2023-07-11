@@ -3260,7 +3260,8 @@
               "running",
               "scaling-down",
               "scaling-up",
-              "suspended"
+              "suspended",
+              "updating"
             ],
             "readOnly": true,
             "description": "Instance Pool state"

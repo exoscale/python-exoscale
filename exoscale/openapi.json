@@ -3456,6 +3456,10 @@
             "exclusiveMinimum": true,
             "description": "Number of instances"
           },
+          "kubelet-image-gc": {
+            "$ref": "#/components/schemas/kubelet-image-gc",
+            "description": "Kubelet image GC options"
+          },
           "instance-pool": {
             "$ref": "#/components/schemas/instance-pool",
             "readOnly": true,

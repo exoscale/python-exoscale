@@ -14063,11 +14063,14 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "maxLength": 255
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "description": "Load Balancer name"
                   },
                   "description": {
                     "type": "string",
-                    "maxLength": 255
+                    "maxLength": 255,
+                    "description": "Load Balancer description"
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels"

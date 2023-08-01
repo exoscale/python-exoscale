@@ -8047,6 +8047,39 @@
         "operationId": "delete-dbaas-service-kafka"
       }
     },
+    "/instance/{id}:reset-password": {
+      "put": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Reset a compute instance password",
+        "operationId": "reset-instance-password"
+      }
+    },
     "/dbaas-settings-redis": {
       "get": {
         "tags": [

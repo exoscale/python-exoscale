@@ -203,6 +203,20 @@
           "permission"
         ]
       },
+      "instance-state": {
+        "type": "string",
+        "enum": [
+          "destroyed",
+          "destroying",
+          "error",
+          "expunging",
+          "migrating",
+          "running",
+          "starting",
+          "stopped",
+          "stopping"
+        ]
+      },
       "dbaas-pg-pool-size": {
         "type": "integer",
         "format": "int64",
@@ -2899,18 +2913,7 @@
             "description": "Instance Template"
           },
           "state": {
-            "type": "string",
-            "enum": [
-              "destroyed",
-              "destroying",
-              "error",
-              "expunging",
-              "migrating",
-              "running",
-              "starting",
-              "stopped",
-              "stopping"
-            ],
+            "$ref": "#/components/schemas/instance-state",
             "readOnly": true,
             "description": "Instance state"
           },
@@ -5135,6 +5138,7 @@
           "default": "ch-gva-2",
           "enum": [
             "at-vie-1",
+            "at-vie-2",
             "bg-sof-1",
             "ch-gva-2",
             "ch-zrh-1",
@@ -17011,18 +17015,7 @@
                             "description": "Instance Template"
                           },
                           "state": {
-                            "type": "string",
-                            "enum": [
-                              "destroyed",
-                              "destroying",
-                              "error",
-                              "expunging",
-                              "migrating",
-                              "running",
-                              "starting",
-                              "stopped",
-                              "stopping"
-                            ],
+                            "$ref": "#/components/schemas/instance-state",
                             "description": "Instance state"
                           },
                           "ssh-key": {
@@ -17491,7 +17484,7 @@
     },
     {
       "title": "Zone local resources",
-      "content": "\nThe API is deployed across multiple zones: `ch-gva-2`, `ch-dk-2`, `de-fra-1`, `de-muc-1`, `at-vie-1`, `bg-sof-1`. When performing a compute call, you should use the relevant zone for your resource.\nFor example: https://api-de-fra-1.exoscale.com/v2/instance would return only the instances from `de-fra-1`, https://api-ch-gva-2.exoscale.com/v2/instance from `ch-gva-2`.\nTo obtain a list of all instances across all zones, you would need to do the corresponding request per zone.\n\nNote that if no zone is specified during the call `ch-gva-2` will be used by default.\n"
+      "content": "\nThe API is deployed across multiple zones: `ch-gva-2`, `ch-dk-2`, `de-fra-1`, `de-muc-1`, `at-vie-1`, `at-vie-2`, `bg-sof-1`. When performing a compute call, you should use the relevant zone for your resource.\nFor example: https://api-de-fra-1.exoscale.com/v2/instance would return only the instances from `de-fra-1`, https://api-ch-gva-2.exoscale.com/v2/instance from `ch-gva-2`.\nTo obtain a list of all instances across all zones, you would need to do the corresponding request per zone.\n\nNote that if no zone is specified during the call `ch-gva-2` will be used by default.\n"
     }
   ]
 }

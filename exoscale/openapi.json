@@ -11228,10 +11228,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/iam-policy"
-                  }
+                  "$ref": "#/components/schemas/iam-policy"
                 }
               }
             }

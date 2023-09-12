@@ -2621,6 +2621,17 @@
           }
         }
       },
+      "secondary-volume-target": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Secondary volume ID"
+          }
+        },
+        "description": "Target secondary volume"
+      },
       "operation": {
         "type": "object",
         "properties": {
@@ -5061,6 +5072,73 @@
           "quorum"
         ]
       },
+      "secondary-volume": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "description": "Volume ID"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "Volume name"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Volume creation date"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "allocated",
+              "attached",
+              "attaching",
+              "creating-metadata",
+              "deleted",
+              "deleting",
+              "detached",
+              "detaching",
+              "error",
+              "partially-attached",
+              "partially-detached",
+              "promoting",
+              "purging",
+              "snapshotting-attached",
+              "snapshotting-detached"
+            ],
+            "readOnly": true,
+            "description": "Volume state"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 100,
+            "maximum": 1024,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "description": "Volume size"
+          },
+          "blocksize": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "exclusiveMinimum": false,
+            "readOnly": true,
+            "description": "Volume block size"
+          },
+          "instance": {
+            "$ref": "#/components/schemas/instance-target",
+            "description": "Volume attached instance, if any"
+          }
+        },
+        "description": "Secondary Volume"
+      },
       "enum-migration-method": {
         "type": "string",
         "enum": [
@@ -5081,6 +5159,58 @@
           "aiven",
           "timescale"
         ]
+      },
+      "secondary-volume-snapshot": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "description": "Volume ID"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "Volume snapshot name"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 100,
+            "maximum": 1024,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "description": "Volume size"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Volume snapshot creation date"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "allocated",
+              "created",
+              "creating",
+              "destroyed",
+              "destroying",
+              "error",
+              "partially-destroyed",
+              "promoting"
+            ],
+            "readOnly": true,
+            "description": "Volume snapshot state"
+          },
+          "secondary-volume": {
+            "$ref": "#/components/schemas/secondary-volume-target",
+            "description": "Referenced volume"
+          }
+        },
+        "description": "Secondary Volume"
       },
       "dbaas-service-backup": {
         "type": "object",

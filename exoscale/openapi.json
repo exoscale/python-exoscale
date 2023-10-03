@@ -13657,6 +13657,40 @@
         "operationId": "delete-elastic-ip"
       }
     },
+    "/sks-cluster/{id}/inspection": {
+      "get": {
+        "tags": [
+          "sks"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              }
+            }
+          }
+        },
+        "description": "Helps troubleshoot common problems when deploying a kubernetes cluster. Inspections run every couple of minutes.",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Get the latest inspection result",
+        "operationId": "get-sks-cluster-inspection"
+      }
+    },
     "/dbaas-redis/{name}/migration/stop": {
       "post": {
         "tags": [

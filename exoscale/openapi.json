@@ -10650,6 +10650,11 @@
                     "type": "boolean",
                     "description": "Enable Schema-Registry service"
                   },
+                  "version": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Kafka major version"
+                  },
                   "plan": {
                     "type": "string",
                     "maxLength": 128,

@@ -5928,6 +5928,17 @@
         },
         "description": "DBaaS plan backup config"
       },
+      "secondary-volume-snapshot-target": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Secondary volume snapshot ID"
+          }
+        },
+        "description": "Target secondary volume snapshot"
+      },
       "dbaas-service-redis": {
         "type": "object",
         "properties": {
@@ -7534,11 +7545,20 @@
       "secondary-volume": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true,
-            "description": "Volume ID"
+          "secondary-volume-snapshots": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/secondary-volume-snapshot-target"
+            },
+            "description": "Volume snapshots, if any"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/labels",
+            "description": "Volume Labels"
+          },
+          "instance": {
+            "$ref": "#/components/schemas/instance-target",
+            "description": "Volume attached instance, if any"
           },
           "name": {
             "type": "string",
@@ -7546,30 +7566,18 @@
             "minLength": 1,
             "description": "Volume name"
           },
-          "created-at": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true,
-            "description": "Volume creation date"
-          },
           "state": {
             "type": "string",
             "enum": [
-              "allocated",
               "attached",
               "attaching",
-              "creating-metadata",
+              "creating",
               "deleted",
               "deleting",
               "detached",
               "detaching",
               "error",
-              "partially-attached",
-              "partially-detached",
-              "promoting",
-              "purging",
-              "snapshotting-attached",
-              "snapshotting-detached"
+              "snapshotting"
             ],
             "readOnly": true,
             "description": "Volume state"
@@ -7591,9 +7599,17 @@
             "readOnly": true,
             "description": "Volume block size"
           },
-          "instance": {
-            "$ref": "#/components/schemas/instance-target",
-            "description": "Volume attached instance, if any"
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "description": "Volume ID"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Volume creation date"
           }
         },
         "description": "Secondary Volume"
@@ -7663,6 +7679,10 @@
             ],
             "readOnly": true,
             "description": "Volume snapshot state"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/labels",
+            "description": "Secondary volume snapshot labels"
           },
           "secondary-volume": {
             "$ref": "#/components/schemas/secondary-volume-target",

@@ -14520,6 +14520,68 @@
         "operationId": "get-dns-domain"
       }
     },
+    "/ssh-key/{*name}": {
+      "delete": {
+        "tags": [
+          "ssh-key"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "*name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Delete a SSH key",
+        "operationId": "delete-ssh-key"
+      },
+      "get": {
+        "tags": [
+          "ssh-key"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ssh-key"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "*name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Retrieve SSH key details",
+        "operationId": "get-ssh-key"
+      }
+    },
     "/dbaas-kafka/{service-name}/user/{username}": {
       "delete": {
         "tags": [
@@ -14819,68 +14881,6 @@
           }
         },
         "operationId": "reset-instance"
-      }
-    },
-    "/ssh-key/{name}": {
-      "delete": {
-        "tags": [
-          "ssh-key"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": "",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "summary": "Delete a SSH key",
-        "operationId": "delete-ssh-key"
-      },
-      "get": {
-        "tags": [
-          "ssh-key"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ssh-key"
-                }
-              }
-            }
-          }
-        },
-        "description": "",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "summary": "Retrieve SSH key details",
-        "operationId": "get-ssh-key"
       }
     },
     "/dbaas-service-metrics/{service-name}": {

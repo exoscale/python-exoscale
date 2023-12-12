@@ -1,21 +1,25 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>[deprecated] Configuration &mdash; python-exoscale 0.8.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/theme_overrides.css?v=a7b7b6ed" />
+
+  
     <link rel="shortcut icon" href="_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=486e5634"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="[deprecated] High-level bindings usage" href="usage.html" />
@@ -84,29 +88,29 @@
            <div itemprop="articleBody">
              
   <section id="deprecated-configuration">
-<h1>[deprecated] Configuration<a class="headerlink" href="#deprecated-configuration" title="Permalink to this heading"></a></h1>
+<h1>[deprecated] Configuration<a class="headerlink" href="#deprecated-configuration" title="Link to this heading"></a></h1>
 <p><strong>This document refers to deprecated code paths that will be removed in future releases. It is advised to switch to the <a class="reference external" href="v2.html">V2 API bindings</a>.</strong></p>
 <p>The python-exoscale library can be configured using class parameters, a
 configuration file or environment variables.</p>
 <section id="class-parameters">
-<h2>Class parameters<a class="headerlink" href="#class-parameters" title="Permalink to this heading"></a></h2>
+<h2>Class parameters<a class="headerlink" href="#class-parameters" title="Link to this heading"></a></h2>
 <p>See the <code class="docutils literal notranslate"><span class="pre">Exoscale</span></code> <a class="reference external" href="/exoscale.html#exoscale.Exoscale">class documentation</a> for configuration-related
 parameters.</p>
 </section>
 <section id="configuration-file">
-<h2>Configuration file<a class="headerlink" href="#configuration-file" title="Permalink to this heading"></a></h2>
+<h2>Configuration file<a class="headerlink" href="#configuration-file" title="Link to this heading"></a></h2>
 <p>The configuration file format is <a class="reference external" href="https://github.com/toml-lang/toml">TOML</a>, the expected structure is:</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="n">default_profile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;alice&quot;</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="n">default_profile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;alice&quot;</span>
 
 <span class="k">[[profiles]]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;alice&quot;</span>
-<span class="n">api_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;EXOa1b2c3...&quot;</span>
-<span class="n">api_secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;...&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;alice&quot;</span>
+<span class="n">api_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;EXOa1b2c3...&quot;</span>
+<span class="n">api_secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;...&quot;</span>
 
 <span class="k">[[profiles]]</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bob&quot;</span>
-<span class="n">api_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;EXOd5e6f7...&quot;</span>
-<span class="n">api_secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;...&quot;</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;bob&quot;</span>
+<span class="n">api_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;EXOd5e6f7...&quot;</span>
+<span class="n">api_secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;...&quot;</span>
 </pre></div>
 </div>
 <p>A <code class="docutils literal notranslate"><span class="pre">[[profiles]]</span></code> entry is a dictionary supporting the following key/values
@@ -125,7 +129,7 @@ Storage API)</p></li>
 </ul>
 </section>
 <section id="environment-variables">
-<h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this heading"></a></h2>
+<h2>Environment variables<a class="headerlink" href="#environment-variables" title="Link to this heading"></a></h2>
 <p>The following environment variables can be used in place of a configuration
 file:</p>
 <ul class="simple">

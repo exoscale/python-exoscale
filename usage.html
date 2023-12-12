@@ -1,21 +1,25 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>[deprecated] High-level bindings usage &mdash; python-exoscale 0.8.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/theme_overrides.css?v=a7b7b6ed" />
+
+  
     <link rel="shortcut icon" href="_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=486e5634"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="[deprecated] Configuration" href="configuration.html" /> 
@@ -84,11 +88,11 @@
            <div itemprop="articleBody">
              
   <section id="deprecated-high-level-bindings-usage">
-<h1>[deprecated] High-level bindings usage<a class="headerlink" href="#deprecated-high-level-bindings-usage" title="Permalink to this heading"></a></h1>
+<h1>[deprecated] High-level bindings usage<a class="headerlink" href="#deprecated-high-level-bindings-usage" title="Link to this heading"></a></h1>
 <p><strong>This document refers to deprecated code paths that will be removed in future releases. It is advised to switch to the <a class="reference external" href="v2.html">V2 API bindings</a>.</strong></p>
 <p>Here are some practical library usage examples.</p>
 <section id="compute-api">
-<h2>Compute API<a class="headerlink" href="#compute-api" title="Permalink to this heading"></a></h2>
+<h2>Compute API<a class="headerlink" href="#compute-api" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">exoscale</span>
 
 <span class="n">exo</span> <span class="o">=</span> <span class="n">exoscale</span><span class="o">.</span><span class="n">Exoscale</span><span class="p">()</span>
@@ -162,7 +166,7 @@
 </div>
 </section>
 <section id="dns-api">
-<h2>DNS API<a class="headerlink" href="#dns-api" title="Permalink to this heading"></a></h2>
+<h2>DNS API<a class="headerlink" href="#dns-api" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">exoscale</span>
 
 <span class="n">domain</span> <span class="o">=</span> <span class="n">exo</span><span class="o">.</span><span class="n">dns</span><span class="o">.</span><span class="n">create_domain</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;unicorns.net&quot;</span><span class="p">)</span>
@@ -175,7 +179,7 @@
 </div>
 </section>
 <section id="storage-api">
-<h2>Storage API<a class="headerlink" href="#storage-api" title="Permalink to this heading"></a></h2>
+<h2>Storage API<a class="headerlink" href="#storage-api" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">exoscale</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
@@ -196,7 +200,7 @@
 </div>
 </section>
 <section id="runstatus-api">
-<h2>Runstatus API<a class="headerlink" href="#runstatus-api" title="Permalink to this heading"></a></h2>
+<h2>Runstatus API<a class="headerlink" href="#runstatus-api" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">exoscale</span>
 
 <span class="n">exo</span> <span class="o">=</span> <span class="n">exoscale</span><span class="o">.</span><span class="n">Exoscale</span><span class="p">()</span>

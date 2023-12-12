@@ -18,22 +18,3 @@ help:
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-
-apidoc:
-	@sphinx-apidoc --separate -f -o "$(SOURCEDIR)" -H API --maxdepth 10 exoscale
-
-publish-doc: apidoc html
-	@cd $(BUILDDIR)/html && \
-		touch .nojekyll && \
-		git init && \
-		git add . && \
-		git commit -m "Update documentation" && \
-		git push -f git@github.com:exoscale/python-exoscale master:gh-pages
-
-serve:
-	@python3 -m http.server 8000 --bind 127.0.0.1 --directory $(BUILDDIR)/html
-
-installrequirements:
-	@pip install wheel
-	@pip install -r requirements.dev.txt
-	@pip install -e .

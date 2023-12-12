@@ -10282,6 +10282,58 @@
         "operationId": "delete-dbaas-pg-database"
       }
     },
+    "/block-storage/{id}:attach": {
+      "put": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Attach block storage volume to an instance",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "instance": {
+                    "$ref": "#/components/schemas/instance-target",
+                    "description": "Instance to attach to, this can only be done if the volume is not currently attached"
+                  }
+                },
+                "required": [
+                  "instance"
+                ]
+              }
+            }
+          }
+        },
+        "operationId": "attach-block-storage-volume-to-instance"
+      }
+    },
     "/dbaas-postgres/{name}/migration/stop": {
       "post": {
         "tags": [
@@ -11128,6 +11180,70 @@
         "operationId": "delete-sks-nodepool"
       }
     },
+    "/block-storage-snapshot/{id}": {
+      "delete": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Delete a block storage snapshot, data will be unrecoverable",
+        "operationId": "delete-block-storage-snapshot"
+      },
+      "get": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/block-storage-snapshot"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Retrieve block storage snapshot details",
+        "operationId": "get-block-storage-snapshot"
+      }
+    },
     "/dbaas-postgres/{service-name}/user": {
       "post": {
         "tags": [
@@ -11812,6 +11928,117 @@
         "operationId": "list-sks-cluster-deprecated-resources"
       }
     },
+    "/block-storage/{id}": {
+      "get": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/block-storage-volume"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Retrieve block storage volume details",
+        "operationId": "get-block-storage-volume"
+      },
+      "put": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Set block storage volume labels",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "labels": {
+                    "$ref": "#/components/schemas/labels",
+                    "description": "Block storage volume labels"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "update-block-storage-volume-labels"
+      },
+      "delete": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Delete a block storage volume, data will be unrecoverable",
+        "operationId": "delete-block-storage-volume"
+      }
+    },
     "/dbaas-opensearch/{service-name}/user/{username}": {
       "delete": {
         "tags": [
@@ -11850,6 +12077,61 @@
         ],
         "summary": "Delete a DBaaS OpenSearch user",
         "operationId": "delete-dbaas-opensearch-user"
+      }
+    },
+    "/block-storage/{id}:create-snapshot": {
+      "post": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Create a block storage snapshot",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "description": "Snapshot name"
+                  },
+                  "labels": {
+                    "$ref": "#/components/schemas/labels",
+                    "description": "Snapshot labels"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "create-block-storage-snapshot"
       }
     },
     "/private-network/{id}:detach": {
@@ -12215,6 +12497,37 @@
         "parameters": [],
         "summary": "List API keys",
         "operationId": "list-api-keys"
+      }
+    },
+    "/block-storage-snapshot": {
+      "get": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "block-storage-snapshots": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/block-storage-snapshot"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [],
+        "summary": "List block storage snapshots",
+        "operationId": "list-block-storage-snapshots"
       }
     },
     "/dns-domain": {
@@ -14520,6 +14833,63 @@
         "operationId": "get-dns-domain"
       }
     },
+    "/block-storage/{id}:resize-volume": {
+      "put": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/block-storage-volume"
+                }
+              }
+            }
+          }
+        },
+        "description": "This operation resizes a Block storage volume. Note: the volume can only grow, cannot be shrunk.",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Resize a block storage volume",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "size": {
+                    "type": "integer",
+                    "format": "int64",
+                    "minimum": 101,
+                    "maximum": 1024,
+                    "exclusiveMinimum": false,
+                    "exclusiveMaximum": false,
+                    "description": "Volume size in GB"
+                  }
+                },
+                "required": [
+                  "size"
+                ]
+              }
+            }
+          }
+        },
+        "operationId": "resize-block-storage-volume"
+      }
+    },
     "/dbaas-kafka/{service-name}/user/{username}": {
       "delete": {
         "tags": [
@@ -15502,6 +15872,39 @@
         "parameters": [],
         "summary": "List SKS clusters",
         "operationId": "list-sks-clusters"
+      }
+    },
+    "/block-storage/{id}:detach": {
+      "put": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Detach block storage volume",
+        "operationId": "detach-block-storage-volume"
       }
     },
     "/dbaas-integration/{id}": {
@@ -19963,6 +20366,103 @@
         ],
         "summary": "Initiate Redis maintenance update",
         "operationId": "start-dbaas-redis-maintenance"
+      }
+    },
+    "/block-storage": {
+      "get": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "block-storage-volumes": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/block-storage-volume"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "query",
+            "required": false,
+            "name": "instance-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "List block storage volumes",
+        "operationId": "list-block-storage-volumes"
+      },
+      "post": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [],
+        "summary": "Create a block storage volume",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "description": "Volume name"
+                  },
+                  "size": {
+                    "type": "integer",
+                    "format": "int64",
+                    "minimum": 100,
+                    "maximum": 1024,
+                    "exclusiveMinimum": false,
+                    "exclusiveMaximum": false,
+                    "description": "Volume size in GB.\n                            When a snapshot ID is supplied, this defaults to the size of the source volume, but can be set to a larger value."
+                  },
+                  "labels": {
+                    "$ref": "#/components/schemas/labels",
+                    "description": "Volume Labels"
+                  },
+                  "block-storage-snapshot": {
+                    "$ref": "#/components/schemas/block-storage-snapshot-target",
+                    "description": "Block storage snapshot"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "create-block-storage-volume"
       }
     },
     "/dbaas-kafka/{name}/topic/acl-config/{acl-id}": {

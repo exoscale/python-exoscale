@@ -56,6 +56,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.add_instance_protection"><code class="docutils literal notranslate"><span class="pre">Client.add_instance_protection()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.add_rule_to_security_group"><code class="docutils literal notranslate"><span class="pre">Client.add_rule_to_security_group()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.add_service_to_load_balancer"><code class="docutils literal notranslate"><span class="pre">Client.add_service_to_load_balancer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.attach_block_storage_volume_to_instance"><code class="docutils literal notranslate"><span class="pre">Client.attach_block_storage_volume_to_instance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.attach_instance_to_elastic_ip"><code class="docutils literal notranslate"><span class="pre">Client.attach_instance_to_elastic_ip()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.attach_instance_to_private_network"><code class="docutils literal notranslate"><span class="pre">Client.attach_instance_to_private_network()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.attach_instance_to_security_group"><code class="docutils literal notranslate"><span class="pre">Client.attach_instance_to_security_group()</span></code></a></li>
@@ -63,6 +64,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_access_key"><code class="docutils literal notranslate"><span class="pre">Client.create_access_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_anti_affinity_group"><code class="docutils literal notranslate"><span class="pre">Client.create_anti_affinity_group()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_api_key"><code class="docutils literal notranslate"><span class="pre">Client.create_api_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_block_storage_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.create_block_storage_snapshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_block_storage_volume"><code class="docutils literal notranslate"><span class="pre">Client.create_block_storage_volume()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_integration"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_integration()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_kafka_schema_registry_acl_config"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_kafka_schema_registry_acl_config()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_kafka_topic_acl_config"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_kafka_topic_acl_config()</span></code></a></li>
@@ -95,6 +98,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.create_snapshot()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_anti_affinity_group"><code class="docutils literal notranslate"><span class="pre">Client.delete_anti_affinity_group()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_api_key"><code class="docutils literal notranslate"><span class="pre">Client.delete_api_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_block_storage_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.delete_block_storage_snapshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_block_storage_volume"><code class="docutils literal notranslate"><span class="pre">Client.delete_block_storage_volume()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_integration"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_integration()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_kafka_schema_registry_acl_config"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_kafka_schema_registry_acl_config()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_kafka_topic_acl_config"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_kafka_topic_acl_config()</span></code></a></li>
@@ -130,6 +135,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.delete_snapshot()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_ssh_key"><code class="docutils literal notranslate"><span class="pre">Client.delete_ssh_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_template"><code class="docutils literal notranslate"><span class="pre">Client.delete_template()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.detach_block_storage_volume"><code class="docutils literal notranslate"><span class="pre">Client.detach_block_storage_volume()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.detach_instance_from_elastic_ip"><code class="docutils literal notranslate"><span class="pre">Client.detach_instance_from_elastic_ip()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.detach_instance_from_private_network"><code class="docutils literal notranslate"><span class="pre">Client.detach_instance_from_private_network()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.detach_instance_from_security_group"><code class="docutils literal notranslate"><span class="pre">Client.detach_instance_from_security_group()</span></code></a></li>
@@ -140,6 +146,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_access_key"><code class="docutils literal notranslate"><span class="pre">Client.get_access_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_anti_affinity_group"><code class="docutils literal notranslate"><span class="pre">Client.get_anti_affinity_group()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_api_key"><code class="docutils literal notranslate"><span class="pre">Client.get_api_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_block_storage_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.get_block_storage_snapshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_block_storage_volume"><code class="docutils literal notranslate"><span class="pre">Client.get_block_storage_volume()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_ca_certificate"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_ca_certificate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_integration"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_integration()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_kafka_acl_config"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_kafka_acl_config()</span></code></a></li>
@@ -192,6 +200,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_access_keys"><code class="docutils literal notranslate"><span class="pre">Client.list_access_keys()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_anti_affinity_groups"><code class="docutils literal notranslate"><span class="pre">Client.list_anti_affinity_groups()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_api_keys"><code class="docutils literal notranslate"><span class="pre">Client.list_api_keys()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_block_storage_snapshots"><code class="docutils literal notranslate"><span class="pre">Client.list_block_storage_snapshots()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_block_storage_volumes"><code class="docutils literal notranslate"><span class="pre">Client.list_block_storage_volumes()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_dbaas_integration_settings"><code class="docutils literal notranslate"><span class="pre">Client.list_dbaas_integration_settings()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_dbaas_integration_types"><code class="docutils literal notranslate"><span class="pre">Client.list_dbaas_integration_types()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_dbaas_service_types"><code class="docutils literal notranslate"><span class="pre">Client.list_dbaas_service_types()</span></code></a></li>
@@ -237,6 +247,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_private_network_field"><code class="docutils literal notranslate"><span class="pre">Client.reset_private_network_field()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_sks_cluster_field"><code class="docutils literal notranslate"><span class="pre">Client.reset_sks_cluster_field()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_sks_nodepool_field"><code class="docutils literal notranslate"><span class="pre">Client.reset_sks_nodepool_field()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.resize_block_storage_volume"><code class="docutils literal notranslate"><span class="pre">Client.resize_block_storage_volume()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.resize_instance_disk"><code class="docutils literal notranslate"><span class="pre">Client.resize_instance_disk()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_instance_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_instance_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.revert_instance_to_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.revert_instance_to_snapshot()</span></code></a></li>
@@ -257,6 +268,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.stop_dbaas_pg_migration"><code class="docutils literal notranslate"><span class="pre">Client.stop_dbaas_pg_migration()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.stop_dbaas_redis_migration"><code class="docutils literal notranslate"><span class="pre">Client.stop_dbaas_redis_migration()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.stop_instance"><code class="docutils literal notranslate"><span class="pre">Client.stop_instance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_block_storage_volume_labels"><code class="docutils literal notranslate"><span class="pre">Client.update_block_storage_volume_labels()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_integration"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_integration()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_opensearch_acl_config"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_opensearch_acl_config()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_pg_connection_pool"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_pg_connection_pool()</span></code></a></li>
@@ -290,10 +302,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html">Changelog</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="configuration.html">[deprecated] Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">[deprecated] High-level bindings usage</a></li>
 </ul>
 
         </div>
@@ -423,6 +431,26 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">'https:
 <li><p><strong>port</strong> (<em>int</em>) – Port exposed on the Load Balancer’s public IP.</p></li>
 <li><p><strong>target_port</strong> (<em>int</em>) – Port on which the network traffic will be forwarded to on the receiving instance.</p></li>
 <li><p><strong>healthcheck</strong> (<em>dict</em>) – Healthcheck configuration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Operation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.attach_block_storage_volume_to_instance">
+<span class="sig-name descname"><span class="pre">attach_block_storage_volume_to_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.attach_block_storage_volume_to_instance" title="Link to this definition"></a></dt>
+<dd><p>Attach block storage volume to an instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>instance</strong> (<em>dict</em>) – Instance to attach to, this can only be done if the volume is not currently attached.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -570,6 +598,50 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">'https:
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>IAM API Key.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.create_block_storage_snapshot">
+<span class="sig-name descname"><span class="pre">create_block_storage_snapshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.create_block_storage_snapshot" title="Link to this definition"></a></dt>
+<dd><p>Create a block storage snapshot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Snapshot name.</p></li>
+<li><p><strong>labels</strong> (<em>dict</em>) – Snapshot labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Operation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.create_block_storage_volume">
+<span class="sig-name descname"><span class="pre">create_block_storage_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.create_block_storage_volume" title="Link to this definition"></a></dt>
+<dd><p>Create a block storage volume</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Volume name.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – Volume size in GB.
+When a snapshot ID is supplied, this defaults to the size of the source volume, but can be set to a larger value..</p></li>
+<li><p><strong>labels</strong> (<em>dict</em>) – Volume Labels.</p></li>
+<li><p><strong>block_storage_snapshot</strong> (<em>dict</em>) – Block storage snapshot.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Operation.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -1350,6 +1422,40 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">'https:
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.delete_block_storage_snapshot">
+<span class="sig-name descname"><span class="pre">delete_block_storage_snapshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.delete_block_storage_snapshot" title="Link to this definition"></a></dt>
+<dd><p>Delete a block storage snapshot, data will be unrecoverable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Operation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.delete_block_storage_volume">
+<span class="sig-name descname"><span class="pre">delete_block_storage_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.delete_block_storage_volume" title="Link to this definition"></a></dt>
+<dd><p>Delete a block storage volume, data will be unrecoverable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Operation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.delete_dbaas_integration">
 <span class="sig-name descname"><span class="pre">delete_dbaas_integration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.delete_dbaas_integration" title="Link to this definition"></a></dt>
 <dd><p>Delete a DBaaS Integration</p>
@@ -1984,6 +2090,23 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">'https:
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.detach_block_storage_volume">
+<span class="sig-name descname"><span class="pre">detach_block_storage_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.detach_block_storage_volume" title="Link to this definition"></a></dt>
+<dd><p>Detach block storage volume</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Operation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.detach_instance_from_elastic_ip">
 <span class="sig-name descname"><span class="pre">detach_instance_from_elastic_ip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.detach_instance_from_elastic_ip" title="Link to this definition"></a></dt>
 <dd><p>Detach a Compute instance from an Elastic IP</p>
@@ -2164,6 +2287,40 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">'https:
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>IAM API Key.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.get_block_storage_snapshot">
+<span class="sig-name descname"><span class="pre">get_block_storage_snapshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_block_storage_snapshot" title="Link to this definition"></a></dt>
+<dd><p>Retrieve block storage snapshot details</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Block storage snapshot.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.get_block_storage_volume">
+<span class="sig-name descname"><span class="pre">get_block_storage_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_block_storage_volume" title="Link to this definition"></a></dt>
+<dd><p>Retrieve block storage volume details</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Block storage volume.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -2963,6 +3120,32 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">'https:
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.list_block_storage_snapshots">
+<span class="sig-name descname"><span class="pre">list_block_storage_snapshots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.list_block_storage_snapshots" title="Link to this definition"></a></dt>
+<dd><p>List block storage snapshots</p>
+<p>Args:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.list_block_storage_volumes">
+<span class="sig-name descname"><span class="pre">list_block_storage_volumes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.list_block_storage_volumes" title="Link to this definition"></a></dt>
+<dd><p>List block storage volumes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>instance_id</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.list_dbaas_integration_settings">
 <span class="sig-name descname"><span class="pre">list_dbaas_integration_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.list_dbaas_integration_settings" title="Link to this definition"></a></dt>
 <dd><p>Get DBaaS integration settings</p>
@@ -3703,6 +3886,26 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">'https:
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.resize_block_storage_volume">
+<span class="sig-name descname"><span class="pre">resize_block_storage_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.resize_block_storage_volume" title="Link to this definition"></a></dt>
+<dd><p>Resize a block storage volume</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>size</strong> (<em>int</em>) – Volume size in GB.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Block storage volume.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.resize_instance_disk">
 <span class="sig-name descname"><span class="pre">resize_instance_disk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.resize_instance_disk" title="Link to this definition"></a></dt>
 <dd><p>Resize a Compute instance disk</p>
@@ -4051,6 +4254,26 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">'https:
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Operation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.update_block_storage_volume_labels">
+<span class="sig-name descname"><span class="pre">update_block_storage_volume_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.update_block_storage_volume_labels" title="Link to this definition"></a></dt>
+<dd><p>Set block storage volume labels</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>labels</strong> (<em>dict</em>) – Block storage volume labels.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Operation.</p>

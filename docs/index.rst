@@ -15,16 +15,3 @@ This provides Python bindings for the `Exoscale`_ cloud platform API.
 
   v2
   changes
-
-[DEPRECATED] High-level bindings
---------------------------------
-
-.. note::
-
-    These bindings are deprecated and will be removed in future releases.
-
-.. toctree::
-  :maxdepth: 1
-
-  configuration
-  usage

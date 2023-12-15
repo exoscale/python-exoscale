@@ -51,6 +51,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="v2.html">V2 API bindings</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#unreleased">0.9.0 (unreleased)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id1">0.8.0 (2023-05-11)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">0.7.1 (2021-10-18)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#fixes">Fixes</a></li>
@@ -127,6 +128,15 @@
              
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
+<section id="unreleased">
+<h2>0.9.0 (unreleased)<a class="headerlink" href="#unreleased" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">exoscale.api.v2.Client</span></code> improvements:</p>
+<ul class="simple">
+<li><p>Client initialization accepts two signatures: <code class="docutils literal notranslate"><span class="pre">Client(key,</span> <span class="pre">secret,</span> <span class="pre">zone)</span></code> for
+typical use and <code class="docutils literal notranslate"><span class="pre">Client(key,</span> <span class="pre">secret,</span> <span class="pre">url)</span></code> when needing to target another
+endpoint than the public endpoint template.</p></li>
+</ul>
+</section>
 <section id="id1">
 <h2>0.8.0 (2023-05-11)<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <ul class="simple">

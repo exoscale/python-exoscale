@@ -1,6 +1,15 @@
 Changelog
 ---------
 
+0.9.0 (unreleased)
+~~~~~~~~~~~~~~~~~~
+
+``exoscale.api.v2.Client`` improvements:
+
+* Client initialization accepts two signatures: ``Client(key, secret, zone)`` for
+  typical use and ``Client(key, secret, url)`` when needing to target another
+  endpoint than the public endpoint template.
+
 0.8.0 (2023-05-11)
 ~~~~~~~~~~~~~~~~~~
 

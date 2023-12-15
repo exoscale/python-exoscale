@@ -1,3 +1,26 @@
+"""
+
+``exoscale.api.v2`` provides a low-level client targeting Exoscale's
+OpenAPI-based V2 API. This client is dynamically generated from the OpenAPI
+definition shipped with the package.
+
+Examples:
+    Creating a client targeting one of the available zones:
+
+    >>> from exoscale.api.v2 import Client
+    >>> c = Client("api-key", "api-secret", zone="de-fra-1")
+    >>> c.list_instances()
+    {'instances': []}
+
+    Creating a client targeting an endpoint specifically:
+
+    >>> from exoscale.api.v2 import Client
+    >>> c = Client("api-key", "api-secret", url="https://api-ch-gva-2.exoscale.com/v2")
+    >>> c.list_instances()
+    {'instances': []}
+
+"""
+
 import json
 from itertools import chain
 from pathlib import Path
@@ -57,21 +80,26 @@ def _get_ref(path):
 
 class BaseClient:
     def __init__(self, key, secret, url=None, **kwargs):
-        for server in API_SPEC["servers"]:
-            if server["url"] == url:
-                break
-        else:
+        if url is None:
             server = API_SPEC["servers"][0]
-        variables = {
-            var_name: var["default"]
-            for var_name, var in server["variables"].items()
-        }
-        for k, v in kwargs.items():
-            if k not in server["variables"]:
-                raise TypeError(f"Unhandled keyword argument {k!r}.")
-            variables[k] = v
+            variables = {
+                var_name: var["default"]
+                for var_name, var in server["variables"].items()
+            }
+            for k, v in kwargs.items():
+                if k not in server["variables"]:
+                    raise TypeError(f"Unhandled keyword argument {k!r}.")
+                if choices := server["variables"][k].get("enum"):
+                    if v not in choices:
+                        choices_repr = "', '".join(choices)
+                        raise TypeError(
+                            f"Invalid {k}: must be one of '{choices_repr}'."
+                        )
+                variables[k] = v
 
-        self.endpoint = server["url"].format(**variables)
+            self.endpoint = server["url"].format(**variables)
+        else:
+            self.endpoint = url
 
         session = requests.Session()
         session.auth = ExoscaleV2Auth(key, secret)
@@ -237,8 +265,7 @@ def _client_docstring():
 
         secret (str): Exoscale API secret.
 
-        url (str): Endpoint URL template to use. Must be one of ``{servers}``.
-            Defaults to ``{default_server!r}``.
+        url (str): Endpoint URL to use. Defaults to ``{default_server!r}``.
 
         {dynamic_args}
 

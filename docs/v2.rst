@@ -1,13 +1,16 @@
 V2 API bindings
 ===============
 
-This modules contains a low-level client targeting the Exoscale `OpenAPI-based
-V2 API`_. This client is dynamically generated from the OpenAPI definition
-shipped with the package.
+..
+   If you are reading this: most of the V2 API client being dynamically
+   generated, its documentation is generated as well. In order to browse it:
 
-.. _OpenAPI-based V2 API: https://openapi-v2.exoscale.com/
+   - See the generated documentation at
+     https://exoscale.github.io/python-exoscale/v2.html, or
 
-.. autoclass:: exoscale.api.v2.Client
-   :members:
+   - run ``make html`` from the root of the source tree and open
+     build/html/v2.html.
+
+.. automodule:: exoscale.api.v2
+   :members: Client
    :undoc-members:
-   :special-members: __init__

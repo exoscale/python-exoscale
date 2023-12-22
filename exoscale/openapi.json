@@ -61,6 +61,14 @@
       "name": "instances"
     },
     {
+      "description": "\nExoscale's Block Storage offers persistent\nexternally attached volumes for your workloads.",
+      "externalDocs": {
+        "description": "Read more",
+        "url": "https://community.exoscale.com/documentation/compute/"
+      },
+      "name": "block-storage"
+    },
+    {
       "description": "\nSnapshots provide a way to get point-in-time recovery for your Compute instance.\n\n[Read more](https://community.exoscale.com/documentation/compute/snapshots/)",
       "externalDocs": {
         "description": "Read more",
@@ -1185,7 +1193,7 @@
           },
           "labels": {
             "$ref": "#/components/schemas/labels",
-            "description": "Private Network labels"
+            "description": "Resource labels"
           }
         },
         "description": "Private Network"
@@ -1343,7 +1351,7 @@
           },
           "labels": {
             "$ref": "#/components/schemas/labels",
-            "description": "Elastic IP labels"
+            "description": "Resource labels"
           }
         },
         "description": "Elastic IP"
@@ -4702,7 +4710,7 @@
           },
           "labels": {
             "$ref": "#/components/schemas/labels",
-            "description": "Instance Labels"
+            "description": "Resource labels"
           },
           "security-groups": {
             "type": "array",
@@ -6681,7 +6689,7 @@
           },
           "labels": {
             "$ref": "#/components/schemas/labels",
-            "description": "Snapshot labels"
+            "description": "Resource labels"
           },
           "block-storage-volume": {
             "$ref": "#/components/schemas/block-storage-volume-target",
@@ -7603,7 +7611,7 @@
         "properties": {
           "labels": {
             "$ref": "#/components/schemas/labels",
-            "description": "Volume labels"
+            "description": "Resource labels"
           },
           "instance": {
             "$ref": "#/components/schemas/instance-target",
@@ -9670,7 +9678,7 @@
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
-                    "description": "Elastic IP labels"
+                    "description": "Resource labels"
                   }
                 }
               }
@@ -10285,7 +10293,7 @@
     "/block-storage/{id}:attach": {
       "put": {
         "tags": [
-          "instance"
+          "block-storage"
         ],
         "responses": {
           "200": {
@@ -11183,7 +11191,7 @@
     "/block-storage-snapshot/{id}": {
       "delete": {
         "tags": [
-          "instance"
+          "block-storage"
         ],
         "responses": {
           "200": {
@@ -11214,7 +11222,7 @@
       },
       "get": {
         "tags": [
-          "instance"
+          "block-storage"
         ],
         "responses": {
           "200": {
@@ -11602,7 +11610,7 @@
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
-                    "description": "Private Network labels"
+                    "description": "Resource labels"
                   }
                 },
                 "required": [
@@ -11931,7 +11939,7 @@
     "/block-storage/{id}": {
       "get": {
         "tags": [
-          "instance"
+          "block-storage"
         ],
         "responses": {
           "200": {
@@ -11962,7 +11970,7 @@
       },
       "put": {
         "tags": [
-          "instance"
+          "block-storage"
         ],
         "responses": {
           "200": {
@@ -11998,7 +12006,7 @@
                 "properties": {
                   "labels": {
                     "$ref": "#/components/schemas/labels",
-                    "description": "Block storage volume labels"
+                    "description": "Resource labels"
                   }
                 }
               }
@@ -12009,7 +12017,7 @@
       },
       "delete": {
         "tags": [
-          "instance"
+          "block-storage"
         ],
         "responses": {
           "200": {
@@ -12082,7 +12090,7 @@
     "/block-storage/{id}:create-snapshot": {
       "post": {
         "tags": [
-          "instance"
+          "block-storage"
         ],
         "responses": {
           "200": {
@@ -12124,7 +12132,7 @@
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
-                    "description": "Snapshot labels"
+                    "description": "Resource labels"
                   }
                 }
               }
@@ -12251,7 +12259,7 @@
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
-                    "description": "Private Network labels"
+                    "description": "Resource labels"
                   }
                 }
               }
@@ -12502,7 +12510,7 @@
     "/block-storage-snapshot": {
       "get": {
         "tags": [
-          "instance"
+          "block-storage"
         ],
         "responses": {
           "200": {
@@ -14836,7 +14844,7 @@
     "/block-storage/{id}:resize-volume": {
       "put": {
         "tags": [
-          "instance"
+          "block-storage"
         ],
         "responses": {
           "200": {
@@ -15877,7 +15885,7 @@
     "/block-storage/{id}:detach": {
       "put": {
         "tags": [
-          "instance"
+          "block-storage"
         ],
         "responses": {
           "200": {
@@ -16465,7 +16473,7 @@
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
-                    "description": "Elastic IP labels"
+                    "description": "Resource labels"
                   }
                 }
               }
@@ -16689,7 +16697,7 @@
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
-                    "description": "Instance labels"
+                    "description": "Resource labels"
                   }
                 }
               }
@@ -19927,7 +19935,7 @@
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
-                    "description": "Instance Labels"
+                    "description": "Resource labels"
                   },
                   "auto-start": {
                     "type": "boolean",
@@ -20025,7 +20033,7 @@
                           },
                           "labels": {
                             "$ref": "#/components/schemas/labels",
-                            "description": "Instance Labels"
+                            "description": "Resource labels"
                           },
                           "security-groups": {
                             "type": "array",
@@ -20371,7 +20379,7 @@
     "/block-storage": {
       "get": {
         "tags": [
-          "instance"
+          "block-storage"
         ],
         "responses": {
           "200": {
@@ -20410,7 +20418,7 @@
       },
       "post": {
         "tags": [
-          "instance"
+          "block-storage"
         ],
         "responses": {
           "200": {
@@ -20451,7 +20459,7 @@
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
-                    "description": "Volume Labels"
+                    "description": "Resource labels"
                   },
                   "block-storage-snapshot": {
                     "$ref": "#/components/schemas/block-storage-snapshot-target",

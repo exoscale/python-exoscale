@@ -21,6 +21,7 @@ Examples:
 
 """
 
+import copy
 import json
 from itertools import chain
 from pathlib import Path
@@ -57,15 +58,26 @@ for path, item in API_SPEC["paths"].items():
         }
 
 
+def _get_in(payload, keys):
+    """
+    Returns the value in a nested dict, where items is a sequence of keys.
+    """
+    k, *ks = keys
+    ret = payload[k]
+    if ks:
+        return _get_in(ret, ks)
+    else:
+        return ret
+
+
 def _get_ref(path):
     root, *parts = path.split("/")
     if root != "#":
         raise AssertionError("Non-root path start", root, path)
 
-    payload = API_SPEC
-    while parts:
-        item, *parts = parts
-        payload = payload[item]
+    # We're going to mutate payload later on, so make a full copy to avoid
+    # altering API_SPEC.
+    payload = copy.deepcopy(_get_in(API_SPEC, parts))
 
     for name, desc in payload.get("properties", {}).items():
         if "$ref" in desc:
@@ -161,7 +173,34 @@ def _return_docstring(operation):
     ]
     if "$ref" in return_schema:
         ref = _get_ref(return_schema["$ref"])
-        if "description" in ref:
+        if (
+            "properties" in ref
+            and ref["type"] == "object"
+            and "description" in ref
+        ):
+            body = {}
+            for name, prop in ref["properties"].items():
+                if "$ref" in prop:
+                    _ref = _get_ref(prop["$ref"])
+                    item = _ref
+                else:
+                    item = prop
+                typ = _type_translations[item["type"]]
+                desc = prop.get("description")
+                if "enum" in item:
+                    choices = "``, ``".join(map(repr, item["enum"]))
+                    desc += f". Values are ``{choices}``"
+                suffix = f": {desc}" if desc else ""
+                normalized_name = name.replace("-", "_")
+                body[
+                    normalized_name
+                ] = f"**{normalized_name}** ({typ}){suffix}."
+
+            doc = (
+                f"dict: {ref['description']}. A dictionnary with the following keys:"
+                + "\n\n          * ".join([""] + list(body.values()))
+            )
+        elif "description" in ref:
             doc = f'{_type_translations[ref["type"]]}: {ref["description"]}.'
         else:
             doc = _type_translations[ref["type"]]

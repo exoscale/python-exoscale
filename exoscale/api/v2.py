@@ -161,7 +161,25 @@ def _return_docstring(operation):
     ]
     if "$ref" in return_schema:
         ref = _get_ref(return_schema["$ref"])
-        if "description" in ref:
+        if "properties" in ref:
+            body = {}
+            for name, prop in ref["properties"].items():
+                if "$ref" in prop:
+                    ref = _get_ref(prop["$ref"])
+                    item = ref
+                else:
+                    item = prop
+                typ = _type_translations[item["type"]]
+                desc = prop.get("description")
+                if "enum" in item:
+                    choices = "``, ``".join(map(repr, item["enum"]))
+                    desc += f". Values are ``{choices}``"
+                suffix = f": {desc}" if desc else ""
+                normalized_name = name.replace("-", "_")
+                body[normalized_name] = f"{normalized_name} ({typ}){suffix}."
+
+            doc = "\n\n        ".join(body.values())
+        elif "description" in ref:
             doc = f'{_type_translations[ref["type"]]}: {ref["description"]}.'
         else:
             doc = _type_translations[ref["type"]]

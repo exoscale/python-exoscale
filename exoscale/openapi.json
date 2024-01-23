@@ -2489,6 +2489,16 @@
         "maxLength": 63,
         "minLength": 1
       },
+      "dbaas-pg-target-versions": {
+        "type": "string",
+        "enum": [
+          "12",
+          "13",
+          "14",
+          "15",
+          "16"
+        ]
+      },
       "instance-type": {
         "type": "object",
         "properties": {
@@ -8519,14 +8529,7 @@
                 "type": "object",
                 "properties": {
                   "target-version": {
-                    "type": "string",
-                    "enum": [
-                      "11",
-                      "12",
-                      "13",
-                      "14",
-                      "15"
-                    ],
+                    "$ref": "#/components/schemas/dbaas-pg-target-versions",
                     "description": "Target version for upgrade"
                   }
                 },
@@ -19481,8 +19484,7 @@
                     "description": "Custom username for admin user. This must be set only when a new service is being created."
                   },
                   "version": {
-                    "type": "string",
-                    "minLength": 1,
+                    "$ref": "#/components/schemas/dbaas-pg-target-versions",
                     "description": "PostgreSQL major version"
                   },
                   "plan": {

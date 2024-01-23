@@ -5076,6 +5076,7 @@
               "type": "string",
               "enum": [
                 "exoscale-cloud-controller",
+                "exoscale-container-storage-interface",
                 "metrics-server"
               ]
             },
@@ -15830,6 +15831,7 @@
                       "type": "string",
                       "enum": [
                         "exoscale-cloud-controller",
+                        "exoscale-container-storage-interface",
                         "metrics-server"
                       ]
                     },
@@ -16210,6 +16212,7 @@
                       "type": "string",
                       "enum": [
                         "exoscale-cloud-controller",
+                        "exoscale-container-storage-interface",
                         "metrics-server"
                       ]
                     },

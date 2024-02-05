@@ -5831,13 +5831,13 @@
           "api-endpoint": {
             "type": "string",
             "readOnly": true,
-            "x-go-type": "URL",
+            "x-go-type": "Endpoint",
             "description": "Zone API endpoint"
           },
           "sos-endpoint": {
             "type": "string",
             "readOnly": true,
-            "x-go-type": "URL",
+            "x-go-type": "Endpoint",
             "description": "Zone SOS endpoint"
           }
         },

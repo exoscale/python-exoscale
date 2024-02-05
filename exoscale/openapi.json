@@ -5827,6 +5827,18 @@
             "$ref": "#/components/schemas/zone-name",
             "readOnly": true,
             "description": "Zone short name"
+          },
+          "api-endpoint": {
+            "type": "string",
+            "readOnly": true,
+            "x-go-type": "URL",
+            "description": "Zone API endpoint"
+          },
+          "sos-endpoint": {
+            "type": "string",
+            "readOnly": true,
+            "x-go-type": "URL",
+            "description": "Zone SOS endpoint"
           }
         },
         "description": "Zone"

@@ -6683,8 +6683,8 @@
           "size": {
             "type": "integer",
             "format": "int64",
-            "minimum": 100,
-            "maximum": 1024,
+            "minimum": 10,
+            "maximum": 10240,
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
             "description": "Snapshot size"
@@ -7665,8 +7665,8 @@
           "size": {
             "type": "integer",
             "format": "int64",
-            "minimum": 100,
-            "maximum": 1024,
+            "minimum": 10,
+            "maximum": 10240,
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
             "description": "Volume size"
@@ -14897,8 +14897,8 @@
                   "size": {
                     "type": "integer",
                     "format": "int64",
-                    "minimum": 101,
-                    "maximum": 1024,
+                    "minimum": 11,
+                    "maximum": 10240,
                     "exclusiveMinimum": false,
                     "exclusiveMaximum": false,
                     "description": "Volume size in GB"
@@ -20468,8 +20468,8 @@
                   "size": {
                     "type": "integer",
                     "format": "int64",
-                    "minimum": 100,
-                    "maximum": 1024,
+                    "minimum": 10,
+                    "maximum": 10240,
                     "exclusiveMinimum": false,
                     "exclusiveMaximum": false,
                     "description": "Volume size in GB.\n                            When a snapshot ID is supplied, this defaults to the size of the source volume, but can be set to a larger value."

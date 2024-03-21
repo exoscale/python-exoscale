@@ -3371,13 +3371,13 @@
             "type": "string",
             "description": "Operation unique identifier"
           },
+          "iam-role": {
+            "$ref": "#/components/schemas/iam-role",
+            "description": "Details about the IAM Role"
+          },
           "zone": {
             "type": "string",
             "description": "Operation targeted zone"
-          },
-          "remote-addr": {
-            "type": "string",
-            "description": "Client IP address"
           },
           "get-params": {
             "type": "object",
@@ -3393,6 +3393,14 @@
             "minimum": 0,
             "exclusiveMinimum": true,
             "description": "Operation HTTP status"
+          },
+          "source-ip": {
+            "type": "string",
+            "description": "Client IP address"
+          },
+          "iam-api-key": {
+            "$ref": "#/components/schemas/iam-api-key",
+            "description": "Details about the IAM API Key"
           },
           "uri": {
             "type": "string",

@@ -1361,6 +1361,20 @@
         "maxLength": 253,
         "minLength": 1
       },
+      "dbaas-user-opensearch-secrets": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Opensearch username"
+          },
+          "password": {
+            "type": "string",
+            "description": "Opensearch password"
+          }
+        },
+        "description": "Opensearch User secrets"
+      },
       "access-key-resource": {
         "type": "object",
         "properties": {
@@ -3364,6 +3378,32 @@
         },
         "description": "Snapshot"
       },
+      "dbaas-user-kafka-secrets": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Kafka username"
+          },
+          "password": {
+            "type": "string",
+            "description": "Kafka password"
+          },
+          "access-cert": {
+            "type": "string",
+            "description": "Kafka certificate"
+          },
+          "access-cert-expiry": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "access-key": {
+            "type": "string",
+            "description": "Kafka access key"
+          }
+        },
+        "description": "Kafka User secrets"
+      },
       "event": {
         "type": "object",
         "properties": {
@@ -3539,6 +3579,20 @@
           "port"
         ],
         "description": "Elastic IP address healthcheck"
+      },
+      "dbaas-user-redis-secrets": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Redis username"
+          },
+          "password": {
+            "type": "string",
+            "description": "Redis password"
+          }
+        },
+        "description": "Redis User secrets"
       },
       "dbaas-kafka-schema-registry-acl-entry": {
         "type": "object",
@@ -4939,6 +4993,20 @@
         "type": "string",
         "maxLength": 64,
         "minLength": 1
+      },
+      "dbaas-user-mysql-secrets": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "MySQL username"
+          },
+          "password": {
+            "type": "string",
+            "description": "MySQL password"
+          }
+        },
+        "description": "MySQL User secrets"
       },
       "json-schema-kafka-rest": {
         "type": "object",
@@ -6728,6 +6796,20 @@
           }
         },
         "description": "Block storage snapshot"
+      },
+      "dbaas-user-postgres-secrets": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Postgres username"
+          },
+          "password": {
+            "type": "string",
+            "description": "Postgres password"
+          }
+        },
+        "description": "Postgres User secrets"
       },
       "dbaas-service-type-name": {
         "type": "string",
@@ -8621,6 +8703,46 @@
           }
         },
         "operationId": "reset-dbaas-mysql-user-password"
+      }
+    },
+    "/dbaas-redis/{service-name}/user/{username}/password/reveal": {
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-user-redis-secrets"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "username",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-user-username"
+            }
+          }
+        ],
+        "summary": "Reveal the secrets of a DBaaS Redis user",
+        "operationId": "reveal-dbaas-redis-user-password"
       }
     },
     "/load-balancer": {
@@ -11698,6 +11820,46 @@
           }
         },
         "operationId": "start-instance"
+      }
+    },
+    "/dbaas-redis/{service-name}/user/{username}": {
+      "delete": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "username",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-user-username"
+            }
+          }
+        ],
+        "summary": "Delete a DBaaS Redis user",
+        "operationId": "delete-dbaas-redis-user"
       }
     },
     "/security-group/{id}": {
@@ -15223,6 +15385,46 @@
         "operationId": "reset-instance"
       }
     },
+    "/dbaas-mysql/{service-name}/user/{username}/password/reveal": {
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-user-mysql-secrets"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "username",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-user-username"
+            }
+          }
+        ],
+        "summary": "Reveal the secrets of a DBaaS MySQL user",
+        "operationId": "reveal-dbaas-mysql-user-password"
+      }
+    },
     "/ssh-key/{name}": {
       "delete": {
         "tags": [
@@ -15428,6 +15630,46 @@
           }
         },
         "operationId": "detach-instance-from-elastic-ip"
+      }
+    },
+    "/dbaas-kafka/{service-name}/user/{username}/password/reveal": {
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-user-kafka-secrets"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "username",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-user-username"
+            }
+          }
+        ],
+        "summary": "Reveal the secrets of a DBaaS Kafka user",
+        "operationId": "reveal-dbaas-kafka-user-password"
       }
     },
     "/dbaas-task-migration-check/{service}": {
@@ -17626,6 +17868,46 @@
         "operationId": "get-dbaas-settings-kafka"
       }
     },
+    "/dbaas-postgres/{service-name}/user/{username}/password/reveal": {
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-user-postgres-secrets"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "username",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-user-username"
+            }
+          }
+        ],
+        "summary": "Reveal the secrets of a DBaaS Postgres user",
+        "operationId": "reveal-dbaas-postgres-user-password"
+      }
+    },
     "/dbaas-settings-opensearch": {
       "get": {
         "tags": [
@@ -18068,6 +18350,62 @@
         "operationId": "create-sks-nodepool"
       }
     },
+    "/dbaas-redis/{service-name}/user/{username}/password/reset": {
+      "put": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "If no password is provided one will be generated automatically.",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "username",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-user-username"
+            }
+          }
+        ],
+        "summary": "Reset the credentials of a DBaaS Redis user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "$ref": "#/components/schemas/dbaas-user-password",
+                    "description": "New password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "reset-dbaas-redis-user-password"
+      }
+    },
     "/dbaas-opensearch/{name}/maintenance/start": {
       "put": {
         "tags": [
@@ -18186,6 +18524,46 @@
           }
         },
         "operationId": "reset-dbaas-kafka-user-password"
+      }
+    },
+    "/dbaas-opensearch/{service-name}/user/{username}/password/reveal": {
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-user-opensearch-secrets"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "username",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-user-username"
+            }
+          }
+        ],
+        "summary": "Reveal the secrets of a DBaaS OpenSearch user",
+        "operationId": "reveal-dbaas-opensearch-user-password"
       }
     },
     "/dbaas-opensearch/{name}": {
@@ -19917,6 +20295,57 @@
         ],
         "summary": "List available versions for SKS clusters",
         "operationId": "list-sks-cluster-versions"
+      }
+    },
+    "/dbaas-redis/{service-name}/user": {
+      "post": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          }
+        ],
+        "summary": "Create a DBaaS Redis user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "$ref": "#/components/schemas/dbaas-user-username",
+                    "description": "Username"
+                  }
+                },
+                "required": [
+                  "username"
+                ]
+              }
+            }
+          }
+        },
+        "operationId": "create-dbaas-redis-user"
       }
     },
     "/instance": {

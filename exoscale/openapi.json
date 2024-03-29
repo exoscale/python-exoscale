@@ -4811,7 +4811,19 @@
           "private-networks": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/private-network"
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "Private Network ID"
+                },
+                "mac-address": {
+                  "type": "string",
+                  "description": "Private Network MAC address"
+                }
+              },
+              "description": "Private Network"
             },
             "description": "Instance Private Networks"
           },
@@ -4832,6 +4844,11 @@
             "type": "string",
             "minLength": 1,
             "description": "Instance Cloud-init user-data (base64 encoded)"
+          },
+          "mac-address": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Instance MAC address"
           },
           "manager": {
             "$ref": "#/components/schemas/manager",
@@ -13759,7 +13776,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/operation"
                 }
               }
             }
@@ -14072,7 +14089,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/operation"
                 }
               }
             }
@@ -20509,7 +20526,19 @@
                           "private-networks": {
                             "type": "array",
                             "items": {
-                              "$ref": "#/components/schemas/private-network"
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "format": "uuid",
+                                  "description": "Private Network ID"
+                                },
+                                "mac-address": {
+                                  "type": "string",
+                                  "description": "Private Network MAC address"
+                                }
+                              },
+                              "description": "Private Network"
                             },
                             "description": "Instance Private Networks"
                           },
@@ -20524,6 +20553,10 @@
                           "ssh-key": {
                             "$ref": "#/components/schemas/ssh-key",
                             "description": "Instance SSH Key"
+                          },
+                          "mac-address": {
+                            "type": "string",
+                            "description": "Instance MAC address"
                           },
                           "manager": {
                             "$ref": "#/components/schemas/manager",

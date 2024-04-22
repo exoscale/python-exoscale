@@ -6780,6 +6780,13 @@
             "exclusiveMinimum": false,
             "description": "Snapshot size"
           },
+          "volume-size": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "exclusiveMinimum": false,
+            "description": "Original Volume size"
+          },
           "created-at": {
             "type": "string",
             "format": "date-time",

@@ -16072,6 +16072,7 @@
                   "description": {
                     "type": "string",
                     "maxLength": 255,
+                    "nullable": true,
                     "description": "Cluster description"
                   },
                   "labels": {
@@ -16474,6 +16475,7 @@
                   "description": {
                     "type": "string",
                     "maxLength": 255,
+                    "nullable": true,
                     "description": "Cluster description"
                   },
                   "labels": {

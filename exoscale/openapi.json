@@ -11386,6 +11386,60 @@
         "summary": "Delete a block storage snapshot, data will be unrecoverable",
         "operationId": "delete-block-storage-snapshot"
       },
+      "put": {
+        "tags": [
+          "block-storage"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Update block storage volume snapshot",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "nullable": true,
+                    "description": "Snapshot name"
+                  },
+                  "labels": {
+                    "$ref": "#/components/schemas/labels",
+                    "nullable": true,
+                    "description": "Resource labels"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "update-block-storage-snapshot"
+      },
       "get": {
         "tags": [
           "block-storage"
@@ -12202,7 +12256,7 @@
             }
           }
         ],
-        "summary": "Set block storage volume labels",
+        "summary": "Update block storage volume",
         "requestBody": {
           "required": true,
           "content": {
@@ -12210,8 +12264,15 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "nullable": true,
+                    "description": "Volume name"
+                  },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
+                    "nullable": true,
                     "description": "Resource labels"
                   }
                 }
@@ -12219,7 +12280,7 @@
             }
           }
         },
-        "operationId": "update-block-storage-volume-labels"
+        "operationId": "update-block-storage-volume"
       },
       "delete": {
         "tags": [

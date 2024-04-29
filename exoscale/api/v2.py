@@ -194,9 +194,9 @@ def _return_docstring(operation):
                     desc += f". Values are ``{choices}``"
                 suffix = f": {desc}" if desc else ""
                 normalized_name = name.replace("-", "_")
-                body[
-                    normalized_name
-                ] = f"**{normalized_name}** ({typ}){suffix}."
+                body[normalized_name] = (
+                    f"**{normalized_name}** ({typ}){suffix}."
+                )
 
             doc = (
                 f"dict: {ref['description']}. A dictionnary with the following keys:"

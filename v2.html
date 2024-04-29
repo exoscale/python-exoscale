@@ -18,7 +18,7 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=486e5634"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
@@ -77,6 +77,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_pg_database"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_pg_database()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_pg_upgrade_check"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_pg_upgrade_check()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_postgres_user"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_postgres_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_redis_user"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_redis_user()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_service_grafana"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_service_grafana()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_service_kafka"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_service_kafka()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_service_mysql"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_service_mysql()</span></code></a></li>
@@ -110,6 +111,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_pg_connection_pool"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_pg_connection_pool()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_pg_database"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_pg_database()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_postgres_user"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_postgres_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_redis_user"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_redis_user()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_service"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_service()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_service_grafana"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_service_grafana()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_service_kafka"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_service_kafka()</span></code></a></li>
@@ -237,6 +239,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_dbaas_mysql_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reset_dbaas_mysql_user_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_dbaas_opensearch_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reset_dbaas_opensearch_user_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_dbaas_postgres_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reset_dbaas_postgres_user_password()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_dbaas_redis_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reset_dbaas_redis_user_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_elastic_ip_field"><code class="docutils literal notranslate"><span class="pre">Client.reset_elastic_ip_field()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_instance"><code class="docutils literal notranslate"><span class="pre">Client.reset_instance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_instance_field"><code class="docutils literal notranslate"><span class="pre">Client.reset_instance_field()</span></code></a></li>
@@ -249,6 +252,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_sks_nodepool_field"><code class="docutils literal notranslate"><span class="pre">Client.reset_sks_nodepool_field()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.resize_block_storage_volume"><code class="docutils literal notranslate"><span class="pre">Client.resize_block_storage_volume()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.resize_instance_disk"><code class="docutils literal notranslate"><span class="pre">Client.resize_instance_disk()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_dbaas_kafka_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_dbaas_kafka_user_password()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_dbaas_mysql_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_dbaas_mysql_user_password()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_dbaas_opensearch_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_dbaas_opensearch_user_password()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_dbaas_postgres_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_dbaas_postgres_user_password()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_dbaas_redis_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_dbaas_redis_user_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_instance_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_instance_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.revert_instance_to_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.revert_instance_to_snapshot()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.revoke_access_key"><code class="docutils literal notranslate"><span class="pre">Client.revoke_access_key()</span></code></a></li>
@@ -268,7 +276,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.stop_dbaas_pg_migration"><code class="docutils literal notranslate"><span class="pre">Client.stop_dbaas_pg_migration()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.stop_dbaas_redis_migration"><code class="docutils literal notranslate"><span class="pre">Client.stop_dbaas_redis_migration()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.stop_instance"><code class="docutils literal notranslate"><span class="pre">Client.stop_instance()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_block_storage_volume_labels"><code class="docutils literal notranslate"><span class="pre">Client.update_block_storage_volume_labels()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_block_storage_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.update_block_storage_snapshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_block_storage_volume"><code class="docutils literal notranslate"><span class="pre">Client.update_block_storage_volume()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_integration"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_integration()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_opensearch_acl_config"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_opensearch_acl_config()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_pg_connection_pool"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_pg_connection_pool()</span></code></a></li>
@@ -375,7 +384,7 @@ definition shipped with the package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>cidr</strong> (<em>str</em>) – CIDR-formatted network to add.</p></li>
 </ul>
 </dd>
@@ -404,10 +413,23 @@ definition shipped with the package.</p>
 <dd><p>Set instance destruction protection</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -419,7 +441,7 @@ definition shipped with the package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>flow_direction</strong> (<em>str</em>) – Network flow direction to match. Must be one of <code class="docutils literal notranslate"><span class="pre">'egress'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ingress'</span></code>.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Security Group rule description.</p></li>
 <li><p><strong>network</strong> (<em>str</em>) – CIDR-formatted network allowed.</p></li>
@@ -456,7 +478,7 @@ definition shipped with the package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Load Balancer Service name.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Load Balancer Service description.</p></li>
 <li><p><strong>instance_pool</strong> (<em>dict</em>) – Instance Pool to forward traffic to.</p></li>
@@ -493,7 +515,7 @@ definition shipped with the package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>instance</strong> (<em>dict</em>) – Instance to attach to, this can only be done if the volume is not currently attached.</p></li>
 </ul>
 </dd>
@@ -523,7 +545,7 @@ definition shipped with the package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>instance</strong> (<em>dict</em>) – Compute instance.</p></li>
 </ul>
 </dd>
@@ -553,7 +575,7 @@ definition shipped with the package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>ip</strong> (<em>str</em>) – Static IP address lease for the corresponding network interface.</p></li>
 <li><p><strong>instance</strong> (<em>dict</em>) – Compute instance.</p></li>
 </ul>
@@ -584,7 +606,7 @@ definition shipped with the package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>instance</strong> (<em>dict</em>) – Compute instance.</p></li>
 </ul>
 </dd>
@@ -614,7 +636,7 @@ definition shipped with the package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>target_zone</strong> (<em>dict</em>) – Target Zone name.</p></li>
 </ul>
 </dd>
@@ -738,7 +760,7 @@ definition shipped with the package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Snapshot name.</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – Resource labels.</p></li>
 </ul>
@@ -834,7 +856,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>id</strong> (<em>str</em>) – Kafka ACL ID.</p></li>
 <li><p><strong>username</strong> (<em>str</em>) – Kafka username or username pattern.</p></li>
 <li><p><strong>resource</strong> (<em>str</em>) – Kafka Schema Registry name or pattern.</p></li>
@@ -867,7 +889,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>id</strong> (<em>str</em>) – Kafka ACL ID.</p></li>
 <li><p><strong>username</strong> (<em>str</em>) – Kafka username or username pattern.</p></li>
 <li><p><strong>topic</strong> (<em>str</em>) – Kafka topic name or pattern.</p></li>
@@ -900,7 +922,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
 <li><p><strong>username</strong> (<em>str</em>) – Username.</p></li>
 </ul>
 </dd>
@@ -930,7 +952,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
 <li><p><strong>database_name</strong> (<em>str</em>) – Service database name.</p></li>
 </ul>
 </dd>
@@ -960,7 +982,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
 <li><p><strong>username</strong> (<em>str</em>) – Username.</p></li>
 <li><p><strong>authentication</strong> (<em>str</em>) – Authentication option. Must be one of <code class="docutils literal notranslate"><span class="pre">'caching_sha2_password'</span></code>, <code class="docutils literal notranslate"><span class="pre">'mysql_native_password'</span></code>.</p></li>
 </ul>
@@ -991,7 +1013,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
 <li><p><strong>username</strong> (<em>str</em>) – Username.</p></li>
 </ul>
 </dd>
@@ -1021,7 +1043,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Connection pool name.</p></li>
 <li><p><strong>database_name</strong> (<em>str</em>) – Service database name.</p></li>
 <li><p><strong>mode</strong> (<em>str</em>) – PGBouncer pool mode. Must be one of <code class="docutils literal notranslate"><span class="pre">'session'</span></code>, <code class="docutils literal notranslate"><span class="pre">'statement'</span></code>, <code class="docutils literal notranslate"><span class="pre">'transaction'</span></code>.</p></li>
@@ -1055,7 +1077,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
 <li><p><strong>database_name</strong> (<em>str</em>) – Service database name.</p></li>
 <li><p><strong>lc_collate</strong> (<em>str</em>) – Default string sort order (LC_COLLATE) for PostgreSQL database.</p></li>
 <li><p><strong>lc_ctype</strong> (<em>str</em>) – Default character classification (LC_CTYPE) for PostgreSQL database.</p></li>
@@ -1086,7 +1108,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service</strong> (<em>str</em>)</p></li>
 <li><p><strong>target_version</strong> (<em>str</em>) – Target version for upgrade. Must be one of <code class="docutils literal notranslate"><span class="pre">'12'</span></code>, <code class="docutils literal notranslate"><span class="pre">'13'</span></code>, <code class="docutils literal notranslate"><span class="pre">'14'</span></code>, <code class="docutils literal notranslate"><span class="pre">'15'</span></code>, <code class="docutils literal notranslate"><span class="pre">'16'</span></code>.</p></li>
 </ul>
 </dd>
@@ -1103,9 +1125,39 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
 <li><p><strong>username</strong> (<em>str</em>) – Username.</p></li>
-<li><p><strong>allow_replication</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>allow_replication</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.create_dbaas_redis_user">
+<span class="sig-name descname"><span class="pre">create_dbaas_redis_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.create_dbaas_redis_user" title="Link to this definition"></a></dt>
+<dd><p>Create a DBaaS Redis user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>) – Username.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1133,7 +1185,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>maintenance</strong> (<em>dict</em>) – Automatic maintenance settings.</p></li>
 <li><p><strong>plan</strong> (<em>str</em>) – Subscription plan.</p></li>
 <li><p><strong>termination_protection</strong> (<em>bool</em>) – Service is protected against termination and powering off.</p></li>
@@ -1168,7 +1220,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>authentication_methods</strong> (<em>dict</em>) – Kafka authentication methods.</p></li>
 <li><p><strong>kafka_rest_enabled</strong> (<em>bool</em>) – Enable Kafka-REST service.</p></li>
 <li><p><strong>kafka_connect_enabled</strong> (<em>bool</em>) – Allow clients to connect to kafka_connect from the public internet for service nodes that are in a project VPC or another type of private network.</p></li>
@@ -1210,8 +1262,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>backup_schedule</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>backup_schedule</strong> (<em>dict</em>)</p></li>
 <li><p><strong>integrations</strong> (<em>list</em>) – Service integrations to be enabled when creating the service..</p></li>
 <li><p><strong>ip_filter</strong> (<em>list</em>) – Allow incoming connections from CIDR address block, e.g. ‘10.20.0.0/16’.</p></li>
 <li><p><strong>termination_protection</strong> (<em>bool</em>) – Service is protected against termination and powering off.</p></li>
@@ -1253,7 +1305,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>max_index_count</strong> (<em>int</em>) – Maximum number of indexes to keep before deleting the oldest one.</p></li>
 <li><p><strong>keep_index_refresh_interval</strong> (<em>bool</em>) – Aiven automation resets index.refresh_interval to default value for every index to be sure that indices are always visible to search. If it doesn’t fit your case, you can disable this by setting up this flag to true..</p></li>
 <li><p><strong>ip_filter</strong> (<em>list</em>) – Allow incoming connections from CIDR address block, e.g. ‘10.20.0.0/16’.</p></li>
@@ -1295,9 +1347,9 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>pgbouncer_settings</strong> (<em>dict</em>) – PGBouncer connection pooling settings.</p></li>
-<li><p><strong>backup_schedule</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>backup_schedule</strong> (<em>dict</em>)</p></li>
 <li><p><strong>variant</strong> (<em>str</em>) – Variant of the PostgreSQL service, may affect the features that are exposed by default. Must be one of <code class="docutils literal notranslate"><span class="pre">'aiven'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timescale'</span></code>.</p></li>
 <li><p><strong>integrations</strong> (<em>list</em>) – Service integrations to be enabled when creating the service..</p></li>
 <li><p><strong>timescaledb_settings</strong> (<em>dict</em>) – TimescaleDB extension configuration values.</p></li>
@@ -1344,7 +1396,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>maintenance</strong> (<em>dict</em>) – Automatic maintenance settings.</p></li>
 <li><p><strong>plan</strong> (<em>str</em>) – Subscription plan.</p></li>
 <li><p><strong>termination_protection</strong> (<em>bool</em>) – Service is protected against termination and powering off.</p></li>
@@ -1380,7 +1432,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service</strong> (<em>str</em>)</p></li>
 <li><p><strong>source_service_uri</strong> (<em>str</em>) – Service URI of the source MySQL or PostgreSQL database with admin credentials..</p></li>
 <li><p><strong>method</strong> (<em>str</em>) – The migration method to be used (currently supported only by Redis and MySQL service types). Must be one of <code class="docutils literal notranslate"><span class="pre">'dump'</span></code>, <code class="docutils literal notranslate"><span class="pre">'replication'</span></code>.</p></li>
 <li><p><strong>ignore_dbs</strong> (<em>str</em>) – Comma-separated list of databases, which should be ignored during migration (supported by MySQL only at the moment).</p></li>
@@ -1437,7 +1489,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>domain_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>domain_id</strong> (<em>str</em>)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – DNS domain record name.</p></li>
 <li><p><strong>type</strong> (<em>str</em>) – DNS domain record type. Must be one of <code class="docutils literal notranslate"><span class="pre">'A'</span></code>, <code class="docutils literal notranslate"><span class="pre">'AAAA'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ALIAS'</span></code>, <code class="docutils literal notranslate"><span class="pre">'CAA'</span></code>, <code class="docutils literal notranslate"><span class="pre">'CNAME'</span></code>, <code class="docutils literal notranslate"><span class="pre">'HINFO'</span></code>, <code class="docutils literal notranslate"><span class="pre">'MX'</span></code>, <code class="docutils literal notranslate"><span class="pre">'NAPTR'</span></code>, <code class="docutils literal notranslate"><span class="pre">'NS'</span></code>, <code class="docutils literal notranslate"><span class="pre">'POOL'</span></code>, <code class="docutils literal notranslate"><span class="pre">'SPF'</span></code>, <code class="docutils literal notranslate"><span class="pre">'SRV'</span></code>, <code class="docutils literal notranslate"><span class="pre">'SSHFP'</span></code>, <code class="docutils literal notranslate"><span class="pre">'TXT'</span></code>, <code class="docutils literal notranslate"><span class="pre">'URL'</span></code>.</p></li>
 <li><p><strong>content</strong> (<em>str</em>) – DNS domain record content.</p></li>
@@ -1758,7 +1810,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>anti_affinity_groups</strong> (<em>list</em>) – Nodepool Anti-affinity Groups.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Nodepool description.</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – Nodepool labels.</p></li>
@@ -1800,7 +1852,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Create a Snapshot of a Compute instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -1827,7 +1879,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete an Anti-affinity Group</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -1854,7 +1906,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete an API key</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -1881,7 +1933,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a block storage snapshot, data will be unrecoverable</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -1908,7 +1960,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a block storage volume, data will be unrecoverable</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -1935,7 +1987,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a DBaaS Integration</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -1963,8 +2015,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>acl_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>acl_id</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1993,8 +2045,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>acl_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>acl_id</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2023,8 +2075,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>username</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2053,8 +2105,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>database_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>database_name</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2083,8 +2135,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>username</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2113,8 +2165,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>username</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2143,8 +2195,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>connection_pool_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>connection_pool_name</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2173,8 +2225,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>database_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>database_name</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2203,8 +2255,38 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>username</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.delete_dbaas_redis_user">
+<span class="sig-name descname"><span class="pre">delete_dbaas_redis_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.delete_dbaas_redis_user" title="Link to this definition"></a></dt>
+<dd><p>Delete a DBaaS Redis user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2232,7 +2314,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a DBaaS service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2259,7 +2341,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a Grafana service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2286,7 +2368,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a Kafka service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2313,7 +2395,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a MySQL service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2340,7 +2422,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a OpenSearch service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2367,7 +2449,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a Postgres service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2394,7 +2476,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a Redis service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2421,7 +2503,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete DNS Domain</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2449,8 +2531,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>domain_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>record_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>domain_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>record_id</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2478,7 +2560,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete an Elastic IP</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2505,7 +2587,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete IAM Role</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2532,7 +2614,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a Compute instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2559,7 +2641,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete an Instance Pool</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2586,7 +2668,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a Load Balancer</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2614,8 +2696,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>service_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>service_id</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2643,7 +2725,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a Private Network</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2670,7 +2752,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete the PTR DNS record for an elastic IP</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2697,7 +2779,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete the PTR DNS record for an instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2725,8 +2807,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>rule_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>rule_id</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2754,7 +2836,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a Security Group</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2781,7 +2863,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete an SKS cluster</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2809,8 +2891,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>sks_nodepool_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>sks_nodepool_id</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2838,7 +2920,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a Snapshot</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2865,7 +2947,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a SSH key</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2892,7 +2974,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Delete a Template</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2919,7 +3001,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Detach block storage volume</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -2947,7 +3029,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>instance</strong> (<em>dict</em>) – Compute instance.</p></li>
 </ul>
 </dd>
@@ -2977,7 +3059,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>instance</strong> (<em>dict</em>) – Compute instance.</p></li>
 </ul>
 </dd>
@@ -3007,7 +3089,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>instance</strong> (<em>dict</em>) – Compute instance.</p></li>
 </ul>
 </dd>
@@ -3037,8 +3119,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>instances</strong> (<em>list</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>instances</strong> (<em>list</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -3067,9 +3149,9 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>sks_nodepool_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>instances</strong> (<em>list</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>sks_nodepool_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>instances</strong> (<em>list</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -3097,7 +3179,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Export a Snapshot</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -3125,7 +3207,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>ttl</strong> (<em>int</em>) – Validity in seconds of the Kubeconfig user certificate (default: 30 days).</p></li>
 <li><p><strong>user</strong> (<em>str</em>) – User name in the generated Kubeconfig. The certificate present in the Kubeconfig will also have this name set for the CN field..</p></li>
 <li><p><strong>groups</strong> (<em>list</em>) – List of roles. The certificate present in the Kubeconfig will have these roles set in the Org field..</p></li>
@@ -3143,7 +3225,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve IAM Access Key details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>IAM Access Key. A dictionnary with the following keys:</p>
@@ -3173,7 +3255,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve Anti-affinity Group details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Anti-affinity Group. A dictionnary with the following keys:</p>
@@ -3199,7 +3281,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Get API key</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>IAM API Key. A dictionnary with the following keys:</p>
@@ -3224,7 +3306,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve block storage snapshot details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Block storage snapshot. A dictionnary with the following keys:</p>
@@ -3233,6 +3315,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>id</strong> (str): Snapshot ID.</p></li>
 <li><p><strong>name</strong> (str): Snapshot name.</p></li>
 <li><p><strong>size</strong> (int): Snapshot size.</p></li>
+<li><p><strong>volume_size</strong> (int): Original Volume size.</p></li>
 <li><p><strong>created_at</strong> (str): Snapshot creation date.</p></li>
 <li><p><strong>state</strong> (str): Snapshot state. Values are <code class="docutils literal notranslate"><span class="pre">'allocated'</span></code>, <code class="docutils literal notranslate"><span class="pre">'created'</span></code>, <code class="docutils literal notranslate"><span class="pre">'creating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'destroyed'</span></code>, <code class="docutils literal notranslate"><span class="pre">'destroying'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partially-destroyed'</span></code>, <code class="docutils literal notranslate"><span class="pre">'promoting'</span></code>.</p></li>
 <li><p><strong>labels</strong> (dict): Resource labels.</p></li>
@@ -3253,7 +3336,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve block storage volume details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Block storage volume. A dictionnary with the following keys:</p>
@@ -3296,7 +3379,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Get a DBaaS Integration</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -3310,7 +3393,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Get DBaaS kafka ACL configuration</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -3324,7 +3407,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Get a DBaaS migration status</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -3338,7 +3421,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Get DBaaS OpenSearch ACL configuration</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -3352,7 +3435,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Get a DBaaS Grafana service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -3366,7 +3449,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Get a DBaaS Kafka service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -3381,7 +3464,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
 <li><p><strong>limit</strong> (<em>int</em>) – How many log entries to receive at most, up to 500 (default: 100).</p></li>
 <li><p><strong>sort_order</strong> (<em>str</em>) – Sort order for log messages (default: desc). Must be one of <code class="docutils literal notranslate"><span class="pre">'asc'</span></code>, <code class="docutils literal notranslate"><span class="pre">'desc'</span></code>.</p></li>
 <li><p><strong>offset</strong> (<em>str</em>) – Opaque offset identifier.</p></li>
@@ -3400,7 +3483,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
 <li><p><strong>period</strong> (<em>str</em>) – Metrics time period (default: hour). Must be one of <code class="docutils literal notranslate"><span class="pre">'day'</span></code>, <code class="docutils literal notranslate"><span class="pre">'hour'</span></code>, <code class="docutils literal notranslate"><span class="pre">'month'</span></code>, <code class="docutils literal notranslate"><span class="pre">'week'</span></code>, <code class="docutils literal notranslate"><span class="pre">'year'</span></code>.</p></li>
 </ul>
 </dd>
@@ -3416,7 +3499,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Get a DBaaS MySQL service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -3430,7 +3513,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Get a DBaaS OpenSearch service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -3444,7 +3527,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Get a DBaaS PostgreSQL service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -3458,7 +3541,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Get a DBaaS Redis service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -3472,7 +3555,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Get a DBaaS service type</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>service_type_name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>service_type_name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>DBaaS service. A dictionnary with the following keys:</p>
@@ -3572,8 +3655,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service</strong> (<em>str</em>) – </p></li>
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service</strong> (<em>str</em>)</p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -3588,7 +3671,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve Deploy Target details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Deploy target. A dictionnary with the following keys:</p>
@@ -3614,7 +3697,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve DNS domain details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>DNS domain. A dictionnary with the following keys:</p>
@@ -3640,8 +3723,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>domain_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>record_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>domain_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>record_id</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -3672,7 +3755,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve DNS domain zone file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -3686,7 +3769,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve Elastic IP details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Elastic IP. A dictionnary with the following keys:</p>
@@ -3737,7 +3820,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve IAM Role</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>IAM Role. A dictionnary with the following keys:</p>
@@ -3766,7 +3849,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve Compute instance details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Instance. A dictionnary with the following keys:</p>
@@ -3784,6 +3867,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>state</strong> (str): Instance state. Values are <code class="docutils literal notranslate"><span class="pre">'destroyed'</span></code>, <code class="docutils literal notranslate"><span class="pre">'destroying'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'expunging'</span></code>, <code class="docutils literal notranslate"><span class="pre">'migrating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'running'</span></code>, <code class="docutils literal notranslate"><span class="pre">'starting'</span></code>, <code class="docutils literal notranslate"><span class="pre">'stopped'</span></code>, <code class="docutils literal notranslate"><span class="pre">'stopping'</span></code>.</p></li>
 <li><p><strong>ssh_key</strong> (dict): Instance SSH Key.</p></li>
 <li><p><strong>user_data</strong> (str): Instance Cloud-init user-data (base64 encoded).</p></li>
+<li><p><strong>mac_address</strong> (str): Instance MAC address.</p></li>
 <li><p><strong>manager</strong> (dict): Instance manager.</p></li>
 <li><p><strong>deploy_target</strong> (dict): Instance Deploy Target.</p></li>
 <li><p><strong>ipv6_address</strong> (str): Instance IPv6 address.</p></li>
@@ -3809,7 +3893,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve Instance Pool details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Instance Pool. A dictionnary with the following keys:</p>
@@ -3854,7 +3938,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve Instance Type details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Compute instance type. A dictionnary with the following keys:</p>
@@ -3884,7 +3968,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve Load Balancer details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Load Balancer. A dictionnary with the following keys:</p>
@@ -3915,8 +3999,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>service_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>service_id</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -3950,7 +4034,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve Operation details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -3977,7 +4061,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve Private Network details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Private Network. A dictionnary with the following keys:</p>
@@ -4007,7 +4091,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve Resource Quota</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>entity</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>entity</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Organization Quota. A dictionnary with the following keys:</p>
@@ -4032,7 +4116,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Query the PTR DNS records for an elastic IP</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -4046,7 +4130,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Query the PTR DNS records for an instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -4060,7 +4144,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve Security Group details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Security Group. A dictionnary with the following keys:</p>
@@ -4087,7 +4171,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve SKS cluster details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>SKS Cluster. A dictionnary with the following keys:</p>
@@ -4123,8 +4207,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>authority</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>authority</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -4139,7 +4223,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Get the latest inspection result</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -4154,8 +4238,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>sks_nodepool_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>sks_nodepool_id</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -4198,7 +4282,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve Snapshot details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Snapshot. A dictionnary with the following keys:</p>
@@ -4228,8 +4312,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bucket</strong> (<em>str</em>) – </p></li>
-<li><p><strong>key</strong> (<em>str</em>) – </p></li>
+<li><p><strong>bucket</strong> (<em>str</em>)</p></li>
+<li><p><strong>key</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -4244,7 +4328,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve SSH key details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>SSH key. A dictionnary with the following keys:</p>
@@ -4268,7 +4352,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Retrieve Template details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Instance template. A dictionnary with the following keys:</p>
@@ -4379,7 +4463,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>List block storage volumes</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>instance_id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>instance_id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -4394,9 +4478,9 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>integration_type</strong> (<em>str</em>) – </p></li>
-<li><p><strong>source_type</strong> (<em>str</em>) – </p></li>
-<li><p><strong>dest_type</strong> (<em>str</em>) – </p></li>
+<li><p><strong>integration_type</strong> (<em>str</em>)</p></li>
+<li><p><strong>source_type</strong> (<em>str</em>)</p></li>
+<li><p><strong>dest_type</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -4459,7 +4543,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>List DNS domain records</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>domain_id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>domain_id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -4498,8 +4582,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>from</strong> (<em>str</em>) – </p></li>
-<li><p><strong>to</strong> (<em>str</em>) – </p></li>
+<li><p><strong>from</strong> (<em>str</em>)</p></li>
+<li><p><strong>to</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -4551,9 +4635,9 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>manager_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>manager_type</strong> (<em>str</em>) – </p></li>
-<li><p><strong>ip_address</strong> (<em>str</em>) – </p></li>
+<li><p><strong>manager_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>manager_type</strong> (<em>str</em>)</p></li>
+<li><p><strong>ip_address</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -4604,7 +4688,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>List Security Groups.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>visibility</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>visibility</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -4618,7 +4702,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Resources that are scheduled to be removed in future kubernetes releases</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list</p>
@@ -4632,7 +4716,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>List available versions for SKS clusters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>include_deprecated</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>include_deprecated</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -4695,8 +4779,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>visibility</strong> (<em>str</em>) – </p></li>
-<li><p><strong>family</strong> (<em>str</em>) – </p></li>
+<li><p><strong>visibility</strong> (<em>str</em>)</p></li>
+<li><p><strong>family</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -4724,7 +4808,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Template name.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Template description.</p></li>
 <li><p><strong>default_user</strong> (<em>str</em>) – Template default user.</p></li>
@@ -4757,7 +4841,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Reboot a Compute instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -4855,7 +4939,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>cidr</strong> (<em>str</em>) – CIDR-formatted network to remove.</p></li>
 </ul>
 </dd>
@@ -4884,10 +4968,23 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Remove instance destruction protection</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4899,8 +4996,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>username</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
 <li><p><strong>password</strong> (<em>str</em>) – New password.</p></li>
 </ul>
 </dd>
@@ -4930,8 +5027,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>username</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
 <li><p><strong>password</strong> (<em>str</em>) – New password.</p></li>
 <li><p><strong>authentication</strong> (<em>str</em>) – Authentication method. Must be one of <code class="docutils literal notranslate"><span class="pre">'caching_sha2_password'</span></code>, <code class="docutils literal notranslate"><span class="pre">'mysql_native_password'</span></code>.</p></li>
 </ul>
@@ -4962,8 +5059,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>username</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
 <li><p><strong>password</strong> (<em>str</em>) – New password.</p></li>
 </ul>
 </dd>
@@ -4993,8 +5090,39 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>username</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – New password.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.reset_dbaas_redis_user_password">
+<span class="sig-name descname"><span class="pre">reset_dbaas_redis_user_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reset_dbaas_redis_user_password" title="Link to this definition"></a></dt>
+<dd><p>Reset the credentials of a DBaaS Redis user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
 <li><p><strong>password</strong> (<em>str</em>) – New password.</p></li>
 </ul>
 </dd>
@@ -5024,8 +5152,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>field</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>field</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5054,7 +5182,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>template</strong> (<em>dict</em>) – Template to recreate Instance from.</p></li>
 <li><p><strong>disk_size</strong> (<em>int</em>) – Instance disk size in GB.</p></li>
 </ul>
@@ -5085,8 +5213,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>field</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>field</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5114,7 +5242,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Reset a compute instance password</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5142,8 +5270,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>field</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>field</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5172,8 +5300,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>field</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>field</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5202,9 +5330,9 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>service_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>field</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>service_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>field</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5233,8 +5361,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>field</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>field</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5263,8 +5391,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>field</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>field</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5293,9 +5421,9 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>sks_nodepool_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>field</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>sks_nodepool_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>field</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5324,7 +5452,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>size</strong> (<em>int</em>) – Volume size in GB.</p></li>
 </ul>
 </dd>
@@ -5358,7 +5486,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>disk_size</strong> (<em>int</em>) – Instance disk size in GB.</p></li>
 </ul>
 </dd>
@@ -5382,12 +5510,150 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.reveal_dbaas_kafka_user_password">
+<span class="sig-name descname"><span class="pre">reveal_dbaas_kafka_user_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reveal_dbaas_kafka_user_password" title="Link to this definition"></a></dt>
+<dd><p>Reveal the secrets of a DBaaS Kafka user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Kafka User secrets. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>username</strong> (str): Kafka username.</p></li>
+<li><p><strong>password</strong> (str): Kafka password.</p></li>
+<li><p><strong>access_cert</strong> (str): Kafka certificate.</p></li>
+<li><p><strong>access_cert_expiry</strong> (str).</p></li>
+<li><p><strong>access_key</strong> (str): Kafka access key.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.reveal_dbaas_mysql_user_password">
+<span class="sig-name descname"><span class="pre">reveal_dbaas_mysql_user_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reveal_dbaas_mysql_user_password" title="Link to this definition"></a></dt>
+<dd><p>Reveal the secrets of a DBaaS MySQL user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>MySQL User secrets. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>username</strong> (str): MySQL username.</p></li>
+<li><p><strong>password</strong> (str): MySQL password.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.reveal_dbaas_opensearch_user_password">
+<span class="sig-name descname"><span class="pre">reveal_dbaas_opensearch_user_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reveal_dbaas_opensearch_user_password" title="Link to this definition"></a></dt>
+<dd><p>Reveal the secrets of a DBaaS OpenSearch user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Opensearch User secrets. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>username</strong> (str): Opensearch username.</p></li>
+<li><p><strong>password</strong> (str): Opensearch password.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.reveal_dbaas_postgres_user_password">
+<span class="sig-name descname"><span class="pre">reveal_dbaas_postgres_user_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reveal_dbaas_postgres_user_password" title="Link to this definition"></a></dt>
+<dd><p>Reveal the secrets of a DBaaS Postgres user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Postgres User secrets. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>username</strong> (str): Postgres username.</p></li>
+<li><p><strong>password</strong> (str): Postgres password.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.reveal_dbaas_redis_user_password">
+<span class="sig-name descname"><span class="pre">reveal_dbaas_redis_user_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reveal_dbaas_redis_user_password" title="Link to this definition"></a></dt>
+<dd><p>Reveal the secrets of a DBaaS Redis user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Redis User secrets. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>username</strong> (str): Redis username.</p></li>
+<li><p><strong>password</strong> (str): Redis password.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.reveal_instance_password">
 <span class="sig-name descname"><span class="pre">reveal_instance_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reveal_instance_password" title="Link to this definition"></a></dt>
 <dd><p>Reveal the password used during instance creation or the latest password reset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Instance password. A dictionnary with the following keys:</p>
@@ -5411,7 +5677,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>instance_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>instance_id</strong> (<em>str</em>)</p></li>
 <li><p><strong>id</strong> (<em>str</em>) – Snapshot ID.</p></li>
 </ul>
 </dd>
@@ -5440,7 +5706,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Revoke an IAM Access Key</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5467,7 +5733,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Rotate Exoscale CCM credentials</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5494,7 +5760,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Rotate operators certificate authority</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5522,7 +5788,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>instance_type</strong> (<em>dict</em>) – Instance Type.</p></li>
 </ul>
 </dd>
@@ -5552,7 +5818,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>size</strong> (<em>int</em>) – Number of managed Instances.</p></li>
 </ul>
 </dd>
@@ -5582,8 +5848,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>sks_nodepool_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>sks_nodepool_id</strong> (<em>str</em>)</p></li>
 <li><p><strong>size</strong> (<em>int</em>) – Number of instances.</p></li>
 </ul>
 </dd>
@@ -5612,7 +5878,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Initiate Grafana maintenance update</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5639,7 +5905,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Initiate Kafka maintenance update</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5666,7 +5932,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Initiate MySQL maintenance update</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5693,7 +5959,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Initiate OpenSearch maintenance update</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5720,7 +5986,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Initiate PostgreSQL maintenance update</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5747,7 +6013,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Initiate Redis maintenance update</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5775,7 +6041,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>rescue_profile</strong> (<em>str</em>) – Boot in Rescue Mode, using named profile (supported: netboot, netboot-efi). Must be one of <code class="docutils literal notranslate"><span class="pre">'netboot'</span></code>, <code class="docutils literal notranslate"><span class="pre">'netboot-efi'</span></code>.</p></li>
 </ul>
 </dd>
@@ -5804,7 +6070,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Stop a DBaaS MySQL migration</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5831,7 +6097,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Stop a DBaaS PostgreSQL migration</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5858,7 +6124,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Stop a DBaaS Redis migration</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5885,7 +6151,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Stop a Compute instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
@@ -5907,13 +6173,45 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="exoscale.api.v2.Client.update_block_storage_volume_labels">
-<span class="sig-name descname"><span class="pre">update_block_storage_volume_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.update_block_storage_volume_labels" title="Link to this definition"></a></dt>
-<dd><p>Set block storage volume labels</p>
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.update_block_storage_snapshot">
+<span class="sig-name descname"><span class="pre">update_block_storage_snapshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.update_block_storage_snapshot" title="Link to this definition"></a></dt>
+<dd><p>Update block storage volume snapshot</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Snapshot name.</p></li>
+<li><p><strong>labels</strong> (<em>dict</em>) – Resource labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.update_block_storage_volume">
+<span class="sig-name descname"><span class="pre">update_block_storage_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.update_block_storage_volume" title="Link to this definition"></a></dt>
+<dd><p>Update block storage volume</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Volume name.</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – Resource labels.</p></li>
 </ul>
 </dd>
@@ -5943,7 +6241,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>settings</strong> (<em>dict</em>) – Integration settings.</p></li>
 </ul>
 </dd>
@@ -5973,7 +6271,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>acls</strong> (<em>list</em>) – List of OpenSearch ACLs.</p></li>
 <li><p><strong>acl_enabled</strong> (<em>bool</em>) – Enable OpenSearch ACLs. When disabled authenticated service users have unrestricted access..</p></li>
 <li><p><strong>extended_acl_enabled</strong> (<em>bool</em>) – Enable to enforce index rules in a limited fashion for requests that use the _mget, _msearch, and _bulk APIs.</p></li>
@@ -6005,8 +6303,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>connection_pool_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>connection_pool_name</strong> (<em>str</em>)</p></li>
 <li><p><strong>database_name</strong> (<em>str</em>) – Service database name.</p></li>
 <li><p><strong>mode</strong> (<em>str</em>) – PGBouncer pool mode. Must be one of <code class="docutils literal notranslate"><span class="pre">'session'</span></code>, <code class="docutils literal notranslate"><span class="pre">'statement'</span></code>, <code class="docutils literal notranslate"><span class="pre">'transaction'</span></code>.</p></li>
 <li><p><strong>size</strong> (<em>int</em>) – Size of PGBouncer’s PostgreSQL side connection pool.</p></li>
@@ -6039,9 +6337,9 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>service_name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>username</strong> (<em>str</em>) – </p></li>
-<li><p><strong>allow_replication</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
+<li><p><strong>allow_replication</strong> (<em>bool</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -6057,7 +6355,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>maintenance</strong> (<em>dict</em>) – Automatic maintenance settings.</p></li>
 <li><p><strong>plan</strong> (<em>str</em>) – Subscription plan.</p></li>
 <li><p><strong>termination_protection</strong> (<em>bool</em>) – Service is protected against termination and powering off.</p></li>
@@ -6091,7 +6389,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>authentication_methods</strong> (<em>dict</em>) – Kafka authentication methods.</p></li>
 <li><p><strong>kafka_rest_enabled</strong> (<em>bool</em>) – Enable Kafka-REST service.</p></li>
 <li><p><strong>kafka_connect_enabled</strong> (<em>bool</em>) – Allow clients to connect to kafka_connect from the public internet for service nodes that are in a project VPC or another type of private network.</p></li>
@@ -6133,7 +6431,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>maintenance</strong> (<em>dict</em>) – Automatic maintenance settings.</p></li>
 <li><p><strong>plan</strong> (<em>str</em>) – Subscription plan.</p></li>
 <li><p><strong>termination_protection</strong> (<em>bool</em>) – Service is protected against termination and powering off.</p></li>
@@ -6141,7 +6439,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>mysql_settings</strong> (<em>dict</em>) – MySQL-specific settings.</p></li>
 <li><p><strong>migration</strong> (<em>dict</em>) – Migrate data from existing server.</p></li>
 <li><p><strong>binlog_retention_period</strong> (<em>int</em>) – The minimum amount of time in seconds to keep binlog entries before deletion. This may be extended for services that require binlog entries for longer than the default for example if using the MySQL Debezium Kafka connector..</p></li>
-<li><p><strong>backup_schedule</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>backup_schedule</strong> (<em>dict</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -6170,7 +6468,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>max_index_count</strong> (<em>int</em>) – Maximum number of indexes to keep before deleting the oldest one.</p></li>
 <li><p><strong>keep_index_refresh_interval</strong> (<em>bool</em>) – Aiven automation resets index.refresh_interval to default value for every index to be sure that indices are always visible to search. If it doesn’t fit your case, you can disable this by setting up this flag to true..</p></li>
 <li><p><strong>ip_filter</strong> (<em>list</em>) – Allow incoming connections from CIDR address block, e.g. ‘10.20.0.0/16’.</p></li>
@@ -6210,9 +6508,9 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>pgbouncer_settings</strong> (<em>dict</em>) – PGBouncer connection pooling settings.</p></li>
-<li><p><strong>backup_schedule</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>backup_schedule</strong> (<em>dict</em>)</p></li>
 <li><p><strong>variant</strong> (<em>str</em>) – Variant of the PostgreSQL service, may affect the features that are exposed by default. Must be one of <code class="docutils literal notranslate"><span class="pre">'aiven'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timescale'</span></code>.</p></li>
 <li><p><strong>timescaledb_settings</strong> (<em>dict</em>) – TimescaleDB extension configuration values.</p></li>
 <li><p><strong>ip_filter</strong> (<em>list</em>) – Allow incoming connections from CIDR address block, e.g. ‘10.20.0.0/16’.</p></li>
@@ -6254,7 +6552,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
 <li><p><strong>maintenance</strong> (<em>dict</em>) – Automatic maintenance settings.</p></li>
 <li><p><strong>plan</strong> (<em>str</em>) – Subscription plan.</p></li>
 <li><p><strong>termination_protection</strong> (<em>bool</em>) – Service is protected against termination and powering off.</p></li>
@@ -6289,8 +6587,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>domain_id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>record_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>domain_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>record_id</strong> (<em>str</em>)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – DNS domain record name.</p></li>
 <li><p><strong>content</strong> (<em>str</em>) – DNS domain record content.</p></li>
 <li><p><strong>ttl</strong> (<em>int</em>) – DNS domain record TTL.</p></li>
@@ -6323,7 +6621,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Elastic IP description.</p></li>
 <li><p><strong>healthcheck</strong> (<em>dict</em>) – Elastic IP healthcheck.</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – Resource labels.</p></li>
@@ -6385,7 +6683,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – IAM Role description.</p></li>
 <li><p><strong>permissions</strong> (<em>list</em>) – IAM Role permissions.</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – IAM Role labels.</p></li>
@@ -6417,7 +6715,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>default_service_strategy</strong> (<em>str</em>) – IAM default service strategy. Must be one of <code class="docutils literal notranslate"><span class="pre">'allow'</span></code>, <code class="docutils literal notranslate"><span class="pre">'deny'</span></code>.</p></li>
 <li><p><strong>services</strong> (<em>dict</em>) – IAM services.</p></li>
 </ul>
@@ -6448,7 +6746,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Instance name.</p></li>
 <li><p><strong>user_data</strong> (<em>str</em>) – Instance Cloud-init user-data.</p></li>
 <li><p><strong>public_ip_assignment</strong> (<em>str</em>) – Assign public IP to the Instance. Must be one of <code class="docutils literal notranslate"><span class="pre">'dual'</span></code>, <code class="docutils literal notranslate"><span class="pre">'inet4'</span></code>, <code class="docutils literal notranslate"><span class="pre">'none'</span></code>.</p></li>
@@ -6481,7 +6779,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>anti_affinity_groups</strong> (<em>list</em>) – Instance Pool Anti-affinity Groups.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Instance Pool description.</p></li>
 <li><p><strong>public_ip_assignment</strong> (<em>str</em>) – Assign public IP to Instances. Must be one of <code class="docutils literal notranslate"><span class="pre">'dual'</span></code>, <code class="docutils literal notranslate"><span class="pre">'inet4'</span></code>, <code class="docutils literal notranslate"><span class="pre">'none'</span></code>.</p></li>
@@ -6528,10 +6826,10 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Load Balancer name.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Load Balancer description.</p></li>
-<li><p><strong>labels</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>labels</strong> (<em>dict</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -6560,8 +6858,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>service_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>service_id</strong> (<em>str</em>)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Load Balancer Service name.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Load Balancer Service description.</p></li>
 <li><p><strong>protocol</strong> (<em>str</em>) – Network traffic protocol. Must be one of <code class="docutils literal notranslate"><span class="pre">'tcp'</span></code>, <code class="docutils literal notranslate"><span class="pre">'udp'</span></code>.</p></li>
@@ -6597,7 +6895,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Private Network name.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Private Network description.</p></li>
 <li><p><strong>netmask</strong> (<em>str</em>) – Private Network netmask.</p></li>
@@ -6632,9 +6930,9 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>ip</strong> (<em>str</em>) – Static IP address lease for the corresponding network interface.</p></li>
-<li><p><strong>instance</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>instance</strong> (<em>dict</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -6663,8 +6961,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>domain_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>domain_name</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -6693,8 +6991,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>domain_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>domain_name</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -6723,7 +7021,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Cluster name.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Cluster description.</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – Cluster labels.</p></li>
@@ -6758,8 +7056,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
-<li><p><strong>sks_nodepool_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>sks_nodepool_id</strong> (<em>str</em>)</p></li>
 <li><p><strong>anti_affinity_groups</strong> (<em>list</em>) – Nodepool Anti-affinity Groups.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Nodepool description.</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – Nodepool labels.</p></li>
@@ -6799,7 +7097,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Template name.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Template Description.</p></li>
 </ul>
@@ -6830,7 +7128,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>version</strong> (<em>str</em>) – Control plane Kubernetes version.</p></li>
 </ul>
 </dd>
@@ -6859,7 +7157,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>Upgrade a SKS cluster to pro</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>

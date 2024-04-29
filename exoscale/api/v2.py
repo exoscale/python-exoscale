@@ -129,6 +129,7 @@ class BaseClient:
 
         path = op["path"]
         query_params = {}
+        path_params = {}
         if parameters is None:
             parameters = {}
         for param in op["operation"].get("parameters", []):
@@ -138,10 +139,11 @@ class BaseClient:
             if name in parameters:
                 value = parameters[name]
                 if param["in"] == "path":
-                    # TODO validate
-                    path = path.format(**{name: value})
+                    path_params[name] = value
                 elif param["in"] == "query":
                     query_params[name] = value
+
+        path = path.format(**path_params)
 
         url = f"{self.endpoint}{path}"
 

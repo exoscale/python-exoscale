@@ -4,7 +4,7 @@ Changelog
 0.10.0 (unreleased)
 ~~~~~~~~~~~~~~~~~~~
 
-0.9.0 (2024-04-29)
+0.9.1 (2024-04-29)
 ~~~~~~~~~~~~~~~~~~
 
 ``exoscale.api.v2.Client`` improvements:

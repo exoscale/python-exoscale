@@ -1,7 +1,10 @@
 Changelog
 ---------
 
-0.9.0 (unreleased)
+0.10.0 (unreleased)
+~~~~~~~~~~~~~~~~~~~
+
+0.9.0 (2024-04-29)
 ~~~~~~~~~~~~~~~~~~
 
 ``exoscale.api.v2.Client`` improvements:
@@ -9,11 +12,24 @@ Changelog
 * Client initialization accepts two signatures: ``Client(key, secret, zone)`` for
   typical use and ``Client(key, secret, url)`` when needing to target another
   endpoint than the public endpoint template.
+* Drop support for Python 3.7, add Python 3.12 to the testing matrix.
+* Fix operations with multiple path parameters (`@thomas-chauvet https://github.com/exoscale/python-exoscale/pull/57`)
+* API changes and additions:
+  * DBaaS:
+    * integrations settings
+    * Split secrets over to separate endpoints
+    * Add zone to service details
+  * DNS record types cleanup
+  * Instance password reset operation
+  * Provide ``at-vie-2`` in the zones choices
+  * Block Storage operations and CSI addon
+  * Audit-trail format adjustments
+  * Add MAC address to private network attachments
 
 0.8.0 (2023-05-11)
 ~~~~~~~~~~~~~~~~~~
 
-- Add `exoscale.api.v2.Client`: a low-level API client targeting the Exoscale
+- Add ``exoscale.api.v2.Client``: a low-level API client targeting the Exoscale
   V2 API.
 
 0.7.1 (2021-10-18)

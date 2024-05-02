@@ -17038,7 +17038,7 @@
                     "type": "string",
                     "maxLength": 32768,
                     "minLength": 1,
-                    "description": "Instance Cloud-init user-data"
+                    "description": "Instance Cloud-init user-data (base64 encoded)"
                   },
                   "public-ip-assignment": {
                     "$ref": "#/components/schemas/public-ip-assignment",
@@ -20506,7 +20506,7 @@
                     "type": "string",
                     "maxLength": 32768,
                     "minLength": 1,
-                    "description": "Instance Cloud-init user-data"
+                    "description": "Instance Cloud-init user-data (base64 encoded)"
                   },
                   "deploy-target": {
                     "$ref": "#/components/schemas/deploy-target",

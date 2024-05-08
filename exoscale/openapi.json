@@ -5343,10 +5343,10 @@
             "type": "integer",
             "format": "int64",
             "minimum": 10,
-            "maximum": 50000,
+            "maximum": 51200,
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
-            "description": "Instances disk size in GB"
+            "description": "Instances disk size in GiB"
           },
           "ssh-keys": {
             "type": "array",
@@ -5520,10 +5520,10 @@
             "type": "integer",
             "format": "int64",
             "minimum": 20,
-            "maximum": 50000,
+            "maximum": 51200,
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
-            "description": "Nodepool instances disk size in GB"
+            "description": "Nodepool instances disk size in GiB"
           },
           "version": {
             "type": "string",
@@ -9984,8 +9984,13 @@
                     "description": "Instance Pool description"
                   },
                   "public-ip-assignment": {
-                    "$ref": "#/components/schemas/public-ip-assignment",
-                    "description": "Assign public IP to Instances"
+                    "type": "string",
+                    "enum": [
+                      "dual",
+                      "inet4",
+                      "none"
+                    ],
+                    "description": "Determines public IP assignment of the Instances. Type `none` is final and can't be changed later on."
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
@@ -10070,10 +10075,10 @@
                     "type": "integer",
                     "format": "int64",
                     "minimum": 10,
-                    "maximum": 50000,
+                    "maximum": 51200,
                     "exclusiveMinimum": false,
                     "exclusiveMaximum": false,
-                    "description": "Instances disk size in GB"
+                    "description": "Instances disk size in GiB"
                   },
                   "ssh-keys": {
                     "type": "array",
@@ -11261,10 +11266,10 @@
                     "type": "integer",
                     "format": "int64",
                     "minimum": 20,
-                    "maximum": 50000,
+                    "maximum": 51200,
                     "exclusiveMinimum": false,
                     "exclusiveMaximum": false,
-                    "description": "Nodepool instances disk size in GB"
+                    "description": "Nodepool instances disk size in GiB"
                   }
                 }
               }
@@ -11640,8 +11645,12 @@
                     "description": "Instance Pool description"
                   },
                   "public-ip-assignment": {
-                    "$ref": "#/components/schemas/public-ip-assignment",
-                    "description": "Assign public IP to Instances"
+                    "type": "string",
+                    "enum": [
+                      "dual",
+                      "inet4"
+                    ],
+                    "description": "Determines public IP assignment of the Instances."
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
@@ -11724,10 +11733,10 @@
                     "type": "integer",
                     "format": "int64",
                     "minimum": 10,
-                    "maximum": 50000,
+                    "maximum": 51200,
                     "exclusiveMinimum": false,
                     "exclusiveMaximum": false,
-                    "description": "Instances disk size in GB"
+                    "description": "Instances disk size in GiB"
                   },
                   "ssh-keys": {
                     "type": "array",
@@ -18412,10 +18421,10 @@
                     "type": "integer",
                     "format": "int64",
                     "minimum": 20,
-                    "maximum": 50000,
+                    "maximum": 51200,
                     "exclusiveMinimum": false,
                     "exclusiveMaximum": false,
-                    "description": "Nodepool instances disk size in GB"
+                    "description": "Nodepool instances disk size in GiB"
                   }
                 },
                 "required": [

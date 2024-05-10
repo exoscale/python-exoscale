@@ -381,13 +381,6 @@
             "title": "Enable Grafana /metrics endpoint",
             "example": true
           },
-          "recovery_basebackup_name": {
-            "type": "string",
-            "title": "Name of the basebackup to restore in forked service",
-            "example": "backup-20191112t091354293891z",
-            "pattern": "^[a-zA-Z0-9-_:.]+$",
-            "maxLength": 128
-          },
           "auth_azuread": {
             "type": "object",
             "title": "Azure AD OAuth integration",
@@ -474,6 +467,11 @@
                 "title": "Automatically sign-up users on successful sign-in",
                 "example": false
               },
+              "auto_login": {
+                "type": "boolean",
+                "title": "Allow users to bypass the login screen and automatically log in",
+                "example": false
+              },
               "client_id": {
                 "type": "string",
                 "title": "Client ID from provider",
@@ -511,6 +509,11 @@
                   "maxLength": 256
                 },
                 "maxItems": 50
+              },
+              "skip_org_role_sync": {
+                "type": "boolean",
+                "title": "Stop automatically syncing user roles",
+                "example": false
               }
             },
             "additionalProperties": false,
@@ -528,18 +531,6 @@
             "type": "boolean",
             "title": "Send 'X-Grafana-User' header to data source",
             "example": false
-          },
-          "privatelink_access": {
-            "title": "Allow access to selected service components through Privatelink",
-            "type": "object",
-            "properties": {
-              "grafana": {
-                "title": "Enable grafana",
-                "type": "boolean",
-                "example": true
-              }
-            },
-            "additionalProperties": false
           },
           "google_analytics_ua_id": {
             "type": "string",
@@ -770,6 +761,13 @@
               }
             },
             "additionalProperties": false
+          },
+          "service_log": {
+            "title": "Service logging",
+            "description": "Store logs for the service so that they are available in the HTTP API and console.",
+            "type": "boolean",
+            "example": true,
+            "nullable": true
           },
           "disable_gravatar": {
             "type": "boolean",
@@ -1057,7 +1055,7 @@
           },
           "scheduled_rebalance_max_delay_ms": {
             "title": "The maximum delay of rebalancing connector workers",
-            "description": "The maximum delay that is scheduled in order to wait for the return of one or more departed workers before rebalancing and reassigning their connectors and tasks to the group. During this period the connectors and tasks of the departed workers remain unassigned.  Defaults to 5 minutes.",
+            "description": "The maximum delay that is scheduled in order to wait for the return of one or more departed workers before rebalancing and reassigning their connectors and tasks to the group. During this period the connectors and tasks of the departed workers remain unassigned. Defaults to 5 minutes.",
             "type": "integer",
             "minimum": 0,
             "maximum": 600000,
@@ -1409,6 +1407,7 @@
             "title": "sasl.oauthbearer.expected.audience",
             "description": "The (optional) comma-delimited setting for the broker to use to verify that the JWT was issued for one of the expected audiences.",
             "type": "string",
+            "pattern": "^[^\\r\\n]*$",
             "maxLength": 128
           },
           "group_max_session_timeout_ms": {
@@ -1444,6 +1443,7 @@
             "title": "sasl.oauthbearer.expected.issuer",
             "description": "Optional setting for the broker to use to verify that the JWT was created by the expected issuer.",
             "type": "string",
+            "pattern": "^[^\\r\\n]*$",
             "maxLength": 128
           },
           "log_index_size_max_bytes": {
@@ -1573,6 +1573,12 @@
             "maximum": 3600000,
             "example": 3600000
           },
+          "transaction_partition_verification_enable": {
+            "title": "transaction.partition.verification.enable",
+            "description": "Enable verification that checks that the partition has been added to the transaction before writing transactional records to the partition",
+            "type": "boolean",
+            "example": true
+          },
           "default_replication_factor": {
             "title": "default.replication.factor",
             "description": "Replication factor for autocreated topics",
@@ -1646,6 +1652,7 @@
             "title": "sasl.oauthbearer.sub.claim.name",
             "description": "Name of the scope from which to extract the subject claim from the JWT. Defaults to sub.",
             "type": "string",
+            "pattern": "^[^\\r\\n]*$",
             "maxLength": 128
           },
           "max_incremental_fetch_session_cache_slots": {
@@ -1748,8 +1755,7 @@
             "maximum": 9223372036854776000
           }
         },
-        "additionalProperties": false,
-        "default": {}
+        "additionalProperties": false
       },
       "instance-target": {
         "type": "object",
@@ -1779,6 +1785,7 @@
             "description": "PostgreSQL service timezone",
             "type": "string",
             "example": "Europe/Helsinki",
+            "pattern": "^[\\w/]*$",
             "maxLength": 64
           },
           "track_io_timing": {
@@ -1823,22 +1830,6 @@
                 "minimum": 10,
                 "maximum": 200,
                 "example": 50
-              },
-              "wal_sender_timeout": {
-                "title": "wal_sender_timeout",
-                "description": "Terminate replication connections that are inactive for longer than this amount of time, in milliseconds. Setting this value to zero disables the timeout.",
-                "type": "integer",
-                "example": 60000,
-                "anyOf": [
-                  {
-                    "minimum": 0,
-                    "maximum": 0
-                  },
-                  {
-                    "minimum": 5000,
-                    "maximum": 10800000
-                  }
-                ]
               },
               "max_wal_senders": {
                 "title": "max_wal_senders",
@@ -1957,7 +1948,7 @@
               },
               "autovacuum_analyze_threshold": {
                 "title": "autovacuum_analyze_threshold",
-                "description": "Specifies the minimum number of inserted, updated or deleted tuples needed to trigger an  ANALYZE in any one table. The default is 50 tuples.",
+                "description": "Specifies the minimum number of inserted, updated or deleted tuples needed to trigger an ANALYZE in any one table. The default is 50 tuples.",
                 "type": "integer",
                 "minimum": 0,
                 "maximum": 2147483647
@@ -2083,6 +2074,28 @@
               "none",
               "top"
             ]
+          },
+          "wal-sender-timeout": {
+            "type": "object",
+            "title": "WAL Sender Timeout Settings",
+            "required": [
+              "wal-sender-timeout-enabled"
+            ],
+            "properties": {
+              "wal-sender-timeout-enabled": {
+                "type": "boolean",
+                "description": "Disabled sets wal_sender_timeout to 0. Enabled sets wal_sender_timeout to the value of wal-sender-timeout-millis",
+                "title": "WAL sender timeout enabled/disabled flag",
+                "example": false
+              },
+              "wal-sender-timeout-millis": {
+                "type": "integer",
+                "description": "Terminate replication connections that are inactive for longer than this amount of time, in milliseconds.",
+                "title": "WAL sender timeout value",
+                "maximum": 10800000,
+                "minimum": 5000
+              }
+            }
           },
           "temp_file_limit": {
             "title": "temp_file_limit",
@@ -2336,7 +2349,7 @@
           },
           "innodb_flush_neighbors": {
             "title": "innodb_flush_neighbors",
-            "description": "Specifies whether flushing a page from the InnoDB buffer pool also flushes other dirty pages in the same extent (default is 1): 0 - dirty pages in the same extent are not flushed,  1 - flush contiguous dirty pages in the same extent,  2 - flush dirty pages in the same extent",
+            "description": "Specifies whether flushing a page from the InnoDB buffer pool also flushes other dirty pages in the same extent (default is 1): 0 - dirty pages in the same extent are not flushed, 1 - flush contiguous dirty pages in the same extent, 2 - flush dirty pages in the same extent",
             "type": "integer",
             "minimum": 0,
             "maximum": 2,
@@ -2484,6 +2497,7 @@
             "description": "Default server time zone as an offset from UTC (from -12:00 to +12:00), a time zone name, or 'SYSTEM' to use the MySQL server default.",
             "type": "string",
             "example": "+03:00",
+            "pattern": "^([-+][\\d:]*|[\\w/]*)$",
             "minLength": 2,
             "maxLength": 100
           },
@@ -2597,84 +2611,90 @@
       },
       "json-schema-pgbouncer": {
         "title": "PGBouncer connection pooling settings",
+        "description": "System-wide settings for pgbouncer.",
         "type": "object",
         "properties": {
           "min_pool_size": {
             "title": "Add more server connections to pool if below this number. Improves behavior when usual load comes suddenly back after period of total inactivity. The value is effectively capped at the pool size.",
-            "type": "integer",
+            "default": 0,
             "minimum": 0,
             "maximum": 10000,
-            "example": 0
+            "example": 0,
+            "type": "integer"
           },
           "ignore_startup_parameters": {
             "title": "List of parameters to ignore when given in startup packet",
-            "type": "array",
             "example": [
               "extra_float_digits",
               "search_path"
             ],
+            "maxItems": 32,
+            "type": "array",
             "items": {
-              "title": "Enum of parameters to ignore when given in startup packet",
-              "type": "string",
               "enum": [
                 "extra_float_digits",
                 "search_path"
-              ]
-            },
-            "maxItems": 32
+              ],
+              "type": "string"
+            }
           },
           "server_lifetime": {
             "title": "The pooler will close an unused server connection that has been connected longer than this. [seconds]",
-            "type": "integer",
+            "default": 3600,
             "minimum": 60,
             "maximum": 86400,
-            "example": 3600
+            "example": 3600,
+            "type": "integer"
           },
           "autodb_pool_mode": {
+            "title": "PGBouncer pool mode",
+            "default": "transaction",
+            "example": "session",
             "enum": [
               "session",
               "statement",
               "transaction"
             ],
-            "example": "session",
-            "title": "PGBouncer pool mode",
             "type": "string"
           },
           "server_idle_timeout": {
             "title": "If a server connection has been idle more than this many seconds it will be dropped. If 0 then timeout is disabled. [seconds]",
-            "type": "integer",
+            "default": 600,
             "minimum": 0,
             "maximum": 86400,
-            "example": 600
+            "example": 600,
+            "type": "integer"
           },
           "autodb_max_db_connections": {
             "title": "Do not allow more than this many server connections per database (regardless of user). Setting it to 0 means unlimited.",
-            "type": "integer",
             "minimum": 0,
             "maximum": 2147483647,
-            "example": 0
+            "example": 0,
+            "type": "integer"
           },
           "server_reset_query_always": {
             "title": "Run server_reset_query (DISCARD ALL) in all pooling modes",
-            "type": "boolean",
-            "example": false
+            "default": false,
+            "example": false,
+            "type": "boolean"
           },
           "autodb_pool_size": {
             "title": "If non-zero then create automatically a pool of that size per user when a pool doesn't exist.",
-            "type": "integer",
+            "default": 0,
             "minimum": 0,
             "maximum": 10000,
-            "example": 0
+            "example": 0,
+            "type": "integer"
           },
           "autodb_idle_timeout": {
             "title": "If the automatically created database pools have been unused this many seconds, they are freed. If 0 then timeout is disabled. [seconds]",
-            "type": "integer",
+            "default": 3600,
             "minimum": 0,
             "maximum": 86400,
-            "example": 3600
+            "example": 3600,
+            "type": "integer"
           }
-        },
-        "additionalProperties": false
+        }
       },
       "load-balancer-server-status": {
         "type": "object",
@@ -3351,11 +3371,11 @@
             "type": "integer",
             "format": "int64",
             "minimum": 10,
-            "maximum": 50000,
+            "maximum": 51200,
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
             "readOnly": true,
-            "description": "Snapshot size in GB"
+            "description": "Snapshot size in GiB"
           },
           "export": {
             "type": "object",
@@ -3903,22 +3923,19 @@
         ]
       },
       "json-schema-pglookout": {
-        "type": "object",
         "title": "PGLookout settings",
+        "description": "System-wide settings for pglookout.",
+        "type": "object",
         "properties": {
           "max_failover_replication_time_lag": {
             "title": "max_failover_replication_time_lag",
             "description": "Number of seconds of master unavailability before triggering database failover to standby",
-            "type": "integer",
+            "default": 60,
             "minimum": 10,
             "maximum": 9223372036854776000,
-            "default": 60
+            "type": "integer"
           }
-        },
-        "default": {
-          "max_failover_replication_time_lag": 60
-        },
-        "additionalProperties": false
+        }
       },
       "dbaas-plan": {
         "type": "object",
@@ -4881,10 +4898,10 @@
             "type": "integer",
             "format": "int64",
             "minimum": 10,
-            "maximum": 50000,
+            "maximum": 51200,
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
-            "description": "Instance disk size in GB"
+            "description": "Instance disk size in GiB"
           },
           "ssh-keys": {
             "type": "array",
@@ -5029,18 +5046,6 @@
         "type": "object",
         "title": "Kafka REST configuration",
         "properties": {
-          "producer_acks": {
-            "title": "producer.acks",
-            "description": "The number of acknowledgments the producer requires the leader to have received before considering a request complete. If set to 'all' or '-1', the leader will wait for the full set of in-sync replicas to acknowledge the record.",
-            "type": "string",
-            "enum": [
-              "-1",
-              "0",
-              "1",
-              "all"
-            ],
-            "default": "1"
-          },
           "producer_compression_type": {
             "title": "producer.compression.type",
             "description": "Specify the default compression type for producers. This configuration accepts the standard compression codecs ('gzip', 'snappy', 'lz4', 'zstd'). It additionally accepts 'none' which is the default and equivalent to no compression.",
@@ -5053,13 +5058,48 @@
               "zstd"
             ]
           },
-          "producer_linger_ms": {
-            "title": "producer.linger.ms",
-            "description": "Wait for up to the given delay to allow batching records together",
+          "name_strategy_validation": {
+            "title": "name.strategy.validation",
+            "description": "If true, validate that given schema is registered under expected subject name by the used name strategy when producing messages.",
+            "type": "boolean",
+            "default": true
+          },
+          "name_strategy": {
+            "title": "name.strategy",
+            "description": "Name strategy to use when selecting subject for storing schemas",
+            "type": "string",
+            "enum": [
+              "record_name",
+              "topic_name",
+              "topic_record_name"
+            ],
+            "default": "topic_name"
+          },
+          "consumer_enable_auto_commit": {
+            "title": "consumer.enable.auto.commit",
+            "description": "If true the consumer's offset will be periodically committed to Kafka in the background",
+            "type": "boolean",
+            "default": true
+          },
+          "producer_acks": {
+            "title": "producer.acks",
+            "description": "The number of acknowledgments the producer requires the leader to have received before considering a request complete. If set to 'all' or '-1', the leader will wait for the full set of in-sync replicas to acknowledge the record.",
+            "type": "string",
+            "enum": [
+              "-1",
+              "0",
+              "1",
+              "all"
+            ],
+            "default": "1"
+          },
+          "consumer_request_max_bytes": {
+            "title": "consumer.request.max.bytes",
+            "description": "Maximum number of bytes in unencoded message keys and values by a single request",
             "type": "integer",
-            "default": 0,
+            "default": 67108864,
             "minimum": 0,
-            "maximum": 5000
+            "maximum": 671088640
           },
           "producer_max_request_size": {
             "title": "producer.max.request.size",
@@ -5069,19 +5109,21 @@
             "minimum": 0,
             "maximum": 2147483647
           },
-          "consumer_enable_auto_commit": {
-            "title": "consumer.enable.auto.commit",
-            "description": "If true the consumer's offset will be periodically committed to Kafka in the background",
-            "type": "boolean",
-            "default": true
-          },
-          "consumer_request_max_bytes": {
-            "title": "consumer.request.max.bytes",
-            "description": "Maximum number of bytes in unencoded message keys and values by a single request",
+          "simpleconsumer_pool_size_max": {
+            "title": "simpleconsumer.pool.size.max",
+            "description": "Maximum number of SimpleConsumers that can be instantiated per broker",
             "type": "integer",
-            "default": 67108864,
+            "default": 25,
+            "minimum": 10,
+            "maximum": 250
+          },
+          "producer_linger_ms": {
+            "title": "producer.linger.ms",
+            "description": "Wait for up to the given delay to allow batching records together",
+            "type": "integer",
+            "default": 0,
             "minimum": 0,
-            "maximum": 671088640
+            "maximum": 5000
           },
           "consumer_request_timeout_ms": {
             "title": "consumer.request.timeout.ms",
@@ -5095,14 +5137,6 @@
             "default": 1000,
             "minimum": 1000,
             "maximum": 30000
-          },
-          "simpleconsumer_pool_size_max": {
-            "title": "simpleconsumer.pool.size.max",
-            "description": "Maximum number of SimpleConsumers that can be instantiated per broker",
-            "type": "integer",
-            "default": 25,
-            "minimum": 10,
-            "maximum": 250
           }
         },
         "additionalProperties": false
@@ -6994,18 +7028,19 @@
       },
       "json-schema-timescaledb": {
         "title": "TimescaleDB extension configuration values",
+        "description": "System-wide settings for the timescaledb extension",
         "type": "object",
         "properties": {
           "max_background_workers": {
             "title": "timescaledb.max_background_workers",
             "description": "The number of background workers for timescaledb operations. You should configure this setting to the sum of your number of databases and the total number of concurrent background workers you want running at any given point in time.",
-            "type": "integer",
-            "example": 8,
+            "default": 16,
             "minimum": 1,
-            "maximum": 4096
+            "maximum": 4096,
+            "example": 8,
+            "type": "integer"
           }
-        },
-        "additionalProperties": false
+        }
       },
       "snapshot-export": {
         "type": "object",
@@ -7108,7 +7143,7 @@
           "notify_keyspace_events": {
             "title": "Set notify-keyspace-events option",
             "type": "string",
-            "pattern": "^[KEg\\$lshzxeA]*$",
+            "pattern": "^[KEg\\$lshzxentdmA]*$",
             "default": "",
             "maxLength": 32
           },
@@ -7214,6 +7249,54 @@
           }
         },
         "description": "DNS domain record"
+      },
+      "organization": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "description": "Organization ID"
+          },
+          "name": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Organization name"
+          },
+          "address": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Organization address"
+          },
+          "postcode": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Organization postcode"
+          },
+          "city": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Organization city"
+          },
+          "country": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Organization country"
+          },
+          "balance": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true,
+            "description": "Organization balance"
+          },
+          "currency": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Organization currency"
+          }
+        },
+        "description": "Organization"
       },
       "dbaas-service-components": {
         "type": "object",
@@ -7343,6 +7426,12 @@
             "maximum": 65536,
             "example": 4096
           },
+          "enable_security_audit": {
+            "type": "boolean",
+            "title": "Enable/Disable security audit",
+            "example": true,
+            "default": false
+          },
           "thread_pool_write_queue_size": {
             "title": "write thread pool queue size",
             "description": "Size for the thread pool queue. See documentation for exact details.",
@@ -7363,7 +7452,7 @@
             "description": "Maximum number of aggregation buckets allowed in a single response. OpenSearch default value is used when this is not defined.",
             "example": 10000,
             "minimum": 1,
-            "maximum": 65536,
+            "maximum": 1000000,
             "nullable": true
           },
           "reindex_remote_whitelist": {
@@ -7442,6 +7531,12 @@
             "title": "Require explicit index names when deleting",
             "example": true,
             "nullable": true
+          },
+          "plugins_alerting_filter_by_backend_roles": {
+            "type": "boolean",
+            "title": "plugins.alerting.filter_by_backend_roles",
+            "description": "Enable or disable filtering of alerting by backend roles. Requires Security plugin. Defaults to false",
+            "example": false
           },
           "indices_memory_index_buffer_size": {
             "type": "integer",
@@ -7596,15 +7691,13 @@
                 "type": "boolean",
                 "title": "Specifies whether ISM is enabled or not",
                 "example": true,
-                "default": true,
-                "nullable": true
+                "default": true
               },
               "ism_history_enabled": {
                 "type": "boolean",
                 "title": "Specifies whether audit history is enabled or not. The logs from ISM are automatically indexed to a logs document.",
                 "example": true,
-                "default": true,
-                "nullable": true
+                "default": true
               },
               "ism_history_max_age": {
                 "title": "The maximum age before rolling over the audit history index in hours",
@@ -7612,8 +7705,7 @@
                 "example": 24,
                 "minimum": 1,
                 "maximum": 2147483647,
-                "default": 24,
-                "nullable": true
+                "default": 24
               },
               "ism_history_max_docs": {
                 "type": "integer",
@@ -7621,8 +7713,7 @@
                 "example": 2500000,
                 "default": 2500000,
                 "minimum": 1,
-                "maximum": 9223372036854776000,
-                "nullable": true
+                "maximum": 9223372036854776000
               },
               "ism_history_rollover_check_period": {
                 "type": "integer",
@@ -7630,8 +7721,7 @@
                 "example": 8,
                 "default": 8,
                 "minimum": 1,
-                "maximum": 2147483647,
-                "nullable": true
+                "maximum": 2147483647
               },
               "ism_history_rollover_retention_period": {
                 "type": "integer",
@@ -7639,8 +7729,7 @@
                 "example": 30,
                 "default": 30,
                 "minimum": 1,
-                "maximum": 2147483647,
-                "nullable": true
+                "maximum": 2147483647
               }
             },
             "required": [
@@ -9751,10 +9840,10 @@
                     "type": "integer",
                     "format": "int64",
                     "minimum": 10,
-                    "maximum": 50000,
+                    "maximum": 51200,
                     "exclusiveMinimum": false,
                     "exclusiveMaximum": false,
-                    "description": "Instance disk size in GB"
+                    "description": "Instance disk size in GiB"
                   }
                 },
                 "required": [
@@ -11903,6 +11992,29 @@
           }
         },
         "operationId": "start-instance"
+      }
+    },
+    "/organization": {
+      "get": {
+        "tags": [
+          "organization"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/organization"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [],
+        "summary": "Retrieve an organization",
+        "operationId": "get-organization"
       }
     },
     "/dbaas-redis/{service-name}/user/{username}": {
@@ -15159,7 +15271,7 @@
                     "format": "int64",
                     "minimum": 11,
                     "exclusiveMinimum": false,
-                    "description": "Volume size in GB"
+                    "description": "Volume size in GiB"
                   }
                 },
                 "required": [
@@ -15460,10 +15572,10 @@
                     "type": "integer",
                     "format": "int64",
                     "minimum": 10,
-                    "maximum": 50000,
+                    "maximum": 51200,
                     "exclusiveMinimum": false,
                     "exclusiveMaximum": false,
-                    "description": "Instance disk size in GB"
+                    "description": "Instance disk size in GiB"
                   }
                 }
               }
@@ -20529,10 +20641,10 @@
                     "type": "integer",
                     "format": "int64",
                     "minimum": 10,
-                    "maximum": 50000,
+                    "maximum": 51200,
                     "exclusiveMinimum": false,
                     "exclusiveMaximum": false,
-                    "description": "Instance disk size in GB"
+                    "description": "Instance disk size in GiB"
                   },
                   "ssh-keys": {
                     "type": "array",
@@ -21012,7 +21124,7 @@
                     "format": "int64",
                     "minimum": 10,
                     "exclusiveMinimum": false,
-                    "description": "Volume size in GB.\n                            When a snapshot ID is supplied, this defaults to the size of the source volume, but can be set to a larger value."
+                    "description": "Volume size in GiB.\n                            When a snapshot ID is supplied, this defaults to the size of the source volume, but can be set to a larger value."
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",

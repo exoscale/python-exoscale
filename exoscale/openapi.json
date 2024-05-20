@@ -1834,6 +1834,13 @@
                 "title": "max_wal_senders",
                 "type": "integer"
               },
+              "wal_sender_timeout": {
+                "description": "Terminate replication connections that are inactive for longer than this amount of time, in milliseconds.",
+                "maximum": 10800000,
+                "minimum": 0,
+                "title": "A value of 0 disables the timeout. Otherwise between 5000 and 10800000 millis",
+                "type": "integer"
+              },
               "wal_writer_delay": {
                 "description": "WAL flush interval in milliseconds. Note that setting this value to lower than the default 200ms may negatively impact performance",
                 "example": 50,
@@ -2073,28 +2080,6 @@
             ],
             "title": "pg_stat_statements.track",
             "type": "string"
-          },
-          "wal-sender-timeout": {
-            "properties": {
-              "wal_sender_timeout_enabled": {
-                "description": "Disabled sets wal_sender_timeout to 0. Enabled sets wal_sender_timeout to the value of wal_sender_timeout_millis",
-                "example": false,
-                "title": "WAL sender timeout enabled/disabled flag",
-                "type": "boolean"
-              },
-              "wal_sender_timeout_millis": {
-                "description": "Terminate replication connections that are inactive for longer than this amount of time, in milliseconds.",
-                "maximum": 10800000,
-                "minimum": 5000,
-                "title": "WAL sender timeout value",
-                "type": "integer"
-              }
-            },
-            "required": [
-              "wal_sender_timeout_enabled"
-            ],
-            "title": "WAL Sender Timeout Settings",
-            "type": "object"
           },
           "temp_file_limit": {
             "description": "PostgreSQL temporary file limit in KiB, -1 for unlimited",

@@ -27,6 +27,7 @@ from itertools import chain
 from pathlib import Path
 
 from exoscale_auth import ExoscaleV2Auth
+from .exceptions import ExoscaleAPIClientException, ExoscaleAPIServerException
 
 import requests
 
@@ -155,6 +156,18 @@ class BaseClient:
         response = self.session.request(
             method=op["verb"].upper(), url=url, params=query_params, **json
         )
+
+        # Error handling
+        if response.status_code >= 400 and response.status_code < 500:
+            raise ExoscaleAPIClientException(
+                f"Client error {response.status_code}: {response.text}"
+            )
+        elif response.status_code >= 500:
+            raise ExoscaleAPIServerException(
+                f"Server error {response.status_code}: {response.text}"
+            )
+
+
         return response.json()
 
 

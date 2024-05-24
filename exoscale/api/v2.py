@@ -167,7 +167,6 @@ class BaseClient:
                 f"Server error {response.status_code}: {response.text}"
             )
 
-
         return response.json()
 
 

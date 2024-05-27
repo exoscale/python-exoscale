@@ -158,6 +158,10 @@ class BaseClient:
         )
 
         # Error handling
+        if response.status_code == 400 :
+            raise ExoscaleAPIClientException(
+                f"Authentication error {response.status_code}: {response.text}"
+            )
         if response.status_code >= 400 and response.status_code < 500:
             raise ExoscaleAPIClientException(
                 f"Client error {response.status_code}: {response.text}"

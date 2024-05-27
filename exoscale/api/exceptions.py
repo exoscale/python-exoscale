@@ -26,3 +26,12 @@ class ExoscaleAPIServerException(ExoscaleAPIException):
     """
 
     pass
+
+
+class ExoscaleAPIAuthException(ExoscaleAPIException):
+    """
+    For authentication-related errors (403).
+    Shows the server encountered an error while processing the request.
+    """
+
+    pass

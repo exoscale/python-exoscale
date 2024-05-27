@@ -1,7 +1,7 @@
 import pytest
 
 from exoscale.api.v2 import Client
-
+import requests_mock
 from exoscale.api.exceptions import (
     ExoscaleAPIClientException,
     ExoscaleAPIServerException,

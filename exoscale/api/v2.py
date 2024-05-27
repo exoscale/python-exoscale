@@ -27,7 +27,7 @@ from itertools import chain
 from pathlib import Path
 
 from exoscale_auth import ExoscaleV2Auth
-from .exceptions import ExoscaleAPIClientException, ExoscaleAPIServerException
+from .exceptions import ExoscaleAPIAuthException, ExoscaleAPIClientException, ExoscaleAPIServerException
 
 import requests
 
@@ -158,8 +158,8 @@ class BaseClient:
         )
 
         # Error handling
-        if response.status_code == 400 :
-            raise ExoscaleAPIClientException(
+        if response.status_code == 403 :
+            raise ExoscaleAPIAuthException(
                 f"Authentication error {response.status_code}: {response.text}"
             )
         if response.status_code >= 400 and response.status_code < 500:

@@ -2,11 +2,8 @@ import pytest
 
 from exoscale.api.v2 import Client
 
-from exoscale.api.exceptions import (
-    ExoscaleAPIClientException,
-    ExoscaleAPIServerException,
-    ExoscaleAPIAuthException,
-)
+from exoscale.api.exceptions import ExoscaleAPIClientException, ExoscaleAPIServerException, ExoscaleAPIAuthException
+
 
 
 def test_client_creation():

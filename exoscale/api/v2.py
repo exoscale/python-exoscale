@@ -27,11 +27,8 @@ from itertools import chain
 from pathlib import Path
 
 from exoscale_auth import ExoscaleV2Auth
-from .exceptions import (
-    ExoscaleAPIAuthException,
-    ExoscaleAPIClientException,
-    ExoscaleAPIServerException,
-)
+from .exceptions import ExoscaleAPIClientException, ExoscaleAPIServerException, ExoscaleAPIAuthException
+
 
 import requests
 

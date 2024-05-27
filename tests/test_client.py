@@ -56,21 +56,18 @@ def test_client_error_handling(requests_mock):
         assert "Client error 404" in str(e)
         assert '{"message":"Instance not found"}' in str(e)
 
-    # Mock a 500 server error
+    # Mock a 503 server error
     requests_mock.get(
-        "https://api-ch-gva-2.exoscale.com/v2/500_error",
-        status_code=500,
-        text="Internal Server Error",
+        "https://api-ch-gva-2.exoscale.com/v2/template",
+        status_code=503,
+        text='{"message":"Endpoint template temporarily unavailable"}',
     )
     try:
-        response = client.session.get(
-            "https://api-ch-gva-2.exoscale.com/v2/500_error"
-        )
-        response.raise_for_status()
+        client.list_templates()
     except ExoscaleAPIServerException as e:
-        assert "Server error 500" in str(e)
+        assert "Server error 503" in str(e)
     except Exception as e:
-        assert "500 Server Error" in str(e)
+        assert "503 Server Error" in str(e)
 
 
 if __name__ == "__main__":

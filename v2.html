@@ -184,6 +184,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_load_balancer"><code class="docutils literal notranslate"><span class="pre">Client.get_load_balancer()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_load_balancer_service"><code class="docutils literal notranslate"><span class="pre">Client.get_load_balancer_service()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_operation"><code class="docutils literal notranslate"><span class="pre">Client.get_operation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_organization"><code class="docutils literal notranslate"><span class="pre">Client.get_organization()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_private_network"><code class="docutils literal notranslate"><span class="pre">Client.get_private_network()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_quota"><code class="docutils literal notranslate"><span class="pre">Client.get_quota()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_reverse_dns_elastic_ip"><code class="docutils literal notranslate"><span class="pre">Client.get_reverse_dns_elastic_ip()</span></code></a></li>
@@ -792,7 +793,7 @@ definition shipped with the package.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – Volume name.</p></li>
-<li><p><strong>size</strong> (<em>int</em>) – Volume size in GB.
+<li><p><strong>size</strong> (<em>int</em>) – Volume size in GiB.
 When a snapshot ID is supplied, this defaults to the size of the source volume, but can be set to a larger value..</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – Resource labels.</p></li>
 <li><p><strong>block_storage_snapshot</strong> (<em>dict</em>) – Block storage snapshot.</p></li>
@@ -1598,10 +1599,10 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>instance_type</strong> (<em>dict</em>) – Instance Type.</p></li>
 <li><p><strong>template</strong> (<em>dict</em>) – Instance Template.</p></li>
 <li><p><strong>ssh_key</strong> (<em>dict</em>) – Instance SSH Key.</p></li>
-<li><p><strong>user_data</strong> (<em>str</em>) – Instance Cloud-init user-data.</p></li>
+<li><p><strong>user_data</strong> (<em>str</em>) – Instance Cloud-init user-data (base64 encoded).</p></li>
 <li><p><strong>deploy_target</strong> (<em>dict</em>) – Instance Deploy Target.</p></li>
 <li><p><strong>ipv6_enabled</strong> (<em>bool</em>) – Enable IPv6. DEPRECATED: use <cite>public-ip-assignments</cite>..</p></li>
-<li><p><strong>disk_size</strong> (<em>int</em>) – Instance disk size in GB.</p></li>
+<li><p><strong>disk_size</strong> (<em>int</em>) – Instance disk size in GiB.</p></li>
 <li><p><strong>ssh_keys</strong> (<em>list</em>) – Instance SSH Keys.</p></li>
 </ul>
 </dd>
@@ -1633,7 +1634,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>anti_affinity_groups</strong> (<em>list</em>) – Instance Pool Anti-affinity Groups.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Instance Pool description.</p></li>
-<li><p><strong>public_ip_assignment</strong> (<em>str</em>) – Assign public IP to Instances. Must be one of <code class="docutils literal notranslate"><span class="pre">'dual'</span></code>, <code class="docutils literal notranslate"><span class="pre">'inet4'</span></code>, <code class="docutils literal notranslate"><span class="pre">'none'</span></code>.</p></li>
+<li><p><strong>public_ip_assignment</strong> (<em>str</em>) – Determines public IP assignment of the Instances. Type <cite>none</cite> is final and can’t be changed later on.. Must be one of <code class="docutils literal notranslate"><span class="pre">'dual'</span></code>, <code class="docutils literal notranslate"><span class="pre">'inet4'</span></code>, <code class="docutils literal notranslate"><span class="pre">'none'</span></code>.</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – Instance Pool Labels.</p></li>
 <li><p><strong>security_groups</strong> (<em>list</em>) – Instance Pool Security Groups.</p></li>
 <li><p><strong>elastic_ips</strong> (<em>list</em>) – Instances Elastic IPs.</p></li>
@@ -1648,7 +1649,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>user_data</strong> (<em>str</em>) – Instances Cloud-init user-data.</p></li>
 <li><p><strong>deploy_target</strong> (<em>dict</em>) – Deploy Target to deploy Instances on.</p></li>
 <li><p><strong>ipv6_enabled</strong> (<em>bool</em>) – Enable IPv6. DEPRECATED: use <cite>public-ip-assignments</cite>..</p></li>
-<li><p><strong>disk_size</strong> (<em>int</em>) – Instances disk size in GB.</p></li>
+<li><p><strong>disk_size</strong> (<em>int</em>) – Instances disk size in GiB.</p></li>
 <li><p><strong>ssh_keys</strong> (<em>list</em>) – Instances SSH Keys.</p></li>
 </ul>
 </dd>
@@ -1824,7 +1825,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>instance_prefix</strong> (<em>str</em>) – Prefix to apply to instances names (default: pool).</p></li>
 <li><p><strong>deploy_target</strong> (<em>dict</em>) – Nodepool Deploy Target.</p></li>
 <li><p><strong>addons</strong> (<em>list</em>) – Nodepool addons.</p></li>
-<li><p><strong>disk_size</strong> (<em>int</em>) – Nodepool instances disk size in GB.</p></li>
+<li><p><strong>disk_size</strong> (<em>int</em>) – Nodepool instances disk size in GiB.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -3873,7 +3874,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>ipv6_address</strong> (str): Instance IPv6 address.</p></li>
 <li><p><strong>id</strong> (str): Instance ID.</p></li>
 <li><p><strong>snapshots</strong> (list): Instance Snapshots.</p></li>
-<li><p><strong>disk_size</strong> (int): Instance disk size in GB.</p></li>
+<li><p><strong>disk_size</strong> (int): Instance disk size in GiB.</p></li>
 <li><p><strong>ssh_keys</strong> (list): Instance SSH Keys.</p></li>
 <li><p><strong>created_at</strong> (str): Instance creation date.</p></li>
 <li><p><strong>public_ip</strong> (str): Instance public IPv4 address.</p></li>
@@ -3920,7 +3921,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>deploy_target</strong> (dict): Instance Pool Deploy Target.</p></li>
 <li><p><strong>ipv6_enabled</strong> (bool): Enable IPv6 for instances.</p></li>
 <li><p><strong>id</strong> (str): Instance Pool ID.</p></li>
-<li><p><strong>disk_size</strong> (int): Instances disk size in GB.</p></li>
+<li><p><strong>disk_size</strong> (int): Instances disk size in GiB.</p></li>
 <li><p><strong>ssh_keys</strong> (list): Instances SSH keys.</p></li>
 </ul>
 </div></blockquote>
@@ -4051,6 +4052,34 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.get_organization">
+<span class="sig-name descname"><span class="pre">get_organization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_organization" title="Link to this definition"></a></dt>
+<dd><p>Retrieve an organization</p>
+<p>Args:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Organization. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Organization ID.</p></li>
+<li><p><strong>name</strong> (str): Organization name.</p></li>
+<li><p><strong>address</strong> (str): Organization address.</p></li>
+<li><p><strong>postcode</strong> (str): Organization postcode.</p></li>
+<li><p><strong>city</strong> (str): Organization city.</p></li>
+<li><p><strong>country</strong> (str): Organization country.</p></li>
+<li><p><strong>balance</strong> (int): Organization balance.</p></li>
+<li><p><strong>currency</strong> (str): Organization currency.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4263,7 +4292,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>deploy_target</strong> (dict): Instance Pool Deploy Target.</p></li>
 <li><p><strong>addons</strong> (list): Nodepool addons.</p></li>
 <li><p><strong>id</strong> (str): Nodepool ID.</p></li>
-<li><p><strong>disk_size</strong> (int): Nodepool instances disk size in GB.</p></li>
+<li><p><strong>disk_size</strong> (int): Nodepool instances disk size in GiB.</p></li>
 <li><p><strong>version</strong> (str): Nodepool version.</p></li>
 <li><p><strong>created_at</strong> (str): Nodepool creation date.</p></li>
 </ul>
@@ -4292,7 +4321,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>name</strong> (str): Snapshot name.</p></li>
 <li><p><strong>created_at</strong> (str): Snapshot creation date.</p></li>
 <li><p><strong>state</strong> (str): Snapshot state. Values are <code class="docutils literal notranslate"><span class="pre">'deleted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'deleting'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'exported'</span></code>, <code class="docutils literal notranslate"><span class="pre">'exporting'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ready'</span></code>, <code class="docutils literal notranslate"><span class="pre">'snapshotting'</span></code>.</p></li>
-<li><p><strong>size</strong> (int): Snapshot size in GB.</p></li>
+<li><p><strong>size</strong> (int): Snapshot size in GiB.</p></li>
 <li><p><strong>export</strong> (dict): Exported snapshot information.</p></li>
 <li><p><strong>instance</strong> (dict): Compute Instance snapshotted.</p></li>
 </ul>
@@ -5184,7 +5213,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>template</strong> (<em>dict</em>) – Template to recreate Instance from.</p></li>
-<li><p><strong>disk_size</strong> (<em>int</em>) – Instance disk size in GB.</p></li>
+<li><p><strong>disk_size</strong> (<em>int</em>) – Instance disk size in GiB.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5453,7 +5482,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>str</em>)</p></li>
-<li><p><strong>size</strong> (<em>int</em>) – Volume size in GB.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – Volume size in GiB.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5487,7 +5516,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>str</em>)</p></li>
-<li><p><strong>disk_size</strong> (<em>int</em>) – Instance disk size in GB.</p></li>
+<li><p><strong>disk_size</strong> (<em>int</em>) – Instance disk size in GiB.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -6748,7 +6777,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Instance name.</p></li>
-<li><p><strong>user_data</strong> (<em>str</em>) – Instance Cloud-init user-data.</p></li>
+<li><p><strong>user_data</strong> (<em>str</em>) – Instance Cloud-init user-data (base64 encoded).</p></li>
 <li><p><strong>public_ip_assignment</strong> (<em>str</em>) – Assign public IP to the Instance. Must be one of <code class="docutils literal notranslate"><span class="pre">'dual'</span></code>, <code class="docutils literal notranslate"><span class="pre">'inet4'</span></code>, <code class="docutils literal notranslate"><span class="pre">'none'</span></code>.</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – Resource labels.</p></li>
 </ul>
@@ -6782,7 +6811,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>anti_affinity_groups</strong> (<em>list</em>) – Instance Pool Anti-affinity Groups.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Instance Pool description.</p></li>
-<li><p><strong>public_ip_assignment</strong> (<em>str</em>) – Assign public IP to Instances. Must be one of <code class="docutils literal notranslate"><span class="pre">'dual'</span></code>, <code class="docutils literal notranslate"><span class="pre">'inet4'</span></code>, <code class="docutils literal notranslate"><span class="pre">'none'</span></code>.</p></li>
+<li><p><strong>public_ip_assignment</strong> (<em>str</em>) – Determines public IP assignment of the Instances.. Must be one of <code class="docutils literal notranslate"><span class="pre">'dual'</span></code>, <code class="docutils literal notranslate"><span class="pre">'inet4'</span></code>.</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – Instance Pool Labels.</p></li>
 <li><p><strong>security_groups</strong> (<em>list</em>) – Instance Pool Security Groups.</p></li>
 <li><p><strong>elastic_ips</strong> (<em>list</em>) – Instances Elastic IPs.</p></li>
@@ -6796,7 +6825,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>user_data</strong> (<em>str</em>) – Instances Cloud-init user-data.</p></li>
 <li><p><strong>deploy_target</strong> (<em>dict</em>) – Instance Pool Deploy Target.</p></li>
 <li><p><strong>ipv6_enabled</strong> (<em>bool</em>) – Enable IPv6. DEPRECATED: use <cite>public-ip-assignments</cite>..</p></li>
-<li><p><strong>disk_size</strong> (<em>int</em>) – Instances disk size in GB.</p></li>
+<li><p><strong>disk_size</strong> (<em>int</em>) – Instances disk size in GiB.</p></li>
 <li><p><strong>ssh_keys</strong> (<em>list</em>) – Instances SSH keys.</p></li>
 </ul>
 </dd>
@@ -7068,7 +7097,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>private_networks</strong> (<em>list</em>) – Nodepool Private Networks.</p></li>
 <li><p><strong>instance_prefix</strong> (<em>str</em>) – Prefix to apply to managed instances names (default: pool).</p></li>
 <li><p><strong>deploy_target</strong> (<em>dict</em>) – Nodepool Deploy Target.</p></li>
-<li><p><strong>disk_size</strong> (<em>int</em>) – Nodepool instances disk size in GB.</p></li>
+<li><p><strong>disk_size</strong> (<em>int</em>) – Nodepool instances disk size in GiB.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

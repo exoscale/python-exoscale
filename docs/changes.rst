@@ -4,6 +4,11 @@ Changelog
 0.10.0 (unreleased)
 ~~~~~~~~~~~~~~~~~~~
 
+* Introduce exception classes that gets raised when the API responds with 4xx
+  or 5xx HTTP statuses.
+* Bump python version requirement to 3.8 due to the use of the walrus
+  operator.
+
 0.9.1 (2024-04-29)
 ~~~~~~~~~~~~~~~~~~
 

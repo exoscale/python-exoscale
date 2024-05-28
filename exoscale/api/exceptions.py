@@ -1,6 +1,3 @@
-# exceptions.py
-
-
 class ExoscaleAPIException(Exception):
     """
     Base exception for exoscale API errors.

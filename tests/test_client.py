@@ -1,6 +1,10 @@
 import pytest
-
 from exoscale.api.v2 import Client
+from exoscale.api.exceptions import (
+    ExoscaleAPIClientException,
+    ExoscaleAPIServerException,
+    ExoscaleAPIAuthException,
+)
 
 
 def test_client_creation():
@@ -20,3 +24,52 @@ def test_client_creation():
     # create with custom URL
     c = Client("key", "secret", url="http://localhost:8000/v2")
     assert hasattr(c, "list_zones")
+
+
+def test_client_error_handling(requests_mock):
+    client = Client(key="EXOtest", secret="sdsd")
+
+    # Mock a 403 authentication error
+    requests_mock.get(
+        "https://api-ch-gva-2.exoscale.com/v2/instance/85664334-0fd5-47bd-94a1-b4f40b1d2eb7",
+        status_code=403,
+        text='{"message":"Invalid request signature"}',
+    )
+    try:
+        client_with_wrong_key = Client(key="EXOtest", secret="wrong_secret")
+        client_with_wrong_key.get_instance(
+            id="85664334-0fd5-47bd-94a1-b4f40b1d2eb7"
+        )
+    except ExoscaleAPIAuthException as e:
+        assert "Authentication error 403" in str(e)
+        assert '{"message":"Invalid request signature"}' in str(e)
+
+    # Mock a 404 client error
+    requests_mock.get(
+        "https://api-ch-gva-2.exoscale.com/v2/instance/85664334-0fd5-47bd-94a1-b4f40b1d2eb7",
+        status_code=404,
+        text='{"message":"Instance not found"}',
+    )
+    try:
+        client.get_instance(id="85664334-0fd5-47bd-94a1-b4f40b1d2eb7")
+    except ExoscaleAPIClientException as e:
+        assert "Client error 404" in str(e)
+        assert '{"message":"Instance not found"}' in str(e)
+
+    # Mock a 503 server error
+    requests_mock.get(
+        "https://api-ch-gva-2.exoscale.com/v2/template",
+        status_code=503,
+        text='{"message":"Endpoint template temporarily unavailable"}',
+    )
+    try:
+        client.list_templates()
+    except ExoscaleAPIServerException as e:
+        assert "Server error 503" in str(e)
+        assert (
+            '{"message":"Endpoint template temporarily unavailable"}' in str(e)
+        )
+
+
+if __name__ == "__main__":
+    pytest.main()

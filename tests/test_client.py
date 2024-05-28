@@ -66,7 +66,9 @@ def test_client_error_handling(requests_mock):
         client.list_templates()
     except ExoscaleAPIServerException as e:
         assert "Server error 503" in str(e)
-        assert '{"message":"Endpoint template temporarily unavailable"}' in str(e)
+        assert (
+            '{"message":"Endpoint template temporarily unavailable"}' in str(e)
+        )
 
 
 if __name__ == "__main__":

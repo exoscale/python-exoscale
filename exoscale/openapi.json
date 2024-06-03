@@ -1149,11 +1149,14 @@
       "private-network": {
         "type": "object",
         "properties": {
-          "id": {
+          "description": {
             "type": "string",
-            "format": "uuid",
-            "readOnly": true,
-            "description": "Private Network ID"
+            "maxLength": 255,
+            "description": "Private Network description"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/labels",
+            "description": "Resource labels"
           },
           "name": {
             "type": "string",
@@ -1161,25 +1164,10 @@
             "minLength": 1,
             "description": "Private Network name"
           },
-          "description": {
-            "type": "string",
-            "maxLength": 255,
-            "description": "Private Network description"
-          },
-          "netmask": {
-            "type": "string",
-            "format": "ipv4",
-            "description": "Private Network netmask"
-          },
           "start-ip": {
             "type": "string",
             "format": "ipv4",
             "description": "Private Network start IP address"
-          },
-          "end-ip": {
-            "type": "string",
-            "format": "ipv4",
-            "description": "Private Network end IP address"
           },
           "leases": {
             "type": "array",
@@ -1189,9 +1177,28 @@
             "readOnly": true,
             "description": "Private Network leased IP addresses"
           },
-          "labels": {
-            "$ref": "#/components/schemas/labels",
-            "description": "Resource labels"
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "description": "Private Network ID"
+          },
+          "vni": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "exclusiveMinimum": true,
+            "description": "Private Network VXLAN ID"
+          },
+          "netmask": {
+            "type": "string",
+            "format": "ipv4",
+            "description": "Private Network netmask"
+          },
+          "end-ip": {
+            "type": "string",
+            "format": "ipv4",
+            "description": "Private Network end IP address"
           }
         },
         "description": "Private Network"
@@ -6323,31 +6330,6 @@
           "de-muc-1"
         ]
       },
-      "cdn-configuration": {
-        "type": "object",
-        "properties": {
-          "bucket": {
-            "type": "string",
-            "description": "CDN configuration bucket name"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "activated",
-              "deactivated",
-              "pending"
-            ],
-            "readOnly": true,
-            "description": "CDN configuration status"
-          },
-          "fqdn": {
-            "type": "string",
-            "readOnly": true,
-            "description": "FQDN that serves the bucket contents"
-          }
-        },
-        "description": "CDN configuration"
-      },
       "dbaas-kafka-acl-id": {
         "type": "string",
         "maxLength": 40,
@@ -7270,8 +7252,7 @@
             "description": "Organization country"
           },
           "balance": {
-            "type": "integer",
-            "format": "int64",
+            "type": "number",
             "readOnly": true,
             "description": "Organization balance"
           },
@@ -8624,68 +8605,6 @@
         ],
         "summary": "Initiate Grafana maintenance update",
         "operationId": "start-dbaas-grafana-maintenance"
-      }
-    },
-    "/access-key/{key}": {
-      "delete": {
-        "tags": [
-          "iam"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": "This operation revokes the specified IAM Access Key. Access Keys created by the revoked Access Key will not be revoked.",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "key",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "summary": "Revoke an IAM Access Key",
-        "operationId": "revoke-access-key"
-      },
-      "get": {
-        "tags": [
-          "iam"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/access-key"
-                }
-              }
-            }
-          }
-        },
-        "description": "",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "key",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "summary": "Retrieve IAM Access Key details",
-        "operationId": "get-access-key"
       }
     },
     "/dbaas-postgres/{service}/upgrade-check": {
@@ -11077,96 +10996,6 @@
           }
         },
         "operationId": "create-dbaas-kafka-schema-registry-acl-config"
-      }
-    },
-    "/access-key": {
-      "get": {
-        "tags": [
-          "iam"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "access-keys": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/access-key"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "description": "",
-        "parameters": [],
-        "summary": "List IAM Access Keys",
-        "operationId": "list-access-keys"
-      },
-      "post": {
-        "tags": [
-          "iam"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/access-key"
-                }
-              }
-            }
-          }
-        },
-        "description": "This operation creates a legacy IAM Access Key, to create a key for use with IAM roles use the api-key endpoint.The corresponding secret is only available in the response returned by this operation, the caller must take care of storing it safely as there is no other way to retrieve it.",
-        "parameters": [],
-        "summary": "Create a legacy IAM Access Key",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "IAM Access Key name"
-                  },
-                  "tags": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    },
-                    "description": "IAM Access Key tags"
-                  },
-                  "operations": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    },
-                    "description": "IAM Access Key operations"
-                  },
-                  "resources": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/access-key-resource"
-                    },
-                    "description": "IAM Access Key Resources"
-                  }
-                },
-                "description": "IAM Access Key"
-              }
-            }
-          }
-        },
-        "operationId": "create-access-key"
       }
     },
     "/private-network/{id}:update-ip": {
@@ -13864,37 +13693,6 @@
         "operationId": "list-dbaas-integration-types"
       }
     },
-    "/access-key-known-operations": {
-      "get": {
-        "tags": [
-          "iam"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "access-key-operations": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/access-key-operation"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "description": "",
-        "parameters": [],
-        "summary": "Retrieve all known available IAM Access Key operations and associated tags",
-        "operationId": "list-access-key-known-operations"
-      }
-    },
     "/dbaas-postgres/{service-name}/user/{username}": {
       "delete": {
         "tags": [
@@ -16025,37 +15823,6 @@
           }
         },
         "operationId": "add-service-to-load-balancer"
-      }
-    },
-    "/access-key-operations": {
-      "get": {
-        "tags": [
-          "iam"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "access-key-operations": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/access-key-operation"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "description": "",
-        "parameters": [],
-        "summary": "Retrieve IAM Access Key operations and associated tags for the signing key",
-        "operationId": "list-access-key-operations"
       }
     },
     "/ssh-key": {

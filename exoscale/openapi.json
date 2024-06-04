@@ -16135,6 +16135,50 @@
         "operationId": "detach-block-storage-volume"
       }
     },
+    "/console/{id}": {
+      "get": {
+        "tags": [
+          "instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    },
+                    "host": {
+                      "type": "string"
+                    },
+                    "path": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Retrieve signed url valid for 60 seconds to connect via console-proxy websocket to VM VNC console.",
+        "operationId": "get-console-proxy-url"
+      }
+    },
     "/dbaas-integration/{id}": {
       "delete": {
         "tags": [

@@ -3799,6 +3799,7 @@
           "strategy": {
             "type": "string",
             "enum": [
+              "maglev-hash",
               "round-robin",
               "source-hash"
             ],
@@ -8062,6 +8063,7 @@
                   "strategy": {
                     "type": "string",
                     "enum": [
+                      "maglev-hash",
                       "round-robin",
                       "source-hash"
                     ],
@@ -15781,6 +15783,7 @@
                   "strategy": {
                     "type": "string",
                     "enum": [
+                      "maglev-hash",
                       "round-robin",
                       "source-hash"
                     ],

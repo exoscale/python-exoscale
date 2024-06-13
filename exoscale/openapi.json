@@ -2707,6 +2707,44 @@
         },
         "description": "Load Balancer Service status"
       },
+      "user": {
+        "type": "object",
+        "properties": {
+          "sso": {
+            "type": "boolean",
+            "description": "SSO enabled"
+          },
+          "two-factor-authentication": {
+            "type": "boolean",
+            "description": "Two Factor Authentication enabled"
+          },
+          "email": {
+            "type": "string",
+            "readOnly": true,
+            "description": "User Email"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "description": "User ID"
+          },
+          "role": {
+            "$ref": "#/components/schemas/iam-role",
+            "description": "IAM Role"
+          },
+          "pending": {
+            "type": "boolean",
+            "readOnly": true,
+            "description": "True if the user has not yet created an Exoscale account"
+          }
+        },
+        "required": [
+          "email",
+          "role"
+        ],
+        "description": "User"
+      },
       "dbaas-service-mysql": {
         "type": "object",
         "properties": {

@@ -14670,6 +14670,46 @@
         "operationId": "start-dbaas-pg-maintenance"
       }
     },
+    "/dbaas-grafana/{service-name}/user/{username}/password/reveal": {
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-user-grafana-secrets"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "username",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-user-username"
+            }
+          }
+        ],
+        "summary": "Reveal the secrets of a DBaaS Grafana user",
+        "operationId": "reveal-dbaas-grafana-user-password"
+      }
+    },
     "/reverse-dns/instance/{id}": {
       "post": {
         "tags": [
@@ -14832,6 +14872,62 @@
           }
         },
         "operationId": "evict-instance-pool-members"
+      }
+    },
+    "/dbaas-grafana/{service-name}/user/{username}/password/reset": {
+      "put": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "If no password is provided one will be generated automatically.",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "username",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-user-username"
+            }
+          }
+        ],
+        "summary": "Reset the credentials of a DBaaS Grafana user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "$ref": "#/components/schemas/dbaas-user-password",
+                    "description": "New password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "reset-dbaas-grafana-user-password"
       }
     },
     "/security-group/{id}:detach": {

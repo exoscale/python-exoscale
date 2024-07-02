@@ -5177,6 +5177,20 @@
         "maxLength": 63,
         "minLength": 0
       },
+      "dbaas-user-grafana-secrets": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Grafana username"
+          },
+          "password": {
+            "type": "string",
+            "description": "Grafana password"
+          }
+        },
+        "description": "Grafana User secrets"
+      },
       "sks-cluster": {
         "type": "object",
         "properties": {

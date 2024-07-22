@@ -5505,6 +5505,14 @@
             "maxLength": 255,
             "description": "Nodepool description"
           },
+          "public-ip-assignment": {
+            "type": "string",
+            "enum": [
+              "dual",
+              "inet4"
+            ],
+            "description": "Nodepool public IP assignment of the Instances"
+          },
           "labels": {
             "$ref": "#/components/schemas/labels",
             "description": "Nodepool labels"
@@ -11177,6 +11185,14 @@
                     "type": "string",
                     "maxLength": 255,
                     "description": "Nodepool description"
+                  },
+                  "public-ip-assignment": {
+                    "type": "string",
+                    "enum": [
+                      "dual",
+                      "inet4"
+                    ],
+                    "description": "Determines public IP assignment of the Instances"
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
@@ -18413,6 +18429,14 @@
                     "type": "string",
                     "maxLength": 255,
                     "description": "Nodepool description"
+                  },
+                  "public-ip-assignment": {
+                    "type": "string",
+                    "enum": [
+                      "dual",
+                      "inet4"
+                    ],
+                    "description": "Determines public IP assignment of the Instances (default: `inet4`)"
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",

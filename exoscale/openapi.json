@@ -13,7 +13,7 @@
   },
   "tags": [
     {
-      "description": "\nSecurity Groups are groups of firewall rules that regulate network traffic to and from your Compute instances.\n\n[Read more](https://community.exoscale.com/documentation/compute/security-groups/)",
+      "description": "Security Groups are groups of firewall rules that regulate\n                   network traffic to and from your Compute instances.",
       "externalDocs": {
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/compute/security-groups/"
@@ -21,7 +21,7 @@
       "name": "security-groups"
     },
     {
-      "description": "\nAn Instance Type is a resource describing the amount of CPU, RAM and eventually GPUs your Compute instance will run on.\n\n[Read more](https://www.exoscale.com/pricing/)",
+      "description": "An Instance Type is a resource describing the amount of\n                   CPU, RAM and eventually GPUs your Compute instance will run on.",
       "externalDocs": {
         "description": "Read more",
         "url": "https://www.exoscale.com/pricing/"
@@ -29,7 +29,7 @@
       "name": "instance-types"
     },
     {
-      "description": "\nA Network Load Balancer (NLB) is a Layer 4 (TCP/UDP) load balancer that distributes incoming traffic to Compute instances managed by an Instance Pool.\n\n[Read more](https://community.exoscale.com/documentation/compute/network-load-balancer/)\n",
+      "description": "A Network Load Balancer (NLB) is a Layer 4 (TCP/UDP)\n                   load balancer that distributes incoming traffic to Compute\n                   instances managed by an Instance Pool.",
       "externalDocs": {
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/compute/network-load-balancer/"
@@ -37,7 +37,7 @@
       "name": "network-load-balancer"
     },
     {
-      "description": "\nInstance Pools is an Exoscale service allowing users to provision managed groups of identical Compute instances automatically.\n\n[Read more](https://community.exoscale.com/documentation/compute/instance-pools/)",
+      "description": "Instance Pools is an Exoscale service allowing users\n                   to provision managed groups of identical Compute\n                   instances automatically.",
       "externalDocs": {
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/compute/instance-pools/"
@@ -45,7 +45,7 @@
       "name": "instance-pools"
     },
     {
-      "description": "\nEvents form the basis of the Exoscale audit-trail, a mechanism to query past events\nperforming mutations on resources which happened on an organization",
+      "description": "Events form the basis of the Exoscale audit-trail, a mechanism\n                   to query past events performing mutations on resources\n                   which happened on an organization.",
       "externalDocs": {
         "description": "Read more",
         "url": "https://www.exoscale.com/support/"
@@ -53,7 +53,7 @@
       "name": "event"
     },
     {
-      "description": "\nInstances are the virtual machines at the core of the Exoscale Compute service.",
+      "description": "Instances are the virtual machines at the core of the Exoscale\n                   Compute service.",
       "externalDocs": {
         "description": "Read more",
         "url": "https://www.exoscale.com/compute/"
@@ -61,15 +61,15 @@
       "name": "instances"
     },
     {
-      "description": "\nExoscale's Block Storage offers persistent\nexternally attached volumes for your workloads.",
+      "description": "Exoscale's Block Storage offers persistent externally\n                   attached volumes for your workloads.",
       "externalDocs": {
         "description": "Read more",
-        "url": "https://community.exoscale.com/documentation/compute/"
+        "url": "https://community.exoscale.com/documentation/block-storage/"
       },
       "name": "block-storage"
     },
     {
-      "description": "\nSnapshots provide a way to get point-in-time recovery for your Compute instance.\n\n[Read more](https://community.exoscale.com/documentation/compute/snapshots/)",
+      "description": "Snapshots provide a way to get point-in-time recovery\n                   for your Compute instance.",
       "externalDocs": {
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/compute/snapshots/"
@@ -77,7 +77,7 @@
       "name": "snapshots"
     },
     {
-      "description": "\nA Zone represents an independent datacenter in which Exoscale infrastructure is deployed into.\n\n[Read more](https://www.exoscale.com/datacenters/)",
+      "description": "A Zone represents an independent datacenter in which Exoscale\n                   infrastructure is deployed into.",
       "externalDocs": {
         "description": "Read more",
         "url": "https://www.exoscale.com/datacenters/"
@@ -85,7 +85,7 @@
       "name": "zones"
     },
     {
-      "description": "\nSSH Keypairs\n\n[Read more](https://community.exoscale.com/documentation/compute/ssh-keypairs/)",
+      "description": "SSH Keypairs",
       "externalDocs": {
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/compute/ssh-keypairs/"
@@ -93,7 +93,7 @@
       "name": "ssh-keypair"
     },
     {
-      "description": "\nOperations describe the current state of an asynchronous operation.",
+      "description": "Operations describe the current state of an asynchronous\n                   operation.",
       "externalDocs": {
         "description": "Read more",
         "url": "https://community.exoscale.com/"
@@ -101,7 +101,7 @@
       "name": "operations"
     },
     {
-      "description": "\nTemplates contain the OS and the initial setup of a Compute instance.",
+      "description": "Templates contain the OS and the initial setup of a\n                   Compute instance.",
       "externalDocs": {
         "description": "Read more",
         "url": "https://www.exoscale.com/templates/"
@@ -109,10 +109,10 @@
       "name": "templates"
     },
     {
-      "description": "\nSKS is Exoscale's scalable Kubernetes service which provides managed Kubernetes\ncontrol planes with integrated support for Exoscale instance pools ands network load\nbalancers.\n[Read more](https://www.exoscale.com/scalable-kubernetes-service/)",
+      "description": "SKS is Exoscale's scalable Kubernetes service which provides\n                   managed Kubernetes control planes with integrated support for\n                   Exoscale instance pools ands network load balancers.",
       "externalDocs": {
         "description": "Read more",
-        "url": "https://www.exoscale.com/scalable-kubernetes-service/"
+        "url": "https://commumity.exoscale.com/documentation/sks/"
       },
       "name": "sks"
     }
@@ -5511,7 +5511,7 @@
               "dual",
               "inet4"
             ],
-            "description": "Nodepool public IP assignment of the Instances"
+            "description": "Nodepool public IP assignment of the Instances:\n\n                                 - IPv4 (`inet4`) addressing only;\n                                 - IPv4 and IPv6 (`dual`) addressing."
           },
           "labels": {
             "$ref": "#/components/schemas/labels",
@@ -11192,7 +11192,7 @@
                       "dual",
                       "inet4"
                     ],
-                    "description": "Determines public IP assignment of the Instances"
+                    "description": "Configures public IP assignment of the Instances with:\n\n                                         - IPv4 (`inet4`) addressing only;\n                                         - both IPv4 and IPv6 (`dual`) addressing."
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
@@ -18436,7 +18436,7 @@
                       "dual",
                       "inet4"
                     ],
-                    "description": "Determines public IP assignment of the Instances (default: `inet4`)"
+                    "description": "Configures public IP assignment of the Instances with:\n\n                                        - IPv4 (`inet4`) addressing only (default);\n                                        - both IPv4 and IPv6 (`dual`) addressing."
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",

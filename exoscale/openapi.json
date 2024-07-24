@@ -112,7 +112,7 @@
       "description": "SKS is Exoscale's scalable Kubernetes service which provides\n                   managed Kubernetes control planes with integrated support for\n                   Exoscale instance pools ands network load balancers.",
       "externalDocs": {
         "description": "Read more",
-        "url": "https://commumity.exoscale.com/documentation/sks/"
+        "url": "https://community.exoscale.com/documentation/sks/"
       },
       "name": "sks"
     }
@@ -5511,7 +5511,7 @@
               "dual",
               "inet4"
             ],
-            "description": "Nodepool public IP assignment of the Instances:\n\n                                 - IPv4 (`inet4`) addressing only;\n                                 - IPv4 and IPv6 (`dual`) addressing."
+            "description": "Nodepool public IP assignment of the Instances:\n\n* IPv4 (`inet4`) addressing only;\n* IPv4 and IPv6 (`dual`) addressing."
           },
           "labels": {
             "$ref": "#/components/schemas/labels",
@@ -11192,7 +11192,7 @@
                       "dual",
                       "inet4"
                     ],
-                    "description": "Configures public IP assignment of the Instances with:\n\n                                         - IPv4 (`inet4`) addressing only;\n                                         - both IPv4 and IPv6 (`dual`) addressing."
+                    "description": "Configures public IP assignment of the Instances with:\n\n* IPv4 (`inet4`) addressing only;\n* both IPv4 and IPv6 (`dual`) addressing."
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
@@ -18436,7 +18436,7 @@
                       "dual",
                       "inet4"
                     ],
-                    "description": "Configures public IP assignment of the Instances with:\n\n                                        - IPv4 (`inet4`) addressing only (default);\n                                        - both IPv4 and IPv6 (`dual`) addressing."
+                    "description": "Configures public IP assignment of the Instances with:\n\n* IPv4 (`inet4`) addressing only (default);\n* both IPv4 and IPv6 (`dual`) addressing."
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",

@@ -967,6 +967,20 @@
         "title": "Grafana settings",
         "type": "object"
       },
+      "dbaas-user-kafka-connect-secrets": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Kafka Connect username"
+          },
+          "password": {
+            "type": "string",
+            "description": "Kafka Connect password"
+          }
+        },
+        "description": "Kafka Connect secrets"
+      },
       "dbaas-service-type": {
         "type": "object",
         "properties": {
@@ -12093,6 +12107,38 @@
         "operationId": "export-snapshot"
       }
     },
+    "/dbaas-kafka/{service-name}/connect/password/reveal": {
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-user-kafka-connect-secrets"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          }
+        ],
+        "summary": "Reveal the secrets for DBaaS Kafka Connect",
+        "operationId": "reveal-dbaas-kafka-connect-password"
+      }
+    },
     "/elastic-ip/{id}/{field}": {
       "delete": {
         "tags": [
@@ -15783,6 +15829,38 @@
           }
         },
         "operationId": "detach-instance-from-elastic-ip"
+      }
+    },
+    "/dbaas-mysql/{name}/enable/writes": {
+      "put": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          }
+        ],
+        "summary": "Temporarily enable writes for MySQL services in read-only mode due to filled up storage",
+        "operationId": "enable-dbaas-mysql-writes"
       }
     },
     "/dbaas-kafka/{service-name}/user/{username}/password/reveal": {

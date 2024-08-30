@@ -5881,6 +5881,26 @@
         },
         "description": "SKS Nodepool"
       },
+      "dbaas-datadog-tag": {
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "Optional tag explanation"
+          },
+          "tag": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^(?!aiven-)[^\\W\\d_](?:[:\\w./-]*[\\w./-])?$",
+            "description": "Tag value"
+          }
+        },
+        "required": [
+          "tag"
+        ]
+      },
       "enum-integration-types": {
         "type": "string",
         "enum": [
@@ -8280,7 +8300,7 @@
       "dbaas-endpoint-datadog": {
         "type": "object",
         "properties": {
-          "datadog-api-key": {
+          "api-key": {
             "type": "string",
             "maxLength": 256,
             "minLength": 1,
@@ -8291,27 +8311,10 @@
             "$ref": "#/components/schemas/enum-datadog-site",
             "description": "Datadog intake site. Defaults to datadoghq.com"
           },
-          "datadog-tags": {
+          "tags": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "comment": {
-                  "type": "string",
-                  "maxLength": 1024,
-                  "description": "Optional tag explanation"
-                },
-                "tag": {
-                  "type": "string",
-                  "maxLength": 200,
-                  "minLength": 1,
-                  "pattern": "^(?!aiven-)[^\\W\\d_](?:[:\\w./-]*[\\w./-])?$",
-                  "description": "Tag value"
-                }
-              },
-              "required": [
-                "tag"
-              ]
+              "$ref": "#/components/schemas/dbaas-datadog-tag"
             },
             "description": "Custom tags provided by user"
           },
@@ -8348,7 +8351,7 @@
           }
         },
         "required": [
-          "datadog-api-key",
+          "api-key",
           "site"
         ]
       },
@@ -14646,9 +14649,9 @@
             }
           }
         },
-        "description": "Get DBaaS integration types",
+        "description": "[BETA] Get DBaaS integration types",
         "parameters": [],
-        "summary": "Get DBaaS integration types",
+        "summary": "",
         "operationId": "list-dbaas-integration-types"
       }
     },
@@ -17535,7 +17538,7 @@
             }
           }
         },
-        "description": "Delete a DBaaS Integration",
+        "description": "[BETA]Delete a DBaaS Integration",
         "parameters": [
           {
             "in": "path",
@@ -17547,7 +17550,7 @@
             }
           }
         ],
-        "summary": "Delete a DBaaS Integration",
+        "summary": "",
         "operationId": "delete-dbaas-integration"
       },
       "put": {
@@ -17566,7 +17569,7 @@
             }
           }
         },
-        "description": "Update a existing DBaaS integration",
+        "description": "[BETA] Update a existing DBaaS integration",
         "parameters": [
           {
             "in": "path",
@@ -17578,7 +17581,7 @@
             }
           }
         ],
-        "summary": "Update a existing DBaaS integration",
+        "summary": "",
         "requestBody": {
           "required": true,
           "content": {
@@ -17616,7 +17619,7 @@
             }
           }
         },
-        "description": "Get a DBaaS Integration",
+        "description": "[BETA] Get a DBaaS Integration",
         "parameters": [
           {
             "in": "path",
@@ -17628,7 +17631,7 @@
             }
           }
         ],
-        "summary": "Get a DBaaS Integration",
+        "summary": "",
         "operationId": "get-dbaas-integration"
       }
     },
@@ -17897,7 +17900,7 @@
             }
           }
         },
-        "description": "Get DBaaS integration settings",
+        "description": "[BETA] Get DBaaS integration settings",
         "parameters": [
           {
             "in": "path",
@@ -17924,7 +17927,7 @@
             }
           }
         ],
-        "summary": "Get DBaaS integration settings",
+        "summary": "",
         "operationId": "list-dbaas-integration-settings"
       }
     },
@@ -21677,9 +21680,9 @@
             }
           }
         },
-        "description": "Create a new DBaaS integration between two services",
+        "description": "[BETA] Create a new DBaaS integration between two services",
         "parameters": [],
-        "summary": "Create a new DBaaS integration between two services",
+        "summary": "",
         "requestBody": {
           "required": true,
           "content": {

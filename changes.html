@@ -141,22 +141,21 @@ operator.</p></li>
 <section id="id1">
 <h2>0.9.1 (2024-04-29)<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">exoscale.api.v2.Client</span></code> improvements:</p>
-<ul>
+<ul class="simple">
 <li><p>Client initialization accepts two signatures: <code class="docutils literal notranslate"><span class="pre">Client(key,</span> <span class="pre">secret,</span> <span class="pre">zone)</span></code> for
 typical use and <code class="docutils literal notranslate"><span class="pre">Client(key,</span> <span class="pre">secret,</span> <span class="pre">url)</span></code> when needing to target another
 endpoint than the public endpoint template.</p></li>
 <li><p>Drop support for Python 3.7, add Python 3.12 to the testing matrix.</p></li>
 <li><p>Fix operations with multiple path parameters (<cite>&#64;thomas-chauvet https://github.com/exoscale/python-exoscale/pull/57</cite>)</p></li>
-<li><p>API changes and additions:
-* DBaaS:</p>
-<blockquote>
-<div><ul class="simple">
+<li><p>API changes and additions:</p>
+<ul>
+<li><p>DBaaS:</p>
+<ul>
 <li><p>integrations settings</p></li>
 <li><p>Split secrets over to separate endpoints</p></li>
 <li><p>Add zone to service details</p></li>
 </ul>
-</div></blockquote>
-<ul class="simple">
+</li>
 <li><p>DNS record types cleanup</p></li>
 <li><p>Instance password reset operation</p></li>
 <li><p>Provide <code class="docutils literal notranslate"><span class="pre">at-vie-2</span></code> in the zones choices</p></li>

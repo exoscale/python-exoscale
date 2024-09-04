@@ -20,7 +20,9 @@ Changelog
 * Drop support for Python 3.7, add Python 3.12 to the testing matrix.
 * Fix operations with multiple path parameters (`@thomas-chauvet https://github.com/exoscale/python-exoscale/pull/57`)
 * API changes and additions:
+
   * DBaaS:
+
     * integrations settings
     * Split secrets over to separate endpoints
     * Add zone to service details

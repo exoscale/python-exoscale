@@ -23,11 +23,13 @@ Examples:
 
 import copy
 import json
+import time
 from itertools import chain
 from pathlib import Path
 
 from exoscale_auth import ExoscaleV2Auth
 from .exceptions import (
+    ExoscaleAPIException,
     ExoscaleAPIClientException,
     ExoscaleAPIServerException,
     ExoscaleAPIAuthException,
@@ -35,7 +37,6 @@ from .exceptions import (
 
 
 import requests
-
 
 with open(Path(__file__).parent.parent / "openapi.json", "r") as f:
     API_SPEC = json.load(f)
@@ -97,7 +98,7 @@ def _get_ref(path):
 
 
 class BaseClient:
-    def __init__(self, key, secret, url=None, **kwargs):
+    def __init__(self, key, secret, url: str | None = None, polling_interval: int = 5, **kwargs):
         if url is None:
             server = API_SPEC["servers"][0]
             variables = {
@@ -121,6 +122,7 @@ class BaseClient:
 
         session = requests.Session()
         session.auth = ExoscaleV2Auth(key, secret)
+        self.polling_interval = polling_interval
         self.session = session
         self.key = key
 
@@ -178,6 +180,65 @@ class BaseClient:
 
         return response.json()
 
+    def wait(self, operation_id: str, states: list[str] = None, timeout: int = None):
+        """Wait is a helper that waits for async operation to reach the final state.
+            Final states are one of: failure, success, timeout.
+            If states argument are given, returns an error if the final state not match on of those.
+
+            Args:
+                * operation_id (str)
+
+                * states (list(str)): desired operation status. Values are ``'failure'``, ``'success'``, ``'timeout'``.
+
+                * timeout (int): Client timeout to wait for the operation to finish (in seconds).
+
+            Returns:
+                dict: Operation. A dictionnary with the following keys:
+
+                  * **id** (str): Operation ID.
+
+                  * **reason** (str): Operation failure reason. Values are ``'busy'``, ``'conflict'``, ``'fault'``, ``'forbidden'``, ``'incorrect'``, ``'interrupted'``, ``'not-found'``, ``'partial'``, ``'unavailable'``, ``'unknown'``, ``'unsupported'``.
+
+                  * **reference** (dict): Related resource reference.
+
+                  * **message** (str): Operation message.
+
+                  * **state** (str): Operation status. Values are ``'failure'``, ``'pending'``, ``'success'``, ``'timeout'``.
+
+            Raises:
+                * ExoscaleAPIException: The final state doesn't match the desired state.
+
+                * TimeoutError: If a timeout is specified, thrown if the operation is still in progress after reaching the timeout.
+        """
+
+        if operation_id is None:
+            raise ValueError("operation_id is None")
+
+        start_time = time.time()
+
+        while True:
+            # Check for timeout
+            if timeout and (time.time() - start_time) > timeout:
+                raise TimeoutError(f"Operation {operation_id} timed out")
+
+            # Fetch the latest operation state
+            operation = self.get_operation(id=operation_id)
+
+            if operation["state"] != "pending":
+                # Operation has reached a final state
+                if not states or operation["state"] in states:
+                    return operation  # Success: return the operation
+                else:
+                    # Error: final state does not match expected states
+                    ref = operation.get("reference", {})
+                    raise ExoscaleAPIException(
+                        f"Operation: '{operation_id}' {ref}, "
+                        f"state: {operation['state']}, reason: '{operation.get('reason', '')}', "
+                        f"message: '{operation.get('message', '')}'"
+                    )
+
+            # Operation is still pending, wait and retry
+            time.sleep(self.polling_interval)
 
 _type_translations = {
     "string": "str",

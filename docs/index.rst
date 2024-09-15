@@ -7,7 +7,7 @@ This provides Python bindings for the `Exoscale`_ cloud platform API.
 
 .. note::
    This library maintains compatibility with actively supported Python
-   versions: Python 3.7+. Older Python versions may be compatible but such
+   versions: Python 3.8+. Older Python versions may be compatible but such
    compatibility is not guaranteed.
 
 .. toctree::

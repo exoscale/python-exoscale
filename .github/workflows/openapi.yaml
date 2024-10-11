@@ -3,6 +3,8 @@ name: Update bundled openapi definition
 
 "on":
   push:
+    branches:
+      - master
   workflow_dispatch:
   schedule:
     - cron: '0 * * * *'  # At :00 every hour

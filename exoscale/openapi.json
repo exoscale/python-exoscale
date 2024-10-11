@@ -160,6 +160,56 @@
         ],
         "description": "Automatic maintenance settings"
       },
+      "dbaas-endpoint-elasticsearch-input-create": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "object",
+            "properties": {
+              "ca": {
+                "type": "string",
+                "maxLength": 16384,
+                "description": "PEM encoded CA certificate"
+              },
+              "url": {
+                "type": "string",
+                "maxLength": 2048,
+                "minLength": 12,
+                "description": "Elasticsearch connection URL"
+              },
+              "index-prefix": {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1,
+                "pattern": "^[a-z0-9][a-z0-9-_.]+$",
+                "description": "Elasticsearch index prefix"
+              },
+              "index-days-max": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 10000,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Maximum number of days of logs to keep"
+              },
+              "timeout": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 10,
+                "maximum": 120,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Elasticsearch request timeout limit"
+              }
+            },
+            "required": [
+              "url",
+              "index-prefix"
+            ]
+          }
+        }
+      },
       "json-schema-schema-registry": {
         "additionalProperties": false,
         "properties": {
@@ -197,11 +247,6 @@
             "minLength": 1,
             "pattern": "^[a-z0-9][a-z0-9-_.]+$",
             "description": "OpenSearch index prefix"
-          },
-          "ca": {
-            "type": "string",
-            "maxLength": 16384,
-            "description": "PEM encoded CA certificate"
           },
           "index-days-max": {
             "type": "integer",
@@ -397,6 +442,29 @@
         },
         "description": "Security Group rule"
       },
+      "dbaas-endpoint-prometheus-payload": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "object",
+            "properties": {
+              "basic-auth-password": {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 8,
+                "description": "Prometheus basic authentication password"
+              },
+              "basic-auth-username": {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 5,
+                "pattern": "^[a-z0-9\\-@_]{5,32}$",
+                "description": "Prometheus basic authentication username"
+              }
+            }
+          }
+        }
+      },
       "enum-component-route": {
         "type": "string",
         "enum": [
@@ -423,7 +491,7 @@
             "description": "External integration endpoint id"
           },
           "settings": {
-            "$ref": "#/components/schemas/dbaas-endpoint-opensearch",
+            "$ref": "#/components/schemas/dbaas-endpoint-opensearch-optional-fields",
             "description": "External integration OpenSearch logs configuration"
           }
         }
@@ -445,8 +513,77 @@
             "description": "External integration endpoint id"
           },
           "settings": {
-            "$ref": "#/components/schemas/dbaas-endpoint-elasticsearch",
+            "$ref": "#/components/schemas/dbaas-endpoint-elasticsearch-optional-fields",
             "description": "External integration ElasticSearch logs configuration"
+          }
+        }
+      },
+      "dbaas-endpoint-rsyslog-input-update": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "object",
+            "properties": {
+              "format": {
+                "$ref": "#/components/schemas/enum-rsyslog-format",
+                "description": "Message format"
+              },
+              "key": {
+                "type": "string",
+                "maxLength": 16384,
+                "description": "PEM encoded client key"
+              },
+              "logline": {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1,
+                "pattern": "^[ -~\\t]+$",
+                "description": "Custom syslog message format"
+              },
+              "server": {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 4,
+                "description": "Rsyslog server IP address or hostname"
+              },
+              "ca": {
+                "type": "string",
+                "maxLength": 16384,
+                "description": "PEM encoded CA certificate"
+              },
+              "cert": {
+                "type": "string",
+                "maxLength": 16384,
+                "description": "PEM encoded client certificate"
+              },
+              "tls": {
+                "type": "boolean",
+                "description": "Require TLS"
+              },
+              "port": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 65535,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Rsyslog server port"
+              },
+              "sd": {
+                "type": "string",
+                "maxLength": 1024,
+                "description": "Structured data block for log message"
+              },
+              "max-message-size": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 2048,
+                "maximum": 2147483647,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Rsyslog max message size"
+              }
+            }
           }
         }
       },
@@ -1308,6 +1445,10 @@
             "format": "ipv4",
             "description": "Private Network netmask"
           },
+          "options": {
+            "$ref": "#/components/schemas/private-network-options",
+            "description": "Options"
+          },
           "end-ip": {
             "type": "string",
             "format": "ipv4",
@@ -1319,41 +1460,11 @@
       "dbaas-endpoint-rsyslog": {
         "type": "object",
         "properties": {
-          "format": {
-            "$ref": "#/components/schemas/enum-rsyslog-format",
-            "description": "Message format"
-          },
-          "key": {
-            "type": "string",
-            "maxLength": 16384,
-            "description": "PEM encoded client key"
-          },
-          "logline": {
-            "type": "string",
-            "maxLength": 512,
-            "minLength": 1,
-            "pattern": "^[ -~\\t]+$",
-            "description": "Custom syslog message format"
-          },
           "server": {
             "type": "string",
             "maxLength": 255,
             "minLength": 4,
             "description": "Rsyslog server IP address or hostname"
-          },
-          "ca": {
-            "type": "string",
-            "maxLength": 16384,
-            "description": "PEM encoded CA certificate"
-          },
-          "cert": {
-            "type": "string",
-            "maxLength": 16384,
-            "description": "PEM encoded client certificate"
-          },
-          "tls": {
-            "type": "boolean",
-            "description": "Require TLS"
           },
           "port": {
             "type": "integer",
@@ -1363,6 +1474,21 @@
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
             "description": "Rsyslog server port"
+          },
+          "tls": {
+            "type": "boolean",
+            "description": "Require TLS"
+          },
+          "format": {
+            "$ref": "#/components/schemas/enum-rsyslog-format",
+            "description": "Message format"
+          },
+          "logline": {
+            "type": "string",
+            "maxLength": 512,
+            "minLength": 1,
+            "pattern": "^[ -~\\t]+$",
+            "description": "Custom syslog message format"
           },
           "sd": {
             "type": "string",
@@ -1975,7 +2101,7 @@
             "type": "string",
             "description": "External destination endpoint id"
           },
-          "id": {
+          "integration-id": {
             "type": "string",
             "format": "uuid",
             "description": "Endpoint integration UUID"
@@ -3506,7 +3632,16 @@
             "description": "External integration endpoint id"
           },
           "settings": {
-            "$ref": "#/components/schemas/dbaas-endpoint-prometheus",
+            "type": "object",
+            "properties": {
+              "basic-auth-username": {
+                "type": "string",
+                "maxLength": 32,
+                "minLength": 5,
+                "pattern": "^[a-z0-9\\-@_]{5,32}$",
+                "description": "Prometheus basic authentication username"
+              }
+            },
             "description": "External integration Prometheus configuration"
           }
         }
@@ -3693,6 +3828,26 @@
         },
         "description": "Snapshot"
       },
+      "dbaas-endpoint-rsyslog-secrets": {
+        "type": "object",
+        "properties": {
+          "ca": {
+            "type": "string",
+            "maxLength": 16384,
+            "description": "PEM encoded CA certificate"
+          },
+          "cert": {
+            "type": "string",
+            "maxLength": 16384,
+            "description": "PEM encoded client certificate"
+          },
+          "key": {
+            "type": "string",
+            "maxLength": 16384,
+            "description": "PEM encoded client key"
+          }
+        }
+      },
       "dbaas-user-kafka-secrets": {
         "type": "object",
         "properties": {
@@ -3718,6 +3873,17 @@
           }
         },
         "description": "Kafka User secrets"
+      },
+      "dbaas-endpoint-prometheus-secrets": {
+        "type": "object",
+        "properties": {
+          "basic-auth-password": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 8,
+            "description": "Prometheus basic authentication password"
+          }
+        }
       },
       "event": {
         "type": "object",
@@ -4194,6 +4360,16 @@
         },
         "description": "IAM Access Key"
       },
+      "dbaas-endpoint-opensearch-secrets": {
+        "type": "object",
+        "properties": {
+          "ca": {
+            "type": "string",
+            "maxLength": 16384,
+            "description": "PEM encoded CA certificate"
+          }
+        }
+      },
       "dbaas-service-update": {
         "type": "object",
         "properties": {
@@ -4300,6 +4476,52 @@
         },
         "description": "DBaaS plan"
       },
+      "dbaas-endpoint-opensearch-input-update": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "object",
+            "properties": {
+              "ca": {
+                "type": "string",
+                "maxLength": 16384,
+                "description": "PEM encoded CA certificate"
+              },
+              "url": {
+                "type": "string",
+                "maxLength": 2048,
+                "minLength": 12,
+                "description": "OpenSearch connection URL"
+              },
+              "index-prefix": {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1,
+                "pattern": "^[a-z0-9][a-z0-9-_.]+$",
+                "description": "OpenSearch index prefix"
+              },
+              "index-days-max": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 10000,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Maximum number of days of logs to keep"
+              },
+              "timeout": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 10,
+                "maximum": 120,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "OpenSearch request timeout limit"
+              }
+            }
+          }
+        }
+      },
       "labels": {
         "type": "object",
         "additionalProperties": {
@@ -4374,6 +4596,28 @@
             }
           }
         }
+      },
+      "private-network-options": {
+        "type": "object",
+        "properties": {
+          "routers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "ipv4"
+            },
+            "description": "Routers"
+          },
+          "dns-servers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "ipv4"
+            },
+            "description": "DNS Servers"
+          }
+        },
+        "description": "Private Network DHCP Options"
       },
       "dbaas-service-pg": {
         "type": "object",
@@ -4849,6 +5093,55 @@
           }
         }
       },
+      "dbaas-endpoint-rsyslog-optional-fields": {
+        "type": "object",
+        "properties": {
+          "server": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 4,
+            "description": "Rsyslog server IP address or hostname"
+          },
+          "port": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 65535,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "description": "Rsyslog server port"
+          },
+          "tls": {
+            "type": "boolean",
+            "description": "Require TLS"
+          },
+          "format": {
+            "$ref": "#/components/schemas/enum-rsyslog-format",
+            "description": "Message format"
+          },
+          "logline": {
+            "type": "string",
+            "maxLength": 512,
+            "minLength": 1,
+            "pattern": "^[ -~\\t]+$",
+            "description": "Custom syslog message format"
+          },
+          "sd": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "Structured data block for log message"
+          },
+          "max-message-size": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 2048,
+            "maximum": 2147483647,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "description": "Rsyslog max message size"
+          }
+        }
+      },
       "operation": {
         "type": "object",
         "properties": {
@@ -5074,11 +5367,6 @@
             "pattern": "^[a-z0-9][a-z0-9-_.]+$",
             "description": "Elasticsearch index prefix"
           },
-          "ca": {
-            "type": "string",
-            "maxLength": 16384,
-            "description": "PEM encoded CA certificate"
-          },
           "index-days-max": {
             "type": "integer",
             "format": "int64",
@@ -5120,7 +5408,51 @@
             "description": "External integration endpoint id"
           },
           "settings": {
-            "$ref": "#/components/schemas/dbaas-endpoint-datadog",
+            "type": "object",
+            "properties": {
+              "site": {
+                "$ref": "#/components/schemas/enum-datadog-site",
+                "description": "Datadog intake site. Defaults to datadoghq.com"
+              },
+              "datadog-tags": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/dbaas-datadog-tag"
+                },
+                "description": "Custom tags provided by user"
+              },
+              "disable-consumer-stats": {
+                "type": "boolean",
+                "description": "Disable consumer group metrics"
+              },
+              "kafka-consumer-check-instances": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 100,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Number of separate instances to fetch kafka consumer statistics with"
+              },
+              "kafka-consumer-stats-timeout": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 2,
+                "maximum": 300,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Number of seconds that datadog will wait to get consumer statistics from brokers"
+              },
+              "max-partition-contexts": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 200,
+                "maximum": 200000,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Maximum number of partition contexts to send"
+              }
+            },
             "description": "External integration DataDog configuration"
           }
         }
@@ -5317,6 +5649,69 @@
         },
         "description": "Kubelet image GC options"
       },
+      "dbaas-endpoint-datadog-input-create": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "object",
+            "properties": {
+              "datadog-api-key": {
+                "type": "string",
+                "maxLength": 256,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9]{1,256}$",
+                "description": "Datadog API key"
+              },
+              "site": {
+                "$ref": "#/components/schemas/enum-datadog-site",
+                "description": "Datadog intake site. Defaults to datadoghq.com"
+              },
+              "datadog-tags": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/dbaas-datadog-tag"
+                },
+                "description": "Custom tags provided by user"
+              },
+              "disable-consumer-stats": {
+                "type": "boolean",
+                "description": "Disable consumer group metrics"
+              },
+              "kafka-consumer-check-instances": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 100,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Number of separate instances to fetch kafka consumer statistics with"
+              },
+              "kafka-consumer-stats-timeout": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 2,
+                "maximum": 300,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Number of seconds that datadog will wait to get consumer statistics from brokers"
+              },
+              "max-partition-contexts": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 200,
+                "maximum": 200000,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Maximum number of partition contexts to send"
+              }
+            },
+            "required": [
+              "datadog-api-key",
+              "site"
+            ]
+          }
+        }
+      },
       "dbaas-pg-pool-username": {
         "type": "string",
         "maxLength": 64,
@@ -5439,6 +5834,16 @@
         "type": "string",
         "maxLength": 63,
         "minLength": 0
+      },
+      "dbaas-endpoint-elasticsearch-secrets": {
+        "type": "object",
+        "properties": {
+          "ca": {
+            "type": "string",
+            "maxLength": 16384,
+            "description": "PEM encoded CA certificate"
+          }
+        }
       },
       "dbaas-user-grafana-secrets": {
         "type": "object",
@@ -5746,6 +6151,49 @@
               }
             },
             "description": "A JSON schema of additional settings of the integration."
+          }
+        }
+      },
+      "dbaas-endpoint-datadog-common": {
+        "type": "object",
+        "properties": {
+          "datadog-tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/dbaas-datadog-tag"
+            },
+            "description": "Custom tags provided by user"
+          },
+          "disable-consumer-stats": {
+            "type": "boolean",
+            "description": "Disable consumer group metrics"
+          },
+          "kafka-consumer-check-instances": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 100,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "description": "Number of separate instances to fetch kafka consumer statistics with"
+          },
+          "kafka-consumer-stats-timeout": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 2,
+            "maximum": 300,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "description": "Number of seconds that datadog will wait to get consumer statistics from brokers"
+          },
+          "max-partition-contexts": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 200,
+            "maximum": 200000,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "description": "Maximum number of partition contexts to send"
           }
         }
       },
@@ -6435,6 +6883,65 @@
         },
         "description": "DBaaS plan backup config"
       },
+      "dbaas-endpoint-datadog-input-update": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "object",
+            "properties": {
+              "datadog-api-key": {
+                "type": "string",
+                "maxLength": 256,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9]{1,256}$",
+                "description": "Datadog API key"
+              },
+              "site": {
+                "$ref": "#/components/schemas/enum-datadog-site",
+                "description": "Datadog intake site. Defaults to datadoghq.com"
+              },
+              "datadog-tags": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/dbaas-datadog-tag"
+                },
+                "description": "Custom tags provided by user"
+              },
+              "disable-consumer-stats": {
+                "type": "boolean",
+                "description": "Disable consumer group metrics"
+              },
+              "kafka-consumer-check-instances": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 100,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Number of separate instances to fetch kafka consumer statistics with"
+              },
+              "kafka-consumer-stats-timeout": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 2,
+                "maximum": 300,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Number of seconds that datadog will wait to get consumer statistics from brokers"
+              },
+              "max-partition-contexts": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 200,
+                "maximum": 200000,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Maximum number of partition contexts to send"
+              }
+            }
+          }
+        }
+      },
       "dbaas-service-redis": {
         "type": "object",
         "properties": {
@@ -6686,6 +7193,59 @@
           "de-fra-1",
           "de-muc-1"
         ]
+      },
+      "dbaas-endpoint-datadog-settings": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "object",
+            "properties": {
+              "site": {
+                "$ref": "#/components/schemas/enum-datadog-site",
+                "description": "Datadog intake site. Defaults to datadoghq.com"
+              },
+              "datadog-tags": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/dbaas-datadog-tag"
+                },
+                "description": "Custom tags provided by user"
+              },
+              "disable-consumer-stats": {
+                "type": "boolean",
+                "description": "Disable consumer group metrics"
+              },
+              "kafka-consumer-check-instances": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 100,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Number of separate instances to fetch kafka consumer statistics with"
+              },
+              "kafka-consumer-stats-timeout": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 2,
+                "maximum": 300,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Number of seconds that datadog will wait to get consumer statistics from brokers"
+              },
+              "max-partition-contexts": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 200,
+                "maximum": 200000,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Maximum number of partition contexts to send"
+              }
+            },
+            "description": "External integration DataDog configuration"
+          }
+        }
       },
       "dbaas-kafka-acl-id": {
         "type": "string",
@@ -7194,8 +7754,54 @@
             "description": "External integration endpoint id"
           },
           "settings": {
-            "$ref": "#/components/schemas/dbaas-endpoint-rsyslog",
+            "$ref": "#/components/schemas/dbaas-endpoint-rsyslog-optional-fields",
             "description": "External integration RSyslog configuration"
+          }
+        }
+      },
+      "dbaas-endpoint-elasticsearch-input-update": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "object",
+            "properties": {
+              "ca": {
+                "type": "string",
+                "maxLength": 16384,
+                "description": "PEM encoded CA certificate"
+              },
+              "url": {
+                "type": "string",
+                "maxLength": 2048,
+                "minLength": 12,
+                "description": "Elasticsearch connection URL"
+              },
+              "index-prefix": {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1,
+                "pattern": "^[a-z0-9][a-z0-9-_.]+$",
+                "description": "Elasticsearch index prefix"
+              },
+              "index-days-max": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 10000,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Maximum number of days of logs to keep"
+              },
+              "timeout": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 10,
+                "maximum": 120,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Elasticsearch request timeout limit"
+              }
+            }
           }
         }
       },
@@ -7212,6 +7818,131 @@
           }
         },
         "description": "Postgres User secrets"
+      },
+      "dbaas-endpoint-rsyslog-input-create": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "object",
+            "properties": {
+              "format": {
+                "$ref": "#/components/schemas/enum-rsyslog-format",
+                "description": "Message format"
+              },
+              "key": {
+                "type": "string",
+                "maxLength": 16384,
+                "description": "PEM encoded client key"
+              },
+              "logline": {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 1,
+                "pattern": "^[ -~\\t]+$",
+                "description": "Custom syslog message format"
+              },
+              "server": {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 4,
+                "description": "Rsyslog server IP address or hostname"
+              },
+              "ca": {
+                "type": "string",
+                "maxLength": 16384,
+                "description": "PEM encoded CA certificate"
+              },
+              "cert": {
+                "type": "string",
+                "maxLength": 16384,
+                "description": "PEM encoded client certificate"
+              },
+              "tls": {
+                "type": "boolean",
+                "description": "Require TLS"
+              },
+              "port": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 65535,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Rsyslog server port"
+              },
+              "sd": {
+                "type": "string",
+                "maxLength": 1024,
+                "description": "Structured data block for log message"
+              },
+              "max-message-size": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 2048,
+                "maximum": 2147483647,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Rsyslog max message size"
+              }
+            },
+            "required": [
+              "server",
+              "port",
+              "tls",
+              "format"
+            ]
+          }
+        }
+      },
+      "dbaas-endpoint-opensearch-input-create": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "object",
+            "properties": {
+              "ca": {
+                "type": "string",
+                "maxLength": 16384,
+                "description": "PEM encoded CA certificate"
+              },
+              "url": {
+                "type": "string",
+                "maxLength": 2048,
+                "minLength": 12,
+                "description": "OpenSearch connection URL"
+              },
+              "index-prefix": {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1,
+                "pattern": "^[a-z0-9][a-z0-9-_.]+$",
+                "description": "OpenSearch index prefix"
+              },
+              "index-days-max": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 10000,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "Maximum number of days of logs to keep"
+              },
+              "timeout": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 10,
+                "maximum": 120,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false,
+                "description": "OpenSearch request timeout limit"
+              }
+            },
+            "required": [
+              "url",
+              "index-prefix"
+            ]
+          }
+        }
       },
       "dbaas-service-type-name": {
         "type": "string",
@@ -7428,6 +8159,42 @@
                 "username"
               ]
             }
+          }
+        }
+      },
+      "dbaas-endpoint-opensearch-optional-fields": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2048,
+            "minLength": 12,
+            "description": "OpenSearch connection URL"
+          },
+          "index-prefix": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "pattern": "^[a-z0-9][a-z0-9-_.]+$",
+            "description": "OpenSearch index prefix"
+          },
+          "index-days-max": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 10000,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "description": "Maximum number of days of logs to keep"
+          },
+          "timeout": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 10,
+            "maximum": 120,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "description": "OpenSearch request timeout limit"
           }
         }
       },
@@ -8165,6 +8932,42 @@
         "title": "OpenSearch settings",
         "type": "object"
       },
+      "dbaas-endpoint-elasticsearch-optional-fields": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2048,
+            "minLength": 12,
+            "description": "Elasticsearch connection URL"
+          },
+          "index-prefix": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "pattern": "^[a-z0-9][a-z0-9-_.]+$",
+            "description": "Elasticsearch index prefix"
+          },
+          "index-days-max": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 10000,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "description": "Maximum number of days of logs to keep"
+          },
+          "timeout": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 10,
+            "maximum": 120,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "description": "Elasticsearch request timeout limit"
+          }
+        }
+      },
       "dbaas-database-name": {
         "type": "string",
         "maxLength": 40,
@@ -8319,64 +9122,6 @@
         ],
         "description": "List of backups for the service"
       },
-      "dbaas-endpoint-datadog": {
-        "type": "object",
-        "properties": {
-          "datadog-api-key": {
-            "type": "string",
-            "maxLength": 256,
-            "minLength": 1,
-            "pattern": "^[A-Za-z0-9]{1,256}$",
-            "description": "Datadog API key"
-          },
-          "site": {
-            "$ref": "#/components/schemas/enum-datadog-site",
-            "description": "Datadog intake site. Defaults to datadoghq.com"
-          },
-          "datadog-tags": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/dbaas-datadog-tag"
-            },
-            "description": "Custom tags provided by user"
-          },
-          "disable-consumer-stats": {
-            "type": "boolean",
-            "description": "Disable consumer group metrics"
-          },
-          "kafka-consumer-check-instances": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 1,
-            "maximum": 100,
-            "exclusiveMinimum": false,
-            "exclusiveMaximum": false,
-            "description": "Number of separate instances to fetch kafka consumer statistics with"
-          },
-          "kafka-consumer-stats-timeout": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 2,
-            "maximum": 300,
-            "exclusiveMinimum": false,
-            "exclusiveMaximum": false,
-            "description": "Number of seconds that datadog will wait to get consumer statistics from brokers"
-          },
-          "max-partition-contexts": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 200,
-            "maximum": 200000,
-            "exclusiveMinimum": false,
-            "exclusiveMaximum": false,
-            "description": "Maximum number of partition contexts to send"
-          }
-        },
-        "required": [
-          "datadog-api-key",
-          "site"
-        ]
-      },
       "dbaas-endpoint-prometheus": {
         "type": "object",
         "properties": {
@@ -8386,12 +9131,6 @@
             "minLength": 5,
             "pattern": "^[a-z0-9\\-@_]{5,32}$",
             "description": "Prometheus basic authentication username"
-          },
-          "basic-auth-password": {
-            "type": "string",
-            "maxLength": 64,
-            "minLength": 8,
-            "description": "Prometheus basic authentication password"
           }
         }
       },
@@ -8617,6 +9356,111 @@
         ],
         "summary": "Retrieve Load Balancer Service details",
         "operationId": "get-load-balancer-service"
+      }
+    },
+    "/dbaas-external-endpoint-opensearch/{endpoint-id}": {
+      "delete": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Delete OpenSearch logs external integration endpoint",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "operationId": "delete-dbaas-external-endpoint-opensearch"
+      },
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-endpoint-opensearch-output"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Get OpenSearch Logs external integration endpoint settings",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "operationId": "get-dbaas-external-endpoint-opensearch"
+      },
+      "put": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Update OpenSearch Logs external integration endpoint",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dbaas-endpoint-opensearch-input-update"
+              }
+            }
+          }
+        },
+        "operationId": "update-dbaas-external-endpoint-opensearch"
       }
     },
     "/dbaas-opensearch/{name}/acl-config": {
@@ -9481,116 +10325,6 @@
         "operationId": "create-dbaas-pg-connection-pool"
       }
     },
-    "/dbaas-external-endpoint-prometheus/{id}": {
-      "get": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/dbaas-endpoint-external-prometheus-output"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Get Prometheus external integration endpoint settings",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "get-dbaas-external-endpoint-prometheus"
-      },
-      "delete": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Delete Prometheus external integration endpoint",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "delete-dbaas-external-endpoint-prometheus"
-      },
-      "put": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Update Prometheus external integration endpoint",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "settings": {
-                    "$ref": "#/components/schemas/dbaas-endpoint-prometheus"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "operationId": "update-dbaas-external-endpoint-prometheus"
-      }
-    },
     "/dbaas-mysql/{name}": {
       "put": {
         "tags": [
@@ -10141,6 +10875,111 @@
           }
         },
         "operationId": "attach-instance-to-private-network"
+      }
+    },
+    "/dbaas-external-endpoint-elasticsearch/{endpoint-id}": {
+      "delete": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Delete ElasticSearch logs external integration endpoint",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "operationId": "delete-dbaas-external-endpoint-elasticsearch"
+      },
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-endpoint-elasticsearch-output"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Get ElasticSearch Logs external integration endpoint settings",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "operationId": "get-dbaas-external-endpoint-elasticsearch"
+      },
+      "put": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Update ElasticSearch Logs external integration endpoint",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dbaas-endpoint-elasticsearch-input-update"
+              }
+            }
+          }
+        },
+        "operationId": "update-dbaas-external-endpoint-elasticsearch"
       }
     },
     "/dbaas-mysql/{service-name}/user": {
@@ -10722,12 +11561,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "settings": {
-                    "$ref": "#/components/schemas/dbaas-endpoint-rsyslog"
-                  }
-                }
+                "$ref": "#/components/schemas/dbaas-endpoint-rsyslog-input-create"
               }
             }
           }
@@ -11700,116 +12534,6 @@
         "operationId": "update-private-network-instance-ip"
       }
     },
-    "/dbaas-external-endpoint-rsyslog/{id}": {
-      "delete": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Delete RSyslog external integration endpoint",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "delete-dbaas-external-endpoint-rsyslog"
-      },
-      "put": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Update RSyslog external integration endpoint",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "settings": {
-                    "$ref": "#/components/schemas/dbaas-endpoint-rsyslog"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "operationId": "update-dbaas-external-endpoint-rsyslog"
-      },
-      "get": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/dbaas-external-endpoint-rsyslog-output"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Get RSyslog external integration endpoint settings",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "get-dbaas-external-endpoint-rsyslog"
-      }
-    },
     "/sks-cluster/{id}/nodepool/{sks-nodepool-id}": {
       "put": {
         "tags": [
@@ -12231,6 +12955,39 @@
         "operationId": "list-dbaas-external-integrations"
       }
     },
+    "/dbaas-external-integration/{integration-id}": {
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-external-integration"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Get a DBaaS external integration",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "integration-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "operationId": "get-dbaas-external-integration"
+      }
+    },
     "/instance-pool/{id}": {
       "delete": {
         "tags": [
@@ -12585,6 +13342,10 @@
                   "labels": {
                     "$ref": "#/components/schemas/labels",
                     "description": "Resource labels"
+                  },
+                  "options": {
+                    "$ref": "#/components/schemas/private-network-options",
+                    "description": "Options"
                   }
                 },
                 "required": [
@@ -13163,6 +13924,111 @@
         "operationId": "delete-dbaas-opensearch-user"
       }
     },
+    "/dbaas-external-endpoint-prometheus/{endpoint-id}": {
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-endpoint-external-prometheus-output"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Get Prometheus external integration endpoint settings",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "operationId": "get-dbaas-external-endpoint-prometheus"
+      },
+      "delete": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Delete Prometheus external integration endpoint",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "operationId": "delete-dbaas-external-endpoint-prometheus"
+      },
+      "put": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Update Prometheus external integration endpoint",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dbaas-endpoint-prometheus-payload"
+              }
+            }
+          }
+        },
+        "operationId": "update-dbaas-external-endpoint-prometheus"
+      }
+    },
     "/block-storage/{id}:create-snapshot": {
       "post": {
         "tags": [
@@ -13336,6 +14202,10 @@
                   "labels": {
                     "$ref": "#/components/schemas/labels",
                     "description": "Resource labels"
+                  },
+                  "options": {
+                    "$ref": "#/components/schemas/private-network-options",
+                    "description": "Options"
                   }
                 }
               }
@@ -14445,116 +15315,6 @@
         "operationId": "create-dbaas-pg-database"
       }
     },
-    "/dbaas-external-endpoint-opensearch/{id}": {
-      "delete": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Delete OpenSearch logs external integration endpoint",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "delete-dbaas-external-endpoint-opensearch"
-      },
-      "get": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/dbaas-endpoint-opensearch-output"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Get OpenSearch Logs external integration endpoint settings",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "get-dbaas-external-endpoint-opensearch"
-      },
-      "put": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Update OpenSearch Logs external integration endpoint",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "settings": {
-                    "$ref": "#/components/schemas/dbaas-endpoint-opensearch"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "operationId": "update-dbaas-external-endpoint-opensearch"
-      }
-    },
     "/security-group/{id}/rules": {
       "post": {
         "tags": [
@@ -15325,12 +16085,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "settings": {
-                    "$ref": "#/components/schemas/dbaas-endpoint-opensearch"
-                  }
-                }
+                "$ref": "#/components/schemas/dbaas-endpoint-opensearch-input-create"
               }
             }
           }
@@ -16436,12 +17191,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "settings": {
-                    "$ref": "#/components/schemas/dbaas-endpoint-datadog"
-                  }
-                }
+                "$ref": "#/components/schemas/dbaas-endpoint-datadog-input-create"
               }
             }
           }
@@ -17008,6 +17758,111 @@
         "operationId": "create-dbaas-task-migration-check"
       }
     },
+    "/dbaas-external-endpoint-datadog/{endpoint-id}": {
+      "delete": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Delete DataDog external integration endpoint",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "operationId": "delete-dbaas-external-endpoint-datadog"
+      },
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-external-endpoint-datadog-output"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Get DataDog external endpoint settings",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "operationId": "get-dbaas-external-endpoint-datadog"
+      },
+      "put": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Update DataDog external integration endpoint",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dbaas-endpoint-datadog-input-update"
+              }
+            }
+          }
+        },
+        "operationId": "update-dbaas-external-endpoint-datadog"
+      }
+    },
     "/load-balancer/{id}/service": {
       "post": {
         "tags": [
@@ -17393,116 +18248,6 @@
         "operationId": "list-sks-clusters"
       }
     },
-    "/dbaas-external-endpoint-elasticsearch/{id}": {
-      "delete": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Delete ElasticSearch logs external integration endpoint",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "delete-dbaas-external-endpoint-elasticsearch"
-      },
-      "get": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/dbaas-endpoint-elasticsearch-output"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Get ElasticSearch Logs external integration endpoint settings",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "get-dbaas-external-endpoint-elasticsearch"
-      },
-      "put": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Update ElasticSearch Logs external integration endpoint",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "settings": {
-                    "$ref": "#/components/schemas/dbaas-endpoint-elasticsearch"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "operationId": "update-dbaas-external-endpoint-elasticsearch"
-      }
-    },
     "/block-storage/{id}:detach": {
       "put": {
         "tags": [
@@ -17570,12 +18315,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "settings": {
-                    "$ref": "#/components/schemas/dbaas-endpoint-prometheus"
-                  }
-                }
+                "$ref": "#/components/schemas/dbaas-endpoint-prometheus-payload"
               }
             }
           }
@@ -19745,6 +20485,111 @@
         "operationId": "create-dbaas-service-grafana"
       }
     },
+    "/dbaas-external-endpoint-rsyslog/{endpoint-id}": {
+      "delete": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Delete RSyslog external integration endpoint",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "operationId": "delete-dbaas-external-endpoint-rsyslog"
+      },
+      "put": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Update RSyslog external integration endpoint",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/dbaas-endpoint-rsyslog-input-update"
+              }
+            }
+          }
+        },
+        "operationId": "update-dbaas-external-endpoint-rsyslog"
+      },
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-external-endpoint-rsyslog-output"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Get RSyslog external integration endpoint settings",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "endpoint-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "",
+        "operationId": "get-dbaas-external-endpoint-rsyslog"
+      }
+    },
     "/sks-cluster/{id}/nodepool": {
       "post": {
         "tags": [
@@ -19926,12 +20771,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "settings": {
-                    "$ref": "#/components/schemas/dbaas-endpoint-elasticsearch"
-                  }
-                }
+                "$ref": "#/components/schemas/dbaas-endpoint-elasticsearch-input-create"
               }
             }
           }
@@ -21659,116 +22499,6 @@
         "operationId": "delete-dbaas-service-pg"
       }
     },
-    "/dbaas-external-endpoint-datadog/{id}": {
-      "delete": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Delete DataDog external integration endpoint",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "delete-dbaas-external-endpoint-datadog"
-      },
-      "get": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/dbaas-external-endpoint-datadog-output"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Get DataDog external endpoint settings",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "get-dbaas-external-endpoint-datadog"
-      },
-      "put": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Update DataDog external integration endpoint",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "settings": {
-                    "$ref": "#/components/schemas/dbaas-endpoint-datadog"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "operationId": "update-dbaas-external-endpoint-datadog"
-      }
-    },
     "/dbaas-integration": {
       "post": {
         "tags": [
@@ -22838,39 +23568,6 @@
           }
         },
         "operationId": "reset-dbaas-postgres-user-password"
-      }
-    },
-    "/dbaas-external-integration/{id}": {
-      "get": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/dbaas-external-integration"
-                }
-              }
-            }
-          }
-        },
-        "description": "[BETA] Get a DBaaS external integration",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "get-dbaas-external-integration"
       }
     }
   },

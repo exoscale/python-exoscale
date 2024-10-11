@@ -167,7 +167,7 @@ class BaseClient:
             raise ExoscaleAPIAuthException(
                 f"Authentication error {response.status_code}: {response.text}"
             )
-        if response.status_code >= 400 and response.status_code < 500:
+        if 400 <= response.status_code < 500:
             raise ExoscaleAPIClientException(
                 f"Client error {response.status_code}: {response.text}"
             )
@@ -185,6 +185,7 @@ _type_translations = {
     "object": "dict",
     "array": "list",
     "boolean": "bool",
+    "number": "float",
 }
 
 

@@ -6,8 +6,8 @@
 # If there is an issue in the build process, for example import error in the "reading process" job of sphinx-build
 # It will only raise warning which won't make the job in the CI fail, but the HTML page will be empty.
 # Therefore, we add the "--fail-on-warning" option.
-SPHINXOPTS    ?= --fail-on-warning
-SPHINXBUILD   ?= sphinx-build
+SPHINXOPTS    ?= -W
+SPHINXBUILD   ?= uv run -- sphinx-build
 SOURCEDIR     = docs
 BUILDDIR      = build
 

@@ -8,10 +8,16 @@ at this address: https://exoscale.github.io/python-exoscale
 
 ## Development
 
-First create a new virtual environment and run `python -m pip install -e .[dev]`.
+Install [uv](https://docs.astral.sh/uv/) and run:
+
+```
+uv sync
+```
 
 You can then run pytest with the following command:
 
-    pytest -x -s -vvv
+```
+uv run pytest -x -s -vvv
+```
 
 [exoscale]: https://www.exoscale.com/

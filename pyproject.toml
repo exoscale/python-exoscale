@@ -15,11 +15,11 @@ classifiers = [
     "License :: OSI Approved :: ISC License (ISCL)",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
     "requests-exoscale-auth>=1.1.2",
@@ -31,15 +31,6 @@ dynamic = ["version"]
 "Homepage" = "https://github.com/exoscale/python-exoscale"
 "Bug Tracker" = "https://github.com/exoscale/python-exoscale/issues"
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=5.0.0",
-    "recommonmark>=0.5.0",
-    "sphinx-markdown-parser>=0.1.1",
-    "sphinx-rtd-theme>=0.4.3",
-    "sphinx>=2.1.2",
-]
-
 [tool.hatch.version]
 path = "exoscale/__init__.py"
 
@@ -48,6 +39,20 @@ include = [
     "exoscale/*",
 ]
 
+[tool.ruff]
+line-length = 79
+[tool.ruff.lint]
+extend-select = ["B", "Q"]
+
 [tool.black]
 line-length = 79
-exclude = "exoscale/api/polling.py"
+
+[tool.uv]
+dev-dependencies = [
+    "requests-mock>=1.12.1",
+    "pytest>=5.0.0",
+    "recommonmark>=0.5.0",
+    "sphinx-markdown-parser>=0.1.1",
+    "sphinx-rtd-theme>=0.4.3",
+    "sphinx>=2.1.2",
+]

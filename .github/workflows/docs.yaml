@@ -12,12 +12,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install and build
+      - uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "pyproject.toml"
+      - name: Build docs
         run: |
-          python -VV
-          python -m site
-          python -m pip install -U pip wheel setuptools
-          python -m pip install -e .[dev]
           make html
       - name: Publish
         uses: JamesIves/github-pages-deploy-action@v4

@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -15,9 +15,9 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=82662543"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=fa439637"></script>
+      <script src="_static/doctools.js?v=888ff710"></script>
+      <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="V2 API bindings" href="v2.html" /> 
@@ -123,9 +123,9 @@
            <div itemprop="articleBody">
              
   <section id="changelog">
-<h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading"></a></h1>
 <section id="unreleased">
-<h2>0.10.0 (unreleased)<a class="headerlink" href="#unreleased" title="Link to this heading"></a></h2>
+<h2>0.10.0 (unreleased)<a class="headerlink" href="#unreleased" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Introduce exception classes that gets raised when the API responds with 4xx
 or 5xx HTTP statuses.</p></li>
@@ -134,7 +134,7 @@ operator.</p></li>
 </ul>
 </section>
 <section id="id1">
-<h2>0.9.1 (2024-04-29)<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<h2>0.9.1 (2024-04-29)<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">exoscale.api.v2.Client</span></code> improvements:</p>
 <ul class="simple">
 <li><p>Client initialization accepts two signatures: <code class="docutils literal notranslate"><span class="pre">Client(key,</span> <span class="pre">secret,</span> <span class="pre">zone)</span></code> for
@@ -162,25 +162,25 @@ endpoint than the public endpoint template.</p></li>
 </ul>
 </section>
 <section id="id2">
-<h2>0.8.0 (2023-05-11)<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<h2>0.8.0 (2023-05-11)<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">exoscale.api.v2.Client</span></code>: a low-level API client targeting the Exoscale
 V2 API.</p></li>
 </ul>
 </section>
 <section id="id3">
-<h2>0.7.1 (2021-10-18)<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<h2>0.7.1 (2021-10-18)<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
 <section id="fixes">
-<h3>Fixes<a class="headerlink" href="#fixes" title="Link to this heading"></a></h3>
+<h3>Fixes<a class="headerlink" href="#fixes" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>compute: fix <cite>instance_private_networks</cite> arg check in <cite>create_instance_pool()</cite> method</p></li>
 </ul>
 </section>
 </section>
 <section id="id4">
-<h2>0.7.0 (2021-05-11)<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<h2>0.7.0 (2021-05-11)<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
 <section id="features">
-<h3>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h3>
+<h3>Features<a class="headerlink" href="#features" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>compute: add support for Deploy Targets resources</p></li>
 <li><p>compute: Instance Pools now support Elastic IP attachment, Instance Prefix and</p></li>
@@ -191,7 +191,7 @@ Groups, IPv6 enabling, Security Groups, Private Networks and SSH Key.</p></li>
 </ul>
 </section>
 <section id="changes">
-<h3>Changes<a class="headerlink" href="#changes" title="Link to this heading"></a></h3>
+<h3>Changes<a class="headerlink" href="#changes" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>compute: the <code class="docutils literal notranslate"><span class="pre">get_instance_pool()</span></code> method now accepts either of <code class="docutils literal notranslate"><span class="pre">name</span></code>/<code class="docutils literal notranslate"><span class="pre">id</span></code>
 parameters</p></li>
@@ -201,9 +201,9 @@ been removed</p></li>
 </section>
 </section>
 <section id="id5">
-<h2>0.6.0 (2021-04-21)<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<h2>0.6.0 (2021-04-21)<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
 <section id="id6">
-<h3>Features<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<h3>Features<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>compute: the <code class="docutils literal notranslate"><span class="pre">SecurityGroup.update()</span></code> now updates the Compute instance Security
 Groups membership live without requiring to stop the instance</p></li>
@@ -213,40 +213,40 @@ Groups membership live without requiring to stop the instance</p></li>
 </ul>
 </section>
 <section id="id7">
-<h3>Fixes<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<h3>Fixes<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>compute: don’t crash when an Instance Template doesn’t have details metadata</p></li>
 </ul>
 </section>
 </section>
 <section id="id8">
-<h2>0.5.2 (2021-04-13)<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<h2>0.5.2 (2021-04-13)<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h2>
 <section id="id9">
-<h3>Fixes<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<h3>Fixes<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>compute: add missing <cite>bootmode</cite> parameter to <cite>register_instance_template()</cite> (#32)</p></li>
 </ul>
 </section>
 </section>
 <section id="id10">
-<h2>0.5.1 (2021-03-16)<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<h2>0.5.1 (2021-03-16)<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h2>
 <section id="id11">
-<h3>Fixes<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<h3>Fixes<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Exclude tests from Python packaging</p></li>
 </ul>
 </section>
 </section>
 <section id="id12">
-<h2>0.5.0 (2021-03-15)<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
+<h2>0.5.0 (2021-03-15)<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h2>
 <section id="id13">
-<h3>Features<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<h3>Features<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>compute: add Anti-Affinity Groups support to Instance Pools (#27)</p></li>
 </ul>
 </section>
 <section id="id14">
-<h3>Fixes<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<h3>Fixes<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Rely on pathlib for home lookup (#29)</p></li>
 <li><p>compute: don’t crash when listing instances generated from templates (#28)</p></li>
@@ -254,9 +254,9 @@ Groups membership live without requiring to stop the instance</p></li>
 </section>
 </section>
 <section id="id15">
-<h2>0.4.0 (2020-12-07)<a class="headerlink" href="#id15" title="Link to this heading"></a></h2>
+<h2>0.4.0 (2020-12-07)<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h2>
 <section id="id16">
-<h3>Features<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<h3>Features<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>compute: add support for Network Load Balancers</p></li>
 <li><p>compute: add support for Elastic IP HTTPS health checking</p></li>
@@ -264,22 +264,22 @@ Groups membership live without requiring to stop the instance</p></li>
 </ul>
 </section>
 <section id="id17">
-<h3>Changes<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<h3>Changes<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>compute: <cite>get_instance_pool()</cite> arguments order</p></li>
 </ul>
 </section>
 </section>
 <section id="id18">
-<h2>0.3.0 (2020-01-22)<a class="headerlink" href="#id18" title="Link to this heading"></a></h2>
+<h2>0.3.0 (2020-01-22)<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h2>
 <section id="new">
-<h3>New<a class="headerlink" href="#new" title="Link to this heading"></a></h3>
+<h3>New<a class="headerlink" href="#new" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Add support for IAM (<code class="docutils literal notranslate"><span class="pre">iam</span></code> submodule)</p></li>
 </ul>
 </section>
 <section id="id19">
-<h3>Features<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
+<h3>Features<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Allow HTTP session retry policy to be user configurable</p></li>
 <li><p>compute: add support for Instance Pools</p></li>
@@ -288,7 +288,7 @@ Groups membership live without requiring to stop the instance</p></li>
 </ul>
 </section>
 <section id="id20">
-<h3>Fixes<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
+<h3>Fixes<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>storage: fix failing integration tests</p></li>
 <li><p>storage: honor global client settings</p></li>
@@ -296,21 +296,21 @@ Groups membership live without requiring to stop the instance</p></li>
 </section>
 </section>
 <section id="id21">
-<h2>0.2.0 (2019-10-09)<a class="headerlink" href="#id21" title="Link to this heading"></a></h2>
+<h2>0.2.0 (2019-10-09)<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h2>
 <section id="id22">
-<h3>Features<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<h3>Features<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>storage: add Bucket/BucketFile <code class="docutils literal notranslate"><span class="pre">url</span></code> attribute</p></li>
 </ul>
 </section>
 <section id="id23">
-<h3>Fixes<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
+<h3>Fixes<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>compute: fix unhandled exception in <code class="docutils literal notranslate"><span class="pre">get_*</span></code> functions</p></li>
 </ul>
 </section>
 <section id="id24">
-<h3>Changes<a class="headerlink" href="#id24" title="Link to this heading"></a></h3>
+<h3>Changes<a class="headerlink" href="#id24" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>compute: <code class="docutils literal notranslate"><span class="pre">create_instance()</span></code> function <em>root_disk_size</em> parameter has been renamed
 to <em>volume_size</em></p></li>
@@ -326,7 +326,7 @@ to <em>volume_size</em></p></li>
 </section>
 </section>
 <section id="id25">
-<h2>0.1.1 (2019-09-12)<a class="headerlink" href="#id25" title="Link to this heading"></a></h2>
+<h2>0.1.1 (2019-09-12)<a class="headerlink" href="#id25" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Initial release</p></li>
 </ul>

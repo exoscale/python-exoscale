@@ -1447,7 +1447,7 @@
           },
           "options": {
             "$ref": "#/components/schemas/private-network-options",
-            "description": "Options"
+            "description": "DHCP options"
           },
           "end-ip": {
             "type": "string",
@@ -13371,7 +13371,7 @@
                   },
                   "options": {
                     "$ref": "#/components/schemas/private-network-options",
-                    "description": "Options"
+                    "description": "DHCP options"
                   }
                 },
                 "required": [
@@ -14231,7 +14231,7 @@
                   },
                   "options": {
                     "$ref": "#/components/schemas/private-network-options",
-                    "description": "Options"
+                    "description": "DHCP options"
                   }
                 }
               }

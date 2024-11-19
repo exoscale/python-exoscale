@@ -1200,11 +1200,9 @@
             "example": "grafana.example.org",
             "description": "Serve the web frontend using a custom CNAME pointing to the Aiven DNS name",
             "maxLength": 255,
+            "nullable": true,
             "title": "Custom domain",
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": "string"
           },
           "alerting_error_or_timeout": {
             "enum": [
@@ -5883,8 +5881,6 @@
               15000,
               30000
             ],
-            "maximum": 30000,
-            "minimum": 1000,
             "title": "consumer.request.timeout.ms",
             "type": "integer"
           }

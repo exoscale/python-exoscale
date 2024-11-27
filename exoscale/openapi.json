@@ -5483,7 +5483,7 @@
               },
               "disable-consumer-stats": {
                 "type": "boolean",
-                "description": "Disable consumer group metrics"
+                "description": "Disable kafka consumer group metrics. Applies only when attached to kafka services."
               },
               "kafka-consumer-check-instances": {
                 "type": "integer",
@@ -5492,7 +5492,7 @@
                 "maximum": 100,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
-                "description": "Number of separate instances to fetch kafka consumer statistics with"
+                "description": "Number of separate instances to fetch kafka consumer statistics with. Applies only when attached to kafka services."
               },
               "kafka-consumer-stats-timeout": {
                 "type": "integer",
@@ -5501,7 +5501,7 @@
                 "maximum": 300,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
-                "description": "Number of seconds that datadog will wait to get consumer statistics from brokers"
+                "description": "Number of seconds that datadog will wait to get consumer statistics from brokers. Applies only when attached to kafka services."
               },
               "max-partition-contexts": {
                 "type": "integer",
@@ -5510,7 +5510,7 @@
                 "maximum": 200000,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
-                "description": "Maximum number of partition contexts to send"
+                "description": "Maximum number of partition contexts to send. Applies only when attached to kafka services."
               }
             },
             "description": "External integration DataDog configuration"
@@ -5735,7 +5735,7 @@
               },
               "disable-consumer-stats": {
                 "type": "boolean",
-                "description": "Disable consumer group metrics"
+                "description": "Disable kafka consumer group metrics. Applies only when attached to kafka services."
               },
               "kafka-consumer-check-instances": {
                 "type": "integer",
@@ -5744,7 +5744,7 @@
                 "maximum": 100,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
-                "description": "Number of separate instances to fetch kafka consumer statistics with"
+                "description": "Number of separate instances to fetch kafka consumer statistics with. Applies only when attached to kafka services."
               },
               "kafka-consumer-stats-timeout": {
                 "type": "integer",
@@ -5753,7 +5753,7 @@
                 "maximum": 300,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
-                "description": "Number of seconds that datadog will wait to get consumer statistics from brokers"
+                "description": "Number of seconds that datadog will wait to get consumer statistics from brokers. Applies only when attached to kafka services."
               },
               "max-partition-contexts": {
                 "type": "integer",
@@ -5762,7 +5762,7 @@
                 "maximum": 200000,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
-                "description": "Maximum number of partition contexts to send"
+                "description": "Maximum number of partition contexts to send. Applies only when attached to kafka services."
               }
             },
             "required": [
@@ -6224,7 +6224,7 @@
           },
           "disable-consumer-stats": {
             "type": "boolean",
-            "description": "Disable consumer group metrics"
+            "description": "Disable kafka consumer group metrics. Applies only when attached to kafka services."
           },
           "kafka-consumer-check-instances": {
             "type": "integer",
@@ -6233,7 +6233,7 @@
             "maximum": 100,
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
-            "description": "Number of separate instances to fetch kafka consumer statistics with"
+            "description": "Number of separate instances to fetch kafka consumer statistics with. Applies only when attached to kafka services."
           },
           "kafka-consumer-stats-timeout": {
             "type": "integer",
@@ -6242,7 +6242,7 @@
             "maximum": 300,
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
-            "description": "Number of seconds that datadog will wait to get consumer statistics from brokers"
+            "description": "Number of seconds that datadog will wait to get consumer statistics from brokers. Applies only when attached to kafka services."
           },
           "max-partition-contexts": {
             "type": "integer",
@@ -6251,7 +6251,7 @@
             "maximum": 200000,
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
-            "description": "Maximum number of partition contexts to send"
+            "description": "Maximum number of partition contexts to send. Applies only when attached to kafka services."
           }
         }
       },
@@ -6967,7 +6967,7 @@
               },
               "disable-consumer-stats": {
                 "type": "boolean",
-                "description": "Disable consumer group metrics"
+                "description": "Disable kafka consumer group metrics. Applies only when attached to kafka services."
               },
               "kafka-consumer-check-instances": {
                 "type": "integer",
@@ -6976,7 +6976,7 @@
                 "maximum": 100,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
-                "description": "Number of separate instances to fetch kafka consumer statistics with"
+                "description": "Number of separate instances to fetch kafka consumer statistics with. Applies only when attached to kafka services."
               },
               "kafka-consumer-stats-timeout": {
                 "type": "integer",
@@ -6985,7 +6985,7 @@
                 "maximum": 300,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
-                "description": "Number of seconds that datadog will wait to get consumer statistics from brokers"
+                "description": "Number of seconds that datadog will wait to get consumer statistics from brokers. Applies only when attached to kafka services."
               },
               "max-partition-contexts": {
                 "type": "integer",
@@ -6994,7 +6994,7 @@
                 "maximum": 200000,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
-                "description": "Maximum number of partition contexts to send"
+                "description": "Maximum number of partition contexts to send. Applies only when attached to kafka services."
               }
             },
             "required": [
@@ -7274,7 +7274,7 @@
               },
               "disable-consumer-stats": {
                 "type": "boolean",
-                "description": "Disable consumer group metrics"
+                "description": "Disable kafka consumer group metrics. Applies only when attached to kafka services."
               },
               "kafka-consumer-check-instances": {
                 "type": "integer",
@@ -7283,7 +7283,7 @@
                 "maximum": 100,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
-                "description": "Number of separate instances to fetch kafka consumer statistics with"
+                "description": "Number of separate instances to fetch kafka consumer statistics with. Applies only when attached to kafka services."
               },
               "kafka-consumer-stats-timeout": {
                 "type": "integer",
@@ -7292,7 +7292,7 @@
                 "maximum": 300,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
-                "description": "Number of seconds that datadog will wait to get consumer statistics from brokers"
+                "description": "Number of seconds that datadog will wait to get consumer statistics from brokers. Applies only when attached to kafka services."
               },
               "max-partition-contexts": {
                 "type": "integer",
@@ -7301,7 +7301,7 @@
                 "maximum": 200000,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
-                "description": "Maximum number of partition contexts to send"
+                "description": "Maximum number of partition contexts to send. Applies only when attached to kafka services."
               }
             },
             "description": "External integration DataDog configuration"

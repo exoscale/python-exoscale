@@ -93,7 +93,7 @@ def test_operation_poll_failure(requests_mock):
     except ExoscaleAPIServerException as e:
         assert "Operation error: failure" in str(e)
     else:
-        assert False, "exception not raised"
+        raise AssertionError("exception not raised")
 
 
 def test_operation_abort_on_500(requests_mock):
@@ -109,7 +109,7 @@ def test_operation_abort_on_500(requests_mock):
     except ExoscaleAPIServerException as e:
         assert "Server error while polling operation" in str(e)
     else:
-        assert False, "exception not raised"
+        raise AssertionError("exception not raised")
 
 
 def test_operation_invalid_state(requests_mock):
@@ -125,7 +125,7 @@ def test_operation_invalid_state(requests_mock):
     except ExoscaleAPIServerException as e:
         assert "Invalid operation state: weird" in str(e)
     else:
-        assert False, "exception not raised"
+        raise AssertionError("exception not raised")
 
 
 if __name__ == "__main__":

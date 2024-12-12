@@ -12,5 +12,10 @@ V2 API bindings
      build/html/v2.html.
 
 .. automodule:: exoscale.api.v2
-   :members: Client
-   :undoc-members:
+   :members:
+   :exclude-members: Client
+
+
+.. autoclass:: exoscale.api.v2.Client
+   :members:
+   :inherited-members: wait

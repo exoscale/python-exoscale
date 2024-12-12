@@ -1,5 +1,5 @@
 import pytest
-from exoscale.api.v2 import Client
+from exoscale.api.v2 import Client, _poll_interval
 from exoscale.api.exceptions import (
     ExoscaleAPIClientException,
     ExoscaleAPIServerException,
@@ -69,6 +69,63 @@ def test_client_error_handling(requests_mock):
         assert (
             '{"message":"Endpoint template temporarily unavailable"}' in str(e)
         )
+
+
+def test_wait_interval():
+    assert _poll_interval(25) == 3
+    assert 3 < _poll_interval(33) < 4
+    assert 8 < _poll_interval(120) < 9
+    assert 40 < _poll_interval(600) < 41
+    assert _poll_interval(1000) == 60
+    assert _poll_interval(999999) == 60
+
+
+def test_operation_poll_failure(requests_mock):
+    requests_mock.get(
+        "https://api-ch-gva-2.exoscale.com/v2/operation/e2047130-b86e-11ef-83b3-0d8312b2c2d7",  # noqa
+        status_code=200,
+        text='{"id": "4c5547c0-b870-11ef-83b3-0d8312b2c2d7", "state": "failure", "reason": "unknown", "reference": {"id": "97d7426f-8b25-4591-91d5-4a19e9a1d61a", "link": "/v2/sks-cluster/97d7426f-8b25-4591-91d5-4a19e9a1d61a", "command": "get-sks-cluster"}}',  # noqa
+    )
+
+    client = Client(key="EXOtest", secret="sdsd")
+    try:
+        client.wait(operation_id="e2047130-b86e-11ef-83b3-0d8312b2c2d7")
+    except ExoscaleAPIServerException as e:
+        assert "Operation error: failure" in str(e)
+    else:
+        assert False, "exception not raised"
+
+
+def test_operation_abort_on_500(requests_mock):
+    requests_mock.get(
+        "https://api-ch-gva-2.exoscale.com/v2/operation/e2047130-b86e-11ef-83b3-0d8312b2c2d7",  # noqa
+        status_code=500,
+        text='{"message": "server error"}',
+    )
+
+    client = Client(key="EXOtest", secret="sdsd")
+    try:
+        client.wait(operation_id="e2047130-b86e-11ef-83b3-0d8312b2c2d7")
+    except ExoscaleAPIServerException as e:
+        assert "Server error while polling operation" in str(e)
+    else:
+        assert False, "exception not raised"
+
+
+def test_operation_invalid_state(requests_mock):
+    requests_mock.get(
+        "https://api-ch-gva-2.exoscale.com/v2/operation/e2047130-b86e-11ef-83b3-0d8312b2c2d7",  # noqa
+        status_code=200,
+        text='{"id": "4c5547c0-b870-11ef-83b3-0d8312b2c2d7", "state": "weird", "reference": {"id": "97d7426f-8b25-4591-91d5-4a19e9a1d61a", "link": "/v2/sks-cluster/97d7426f-8b25-4591-91d5-4a19e9a1d61a", "command": "get-sks-cluster"}}',  # noqa
+    )
+
+    client = Client(key="EXOtest", secret="sdsd")
+    try:
+        client.wait(operation_id="e2047130-b86e-11ef-83b3-0d8312b2c2d7")
+    except ExoscaleAPIServerException as e:
+        assert "Invalid operation state: weird" in str(e)
+    else:
+        assert False, "exception not raised"
 
 
 if __name__ == "__main__":

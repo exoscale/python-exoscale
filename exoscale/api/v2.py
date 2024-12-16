@@ -31,7 +31,12 @@ Examples:
     ...     version=version,
     ... )
     >>> c.wait(operation["id"])
-    {'id': 'e2047130-b86e-11ef-83b3-0d8312b2c2d7', 'state': 'success', 'reference': {'id': '8561ee34-09f0-42da-a765-abde807f944b', 'link': '/v2/sks-cluster/8561ee34-09f0-42da-a765-abde807f944b', 'command': 'get-sks-cluster'}}
+    {'id': 'e2047130-b86e-11ef-83b3-0d8312b2c2d7',
+     'state': 'success',
+     'reference': {
+         'id': '8561ee34-09f0-42da-a765-abde807f944b',
+         'link': '/v2/sks-cluster/8561ee34-09f0-42da-a765-abde807f944b',
+         'command': 'get-sks-cluster'}}
 """
 
 import copy
@@ -41,14 +46,14 @@ from itertools import chain
 from pathlib import Path
 
 from exoscale_auth import ExoscaleV2Auth
-from .exceptions import (
-    ExoscaleAPIClientException,
-    ExoscaleAPIServerException,
-    ExoscaleAPIAuthException,
-)
-
 
 import requests
+
+from .exceptions import (
+    ExoscaleAPIAuthException,
+    ExoscaleAPIClientException,
+    ExoscaleAPIServerException,
+)
 
 
 with open(Path(__file__).parent.parent / "openapi.json", "r") as f:
@@ -185,6 +190,16 @@ def _poll_interval(run_time):
     return interval
 
 
+def _time():
+    return time.time()
+
+
+def _sleep(start_time):
+    run_time = _time() - start_time
+    interval = _poll_interval(run_time)
+    return time.sleep(interval)
+
+
 class BaseClient:
     def __init__(self, key, secret, url=None, **kwargs):
         if url is None:
@@ -274,12 +289,14 @@ class BaseClient:
 
         Args:
             operation_id (str)
-            max_wait_time (int): When set, stop waiting after this time in seconds. Defaults to ``None``, which waits until operation completion.
+            max_wait_time (int): When set, stop waiting after this time in
+              seconds. Defaults to ``None``, which waits until operation
+              completion.
 
         Returns:
             {ret}
         """
-        start_time = time.time()
+        start_time = _time()
         subsequent_errors = 0
         while True:
             try:
@@ -291,6 +308,7 @@ class BaseClient:
                     raise ExoscaleAPIServerException(
                         "Server error while polling operation"
                     ) from e
+                _sleep(start_time)
                 continue
             state = result["state"]
             if state == "success":
@@ -300,13 +318,12 @@ class BaseClient:
                     f"Operation error: {state}, {result['reason']}"
                 )
             elif state == "pending":
-                run_time = time.time() - start_time
+                run_time = _time() - start_time
                 if max_wait_time is not None and run_time > max_wait_time:
                     raise ExoscaleAPIClientException(
                         "Operation max wait time reached"
                     )
-                interval = _poll_interval(run_time)
-                time.sleep(interval)
+                _sleep(start_time)
             else:
                 raise ExoscaleAPIServerException(
                     f"Invalid operation state: {state}"

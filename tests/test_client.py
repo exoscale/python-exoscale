@@ -1,10 +1,15 @@
-import pytest
-from exoscale.api.v2 import Client, _poll_interval
+import json
+
+from unittest.mock import patch
+
 from exoscale.api.exceptions import (
+    ExoscaleAPIAuthException,
     ExoscaleAPIClientException,
     ExoscaleAPIServerException,
-    ExoscaleAPIAuthException,
 )
+from exoscale.api.v2 import Client, _poll_interval
+
+import pytest
 
 
 def test_client_creation():
@@ -96,22 +101,6 @@ def test_operation_poll_failure(requests_mock):
         raise AssertionError("exception not raised")
 
 
-def test_operation_abort_on_500(requests_mock):
-    requests_mock.get(
-        "https://api-ch-gva-2.exoscale.com/v2/operation/e2047130-b86e-11ef-83b3-0d8312b2c2d7",  # noqa
-        status_code=500,
-        text='{"message": "server error"}',
-    )
-
-    client = Client(key="EXOtest", secret="sdsd")
-    try:
-        client.wait(operation_id="e2047130-b86e-11ef-83b3-0d8312b2c2d7")
-    except ExoscaleAPIServerException as e:
-        assert "Server error while polling operation" in str(e)
-    else:
-        raise AssertionError("exception not raised")
-
-
 def test_operation_invalid_state(requests_mock):
     requests_mock.get(
         "https://api-ch-gva-2.exoscale.com/v2/operation/e2047130-b86e-11ef-83b3-0d8312b2c2d7",  # noqa
@@ -126,6 +115,96 @@ def test_operation_invalid_state(requests_mock):
         assert "Invalid operation state: weird" in str(e)
     else:
         raise AssertionError("exception not raised")
+
+
+def _mock_poll_response(poll_counts, status_code=200, result="success"):
+    return [
+        {
+            "status_code": status_code,
+            "text": '{"id": "4c5547c0-b870-11ef-83b3-0d8312b2c2d7", "state": "pending", "reference": {"id": "97d7426f-8b25-4591-91d5-4a19e9a1d61a", "link": "/v2/sks-cluster/97d7426f-8b25-4591-91d5-4a19e9a1d61a", "command": "get-sks-cluster"}}',  # noqa
+        }
+    ] * (poll_counts - 1) + [
+        {
+            "status_code": status_code,
+            "text": json.dumps(
+                {
+                    "id": "4c5547c0-b870-11ef-83b3-0d8312b2c2d7",
+                    "state": result,
+                    "reason": "some reason",
+                    "reference": {
+                        "id": "97d7426f-8b25-4591-91d5-4a19e9a1d61a",
+                        "link": "/v2/sks-cluster/97d7426f-8b25-4591-91d5-4a19e9a1d61a",  # noqa
+                        "command": "get-sks-cluster",
+                    },
+                }
+            ),
+        }
+    ]
+
+
+def test_wait_time_success(requests_mock):
+    requests_mock.get(
+        "https://api-ch-gva-2.exoscale.com/v2/operation/e2047130-b86e-11ef-83b3-0d8312b2c2d7",  # noqa
+        _mock_poll_response(3),
+    )
+    with patch(
+        "exoscale.api.v2._time",
+        side_effect=[
+            0,  # start of poll
+            1,  # duration of first loop: 1s
+            5,  # duration of second loop: 4s
+        ],
+    ) as time, patch("exoscale.api.v2._sleep") as sleep:
+        client = Client(key="EXOtest", secret="sdsd")
+        client.wait(operation_id="e2047130-b86e-11ef-83b3-0d8312b2c2d7")
+        assert len(time.call_args_list) == 3
+        assert len(sleep.call_args_list) == 2
+
+
+def test_wait_time_poll_errors(requests_mock):
+    requests_mock.get(
+        "https://api-ch-gva-2.exoscale.com/v2/operation/e2047130-b86e-11ef-83b3-0d8312b2c2d7",  # noqa
+        _mock_poll_response(6, status_code=500),
+    )
+    with patch(
+        "exoscale.api.v2._time",
+        side_effect=[
+            0,  # start of poll
+        ],
+    ) as time, patch("exoscale.api.v2._sleep") as sleep:
+        client = Client(key="EXOtest", secret="sdsd")
+        try:
+            client.wait(operation_id="e2047130-b86e-11ef-83b3-0d8312b2c2d7")
+        except ExoscaleAPIServerException:
+            pass
+        else:
+            raise AssertionError("Exception not raised")
+        assert len(time.call_args_list) == 1
+        assert len(sleep.call_args_list) == 4
+
+
+def test_wait_time_failure(requests_mock):
+    requests_mock.get(
+        "https://api-ch-gva-2.exoscale.com/v2/operation/e2047130-b86e-11ef-83b3-0d8312b2c2d7",  # noqa
+        _mock_poll_response(3, result="failure"),
+    )
+    with patch(
+        "exoscale.api.v2._time",
+        side_effect=[
+            0,  # start of poll
+            1,  # duration of first loop: 1s
+            5,  # duration of second loop: 4s
+        ],
+    ) as time, patch("exoscale.api.v2._sleep") as sleep:
+        client = Client(key="EXOtest", secret="sdsd")
+        try:
+            client.wait(operation_id="e2047130-b86e-11ef-83b3-0d8312b2c2d7")
+        except ExoscaleAPIServerException as e:
+            assert "Operation error" in str(e)
+        else:
+            raise AssertionError("Exception not raised")
+        assert len(time.call_args_list) == 3
+        assert len(sleep.call_args_list) == 2
 
 
 if __name__ == "__main__":

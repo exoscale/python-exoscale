@@ -2896,11 +2896,11 @@
       "dbaas-pg-target-versions": {
         "type": "string",
         "enum": [
-          "12",
           "13",
           "14",
           "15",
-          "16"
+          "16",
+          "17"
         ]
       },
       "instance-type": {

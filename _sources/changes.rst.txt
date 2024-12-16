@@ -8,6 +8,8 @@ Changelog
   or 5xx HTTP statuses.
 * Bump python version requirement to 3.8 due to the use of the walrus
   operator.
+* Add ``Client.wait(operation_id)`` to poll for the result of an asynchronous
+  API operation.
 
 0.9.1 (2024-04-29)
 ~~~~~~~~~~~~~~~~~~

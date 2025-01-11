@@ -196,8 +196,8 @@
               "timeout": {
                 "type": "integer",
                 "format": "int64",
-                "minimum": 10,
-                "maximum": 120,
+                "minimum": 10.0,
+                "maximum": 120.0,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
                 "description": "Elasticsearch request timeout limit"
@@ -260,8 +260,8 @@
           "timeout": {
             "type": "integer",
             "format": "int64",
-            "minimum": 10,
-            "maximum": 120,
+            "minimum": 10.0,
+            "maximum": 120.0,
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
             "description": "OpenSearch request timeout limit"
@@ -745,7 +745,7 @@
               "team_ids": {
                 "items": {
                   "example": 150,
-                  "maximum": 9223372036854776000,
+                  "maximum": 9223372036854775807,
                   "minimum": 1,
                   "title": "Team ID",
                   "type": "integer"
@@ -1751,8 +1751,8 @@
           },
           "log_flush_interval_messages": {
             "description": "The number of messages accumulated on a log partition before messages are flushed to disk",
-            "example": 9223372036854776000,
-            "maximum": 9223372036854776000,
+            "example": 9223372036854775807,
+            "maximum": 9223372036854775807,
             "minimum": 1,
             "title": "log.flush.interval.messages",
             "type": "integer"
@@ -1847,7 +1847,7 @@
           },
           "log_flush_interval_ms": {
             "description": "The maximum time in ms that a message in any topic is kept in memory before flushed to disk. If not set, the value in log.flush.scheduler.interval.ms is used",
-            "maximum": 9223372036854776000,
+            "maximum": 9223372036854775807,
             "minimum": 0,
             "title": "log.flush.interval.ms",
             "type": "integer"
@@ -1884,14 +1884,14 @@
           },
           "log_local_retention_bytes": {
             "description": "The maximum size of local log segments that can grow for a partition before it gets eligible for deletion. If set to -2, the value of log.retention.bytes is used. The effective value should always be less than or equal to log.retention.bytes value.",
-            "maximum": 9223372036854776000,
+            "maximum": 9223372036854775807,
             "minimum": -2,
             "title": "log.local.retention.bytes",
             "type": "integer"
           },
           "log_roll_jitter_ms": {
             "description": "The maximum jitter to subtract from logRollTimeMillis (in milliseconds). If not set, the value in log.roll.jitter.hours is used",
-            "maximum": 9223372036854776000,
+            "maximum": 9223372036854775807,
             "minimum": 0,
             "title": "log.roll.jitter.ms",
             "type": "integer"
@@ -1919,7 +1919,7 @@
           },
           "log_roll_ms": {
             "description": "The maximum time before a new log segment is rolled out (in milliseconds).",
-            "maximum": 9223372036854776000,
+            "maximum": 9223372036854775807,
             "minimum": 1,
             "title": "log.roll.ms",
             "type": "integer"
@@ -1933,7 +1933,7 @@
           },
           "log_retention_bytes": {
             "description": "The maximum size of the log before deleting messages",
-            "maximum": 9223372036854776000,
+            "maximum": 9223372036854775807,
             "minimum": -1,
             "title": "log.retention.bytes",
             "type": "integer"
@@ -1961,14 +1961,14 @@
           },
           "log_message_timestamp_difference_max_ms": {
             "description": "The maximum difference allowed between the timestamp when a broker receives a message and the timestamp specified in the message",
-            "maximum": 9223372036854776000,
+            "maximum": 9223372036854775807,
             "minimum": 0,
             "title": "log.message.timestamp.difference.max.ms",
             "type": "integer"
           },
           "log_local_retention_ms": {
             "description": "The number of milliseconds to keep the local log segments before it gets eligible for deletion. If set to -2, the value of log.retention.ms is used. The effective value should always be less than or equal to log.retention.ms value.",
-            "maximum": 9223372036854776000,
+            "maximum": 9223372036854775807,
             "minimum": -2,
             "title": "log.local.retention.ms",
             "type": "integer"
@@ -2035,7 +2035,7 @@
               },
               "log_cleaner_max_compaction_lag_ms": {
                 "description": "The maximum amount of time message will remain uncompacted. Only applicable for logs that are being compacted",
-                "maximum": 9223372036854776000,
+                "maximum": 9223372036854775807,
                 "minimum": 30000,
                 "title": "log.cleaner.max.compaction.lag.ms",
                 "type": "integer"
@@ -2050,7 +2050,7 @@
               },
               "log_cleaner_min_compaction_lag_ms": {
                 "description": "The minimum time a message will remain uncompacted in the log. Only applicable for logs that are being compacted.",
-                "maximum": 9223372036854776000,
+                "maximum": 9223372036854775807,
                 "minimum": 0,
                 "title": "log.cleaner.min.compaction.lag.ms",
                 "type": "integer"
@@ -2080,7 +2080,7 @@
           },
           "log_retention_ms": {
             "description": "The number of milliseconds to keep a log file before deleting it (in milliseconds), If not set, the value in log.retention.minutes is used. If set to -1, no time limit is applied.",
-            "maximum": 9223372036854776000,
+            "maximum": 9223372036854775807,
             "minimum": -1,
             "title": "log.retention.ms",
             "type": "integer"
@@ -2308,8 +2308,8 @@
               },
               "autovacuum_vacuum_scale_factor": {
                 "description": "Specifies a fraction of the table size to add to autovacuum_vacuum_threshold when deciding whether to trigger a VACUUM. The default is 0.2 (20% of table size)",
-                "maximum": 1,
-                "minimum": 0,
+                "maximum": 1.0,
+                "minimum": 0.0,
                 "title": "autovacuum_vacuum_scale_factor",
                 "type": "number"
               },
@@ -2322,8 +2322,8 @@
               },
               "autovacuum_analyze_scale_factor": {
                 "description": "Specifies a fraction of the table size to add to autovacuum_analyze_threshold when deciding whether to trigger an ANALYZE. The default is 0.2 (20% of table size)",
-                "maximum": 1,
-                "minimum": 0,
+                "maximum": 1.0,
+                "minimum": 0.0,
                 "title": "autovacuum_analyze_scale_factor",
                 "type": "number"
               },
@@ -2531,7 +2531,7 @@
               },
               "bgwriter_lru_multiplier": {
                 "description": "The average recent need for new buffers is multiplied by bgwriter_lru_multiplier to arrive at an estimate of the number that will be needed during the next round, (up to bgwriter_lru_maxpages). 1.0 represents a “just in time” policy of writing exactly the number of buffers predicted to be needed. Larger values provide some cushion against spikes in demand, while smaller values intentionally leave writes to be done by server processes. The default is 2.0.",
-                "example": 2,
+                "example": 2.0,
                 "maximum": 10,
                 "minimum": 0,
                 "title": "bgwriter_lru_multiplier",
@@ -2785,7 +2785,7 @@
           "group_concat_max_len": {
             "description": "The maximum permitted result length in bytes for the GROUP_CONCAT() function.",
             "example": 1024,
-            "maximum": 18446744073709552000,
+            "maximum": 18446744073709551615,
             "minimum": 4,
             "title": "group_concat_max_len",
             "type": "integer"
@@ -2880,7 +2880,7 @@
             "description": "The slow_query_logs work as SQL statements that take more than long_query_time seconds to execute. Default is 10s",
             "example": 10,
             "maximum": 3600,
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "long_query_time",
             "type": "number"
           }
@@ -4444,7 +4444,7 @@
           "max_failover_replication_time_lag": {
             "default": 60,
             "description": "Number of seconds of master unavailability before triggering database failover to standby",
-            "maximum": 9223372036854776000,
+            "maximum": 9223372036854775807,
             "minimum": 10,
             "title": "max_failover_replication_time_lag",
             "type": "integer"
@@ -4559,8 +4559,8 @@
               "timeout": {
                 "type": "integer",
                 "format": "int64",
-                "minimum": 10,
-                "maximum": 120,
+                "minimum": 10.0,
+                "maximum": 120.0,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
                 "description": "OpenSearch request timeout limit"
@@ -5441,8 +5441,8 @@
           "timeout": {
             "type": "integer",
             "format": "int64",
-            "minimum": 10,
-            "maximum": 120,
+            "minimum": 10.0,
+            "maximum": 120.0,
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
             "description": "Elasticsearch request timeout limit"
@@ -7858,8 +7858,8 @@
               "timeout": {
                 "type": "integer",
                 "format": "int64",
-                "minimum": 10,
-                "maximum": 120,
+                "minimum": 10.0,
+                "maximum": 120.0,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
                 "description": "Elasticsearch request timeout limit"
@@ -7993,8 +7993,8 @@
               "timeout": {
                 "type": "integer",
                 "format": "int64",
-                "minimum": 10,
-                "maximum": 120,
+                "minimum": 10.0,
+                "maximum": 120.0,
                 "exclusiveMinimum": false,
                 "exclusiveMaximum": false,
                 "description": "OpenSearch request timeout limit"
@@ -8253,8 +8253,8 @@
           "timeout": {
             "type": "integer",
             "format": "int64",
-            "minimum": 10,
-            "maximum": 120,
+            "minimum": 10.0,
+            "maximum": 120.0,
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
             "description": "OpenSearch request timeout limit"
@@ -8621,15 +8621,15 @@
                 "properties": {
                   "cpu_threshold": {
                     "description": "The CPU usage threshold (as a percentage) required for a node to be considered to be under duress. Default is 0.9",
-                    "maximum": 1,
-                    "minimum": 0,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
                     "title": "The CPU usage threshold (as a percentage) required for a node to be considered to be under duress",
                     "type": "number"
                   },
                   "heap_threshold": {
                     "description": "The heap usage threshold (as a percentage) required for a node to be considered to be under duress. Default is 0.7",
-                    "maximum": 1,
-                    "minimum": 0,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
                     "title": "The heap usage threshold (as a percentage) required for a node to be considered to be under duress",
                     "type": "number"
                   },
@@ -8648,8 +8648,8 @@
                 "properties": {
                   "total_heap_percent_threshold": {
                     "description": "The heap usage threshold (as a percentage) required for the sum of heap usages of all search shard tasks before cancellation is applied. Default is 0.5",
-                    "maximum": 1,
-                    "minimum": 0,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
                     "title": "The heap usage threshold (as a percentage) required for the sum of heap usages of all search shard tasks before cancellation is applied",
                     "type": "number"
                   },
@@ -8661,13 +8661,13 @@
                   },
                   "cancellation_rate": {
                     "description": "The maximum number of tasks to cancel per millisecond of elapsed time. Default is 0.003",
-                    "minimum": 0,
+                    "minimum": 0.0,
                     "title": "The maximum number of tasks to cancel per millisecond of elapsed time.",
                     "type": "number"
                   },
                   "heap_variance": {
                     "description": "The minimum variance required for a single search shard task’s heap usage compared to the rolling average of previously completed tasks before it is considered for cancellation. Default is 2.0",
-                    "minimum": 0,
+                    "minimum": 0.0,
                     "title": "The minimum variance required for a single search shard task’s heap usage compared to the rolling average of previously completed tasks before it is considered for cancellation",
                     "type": "number"
                   },
@@ -8679,15 +8679,15 @@
                   },
                   "cancellation_ratio": {
                     "description": "The maximum number of tasks to cancel, as a percentage of successful task completions. Default is 0.1",
-                    "maximum": 1,
-                    "minimum": 0,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
                     "title": "The maximum number of tasks to cancel",
                     "type": "number"
                   },
                   "heap_percent_threshold": {
                     "description": "The heap usage threshold (as a percentage) required for a single search shard task before it is considered for cancellation. Default is 0.5",
-                    "maximum": 1,
-                    "minimum": 0,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
                     "title": "The heap usage threshold (as a percentage) required for a single search shard task before it is considered for cancellation",
                     "type": "number"
                   },
@@ -8699,7 +8699,7 @@
                   },
                   "cancellation_burst": {
                     "description": "The maximum number of search tasks to cancel in a single iteration of the observer thread. Default is 10.0",
-                    "minimum": 1,
+                    "minimum": 1.0,
                     "title": "The maximum number of search tasks to cancel in a single iteration of the observer thread",
                     "type": "number"
                   }
@@ -8712,8 +8712,8 @@
                 "properties": {
                   "total_heap_percent_threshold": {
                     "description": "The heap usage threshold (as a percentage) required for the sum of heap usages of all search tasks before cancellation is applied. Default is 0.5",
-                    "maximum": 1,
-                    "minimum": 0,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
                     "title": "The heap usage threshold (as a percentage) required for the sum of heap usages of all search tasks before cancellation is applied",
                     "type": "number"
                   },
@@ -8725,13 +8725,13 @@
                   },
                   "cancellation_rate": {
                     "description": "The maximum number of search tasks to cancel per millisecond of elapsed time. Default is 0.003",
-                    "minimum": 0,
+                    "minimum": 0.0,
                     "title": "The maximum number of search tasks to cancel per millisecond of elapsed time",
                     "type": "number"
                   },
                   "heap_variance": {
                     "description": "The heap usage variance required for an individual parent task before it is considered for cancellation. A task is considered for cancellation when taskHeapUsage is greater than or equal to heapUsageMovingAverage * variance. Default is 2.0",
-                    "minimum": 0,
+                    "minimum": 0.0,
                     "title": "The heap usage variance required for an individual parent task before it is considered for cancellation",
                     "type": "number"
                   },
@@ -8743,15 +8743,15 @@
                   },
                   "cancellation_ratio": {
                     "description": "The maximum number of search tasks to cancel, as a percentage of successful search task completions. Default is 0.1",
-                    "maximum": 1,
-                    "minimum": 0,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
                     "title": "The maximum number of search tasks to cancel, as a percentage of successful search task completions",
                     "type": "number"
                   },
                   "heap_percent_threshold": {
                     "description": "The heap usage threshold (as a percentage) required for an individual parent task before it is considered for cancellation. Default is 0.2",
-                    "maximum": 1,
-                    "minimum": 0,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
                     "title": "The heap usage threshold (as a percentage) required for an individual parent task before it is considered for cancellation",
                     "type": "number"
                   },
@@ -8763,7 +8763,7 @@
                   },
                   "cancellation_burst": {
                     "description": "The maximum number of search tasks to cancel in a single iteration of the observer thread. Default is 5.0",
-                    "minimum": 1,
+                    "minimum": 1.0,
                     "title": "The maximum number of search tasks to cancel in a single iteration of the observer thread",
                     "type": "number"
                   }
@@ -8786,7 +8786,7 @@
                     "properties": {
                       "min_limit": {
                         "description": "Specify the minimum assigned quota for a new shard in any role (coordinator, primary, or replica). Shard indexing backpressure increases or decreases this allocated quota based on the inflow of traffic for the shard. Default is 0.001",
-                        "minimum": 0,
+                        "minimum": 0.0,
                         "title": "Shard min limit",
                         "type": "number"
                       }
@@ -8798,7 +8798,7 @@
                     "properties": {
                       "soft_limit": {
                         "description": "Define the percentage of the node-level memory threshold that acts as a soft indicator for strain on a node. Default is 0.7",
-                        "minimum": 0,
+                        "minimum": 0.0,
                         "title": "Node soft limit",
                         "type": "number"
                       }
@@ -8814,19 +8814,19 @@
                 "properties": {
                   "upper": {
                     "description": "Specify the upper occupancy limit of the allocated quota of memory for the shard. If the total memory usage of a shard is above this limit, shard indexing backpressure increases the current allocated memory for that shard. Default is 0.95",
-                    "minimum": 0,
+                    "minimum": 0.0,
                     "title": "Upper occupancy limit of the allocated quota of memory for the shard",
                     "type": "number"
                   },
                   "optimal": {
                     "description": "Specify the optimal occupancy of the allocated quota of memory for the shard. If the total memory usage of a shard is at this level, shard indexing backpressure doesn’t change the current allocated memory for that shard. Default is 0.85",
-                    "minimum": 0,
+                    "minimum": 0.0,
                     "title": "Optimal occupancy of the allocated quota of memory for the shard",
                     "type": "number"
                   },
                   "lower": {
                     "description": "Specify the lower occupancy limit of the allocated quota of memory for the shard. If the total memory usage of a shard is below this limit, shard indexing backpressure decreases the current allocated memory for that shard. Default is 0.75",
-                    "minimum": 0,
+                    "minimum": 0.0,
                     "title": "Lower occupancy limit of the allocated quota of memory for the shard",
                     "type": "number"
                   }
@@ -9165,7 +9165,7 @@
               "ism_history_max_docs": {
                 "default": 2500000,
                 "example": 2500000,
-                "maximum": 9223372036854776000,
+                "maximum": 9223372036854775807,
                 "minimum": 1,
                 "title": "The maximum number of documents before rolling over the audit history index.",
                 "type": "integer"
@@ -9296,8 +9296,8 @@
           "timeout": {
             "type": "integer",
             "format": "int64",
-            "minimum": 10,
-            "maximum": 120,
+            "minimum": 10.0,
+            "maximum": 120.0,
             "exclusiveMinimum": false,
             "exclusiveMaximum": false,
             "description": "Elasticsearch request timeout limit"

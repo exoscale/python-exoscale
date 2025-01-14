@@ -5271,76 +5271,6 @@
         },
         "description": "Operation"
       },
-      "block-storage-volume-details": {
-        "type": "object",
-        "properties": {
-          "labels": {
-            "$ref": "#/components/schemas/labels",
-            "description": "Resource labels"
-          },
-          "instance": {
-            "$ref": "#/components/schemas/instance-target",
-            "description": "Volume attached instance, if any"
-          },
-          "name": {
-            "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
-            "description": "Volume name"
-          },
-          "state": {
-            "type": "string",
-            "enum": [
-              "attached",
-              "attaching",
-              "creating",
-              "deleted",
-              "deleting",
-              "detached",
-              "detaching",
-              "error",
-              "snapshotting"
-            ],
-            "readOnly": true,
-            "description": "Volume state"
-          },
-          "size": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 1,
-            "exclusiveMinimum": false,
-            "description": "Volume size"
-          },
-          "blocksize": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0,
-            "exclusiveMinimum": false,
-            "readOnly": true,
-            "description": "Volume block size"
-          },
-          "block-storage-snapshots": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/block-storage-snapshot-target"
-            },
-            "description": "Volume snapshots, if any"
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true,
-            "description": "Volume ID"
-          },
-          "created-at": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true,
-            "description": "Volume creation date"
-          }
-        },
-        "description": "Block storage volume"
-      },
       "iam-api-key-created": {
         "type": "object",
         "properties": {
@@ -9405,23 +9335,19 @@
       "block-storage-volume": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true,
-            "description": "Volume ID"
+          "labels": {
+            "$ref": "#/components/schemas/labels",
+            "description": "Resource labels"
+          },
+          "instance": {
+            "$ref": "#/components/schemas/instance-target",
+            "description": "Volume attached instance, if any"
           },
           "name": {
             "type": "string",
             "maxLength": 255,
             "minLength": 1,
             "description": "Volume name"
-          },
-          "created-at": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true,
-            "description": "Volume creation date"
           },
           "state": {
             "type": "string",
@@ -9454,13 +9380,24 @@
             "readOnly": true,
             "description": "Volume block size"
           },
-          "labels": {
-            "$ref": "#/components/schemas/labels",
-            "description": "Resource labels"
+          "block-storage-snapshots": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/block-storage-snapshot-target"
+            },
+            "description": "Volume snapshots, if any"
           },
-          "instance": {
-            "$ref": "#/components/schemas/instance-target",
-            "description": "Volume attached instance, if any"
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "description": "Volume ID"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Volume creation date"
           }
         },
         "description": "Block storage volume"
@@ -14176,7 +14113,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/block-storage-volume-details"
+                  "$ref": "#/components/schemas/block-storage-volume"
                 }
               }
             }

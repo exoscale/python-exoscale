@@ -17468,7 +17468,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/block-storage-volume"
+                  "$ref": "#/components/schemas/block-storage-volume-details"
                 }
               }
             }

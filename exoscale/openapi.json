@@ -18939,6 +18939,10 @@
                     "minLength": 1,
                     "description": "Cluster name"
                   },
+                  "enable-kube-proxy": {
+                    "type": "boolean",
+                    "description": "Indicates whether to deploy the Kubernetes network proxy. When unspecified, defaults to `true` unless Cilium CNI is selected"
+                  },
                   "level": {
                     "type": "string",
                     "enum": [
@@ -18946,6 +18950,15 @@
                       "starter"
                     ],
                     "description": "Cluster service level"
+                  },
+                  "feature-gates": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "uniqueItems": true,
+                    "nullable": true,
+                    "description": "A list of Kubernetes-only Alpha features to enable for API server component"
                   },
                   "addons": {
                     "type": "array",
@@ -19427,6 +19440,15 @@
                     },
                     "uniqueItems": true,
                     "description": "Cluster addons"
+                  },
+                  "feature-gates": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "uniqueItems": true,
+                    "nullable": true,
+                    "description": "A list of Kubernetes-only Alpha features to enable for API server component"
                   }
                 }
               }

@@ -8156,7 +8156,8 @@
             "items": {
               "type": "string",
               "enum": [
-                "bypass-governance-retention"
+                "bypass-governance-retention",
+                "reset-iam-organization-policy"
               ]
             },
             "uniqueItems": true,
@@ -16375,7 +16376,8 @@
                     "items": {
                       "type": "string",
                       "enum": [
-                        "bypass-governance-retention"
+                        "bypass-governance-retention",
+                        "reset-iam-organization-policy"
                       ]
                     },
                     "uniqueItems": true,
@@ -20905,6 +20907,29 @@
         "operationId": "reveal-dbaas-postgres-user-password"
       }
     },
+    "/iam-organization-policy:reset": {
+      "post": {
+        "tags": [
+          "iam"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [],
+        "summary": "Reset IAM Organization Policy",
+        "operationId": "reset-iam-organization-policy"
+      }
+    },
     "/dbaas-settings-opensearch": {
       "get": {
         "tags": [
@@ -23950,7 +23975,8 @@
                     "items": {
                       "type": "string",
                       "enum": [
-                        "bypass-governance-retention"
+                        "bypass-governance-retention",
+                        "reset-iam-organization-policy"
                       ]
                     },
                     "uniqueItems": true,

@@ -37,6 +37,13 @@ Examples:
          'id': '8561ee34-09f0-42da-a765-abde807f944b',
          'link': '/v2/sks-cluster/8561ee34-09f0-42da-a765-abde807f944b',
          'command': 'get-sks-cluster'}}
+
+    In case of a conflict between argument and python keyword, **kwargs syntax can be used:
+
+    >>> from exoscale.api.v2 import Client
+    >>> c = Client("api-key", "api-secret", zone="ch-gva-2")
+    >>> c.list_events(**{"from": "2025-03-01"})
+    [{'handler': 'authenticate', 'source-ip': 'x.x.x.x', 'message': 'User user@exoscale.com: authenticate', 'status': 200, 'timestamp': '2025-03-10T14:52:34Z'}, {'handler': 'create session', 'source-ip': 'x.x.x.x', 'message': 'User user@exoscale.com: create session', 'status': 200, 'timestamp': '2025-03-10T14:52:46Z'}]
 """
 
 import copy

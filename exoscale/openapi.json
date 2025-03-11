@@ -518,6 +518,20 @@
           }
         }
       },
+      "dbaas-user-valkey-secrets": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Valkey username"
+          },
+          "password": {
+            "type": "string",
+            "description": "Valkey password"
+          }
+        },
+        "description": "Valkey User secrets"
+      },
       "dbaas-endpoint-rsyslog-input-update": {
         "type": "object",
         "properties": {

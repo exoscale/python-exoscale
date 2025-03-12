@@ -38,7 +38,7 @@ Examples:
          'link': '/v2/sks-cluster/8561ee34-09f0-42da-a765-abde807f944b',
          'command': 'get-sks-cluster'}}
 
-    In case of a conflict between argument and python keyword, **kwargs syntax can be used:
+    In case of a conflict between argument names and Python keywords, **kwargs syntax can be used:
 
     >>> from exoscale.api.v2 import Client
     >>> c = Client("api-key", "api-secret", zone="ch-gva-2")

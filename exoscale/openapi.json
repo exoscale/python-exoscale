@@ -19655,7 +19655,8 @@
     "/quota": {
       "get": {
         "tags": [
-          "quotas"
+          "quotas",
+          "ccm"
         ],
         "responses": {
           "200": {

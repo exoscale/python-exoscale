@@ -3226,6 +3226,23 @@
             "exclusiveMinimum": false,
             "description": "Number of CPUs for each node"
           },
+          "prometheus-uri": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string"
+              },
+              "port": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0,
+                "maximum": 65535,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false
+              }
+            },
+            "description": "Prometheus integration URI"
+          },
           "integrations": {
             "type": "array",
             "items": {
@@ -3397,7 +3414,8 @@
         "required": [
           "name",
           "plan",
-          "type"
+          "type",
+          "prometheus-uri"
         ]
       },
       "dbaas-service-kafka": {
@@ -3466,6 +3484,23 @@
           "kafka-rest-enabled": {
             "type": "boolean",
             "description": "Whether Kafka REST is enabled"
+          },
+          "prometheus-uri": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string"
+              },
+              "port": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0,
+                "maximum": 65535,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false
+              }
+            },
+            "description": "Prometheus integration URI"
           },
           "integrations": {
             "type": "array",
@@ -3662,7 +3697,8 @@
         "required": [
           "name",
           "plan",
-          "type"
+          "type",
+          "prometheus-uri"
         ]
       },
       "json-schema-valkey": {
@@ -4875,6 +4911,23 @@
             "exclusiveMinimum": false,
             "description": "Number of CPUs for each node"
           },
+          "prometheus-uri": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string"
+              },
+              "port": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0,
+                "maximum": 65535,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false
+              }
+            },
+            "description": "Prometheus integration URI"
+          },
           "integrations": {
             "type": "array",
             "items": {
@@ -5132,7 +5185,8 @@
         "required": [
           "name",
           "plan",
-          "type"
+          "type",
+          "prometheus-uri"
         ]
       },
       "dbaas-integration": {
@@ -6691,6 +6745,23 @@
             "exclusiveMinimum": false,
             "description": "Number of CPUs for each node"
           },
+          "prometheus-uri": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string"
+              },
+              "port": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0,
+                "maximum": 65535,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false
+              }
+            },
+            "description": "Prometheus integration URI"
+          },
           "integrations": {
             "type": "array",
             "items": {
@@ -6852,7 +6923,8 @@
         "required": [
           "name",
           "plan",
-          "type"
+          "type",
+          "prometheus-uri"
         ]
       },
       "enum-migration-status": {
@@ -7159,6 +7231,23 @@
             "exclusiveMinimum": false,
             "description": "Number of CPUs for each node"
           },
+          "prometheus-uri": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string"
+              },
+              "port": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0,
+                "maximum": 65535,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false
+              }
+            },
+            "description": "Prometheus integration URI"
+          },
           "integrations": {
             "type": "array",
             "items": {
@@ -7353,7 +7442,8 @@
         "required": [
           "name",
           "plan",
-          "type"
+          "type",
+          "prometheus-uri"
         ]
       },
       "zone-name": {
@@ -7479,6 +7569,23 @@
             "minimum": 0,
             "exclusiveMinimum": false,
             "description": "Number of CPUs for each node"
+          },
+          "prometheus-uri": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string"
+              },
+              "port": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0,
+                "maximum": 65535,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false
+              }
+            },
+            "description": "Prometheus integration URI"
           },
           "integrations": {
             "type": "array",
@@ -7735,7 +7842,8 @@
         "required": [
           "name",
           "plan",
-          "type"
+          "type",
+          "prometheus-uri"
         ]
       },
       "manager": {
@@ -8321,6 +8429,23 @@
             "exclusiveMinimum": false,
             "description": "Number of CPUs for each node"
           },
+          "prometheus-uri": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string"
+              },
+              "port": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0,
+                "maximum": 65535,
+                "exclusiveMinimum": false,
+                "exclusiveMaximum": false
+              }
+            },
+            "description": "Prometheus integration URI"
+          },
           "integrations": {
             "type": "array",
             "items": {
@@ -8515,7 +8640,8 @@
         "required": [
           "name",
           "plan",
-          "type"
+          "type",
+          "prometheus-uri"
         ]
       },
       "json-schema-timescaledb": {

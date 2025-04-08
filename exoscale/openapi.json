@@ -2953,6 +2953,7 @@
               "gpu2",
               "gpu3",
               "gpu3080ti",
+              "gpua30",
               "gpua5000",
               "memory",
               "standard",

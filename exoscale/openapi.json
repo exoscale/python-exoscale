@@ -24585,6 +24585,10 @@
                     "$ref": "#/components/schemas/template",
                     "description": "Instance Template"
                   },
+                  "secureboot-enabled": {
+                    "type": "boolean",
+                    "description": "[Beta] Enable secure boot"
+                  },
                   "ssh-key": {
                     "$ref": "#/components/schemas/ssh-key",
                     "description": "Instance SSH Key"

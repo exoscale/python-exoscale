@@ -6115,6 +6115,10 @@
             "minLength": 1,
             "description": "Cluster name"
           },
+          "enable-operators-ca": {
+            "type": "boolean",
+            "description": "Indicates whether to add operators certificate authority (CA) as part of trusted CAs for the API server."
+          },
           "state": {
             "type": "string",
             "enum": [
@@ -6129,6 +6133,10 @@
             ],
             "readOnly": true,
             "description": "Cluster state"
+          },
+          "enable-kube-proxy": {
+            "type": "boolean",
+            "description": "Indicates whether to deploy the Kubernetes network proxy."
           },
           "nodepools": {
             "type": "array",
@@ -6145,6 +6153,14 @@
               "starter"
             ],
             "description": "Cluster level"
+          },
+          "feature-gates": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true,
+            "description": "A list of Kubernetes-only Alpha features to enable for API server component"
           },
           "addons": {
             "type": "array",

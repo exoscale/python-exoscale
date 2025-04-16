@@ -10682,6 +10682,81 @@
         "operationId": "create-anti-affinity-group"
       }
     },
+    "/usage-report": {
+      "get": {
+        "tags": [
+          "organization"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "from": {
+                          "type": "string",
+                          "readOnly": true,
+                          "description": "Period Start Date"
+                        },
+                        "to": {
+                          "type": "string",
+                          "readOnly": true,
+                          "description": "Period End Date"
+                        },
+                        "product": {
+                          "type": "string",
+                          "readOnly": true,
+                          "description": "Product"
+                        },
+                        "variable": {
+                          "type": "string",
+                          "readOnly": true,
+                          "description": "Variable"
+                        },
+                        "description": {
+                          "type": "string",
+                          "readOnly": true,
+                          "description": "Description"
+                        },
+                        "quantity": {
+                          "type": "string",
+                          "readOnly": true,
+                          "description": "Quantity"
+                        },
+                        "unit": {
+                          "type": "string",
+                          "readOnly": true,
+                          "description": "Unit"
+                        }
+                      },
+                      "description": "Usage"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Returns aggregated usage reports for an organization",
+        "parameters": [
+          {
+            "in": "query",
+            "required": false,
+            "name": "period",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Retrieve organization usage reports",
+        "operationId": "get-usage-report"
+      }
+    },
     "/event": {
       "get": {
         "tags": [

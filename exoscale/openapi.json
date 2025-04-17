@@ -10696,45 +10696,48 @@
                   "type": "object",
                   "properties": {
                     "usage": {
-                      "type": "object",
-                      "properties": {
-                        "from": {
-                          "type": "string",
-                          "readOnly": true,
-                          "description": "Period Start Date"
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "from": {
+                            "type": "string",
+                            "readOnly": true,
+                            "description": "Period Start Date"
+                          },
+                          "to": {
+                            "type": "string",
+                            "readOnly": true,
+                            "description": "Period End Date"
+                          },
+                          "product": {
+                            "type": "string",
+                            "readOnly": true,
+                            "description": "Product"
+                          },
+                          "variable": {
+                            "type": "string",
+                            "readOnly": true,
+                            "description": "Variable"
+                          },
+                          "description": {
+                            "type": "string",
+                            "readOnly": true,
+                            "description": "Description"
+                          },
+                          "quantity": {
+                            "type": "string",
+                            "readOnly": true,
+                            "description": "Quantity"
+                          },
+                          "unit": {
+                            "type": "string",
+                            "readOnly": true,
+                            "description": "Unit"
+                          }
                         },
-                        "to": {
-                          "type": "string",
-                          "readOnly": true,
-                          "description": "Period End Date"
-                        },
-                        "product": {
-                          "type": "string",
-                          "readOnly": true,
-                          "description": "Product"
-                        },
-                        "variable": {
-                          "type": "string",
-                          "readOnly": true,
-                          "description": "Variable"
-                        },
-                        "description": {
-                          "type": "string",
-                          "readOnly": true,
-                          "description": "Description"
-                        },
-                        "quantity": {
-                          "type": "string",
-                          "readOnly": true,
-                          "description": "Quantity"
-                        },
-                        "unit": {
-                          "type": "string",
-                          "readOnly": true,
-                          "description": "Unit"
-                        }
-                      },
-                      "description": "Usage"
+                        "description": "Usage"
+                      }
                     }
                   }
                 }

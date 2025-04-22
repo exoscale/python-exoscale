@@ -25488,7 +25488,7 @@
             }
           }
         ],
-        "summary": "Retrieve organization environmental impact reports",
+        "summary": "[BETA] Retrieve organization environmental impact reports",
         "operationId": "get-env-impact"
       }
     }

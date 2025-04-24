@@ -154,6 +154,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.detach_instance_from_private_network"><code class="docutils literal notranslate"><span class="pre">Client.detach_instance_from_private_network()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.detach_instance_from_security_group"><code class="docutils literal notranslate"><span class="pre">Client.detach_instance_from_security_group()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.enable_dbaas_mysql_writes"><code class="docutils literal notranslate"><span class="pre">Client.enable_dbaas_mysql_writes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.enable_tpm"><code class="docutils literal notranslate"><span class="pre">Client.enable_tpm()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.evict_instance_pool_members"><code class="docutils literal notranslate"><span class="pre">Client.evict_instance_pool_members()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.evict_sks_nodepool_members"><code class="docutils literal notranslate"><span class="pre">Client.evict_sks_nodepool_members()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.export_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.export_snapshot()</span></code></a></li>
@@ -198,6 +199,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dns_domain_record"><code class="docutils literal notranslate"><span class="pre">Client.get_dns_domain_record()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dns_domain_zone_file"><code class="docutils literal notranslate"><span class="pre">Client.get_dns_domain_zone_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_elastic_ip"><code class="docutils literal notranslate"><span class="pre">Client.get_elastic_ip()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_env_impact"><code class="docutils literal notranslate"><span class="pre">Client.get_env_impact()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_iam_organization_policy"><code class="docutils literal notranslate"><span class="pre">Client.get_iam_organization_policy()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_iam_role"><code class="docutils literal notranslate"><span class="pre">Client.get_iam_role()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_instance"><code class="docutils literal notranslate"><span class="pre">Client.get_instance()</span></code></a></li>
@@ -220,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_sos_presigned_url"><code class="docutils literal notranslate"><span class="pre">Client.get_sos_presigned_url()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_ssh_key"><code class="docutils literal notranslate"><span class="pre">Client.get_ssh_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_template"><code class="docutils literal notranslate"><span class="pre">Client.get_template()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_usage_report"><code class="docutils literal notranslate"><span class="pre">Client.get_usage_report()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_anti_affinity_groups"><code class="docutils literal notranslate"><span class="pre">Client.list_anti_affinity_groups()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_api_keys"><code class="docutils literal notranslate"><span class="pre">Client.list_api_keys()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_block_storage_snapshots"><code class="docutils literal notranslate"><span class="pre">Client.list_block_storage_snapshots()</span></code></a></li>
@@ -1870,8 +1873,10 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>name</strong> (<em>str</em>) – Instance name.</p></li>
 <li><p><strong>instance_type</strong> (<em>dict</em>) – Instance Type.</p></li>
 <li><p><strong>template</strong> (<em>dict</em>) – Instance Template.</p></li>
+<li><p><strong>secureboot_enabled</strong> (<em>bool</em>) – [Beta] Enable secure boot.</p></li>
 <li><p><strong>ssh_key</strong> (<em>dict</em>) – Instance SSH Key.</p></li>
 <li><p><strong>user_data</strong> (<em>str</em>) – Instance Cloud-init user-data (base64 encoded).</p></li>
+<li><p><strong>tpm_enabled</strong> (<em>bool</em>) – [Beta] Enable Trusted Platform Module (TPM).</p></li>
 <li><p><strong>deploy_target</strong> (<em>dict</em>) – Instance Deploy Target.</p></li>
 <li><p><strong>ipv6_enabled</strong> (<em>bool</em>) – Enable IPv6. DEPRECATED: use <cite>public-ip-assignments</cite>..</p></li>
 <li><p><strong>disk_size</strong> (<em>int</em>) – Instance disk size in GiB.</p></li>
@@ -3694,6 +3699,33 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.enable_tpm">
+<span class="sig-name descname"><span class="pre">enable_tpm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.enable_tpm" title="Link to this definition"></a></dt>
+<dd><p>[Beta] Enable tpm for the instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.evict_instance_pool_members">
 <span class="sig-name descname"><span class="pre">evict_instance_pool_members</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.evict_instance_pool_members" title="Link to this definition"></a></dt>
 <dd><p>Evict Instance Pool members</p>
@@ -4490,6 +4522,20 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.get_env_impact">
+<span class="sig-name descname"><span class="pre">get_env_impact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_env_impact" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Retrieve organization environmental impact reports</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>period</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.get_iam_organization_policy">
 <span class="sig-name descname"><span class="pre">get_iam_organization_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_iam_organization_policy" title="Link to this definition"></a></dt>
 <dd><p>Retrieve IAM Organization Policy</p>
@@ -4643,7 +4689,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <div><ul class="simple">
 <li><p><strong>id</strong> (str): Instance type ID.</p></li>
 <li><p><strong>size</strong> (str): Instance type size. Values are <code class="docutils literal notranslate"><span class="pre">'colossus'</span></code>, <code class="docutils literal notranslate"><span class="pre">'extra-large'</span></code>, <code class="docutils literal notranslate"><span class="pre">'huge'</span></code>, <code class="docutils literal notranslate"><span class="pre">'jumbo'</span></code>, <code class="docutils literal notranslate"><span class="pre">'large'</span></code>, <code class="docutils literal notranslate"><span class="pre">'medium'</span></code>, <code class="docutils literal notranslate"><span class="pre">'mega'</span></code>, <code class="docutils literal notranslate"><span class="pre">'micro'</span></code>, <code class="docutils literal notranslate"><span class="pre">'small'</span></code>, <code class="docutils literal notranslate"><span class="pre">'tiny'</span></code>, <code class="docutils literal notranslate"><span class="pre">'titan'</span></code>.</p></li>
-<li><p><strong>family</strong> (str): Instance type family. Values are <code class="docutils literal notranslate"><span class="pre">'colossus'</span></code>, <code class="docutils literal notranslate"><span class="pre">'cpu'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpu'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpu2'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpu3'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpu3080ti'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpua5000'</span></code>, <code class="docutils literal notranslate"><span class="pre">'memory'</span></code>, <code class="docutils literal notranslate"><span class="pre">'standard'</span></code>, <code class="docutils literal notranslate"><span class="pre">'storage'</span></code>.</p></li>
+<li><p><strong>family</strong> (str): Instance type family. Values are <code class="docutils literal notranslate"><span class="pre">'colossus'</span></code>, <code class="docutils literal notranslate"><span class="pre">'cpu'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpu'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpu2'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpu3'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpu3080ti'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpua30'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpua5000'</span></code>, <code class="docutils literal notranslate"><span class="pre">'memory'</span></code>, <code class="docutils literal notranslate"><span class="pre">'standard'</span></code>, <code class="docutils literal notranslate"><span class="pre">'storage'</span></code>.</p></li>
 <li><p><strong>cpus</strong> (int): CPU count.</p></li>
 <li><p><strong>gpus</strong> (int): GPU count.</p></li>
 <li><p><strong>authorized</strong> (bool): Requires authorization or publicly available.</p></li>
@@ -4909,9 +4955,12 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>cni</strong> (str): Cluster CNI. Values are <code class="docutils literal notranslate"><span class="pre">'calico'</span></code>, <code class="docutils literal notranslate"><span class="pre">'cilium'</span></code>.</p></li>
 <li><p><strong>auto_upgrade</strong> (bool): Enable auto upgrade of the control plane to the latest patch version available.</p></li>
 <li><p><strong>name</strong> (str): Cluster name.</p></li>
+<li><p><strong>enable_operators_ca</strong> (bool): Indicates whether to add operators certificate authority (CA) as part of trusted CAs for the API server..</p></li>
 <li><p><strong>state</strong> (str): Cluster state. Values are <code class="docutils literal notranslate"><span class="pre">'creating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'deleting'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'rotating-ccm-credentials'</span></code>, <code class="docutils literal notranslate"><span class="pre">'running'</span></code>, <code class="docutils literal notranslate"><span class="pre">'suspending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'updating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'upgrading'</span></code>.</p></li>
+<li><p><strong>enable_kube_proxy</strong> (bool): Indicates whether to deploy the Kubernetes network proxy..</p></li>
 <li><p><strong>nodepools</strong> (list): Cluster Nodepools.</p></li>
 <li><p><strong>level</strong> (str): Cluster level. Values are <code class="docutils literal notranslate"><span class="pre">'pro'</span></code>, <code class="docutils literal notranslate"><span class="pre">'starter'</span></code>.</p></li>
+<li><p><strong>feature_gates</strong> (list): A list of Kubernetes-only Alpha features to enable for API server component.</p></li>
 <li><p><strong>addons</strong> (list): Cluster addons.</p></li>
 <li><p><strong>id</strong> (str): Cluster ID.</p></li>
 <li><p><strong>version</strong> (str): Control plane Kubernetes version.</p></li>
@@ -5112,6 +5161,20 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.get_usage_report">
+<span class="sig-name descname"><span class="pre">get_usage_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_usage_report" title="Link to this definition"></a></dt>
+<dd><p>Retrieve organization usage reports</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>period</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>

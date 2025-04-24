@@ -1,15 +1,19 @@
 Changelog
 ---------
 
-0.10.0 (unreleased)
+0.11.0 (2025-04-24)
 ~~~~~~~~~~~~~~~~~~~
 
-* Introduce exception classes that gets raised when the API responds with 4xx
-  or 5xx HTTP statuses.
 * Bump python version requirement to 3.8 due to the use of the walrus
   operator.
 * Add ``Client.wait(operation_id)`` to poll for the result of an asynchronous
   API operation.
+
+0.10.0 (2024-05-29)
+~~~~~~~~~~~~~~~~~~~
+
+* Introduce exception classes that gets raised when the API responds with 4xx
+  or 5xx HTTP statuses.
 
 0.9.1 (2024-04-29)
 ~~~~~~~~~~~~~~~~~~

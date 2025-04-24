@@ -465,6 +465,12 @@
           }
         }
       },
+      "sks-nodepool-labels": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
       "enum-component-route": {
         "type": "string",
         "enum": [
@@ -6094,7 +6100,7 @@
             "description": "Cluster description"
           },
           "labels": {
-            "$ref": "#/components/schemas/labels",
+            "$ref": "#/components/schemas/sks-cluster-labels",
             "description": "Cluster labels"
           },
           "cni": {
@@ -6463,7 +6469,7 @@
             "description": "Nodepool public IP assignment of the Instances:\n\n* IPv4 (`inet4`) addressing only;\n* IPv4 and IPv6 (`dual`) addressing."
           },
           "labels": {
-            "$ref": "#/components/schemas/labels",
+            "$ref": "#/components/schemas/sks-nodepool-labels",
             "description": "Nodepool labels"
           },
           "taints": {
@@ -6597,6 +6603,12 @@
         "required": [
           "tag"
         ]
+      },
+      "sks-cluster-labels": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
       },
       "enum-integration-types": {
         "type": "string",
@@ -13548,7 +13560,7 @@
                     "description": "Configures public IP assignment of the Instances with:\n\n* IPv4 (`inet4`) addressing only;\n* both IPv4 and IPv6 (`dual`) addressing."
                   },
                   "labels": {
-                    "$ref": "#/components/schemas/labels",
+                    "$ref": "#/components/schemas/sks-nodepool-labels",
                     "description": "Nodepool labels"
                   },
                   "taints": {
@@ -19360,7 +19372,7 @@
                     "description": "Cluster description"
                   },
                   "labels": {
-                    "$ref": "#/components/schemas/labels",
+                    "$ref": "#/components/schemas/sks-cluster-labels",
                     "description": "Cluster Labels"
                   },
                   "cni": {
@@ -19861,7 +19873,7 @@
                     "description": "Cluster description"
                   },
                   "labels": {
-                    "$ref": "#/components/schemas/labels",
+                    "$ref": "#/components/schemas/sks-cluster-labels",
                     "description": "Cluster labels"
                   },
                   "oidc": {
@@ -22275,7 +22287,7 @@
                     "description": "Configures public IP assignment of the Instances with:\n\n* IPv4 (`inet4`) addressing only (default);\n* both IPv4 and IPv6 (`dual`) addressing."
                   },
                   "labels": {
-                    "$ref": "#/components/schemas/labels",
+                    "$ref": "#/components/schemas/sks-nodepool-labels",
                     "description": "Nodepool labels"
                   },
                   "taints": {

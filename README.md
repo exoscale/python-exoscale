@@ -21,3 +21,13 @@ uv run pytest -x -s -vvv
 ```
 
 [exoscale]: https://www.exoscale.com/
+
+## Releasing
+
+* Add changes to the changelog in `docs/changes.rst`
+* Bump version in `exoscale/__init__.py`
+* Commit and tag with `v{version}`
+* Wait for the [package
+  workflow](https://github.com/exoscale/python-exoscale/actions/workflows/pypi-package.yaml)
+  to complete its first step
+* Review the release artifacts and approve

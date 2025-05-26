@@ -50,6 +50,9 @@ import json
 import time
 from pathlib import Path
 
+import requests
+from exoscale_auth import ExoscaleV2Auth
+
 from .generator import (
     _return_docstring,
     create_client_class,
@@ -95,9 +98,20 @@ with open(Path(__file__).parent.parent / "openapi.json", "r") as f:
 
 
 class Client(BaseClient):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, key, secret, *args, url=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.WAIT_ABORT_ERRORS_COUNT = 5
+
+        client = requests.Session()
+        client.auth = ExoscaleV2Auth(key, secret)
+        self.http_client = client
+        self.key = key
+
+    def __repr__(self):
+        return (
+            f"<Client endpoint={self.endpoint}"
+            f" key={self.key} secret=***masked***>"
+        )
 
     def wait(self, operation_id: str, max_wait_time: int = None):
         """

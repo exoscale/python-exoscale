@@ -1,8 +1,6 @@
 import copy
 from itertools import chain
 
-from exoscale_auth import ExoscaleV2Auth
-
 import requests
 
 from .exceptions import (
@@ -102,7 +100,7 @@ class BaseClient:
     _api_spec = None
     _by_operation = None
 
-    def __init__(self, key, secret, url=None, **kwargs):
+    def __init__(self, url=None, **kwargs):
         if url is None:
             server = self._api_spec["servers"][0]
             variables = {
@@ -124,16 +122,10 @@ class BaseClient:
         else:
             self.endpoint = url
 
-        session = requests.Session()
-        session.auth = ExoscaleV2Auth(key, secret)
-        self.session = session
-        self.key = key
+        self.http_client = requests.Session()
 
     def __repr__(self):
-        return (
-            f"<Client endpoint={self.endpoint}"
-            f" key={self.key} secret=***masked***>"
-        )
+        return f"<Client endpoint={self.endpoint}>"
 
     def _call_operation(self, operation_id, parameters=None, body=None):
         op = self._by_operation[operation_id]
@@ -163,7 +155,7 @@ class BaseClient:
             # TODO validate
             json["json"] = body
 
-        response = self.session.request(
+        response = self.http_client.request(
             method=op["verb"].upper(), url=url, params=query_params, **json
         )
 

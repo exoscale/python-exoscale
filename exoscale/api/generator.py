@@ -240,6 +240,8 @@ def _create_operation_call(
         _params = {}
         _body = {}
         for k, v in kwargs.items():
+            if k not in normalized_names:
+                raise TypeError(f"Unhandled keyword argument {k!r}.")
             api_name = normalized_names[k]
             if k in parameters:
                 _params[api_name] = v

@@ -1,5 +1,4 @@
 import copy
-import time
 from itertools import chain
 
 from exoscale_auth import ExoscaleV2Auth
@@ -99,37 +98,6 @@ def _return_docstring(api_spec, operation):
     return doc
 
 
-def _poll_interval(run_time):
-    """
-    Returns the wait interval before next poll, given the current run time of a job.
-    We poll
-     - every 3 seconds for the first 30 seconds
-     - then increase linearly to reach 1 minute at 15 minutes of run time
-     - then every minute
-    """
-    # y = a * x + b. Solve a and b for:
-    # 60 = a * 900 + b
-    # 3 = a * 30 + b
-    a = 57 / 870
-    b = 3 - 30 * a
-    min_wait = 3
-    max_wait = 60
-    interval = a * run_time + b
-    interval = max(min_wait, interval)
-    interval = min(max_wait, interval)
-    return interval
-
-
-def _time():
-    return time.time()
-
-
-def _sleep(start_time):
-    run_time = _time() - start_time
-    interval = _poll_interval(run_time)
-    return time.sleep(interval)
-
-
 class BaseClient:
     _api_spec = None
     _by_operation = None
@@ -160,7 +128,6 @@ class BaseClient:
         session.auth = ExoscaleV2Auth(key, secret)
         self.session = session
         self.key = key
-        self.WAIT_ABORT_ERRORS_COUNT = 5
 
     def __repr__(self):
         return (
@@ -215,52 +182,6 @@ class BaseClient:
             )
 
         return response.json()
-
-    def wait(self, operation_id: str, max_wait_time: int = None):
-        """
-        Wait for completion of an asynchronous operation.
-
-        Args:
-            operation_id (str)
-            max_wait_time (int): When set, stop waiting after this time in
-              seconds. Defaults to ``None``, which waits until operation
-              completion.
-
-        Returns:
-            {ret}
-        """
-        start_time = _time()
-        subsequent_errors = 0
-        while True:
-            try:
-                result = self.get_operation(id=operation_id)
-                subsequent_errors = 0
-            except ExoscaleAPIServerException as e:
-                subsequent_errors += 1
-                if subsequent_errors >= self.WAIT_ABORT_ERRORS_COUNT:
-                    raise ExoscaleAPIServerException(
-                        "Server error while polling operation"
-                    ) from e
-                _sleep(start_time)
-                continue
-            state = result["state"]
-            if state == "success":
-                return result
-            elif state in {"failure", "timeout"}:
-                raise ExoscaleAPIServerException(
-                    f"Operation error: {state}, {result['reason']}"
-                )
-            elif state == "pending":
-                run_time = _time() - start_time
-                if max_wait_time is not None and run_time > max_wait_time:
-                    raise ExoscaleAPIClientException(
-                        "Operation max wait time reached"
-                    )
-                _sleep(start_time)
-            else:
-                raise ExoscaleAPIServerException(
-                    f"Invalid operation state: {state}"
-                )
 
 
 def _args_docstring(parameters, body):
@@ -432,9 +353,4 @@ def create_client_class(api_spec):
         class_attributes[py_operation_name] = op_fn
 
     cls = type(class_name, tuple(bases), class_attributes)
-    cls.wait.__doc__ = cls.wait.__doc__.format(
-        ret=_return_docstring(
-            api_spec, by_operation["get-operation"]["operation"]
-        )
-    )
     return cls

@@ -7,8 +7,7 @@ from exoscale.api.exceptions import (
     ExoscaleAPIClientException,
     ExoscaleAPIServerException,
 )
-from exoscale.api.generator import _poll_interval
-from exoscale.api.v2 import Client
+from exoscale.api.v2 import Client, _poll_interval
 
 import pytest
 
@@ -149,13 +148,13 @@ def test_wait_time_success(requests_mock):
         _mock_poll_response(3),
     )
     with patch(
-        "exoscale.api.generator._time",
+        "exoscale.api.v2._time",
         side_effect=[
             0,  # start of poll
             1,  # duration of first loop: 1s
             5,  # duration of second loop: 4s
         ],
-    ) as time, patch("exoscale.api.generator._sleep") as sleep:
+    ) as time, patch("exoscale.api.v2._sleep") as sleep:
         client = Client(key="EXOtest", secret="sdsd")
         client.wait(operation_id="e2047130-b86e-11ef-83b3-0d8312b2c2d7")
         assert len(time.call_args_list) == 3
@@ -168,11 +167,11 @@ def test_wait_time_poll_errors(requests_mock):
         _mock_poll_response(6, status_code=500),
     )
     with patch(
-        "exoscale.api.generator._time",
+        "exoscale.api.v2._time",
         side_effect=[
             0,  # start of poll
         ],
-    ) as time, patch("exoscale.api.generator._sleep") as sleep:
+    ) as time, patch("exoscale.api.v2._sleep") as sleep:
         client = Client(key="EXOtest", secret="sdsd")
         try:
             client.wait(operation_id="e2047130-b86e-11ef-83b3-0d8312b2c2d7")
@@ -190,13 +189,13 @@ def test_wait_time_failure(requests_mock):
         _mock_poll_response(3, result="failure"),
     )
     with patch(
-        "exoscale.api.generator._time",
+        "exoscale.api.v2._time",
         side_effect=[
             0,  # start of poll
             1,  # duration of first loop: 1s
             5,  # duration of second loop: 4s
         ],
-    ) as time, patch("exoscale.api.generator._sleep") as sleep:
+    ) as time, patch("exoscale.api.v2._sleep") as sleep:
         client = Client(key="EXOtest", secret="sdsd")
         try:
             client.wait(operation_id="e2047130-b86e-11ef-83b3-0d8312b2c2d7")

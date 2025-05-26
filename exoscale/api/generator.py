@@ -195,7 +195,7 @@ def _create_operation_call(
     parameters = {}
     body = {}
     normalized_names = {}
-    for param in operation["parameters"]:
+    for param in operation.get("parameters", []):
         name = param["name"]
         if "$ref" in param["schema"]:
             ref = _get_ref(api_spec, param["schema"]["$ref"])

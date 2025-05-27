@@ -162,15 +162,18 @@ class BaseClient:
         # Error handling
         if response.status_code == 403:
             raise ExoscaleAPIAuthException(
-                f"Authentication error {response.status_code}: {response.text}"
+                f"Authentication error {response.status_code}: {response.text}",
+                response,
             )
         if 400 <= response.status_code < 500:
             raise ExoscaleAPIClientException(
-                f"Client error {response.status_code}: {response.text}"
+                f"Client error {response.status_code}: {response.text}",
+                response,
             )
         elif response.status_code >= 500:
             raise ExoscaleAPIServerException(
-                f"Server error {response.status_code}: {response.text}"
+                f"Server error {response.status_code}: {response.text}",
+                response,
             )
 
         return response.json()

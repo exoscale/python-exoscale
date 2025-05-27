@@ -4,7 +4,9 @@ class ExoscaleAPIException(Exception):
     Base for all other exception classes, it allows to catch all exoscale exceptions with a single except block.
     """
 
-    pass
+    def __init__(self, message, response=None):
+        super().__init__(message)
+        self.response = response
 
 
 class ExoscaleAPIClientException(ExoscaleAPIException):

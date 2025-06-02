@@ -7521,7 +7521,8 @@
           "ch-dk-2",
           "ch-gva-2",
           "de-fra-1",
-          "de-muc-1"
+          "de-muc-1",
+          "hr-zag-1"
         ]
       },
       "dbaas-endpoint-datadog-settings": {

@@ -2613,6 +2613,10 @@
             "description": "List of roles. The certificate present in the Kubeconfig will have these roles set in the Org field."
           }
         },
+        "required": [
+          "user",
+          "groups"
+        ],
         "description": "Kubeconfig request for a SKS cluster"
       },
       "dbaas-service-notification": {

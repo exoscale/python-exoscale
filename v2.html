@@ -293,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_instance_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_instance_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.revert_instance_to_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.revert_instance_to_snapshot()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.rotate_sks_ccm_credentials"><code class="docutils literal notranslate"><span class="pre">Client.rotate_sks_ccm_credentials()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.rotate_sks_csi_credentials"><code class="docutils literal notranslate"><span class="pre">Client.rotate_sks_csi_credentials()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.rotate_sks_operators_ca"><code class="docutils literal notranslate"><span class="pre">Client.rotate_sks_operators_ca()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.scale_instance"><code class="docutils literal notranslate"><span class="pre">Client.scale_instance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.scale_instance_pool"><code class="docutils literal notranslate"><span class="pre">Client.scale_instance_pool()</span></code></a></li>
@@ -429,25 +430,8 @@ definition shipped with the package.</p>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exoscale.api.v2.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client" title="Link to this definition"></a></dt>
-<dd><p>Create an API client.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>key</strong> (<em>str</em>) – Exoscale API key.</p></li>
-<li><p><strong>secret</strong> (<em>str</em>) – Exoscale API secret.</p></li>
-<li><p><strong>url</strong> (<em>str</em>) – Endpoint URL to use. Defaults to <code class="docutils literal notranslate"><span class="pre">'https://api-{zone}.exoscale.com/v2'</span></code>.</p></li>
-<li><p><strong>zone</strong> (<em>str</em>) – one of <code class="docutils literal notranslate"><span class="pre">'at-vie-1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'at-vie-2'</span></code>, <code class="docutils literal notranslate"><span class="pre">'bg-sof-1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ch-dk-2'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ch-gva-2'</span></code>, <code class="docutils literal notranslate"><span class="pre">'de-fra-1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'de-muc-1'</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">'ch-gva-2'</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A configured API client.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#exoscale.api.v2.Client" title="exoscale.api.v2.Client">Client</a></p>
-</dd>
-</dl>
-<dl class="py method">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exoscale.api.v2.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.add_external_source_to_security_group">
 <span class="sig-name descname"><span class="pre">add_external_source_to_security_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.add_external_source_to_security_group" title="Link to this definition"></a></dt>
 <dd><p>Add an external source as a member of a Security Group</p>
@@ -1873,10 +1857,10 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>name</strong> (<em>str</em>) – Instance name.</p></li>
 <li><p><strong>instance_type</strong> (<em>dict</em>) – Instance Type.</p></li>
 <li><p><strong>template</strong> (<em>dict</em>) – Instance Template.</p></li>
-<li><p><strong>secureboot_enabled</strong> (<em>bool</em>) – [Beta] Enable secure boot.</p></li>
+<li><p><strong>secureboot_enabled</strong> (<em>bool</em>) – Enable secure boot.</p></li>
 <li><p><strong>ssh_key</strong> (<em>dict</em>) – Instance SSH Key.</p></li>
 <li><p><strong>user_data</strong> (<em>str</em>) – Instance Cloud-init user-data (base64 encoded).</p></li>
-<li><p><strong>tpm_enabled</strong> (<em>bool</em>) – [Beta] Enable Trusted Platform Module (TPM).</p></li>
+<li><p><strong>tpm_enabled</strong> (<em>bool</em>) – Enable Trusted Platform Module (TPM).</p></li>
 <li><p><strong>deploy_target</strong> (<em>dict</em>) – Instance Deploy Target.</p></li>
 <li><p><strong>ipv6_enabled</strong> (<em>bool</em>) – Enable IPv6. DEPRECATED: use <cite>public-ip-assignments</cite>..</p></li>
 <li><p><strong>disk_size</strong> (<em>int</em>) – Instance disk size in GiB.</p></li>
@@ -2056,6 +2040,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>labels</strong> (<em>dict</em>) – Cluster Labels.</p></li>
 <li><p><strong>cni</strong> (<em>str</em>) – Cluster CNI. Must be one of <code class="docutils literal notranslate"><span class="pre">'calico'</span></code>, <code class="docutils literal notranslate"><span class="pre">'cilium'</span></code>.</p></li>
 <li><p><strong>auto_upgrade</strong> (<em>bool</em>) – Enable auto upgrade of the control plane to the latest patch version available.</p></li>
+<li><p><strong>networking</strong> (<em>dict</em>) – Cluster networking configuration.</p></li>
 <li><p><strong>oidc</strong> (<em>dict</em>) – Cluster OpenID configmap.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Cluster name.</p></li>
 <li><p><strong>enable_kube_proxy</strong> (<em>bool</em>) – Indicates whether to deploy the Kubernetes network proxy. When unspecified, defaults to <cite>true</cite> unless Cilium CNI is selected.</p></li>
@@ -3701,7 +3686,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.enable_tpm">
 <span class="sig-name descname"><span class="pre">enable_tpm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.enable_tpm" title="Link to this definition"></a></dt>
-<dd><p>[Beta] Enable tpm for the instance.</p>
+<dd><p>Enable tpm for the instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
@@ -4608,10 +4593,12 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>private_networks</strong> (list): Instance Private Networks.</p></li>
 <li><p><strong>template</strong> (dict): Instance Template.</p></li>
 <li><p><strong>state</strong> (str): Instance state. Values are <code class="docutils literal notranslate"><span class="pre">'destroyed'</span></code>, <code class="docutils literal notranslate"><span class="pre">'destroying'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'expunging'</span></code>, <code class="docutils literal notranslate"><span class="pre">'migrating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'running'</span></code>, <code class="docutils literal notranslate"><span class="pre">'starting'</span></code>, <code class="docutils literal notranslate"><span class="pre">'stopped'</span></code>, <code class="docutils literal notranslate"><span class="pre">'stopping'</span></code>.</p></li>
+<li><p><strong>secureboot_enabled</strong> (bool): Indicates if the instance has secure boot enabled.</p></li>
 <li><p><strong>ssh_key</strong> (dict): Instance SSH Key.</p></li>
 <li><p><strong>user_data</strong> (str): Instance Cloud-init user-data (base64 encoded).</p></li>
 <li><p><strong>mac_address</strong> (str): Instance MAC address.</p></li>
 <li><p><strong>manager</strong> (dict): Instance manager.</p></li>
+<li><p><strong>tpm_enabled</strong> (bool): Indicates if the instance has tpm enabled.</p></li>
 <li><p><strong>deploy_target</strong> (dict): Instance Deploy Target.</p></li>
 <li><p><strong>ipv6_address</strong> (str): Instance IPv6 address.</p></li>
 <li><p><strong>id</strong> (str): Instance ID.</p></li>
@@ -4956,7 +4943,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>auto_upgrade</strong> (bool): Enable auto upgrade of the control plane to the latest patch version available.</p></li>
 <li><p><strong>name</strong> (str): Cluster name.</p></li>
 <li><p><strong>enable_operators_ca</strong> (bool): Indicates whether to add operators certificate authority (CA) as part of trusted CAs for the API server..</p></li>
-<li><p><strong>state</strong> (str): Cluster state. Values are <code class="docutils literal notranslate"><span class="pre">'creating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'deleting'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'rotating-ccm-credentials'</span></code>, <code class="docutils literal notranslate"><span class="pre">'running'</span></code>, <code class="docutils literal notranslate"><span class="pre">'suspending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'updating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'upgrading'</span></code>.</p></li>
+<li><p><strong>state</strong> (str): Cluster state. Values are <code class="docutils literal notranslate"><span class="pre">'creating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'deleting'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'rotating-ccm-credentials'</span></code>, <code class="docutils literal notranslate"><span class="pre">'rotating-csi-credentials'</span></code>, <code class="docutils literal notranslate"><span class="pre">'running'</span></code>, <code class="docutils literal notranslate"><span class="pre">'suspending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'updating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'upgrading'</span></code>.</p></li>
 <li><p><strong>enable_kube_proxy</strong> (bool): Indicates whether to deploy the Kubernetes network proxy..</p></li>
 <li><p><strong>nodepools</strong> (list): Cluster Nodepools.</p></li>
 <li><p><strong>level</strong> (str): Cluster level. Values are <code class="docutils literal notranslate"><span class="pre">'pro'</span></code>, <code class="docutils literal notranslate"><span class="pre">'starter'</span></code>.</p></li>
@@ -6672,6 +6659,33 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.rotate_sks_ccm_credentials">
 <span class="sig-name descname"><span class="pre">rotate_sks_ccm_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.rotate_sks_ccm_credentials" title="Link to this definition"></a></dt>
 <dd><p>Rotate Exoscale CCM credentials</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.rotate_sks_csi_credentials">
+<span class="sig-name descname"><span class="pre">rotate_sks_csi_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.rotate_sks_csi_credentials" title="Link to this definition"></a></dt>
+<dd><p>Rotate Exoscale CSI credentials</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>

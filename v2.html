@@ -1726,12 +1726,14 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-odd"><p><strong>unicode_name</strong> (<em>str</em>) – Domain name.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>DNS domain. A dictionnary with the following keys:</p>
+<dd class="field-even"><p><p>Operation. A dictionnary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>id</strong> (str): DNS domain ID.</p></li>
-<li><p><strong>created_at</strong> (str): DNS domain creation date.</p></li>
-<li><p><strong>unicode_name</strong> (str): DNS domain unicode name.</p></li>
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
 </ul>
 </div></blockquote>
 </p>

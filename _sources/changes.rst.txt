@@ -1,6 +1,20 @@
 Changelog
 ---------
 
+0.12.0 (2025-06-04)
+~~~~~~~~~~~~~~~~~~~
+
+* Internals: abstract client generation logic into a separate
+  ``exoscale.api.generator`` namespace.
+* API changes and additions:
+
+  * SKS: Rotate CCM credentials
+  * Instance: TMP and Secure Boot support
+  * DBaaS:
+
+    * Kafka: cluster networking options
+    * New zone option: ``hr-zag-1``
+
 0.11.0 (2025-04-24)
 ~~~~~~~~~~~~~~~~~~~
 

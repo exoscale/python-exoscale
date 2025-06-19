@@ -16533,7 +16533,8 @@
                         "minimum": -1,
                         "maximum": 254,
                         "exclusiveMinimum": false,
-                        "exclusiveMaximum": false
+                        "exclusiveMaximum": false,
+                        "nullable": true
                       },
                       "type": {
                         "type": "integer",
@@ -16541,7 +16542,8 @@
                         "minimum": -1,
                         "maximum": 254,
                         "exclusiveMinimum": false,
-                        "exclusiveMaximum": false
+                        "exclusiveMaximum": false,
+                        "nullable": true
                       }
                     },
                     "description": "ICMP details (default: -1 (ANY))"

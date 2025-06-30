@@ -17806,7 +17806,7 @@
                     "type": "integer",
                     "format": "int64",
                     "minimum": 0,
-                    "exclusiveMinimum": false,
+                    "exclusiveMinimum": true,
                     "description": "Volume size in GiB"
                   }
                 },
@@ -20310,6 +20310,7 @@
                   },
                   "labels": {
                     "$ref": "#/components/schemas/labels",
+                    "nullable": true,
                     "description": "Resource labels"
                   }
                 }

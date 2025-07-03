@@ -6148,6 +6148,7 @@
               "creating",
               "deleting",
               "error",
+              "resuming",
               "rotating-ccm-credentials",
               "rotating-csi-credentials",
               "running",
@@ -18971,6 +18972,11 @@
                     "maxLength": 255,
                     "minLength": 1,
                     "description": "Cluster name"
+                  },
+                  "create-default-security-group": {
+                    "type": "boolean",
+                    "nullable": true,
+                    "description": "Creates an ad-hoc security group based on the choice of the selected CNI"
                   },
                   "enable-kube-proxy": {
                     "type": "boolean",

@@ -9980,7 +9980,8 @@
             "ch-dk-2",
             "ch-gva-2",
             "de-fra-1",
-            "de-muc-1"
+            "de-muc-1",
+            "hr-zag-1"
           ]
         }
       }
@@ -18086,7 +18087,7 @@
             }
           }
         },
-        "description": "This operation resizes a Block storage volume. Note: the volume can only grow, cannot be shrunk.",
+        "description": "This operation resizes a Block storage volume. Note: the volume can only grow, cannot be shrunk. Only detached volumes or volumes attached to stopped instances can be resized.",
         "parameters": [
           {
             "in": "path",

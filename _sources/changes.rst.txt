@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+0.13.0 (2025-08-11)
+-------------------
+
+* Support hr-zag-1 zone
+* Remove DBaaS service Redis (replaced by Valkey)
+
 0.12.0 (2025-06-04)
 ~~~~~~~~~~~~~~~~~~~
 

@@ -52,8 +52,7 @@ _type_translations = {
 }
 
 
-def _return_docstring(api_spec, operation):
-    [status_code] = operation["responses"].keys()
+def _status_code_docstring(api_spec, operation, status_code):
     [ctype] = operation["responses"][status_code]["content"].keys()
     return_schema = operation["responses"][status_code]["content"][ctype][
         "schema"
@@ -95,6 +94,19 @@ def _return_docstring(api_spec, operation):
         doc = _type_translations[return_schema["type"]]
     return doc
 
+
+def _return_docstring(api_spec, operation):
+    status_codes = list(operation["responses"].keys())
+
+    status_codes_docs = [
+        "{status_code}: {ret_type}".format(
+            status_code=status_code,
+            ret_type=_status_code_docstring(api_spec, operation, status_code),
+        )
+        for status_code in status_codes
+    ]
+
+    return "\n        ".join(status_codes_docs)
 
 class BaseClient:
     _api_spec = None

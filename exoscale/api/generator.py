@@ -96,14 +96,12 @@ def _status_code_docstring(api_spec, operation, status_code):
 
 
 def _return_docstring(api_spec, operation):
-    status_codes = list(operation["responses"].keys())
-
     status_codes_docs = [
         "{status_code}: {ret_type}".format(
             status_code=status_code,
             ret_type=_status_code_docstring(api_spec, operation, status_code),
         )
-        for status_code in status_codes
+        for status_code in operation["responses"].keys()
     ]
 
     return "\n        ".join(status_codes_docs)

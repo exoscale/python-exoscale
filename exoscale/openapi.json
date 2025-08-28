@@ -210,6 +210,11 @@
           }
         }
       },
+      "sks-audit-endpoint": {
+        "type": "string",
+        "maxLength": 2000,
+        "minLength": 1
+      },
       "json-schema-schema-registry": {
         "additionalProperties": false,
         "properties": {
@@ -479,6 +484,11 @@
           "privatelink",
           "public"
         ]
+      },
+      "sks-audit-bearer-token": {
+        "type": "string",
+        "maxLength": 2000,
+        "minLength": 1
       },
       "dbaas-endpoint-opensearch-output": {
         "type": "object",
@@ -3965,6 +3975,11 @@
         },
         "description": "Organization Quota"
       },
+      "sks-audit-initial-backoff": {
+        "type": "string",
+        "maxLength": 10,
+        "minLength": 1
+      },
       "dbaas-pg-pool-name": {
         "type": "string",
         "maxLength": 63,
@@ -4861,6 +4876,29 @@
           "updates"
         ],
         "description": "Automatic maintenance settings"
+      },
+      "sks-audit-update": {
+        "type": "object",
+        "properties": {
+          "endpoint": {
+            "$ref": "#/components/schemas/sks-audit-endpoint",
+            "description": "Target Webserver URL"
+          },
+          "bearer-token": {
+            "$ref": "#/components/schemas/sks-audit-bearer-token",
+            "description": "Bearer token"
+          },
+          "initial-backoff": {
+            "$ref": "#/components/schemas/sks-audit-initial-backoff",
+            "description": "Initial backoff (default '10s')"
+          },
+          "enabled": {
+            "type": "boolean",
+            "nullable": true,
+            "description": "Enable or Disable Kubernetes Audit"
+          }
+        },
+        "description": "Kubernetes Audit parameters"
       },
       "enum-service-state": {
         "type": "string",
@@ -6502,6 +6540,11 @@
             "format": "uuid",
             "readOnly": true,
             "description": "Cluster ID"
+          },
+          "audit": {
+            "$ref": "#/components/schemas/sks-audit",
+            "nullable": true,
+            "description": "Kubernetes Audit"
           },
           "version": {
             "type": "string",
@@ -9744,6 +9787,24 @@
         "title": "OpenSearch settings",
         "type": "object"
       },
+      "sks-audit": {
+        "type": "object",
+        "properties": {
+          "endpoint": {
+            "$ref": "#/components/schemas/sks-audit-endpoint",
+            "description": "Target Webserver URL"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Enabled"
+          },
+          "initial-backoff": {
+            "$ref": "#/components/schemas/sks-audit-initial-backoff",
+            "description": "Enabled"
+          }
+        },
+        "description": "Kubernetes Audit parameters"
+      },
       "dbaas-endpoint-elasticsearch-optional-fields": {
         "type": "object",
         "properties": {
@@ -9898,6 +9959,28 @@
           "aiven",
           "timescale"
         ]
+      },
+      "sks-audit-create": {
+        "type": "object",
+        "properties": {
+          "endpoint": {
+            "$ref": "#/components/schemas/sks-audit-endpoint",
+            "description": "Target Webserver URL"
+          },
+          "bearer-token": {
+            "$ref": "#/components/schemas/sks-audit-bearer-token",
+            "description": "Bearer token"
+          },
+          "initial-backoff": {
+            "$ref": "#/components/schemas/sks-audit-initial-backoff",
+            "description": "Initial backoff (default '10s')"
+          }
+        },
+        "required": [
+          "endpoint",
+          "bearer-token"
+        ],
+        "description": "Kubernetes Audit parameters"
       },
       "enum-rsyslog-format": {
         "type": "string",
@@ -19314,6 +19397,10 @@
                     "uniqueItems": true,
                     "description": "Cluster addons"
                   },
+                  "audit": {
+                    "$ref": "#/components/schemas/sks-audit-create",
+                    "description": "Kubernetes Audit Log Configuration"
+                  },
                   "version": {
                     "type": "string",
                     "description": "Control plane Kubernetes version"
@@ -19744,12 +19831,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": {
-                    "type": "string",
-                    "maxLength": 255,
-                    "minLength": 1,
-                    "description": "Cluster name"
-                  },
                   "description": {
                     "type": "string",
                     "maxLength": 255,
@@ -19760,14 +19841,33 @@
                     "$ref": "#/components/schemas/sks-cluster-labels",
                     "description": "Cluster labels"
                   },
+                  "auto-upgrade": {
+                    "type": "boolean",
+                    "description": "Enable auto upgrade of the control plane to the latest patch version available"
+                  },
                   "oidc": {
                     "$ref": "#/components/schemas/sks-oidc",
                     "nullable": true,
                     "description": "Cluster OpenID configmap"
                   },
-                  "auto-upgrade": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "description": "Cluster name"
+                  },
+                  "enable-operators-ca": {
                     "type": "boolean",
-                    "description": "Enable auto upgrade of the control plane to the latest patch version available"
+                    "description": "Add or remove the operators certificate authority (CA) from the list of trusted CAs of the api server. The default value is true"
+                  },
+                  "feature-gates": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "uniqueItems": true,
+                    "nullable": true,
+                    "description": "A list of Kubernetes-only Alpha features to enable for API server component"
                   },
                   "addons": {
                     "type": "array",
@@ -19782,18 +19882,9 @@
                     "uniqueItems": true,
                     "description": "Cluster addons"
                   },
-                  "feature-gates": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    },
-                    "uniqueItems": true,
-                    "nullable": true,
-                    "description": "A list of Kubernetes-only Alpha features to enable for API server component"
-                  },
-                  "enable-operators-ca": {
-                    "type": "boolean",
-                    "description": "Add or remove the operators certificate authority (CA) from the list of trusted CAs of the api server. The default value is true"
+                  "audit": {
+                    "$ref": "#/components/schemas/sks-audit-update",
+                    "description": "Kubernetes Audit Log Configuration"
                   }
                 }
               }

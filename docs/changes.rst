@@ -1,6 +1,11 @@
 Changelog
 ---------
 
+0.14.0 (2025-08-28)
+-------------------
+
+* Handle multiple response codes per OpenAPI operation.
+
 0.13.0 (2025-08-11)
 -------------------
 

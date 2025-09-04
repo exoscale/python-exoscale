@@ -4894,7 +4894,6 @@
           },
           "enabled": {
             "type": "boolean",
-            "nullable": true,
             "description": "Enable or Disable Kubernetes Audit"
           }
         },
@@ -6543,7 +6542,6 @@
           },
           "audit": {
             "$ref": "#/components/schemas/sks-audit",
-            "nullable": true,
             "description": "Kubernetes Audit"
           },
           "version": {
@@ -9800,7 +9798,7 @@
           },
           "initial-backoff": {
             "$ref": "#/components/schemas/sks-audit-initial-backoff",
-            "description": "Enabled"
+            "description": "Initial Backoff (default '10s')"
           }
         },
         "description": "Kubernetes Audit parameters"

@@ -106,6 +106,7 @@ def _return_docstring(api_spec, operation):
 
     return "\n        ".join(status_codes_docs)
 
+
 class BaseClient:
     _api_spec = None
     _by_operation = None

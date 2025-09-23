@@ -14,4 +14,5 @@ This provides Python bindings for the `Exoscale`_ cloud platform API.
   :maxdepth: 2
 
   v2
+  partner
   changes

@@ -6498,6 +6498,7 @@
               "resuming",
               "rotating-ccm-credentials",
               "rotating-csi-credentials",
+              "rotating-karpenter-credentials",
               "running",
               "suspending",
               "updating",
@@ -23769,6 +23770,39 @@
           }
         },
         "operationId": "create-dbaas-valkey-user"
+      }
+    },
+    "/sks-cluster/{id}/rotate-karpenter-credentials": {
+      "put": {
+        "tags": [
+          "sks"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Rotate Exoscale Karpenter credentials",
+        "operationId": "rotate-sks-karpenter-credentials"
       }
     },
     "/dbaas-integration": {

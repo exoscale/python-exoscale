@@ -3047,7 +3047,8 @@
           "14",
           "15",
           "16",
-          "17"
+          "17",
+          "18"
         ]
       },
       "instance-type": {
@@ -5688,7 +5689,7 @@
               "properties": {
                 "dbname": {
                   "type": "string",
-                  "description": "Migrated db name (PG) or number (Valkey)"
+                  "description": "Migrated db name"
                 },
                 "error": {
                   "type": "string",

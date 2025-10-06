@@ -12506,6 +12506,7 @@
                   },
                   "user-data": {
                     "type": "string",
+                    "maxLength": 32768,
                     "minLength": 1,
                     "description": "Instances Cloud-init user-data"
                   },

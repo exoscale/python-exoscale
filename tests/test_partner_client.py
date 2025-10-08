@@ -60,13 +60,20 @@ def test_client_error_handling(requests_mock):
     )
 
     with pytest.raises(ExoscaleAPIServerException) as exc:
-        client.create_distributor_organization(organization={})
+        client.create_distributor_organization(
+            name="Test Org",
+            address="123 Main St",
+            city="Test City",
+            postcode="12345",
+            country="CH",
+            owner_email="test@example.com",
+        )
     assert "Server error 503" in str(exc.value)
 
 
 def test_authentication():
     """Test that Partner client reuses V2 authentication."""
-    with patch("exoscale.api.v2.Client") as mock_v2:
+    with patch("exoscale.api.partner.V2Client") as mock_v2:
         client = Client("key", "secret")
 
         mock_v2.assert_called_once_with("key", "secret", url=None)

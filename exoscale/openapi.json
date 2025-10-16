@@ -237,6 +237,22 @@
         "title": "Schema Registry configuration",
         "type": "object"
       },
+      "operation-reason": {
+        "type": "string",
+        "enum": [
+          "busy",
+          "conflict",
+          "fault",
+          "forbidden",
+          "incorrect",
+          "interrupted",
+          "not-found",
+          "partial",
+          "unavailable",
+          "unknown",
+          "unsupported"
+        ]
+      },
       "dbaas-endpoint-opensearch": {
         "type": "object",
         "properties": {
@@ -3540,6 +3556,74 @@
           "prometheus-uri"
         ]
       },
+      "aideployment": {
+        "type": "object",
+        "properties": {
+          "updated-at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Update time"
+          },
+          "deployment-url": {
+            "type": "string",
+            "description": "Deployment URL (nullable)"
+          },
+          "model-id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Associated model ID"
+          },
+          "service-level": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Service level"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Deployment name"
+          },
+          "endpoint-url": {
+            "type": "string",
+            "description": "Endpoint URL (nullable)"
+          },
+          "instance-type": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Instance type"
+          },
+          "organization-id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Organization ID"
+          },
+          "status": {
+            "type": "string",
+            "description": "Deployment status"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "description": "Deployment ID"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Creation time"
+          },
+          "deployment-size": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "exclusiveMinimum": true,
+            "description": "Deployment size (>=1)"
+          }
+        },
+        "description": "AI deployment"
+      },
       "dbaas-service-kafka": {
         "type": "object",
         "properties": {
@@ -4288,6 +4372,14 @@
           }
         },
         "description": "IAM API Key"
+      },
+      "operation-state": {
+        "type": "string",
+        "enum": [
+          "failure",
+          "pending",
+          "success"
+        ]
       },
       "public-ip-assignment": {
         "type": "string",
@@ -5418,6 +5510,21 @@
           "issuer-url"
         ],
         "description": "SKS Cluster OpenID config map"
+      },
+      "operation-resource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Resource ID"
+          },
+          "type": {
+            "type": "string",
+            "description": "Resource type"
+          }
+        },
+        "description": "Operation resource"
       },
       "dbaas-task": {
         "type": "object",
@@ -8963,6 +9070,51 @@
           }
         },
         "description": "DNS domain record"
+      },
+      "aimodel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "description": "Model ID"
+          },
+          "organization-id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Organization ID"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Model name"
+          },
+          "status": {
+            "type": "string",
+            "description": "Model status"
+          },
+          "model-size": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "exclusiveMinimum": false,
+            "description": "Model size (nullable)"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Creation time"
+          },
+          "updated-at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Update time"
+          }
+        },
+        "description": "AI model"
       },
       "organization": {
         "type": "object",

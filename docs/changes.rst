@@ -1,8 +1,8 @@
 Changelog
 ---------
 
-Next version
-------------
+0.15.0 (unreleased)
+-------------------
 
 * Add Partner API client for distributor operations
 * Partner API client follows same patterns as V2 API

@@ -10,6 +10,13 @@ This provides Python bindings for the `Exoscale`_ cloud platform API.
    versions: Python 3.9+. Older Python versions may be compatible but such
    compatibility is not guaranteed.
 
+Installation
+------------
+
+Install the package using pip::
+
+    pip install exoscale
+
 .. toctree::
   :maxdepth: 2
 

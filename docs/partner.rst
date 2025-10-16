@@ -4,13 +4,6 @@ Partner API
 The Partner API client provides access to distributor operations for managing
 sub-organizations in Exoscale.
 
-Installation
-------------
-
-The Partner API client is included in the main exoscale package::
-
-    pip install exoscale
-
 Basic Usage
 -----------
 
@@ -83,8 +76,6 @@ The Partner API client uses the same error handling as the V2 API:
 API Reference
 -------------
 
-The Partner API client methods are dynamically generated from the OpenAPI
-specification. For a complete list of available methods, refer to the
-Partner API documentation or use Python's built-in help::
-
-    help(client)
+.. autoclass:: exoscale.api.partner.Client
+   :members:
+   :inherited-members:

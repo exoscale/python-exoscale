@@ -54,6 +54,6 @@ class Client(BasePartnerClient):
 
     def __repr__(self):
         return (
-            f"<PartnerClient endpoint={self.endpoint} "
+            f"<Client endpoint={self.endpoint} "
             f"key={self.key} secret=**masked**>"
         )

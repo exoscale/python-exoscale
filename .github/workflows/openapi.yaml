@@ -20,7 +20,7 @@ jobs:
         run: |-
           curl https://openapi-v2.exoscale.com/source.json | ./.sort-enums.py | jq > exoscale/openapi.json
 
-          curl https://partner-api.exoscale.com/v1.alpha/openapi.json | jq > exoscale/partner-api.json
+          curl https://partner-api.exoscale.com/v1.alpha/openapi.json | ./.sort-enums.py | jq > exoscale/partner-api.json
       - name: Commit and push if changed
         run: |-
           git config user.name "Automated"

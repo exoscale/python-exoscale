@@ -1,0 +1,666 @@
+{
+    "components": {
+        "schemas": {
+            "input-webhook-aiven": {
+                "description": "A map representing the payload of Aiven webhooks.",
+                "properties": {
+                    "message_id": {
+                        "description": "The UUID of the event.",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "message_type": {
+                        "description": "The type of the event.",
+                        "type": "string"
+                    },
+                    "metadata": {
+                        "description": "A set of additional fields depend on the message type",
+                        "properties": {
+                            "graceful_promotion": {
+                                "description": "Whether the promotion was caused by a planned change of the master, or an unplanned promotion.",
+                                "type": "boolean"
+                            },
+                            "leak_url": {
+                                "description": "URL where the credential leak was found",
+                                "type": "string"
+                            },
+                            "maintenance_scheduled_at": {
+                                "description": "Maintenance trigger deadline date",
+                                "type": "string"
+                            },
+                            "more_info": {
+                                "description": "Short user-printable text describing the problem",
+                                "type": "string"
+                            },
+                            "resource_type": {
+                                "description": "Automatic detection of the associated the resource type.",
+                                "type": "string"
+                            },
+                            "service_type": {
+                                "description": "The type of the associated resource.",
+                                "type": "string"
+                            },
+                            "table_count": {
+                                "description": "A set of additional fields depend on the message type",
+                                "format": "int64",
+                                "type": "integer"
+                            },
+                            "username": {
+                                "description": "Username found in credentials leak database",
+                                "type": "string"
+                            },
+                            "users": {
+                                "description": "Kafka service user certificates will expire soon and have been automatically renewed",
+                                "items": {
+                                    "properties": {
+                                        "old_cert_expiry_time": {
+                                            "type": "string"
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "project_name": {
+                        "description": "Name of the Aiven project that contains the service",
+                        "type": "string"
+                    },
+                    "service_name": {
+                        "description": "Name of the Aiven service",
+                        "type": "string"
+                    },
+                    "service_type": {
+                        "description": "Service type in a machine-readable format",
+                        "type": "string"
+                    },
+                    "timestamp": {
+                        "description": "The timestamp of the event as Unix epoch",
+                        "format": "int64",
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "message_id",
+                    "message_type"
+                ],
+                "type": "object"
+            },
+            "metering-batch": {
+                "description": "A batch of metered usage quantities",
+                "properties": {
+                    "organization": {
+                        "description": "Target Org",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "usage": {
+                        "description": "Usage data",
+                        "items": {
+                            "$ref": "#/components/schemas/usage-data"
+                        },
+                        "type": "array"
+                    }
+                },
+                "type": "object"
+            },
+            "ok-map": {
+                "properties": {
+                    "ok": {
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "organization": {
+                "description": "An Organization",
+                "properties": {
+                    "address": {
+                        "description": "Organization Address",
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "city": {
+                        "description": "Organization City",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "client-id": {
+                        "description": "Organization Client ID",
+                        "maxLength": 191,
+                        "type": "string"
+                    },
+                    "country": {
+                        "description": "Organization Country. Format: ISO 3166-1 alpha-2",
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "type": "string"
+                    },
+                    "id": {
+                        "description": "Organization ID",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "Organization Name",
+                        "maxLength": 191,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "owner-email": {
+                        "description": "Email Address of the first Owner",
+                        "maxLength": 75,
+                        "minLength": 1,
+                        "type": "string",
+                        "writeOnly": true
+                    },
+                    "postcode": {
+                        "description": "Organization Post Code",
+                        "maxLength": 80,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "Organization Status",
+                        "enum": [
+                            "suspended",
+                            "active",
+                            "terminated"
+                        ],
+                        "readOnly": true,
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "address",
+                    "city",
+                    "postcode",
+                    "country",
+                    "owner-email"
+                ],
+                "type": "object"
+            },
+            "salesforce-response": {
+                "description": "Organization data for Salesforce",
+                "properties": {
+                    "closed_tickets": {
+                        "type": "object"
+                    },
+                    "invoice": {
+                        "type": "object"
+                    },
+                    "open_tickets": {
+                        "type": "object"
+                    },
+                    "organization": {
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "usage-data": {
+                "description": "Usage data",
+                "properties": {
+                    "product": {
+                        "description": "Product name",
+                        "type": "string"
+                    },
+                    "quantity": {
+                        "description": "Usage quantity, unit is product dependent",
+                        "type": "number"
+                    },
+                    "variable": {
+                        "description": "variable name",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "info": {
+        "contact": {
+            "email": "api@exoscale.com",
+            "name": "API support",
+            "url": "https://community.exoscale.ch/support"
+        },
+        "description": "API for Partners, Distributors, and Marketplace vendors",
+        "termsOfService": "https://exoscale.com/terms",
+        "title": "Exoscale Partner API",
+        "version": "1.0.1-alpha1"
+    },
+    "openapi": "3.0.0",
+    "paths": {
+        "/distributor/organization": {
+            "get": {
+                "description": "List the Organizations linked to your Distributor Organization.",
+                "operationId": "list-distributor-organizations",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "organizations": {
+                                            "description": "The list of organizations.",
+                                            "items": {
+                                                "$ref": "#/components/schemas/organization"
+                                            },
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "200"
+                    }
+                },
+                "summary": "",
+                "tags": []
+            },
+            "post": {
+                "description": "Create an Organization linked to your Distributor Organization.",
+                "operationId": "create-distributor-organization",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/organization"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/organization"
+                                }
+                            }
+                        },
+                        "description": "200"
+                    }
+                },
+                "summary": "",
+                "tags": []
+            }
+        },
+        "/distributor/organization/{id}": {
+            "get": {
+                "description": "Get an Organization linked to your Distributor Organization.",
+                "operationId": "get-distributor-organization",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "format": "uuid",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/organization"
+                                }
+                            }
+                        },
+                        "description": "200"
+                    }
+                },
+                "summary": "",
+                "tags": []
+            }
+        },
+        "/distributor/organization/{id}:activate": {
+            "put": {
+                "description": "Activate an Organization linked to your Distributor Organization.",
+                "operationId": "activate-distributor-organization",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "format": "uuid",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/organization"
+                                }
+                            }
+                        },
+                        "description": "200"
+                    }
+                },
+                "summary": "",
+                "tags": []
+            }
+        },
+        "/distributor/organization/{id}:schedule-purge": {
+            "put": {
+                "description": "Schedule the purge of an Organization linked to your Distributor Organization.",
+                "operationId": "schedule-purge-distributor-organization",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "format": "uuid",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "The message indicating that the Organization has been successfully purged.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "200"
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "The message indicating that the Organization has been successfully scheduled to be purged.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "202"
+                    }
+                },
+                "summary": "",
+                "tags": []
+            }
+        },
+        "/distributor/organization/{id}:suspend": {
+            "put": {
+                "description": "Suspend an Organization linked to your Distributor Organization.",
+                "operationId": "suspend-distributor-organization",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "format": "uuid",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/organization"
+                                }
+                            }
+                        },
+                        "description": "200"
+                    }
+                },
+                "summary": "",
+                "tags": []
+            }
+        },
+        "/distributor/organization/{id}:terminate": {
+            "delete": {
+                "description": "Terminate an Organization linked to your Distributor Organization.",
+                "operationId": "terminate-distributor-organization",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "format": "uuid",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "The message indicating that the Organization has been successfully terminated.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "200"
+                    }
+                },
+                "summary": "",
+                "tags": []
+            }
+        },
+        "/distributor/organization/{id}/usage": {
+            "get": {
+                "description": "List the Usage records of a sub-Organization.",
+                "operationId": "list-distributor-organization-usage",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "format": "uuid",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "period",
+                        "required": false,
+                        "schema": {
+                            "maxLength": 7,
+                            "minLength": 7,
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "properties": {
+                                            "code": {
+                                                "description": "The Usage Code",
+                                                "type": "string"
+                                            },
+                                            "currency": {
+                                                "description": "The possible values are: CHF, EUR, USD.",
+                                                "maxLength": 3,
+                                                "minLength": 3,
+                                                "type": "string"
+                                            },
+                                            "end-date": {
+                                                "description": "The end date for the Usage statements",
+                                                "format": "date-time",
+                                                "type": "string"
+                                            },
+                                            "start-date": {
+                                                "description": "The start date for the Usage statements",
+                                                "format": "date-time",
+                                                "type": "string"
+                                            },
+                                            "total-excl-vat": {
+                                                "description": "Expressed in the currency of the Organization.",
+                                                "type": "number"
+                                            },
+                                            "total-incl-vat": {
+                                                "description": "Expressed in the currency of the Organization.",
+                                                "type": "number"
+                                            },
+                                            "usage": {
+                                                "description": "The usage statements",
+                                                "items": {
+                                                    "properties": {
+                                                        "description": {
+                                                            "description": "Additional information about the usage statement",
+                                                            "type": "string"
+                                                        },
+                                                        "product": {
+                                                            "description": "The name of the product",
+                                                            "type": "string"
+                                                        },
+                                                        "quantity": {
+                                                            "type": "number"
+                                                        },
+                                                        "total-excl-vat": {
+                                                            "description": "The total amount of this Usage statement without VAT",
+                                                            "type": "number"
+                                                        },
+                                                        "total-incl-vat": {
+                                                            "description": "The total amount of this Usage statement with VAT",
+                                                            "type": "number"
+                                                        },
+                                                        "unit": {
+                                                            "description": "The unit used for this usage statement",
+                                                            "type": "string"
+                                                        },
+                                                        "variable": {
+                                                            "description": "The variable of the product",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "type": "array"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "200"
+                    }
+                },
+                "summary": "",
+                "tags": []
+            }
+        },
+        "/metering:apply": {
+            "post": {
+                "description": "\n\nSubmit usage metrics for the given organization. The API accepts a set of\n`usage` objects. Each object represents a product, its variable and a metering\nvalue. The value might be negative or fractional (will be rounded to five\nfractions). Sample payload:\n\n```json\n{\n  'usage': [\n    {\n      'product': 'sos',\n      'variable': 'storage_traffic',\n      'quantity': 3.1415\n    },\n    {\n      'product': 'sos',\n      'variable': 'one_more_metric',\n      'quantity': -42.00005\n    }\n  ],\n  'organization': 'bf9bbc88-71ea-407c-9920-fc1101d86183'\n}\n```\n\n",
+                "operationId": "metering-transaction",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/metering-batch"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ok-map"
+                                }
+                            }
+                        },
+                        "description": "204"
+                    }
+                },
+                "summary": "Apply metering transaction",
+                "tags": [
+                    "metrics"
+                ]
+            }
+        }
+    },
+    "servers": [
+        {
+            "url": "{protocol}://{environment}partner-api.exoscale.com/v1.alpha",
+            "variables": {
+                "environment": {
+                    "default": "",
+                    "enum": [
+                        "",
+                        "preprod-",
+                        "lab-"
+                    ]
+                },
+                "protocol": {
+                    "default": "https",
+                    "enum": [
+                        "http",
+                        "https"
+                    ]
+                }
+            }
+        }
+    ],
+    "tags": [
+        {
+            "description": "\n\nMetrics API aimed at collecting the data about resource usage, mostly disk and\nSoS storage, network traffic, etc.\n\n",
+            "externalDocs": {
+                "description": "Read more",
+                "url": "https://community.exoscale.com/documentation/"
+            },
+            "name": "metrics"
+        }
+    ],
+    "x-topics": [
+        {
+            "content": "\nIn order to authenticate legitimate users, the Exoscale API requires incoming requests to be signed using valid Exoscale API account credentials with the following mechanism.\n\n\n## Signature Mechanism\n\nThe *message* (i.e. content) to sign contains several segments concatenated using a line return character (`\\n`). All segments must be included and in the described order, including empty ones depending on the context of the request (e.g. no request body).\n\n* Request method and request URL (path only), separated by a space character\n* Request body\n* Request URL parameters (Query String) values, concatenated without separator. The matching parameter names have to be specified in the resulting signature header `signed-query-args=` pragma, separated by semicolons (e.g. `p1;p2;pN`).\n* Request header values, concatenated without separator (none at the moment, leave empty)\n* Request expiration date in UNIX timestamp format\n\nExample *message* to sign for `GET /v2/resource/a02baf5a-a3e4-49a0-857b-8a08d276c1c0?p1=v1&p2=v2` :\n\n```\nGET /v2/resource/a02baf5a-a3e4-49a0-857b-8a08d276c1c0\n\nv1v2\n\n1599140767\n```\n\nThe request signature consists of the [HMAC][hmac] hash of the base64-encoded *message* and the Exoscale API secret using the SHA265 function:\n\n```\nsignature = HMAC_SHA256(Exoscale API secret, BASE64_ENCODE(message))\n```\n\nFinally, the computed signature must be added to the API request in a `Authorization` header such as:\n\n```\nAuthorization: EXO2-HMAC-SHA256 credential=<Exoscale API key>,expires=<expiration date UNIX timestamp>,signature=<signature>\n```\n\nExample API query:\n\n```\nGET /v2/resource/a02baf5a-a3e4-49a0-857b-8a08d276c1c0?p1=v1&p2=v2 HTTP/1.1\nHost: api-ch-gva-2.exoscale.com\nAuthorization: EXO2-HMAC-SHA256 credential=EXO29147e9f89102b7ac1e88514,signed-query-args=p1;p2,expires=1599140767,signature=2AOBQsbElQb4FpKT/FM/9T4NobjlmZkSGvvdUth/xlY=\n```\n\n\n## Reference Implementations\n\nYou can look up the following existing reference implementations:\n\n* Go: [github.com/exoscale/egoscale/api/v2 > `SecurityProviderExoscale.signRequest`](https://github.com/exoscale/egoscale/blob/master/v2/api/security.go)\n* Python: [requests-exoscale-auth > `ExoscaleV2Auth`](https://github.com/exoscale/requests-exoscale-auth/blob/master/exoscale_auth.py)\n\n[hmac]: https://en.wikipedia.org/wiki/HMAC\n",
+            "title": "API Request Signature"
+        }
+    ]
+}

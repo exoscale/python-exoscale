@@ -1,6 +1,13 @@
 Changelog
 ---------
 
+0.15.0 (unreleased)
+-------------------
+
+* Add Partner API client for distributor operations
+* Partner API client follows same patterns as V2 API
+* Automatic hourly updates of Partner API OpenAPI spec
+
 0.14.0 (2025-08-28)
 -------------------
 

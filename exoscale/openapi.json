@@ -3060,7 +3060,8 @@
               "micro",
               "small",
               "tiny",
-              "titan"
+              "titan",
+              "titan48c"
             ],
             "readOnly": true,
             "description": "Instance type size"

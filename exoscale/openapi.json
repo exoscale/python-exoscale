@@ -160,6 +160,30 @@
         ],
         "description": "Automatic maintenance settings"
       },
+      "env-impact-indicator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Value"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/env-impact-detail"
+            },
+            "description": "Details"
+          }
+        }
+      },
       "dbaas-endpoint-elasticsearch-input-create": {
         "type": "object",
         "properties": {
@@ -3824,6 +3848,23 @@
           "prometheus-uri"
         ]
       },
+      "env-impact-detail": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Value"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit"
+          }
+        }
+      },
       "json-schema-valkey": {
         "properties": {
           "ssl": {
@@ -3956,6 +3997,29 @@
         "type": "string",
         "maxLength": 256,
         "minLength": 8
+      },
+      "env-product": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Value"
+          },
+          "metadata": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/env-metadata-entry"
+            },
+            "description": "Metadata"
+          },
+          "impacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/env-impact-indicator"
+            },
+            "description": "Impacts"
+          }
+        }
       },
       "quota": {
         "type": "object",
@@ -5364,6 +5428,25 @@
           "dest": {
             "type": "string",
             "description": "Destination service name"
+          }
+        }
+      },
+      "env-impact-report": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/env-metadata-entry"
+            },
+            "description": "Metadata"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/env-product"
+            },
+            "description": "Products"
           }
         }
       },
@@ -9788,6 +9871,23 @@
         },
         "title": "OpenSearch settings",
         "type": "object"
+      },
+      "env-metadata-entry": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Value"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit"
+          }
+        }
       },
       "sks-audit": {
         "type": "object",

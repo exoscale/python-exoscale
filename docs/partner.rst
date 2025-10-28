@@ -39,7 +39,7 @@ Managing Organizations
             "postcode": "8001",
             "country": "CH",
             "owner-email": "admin@customer.com",
-            "client-id": "internal-123"  # Optional
+            "client-id": "internal-1234"  # Optional
         }
     )
     

@@ -20,7 +20,7 @@
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Changelog" href="changes.html" />
+    <link rel="next" title="Partner API" href="partner.html" />
     <link rel="prev" title="python-exoscale library documentation" href="index.html" /> 
 </head>
 
@@ -155,6 +155,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.evict_sks_nodepool_members"><code class="docutils literal notranslate"><span class="pre">Client.evict_sks_nodepool_members()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.export_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.export_snapshot()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.generate_sks_cluster_kubeconfig"><code class="docutils literal notranslate"><span class="pre">Client.generate_sks_cluster_kubeconfig()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_active_nodepool_template"><code class="docutils literal notranslate"><span class="pre">Client.get_active_nodepool_template()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_anti_affinity_group"><code class="docutils literal notranslate"><span class="pre">Client.get_anti_affinity_group()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_api_key"><code class="docutils literal notranslate"><span class="pre">Client.get_api_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_block_storage_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.get_block_storage_snapshot()</span></code></a></li>
@@ -271,8 +272,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_load_balancer_field"><code class="docutils literal notranslate"><span class="pre">Client.reset_load_balancer_field()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_load_balancer_service_field"><code class="docutils literal notranslate"><span class="pre">Client.reset_load_balancer_service_field()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_private_network_field"><code class="docutils literal notranslate"><span class="pre">Client.reset_private_network_field()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_sks_cluster_field"><code class="docutils literal notranslate"><span class="pre">Client.reset_sks_cluster_field()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_sks_nodepool_field"><code class="docutils literal notranslate"><span class="pre">Client.reset_sks_nodepool_field()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.resize_block_storage_volume"><code class="docutils literal notranslate"><span class="pre">Client.resize_block_storage_volume()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.resize_instance_disk"><code class="docutils literal notranslate"><span class="pre">Client.resize_instance_disk()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_dbaas_grafana_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_dbaas_grafana_user_password()</span></code></a></li>
@@ -286,6 +285,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.revert_instance_to_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.revert_instance_to_snapshot()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.rotate_sks_ccm_credentials"><code class="docutils literal notranslate"><span class="pre">Client.rotate_sks_ccm_credentials()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.rotate_sks_csi_credentials"><code class="docutils literal notranslate"><span class="pre">Client.rotate_sks_csi_credentials()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.rotate_sks_karpenter_credentials"><code class="docutils literal notranslate"><span class="pre">Client.rotate_sks_karpenter_credentials()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.rotate_sks_operators_ca"><code class="docutils literal notranslate"><span class="pre">Client.rotate_sks_operators_ca()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.scale_instance"><code class="docutils literal notranslate"><span class="pre">Client.scale_instance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.scale_instance_pool"><code class="docutils literal notranslate"><span class="pre">Client.scale_instance_pool()</span></code></a></li>
@@ -343,7 +343,9 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="partner.html">Partner API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#unreleased">0.15.0 (unreleased)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html#id1">0.14.0 (2025-08-28)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html#id2">0.13.0 (2025-08-11)</a></li>
 </ul>
@@ -1292,7 +1294,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>service</strong> (<em>str</em>)</p></li>
-<li><p><strong>target_version</strong> (<em>str</em>) – Target version for upgrade. Must be one of <code class="docutils literal notranslate"><span class="pre">'13'</span></code>, <code class="docutils literal notranslate"><span class="pre">'14'</span></code>, <code class="docutils literal notranslate"><span class="pre">'15'</span></code>, <code class="docutils literal notranslate"><span class="pre">'16'</span></code>, <code class="docutils literal notranslate"><span class="pre">'17'</span></code>.</p></li>
+<li><p><strong>target_version</strong> (<em>str</em>) – Target version for upgrade. Must be one of <code class="docutils literal notranslate"><span class="pre">'13'</span></code>, <code class="docutils literal notranslate"><span class="pre">'14'</span></code>, <code class="docutils literal notranslate"><span class="pre">'15'</span></code>, <code class="docutils literal notranslate"><span class="pre">'16'</span></code>, <code class="docutils literal notranslate"><span class="pre">'17'</span></code>, <code class="docutils literal notranslate"><span class="pre">'18'</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1517,7 +1519,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>pglookout_settings</strong> (<em>dict</em>) – PGLookout settings.</p></li>
 <li><p><strong>maintenance</strong> (<em>dict</em>) – Automatic maintenance settings.</p></li>
 <li><p><strong>admin_username</strong> (<em>str</em>) – Custom username for admin user. This must be set only when a new service is being created..</p></li>
-<li><p><strong>version</strong> (<em>str</em>) – PostgreSQL major version. Must be one of <code class="docutils literal notranslate"><span class="pre">'13'</span></code>, <code class="docutils literal notranslate"><span class="pre">'14'</span></code>, <code class="docutils literal notranslate"><span class="pre">'15'</span></code>, <code class="docutils literal notranslate"><span class="pre">'16'</span></code>, <code class="docutils literal notranslate"><span class="pre">'17'</span></code>.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) – PostgreSQL major version. Must be one of <code class="docutils literal notranslate"><span class="pre">'13'</span></code>, <code class="docutils literal notranslate"><span class="pre">'14'</span></code>, <code class="docutils literal notranslate"><span class="pre">'15'</span></code>, <code class="docutils literal notranslate"><span class="pre">'16'</span></code>, <code class="docutils literal notranslate"><span class="pre">'17'</span></code>, <code class="docutils literal notranslate"><span class="pre">'18'</span></code>.</p></li>
 <li><p><strong>plan</strong> (<em>str</em>) – Subscription plan.</p></li>
 <li><p><strong>work_mem</strong> (<em>int</em>) – Sets the maximum amount of memory to be used by a query operation (such as a sort or hash table) before writing to temporary disk files, in MB. Default is 1MB + 0.075% of total RAM (up to 32MB)..</p></li>
 <li><p><strong>shared_buffers_percentage</strong> (<em>int</em>) – Percentage of total RAM that the database server uses for shared memory buffers. Valid range is 20-60 (float), which corresponds to 20% - 60%. This setting adjusts the shared_buffers configuration value..</p></li>
@@ -1976,6 +1978,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>level</strong> (<em>str</em>) – Cluster service level. Must be one of <code class="docutils literal notranslate"><span class="pre">'pro'</span></code>, <code class="docutils literal notranslate"><span class="pre">'starter'</span></code>.</p></li>
 <li><p><strong>feature_gates</strong> (<em>list</em>) – A list of Kubernetes-only Alpha features to enable for API server component.</p></li>
 <li><p><strong>addons</strong> (<em>list</em>) – Cluster addons.</p></li>
+<li><p><strong>audit</strong> (<em>dict</em>) – Kubernetes Audit Log Configuration.</p></li>
 <li><p><strong>version</strong> (<em>str</em>) – Control plane Kubernetes version.</p></li>
 </ul>
 </dd>
@@ -3693,6 +3696,25 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.get_active_nodepool_template">
+<span class="sig-name descname"><span class="pre">get_active_nodepool_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_active_nodepool_template" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kube_version</strong> (<em>str</em>)</p></li>
+<li><p><strong>variant</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.get_anti_affinity_group">
 <span class="sig-name descname"><span class="pre">get_anti_affinity_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_anti_affinity_group" title="Link to this definition"></a></dt>
 <dd><p>Retrieve Anti-affinity Group details</p>
@@ -4611,7 +4633,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>id</strong> (str): Instance type ID.</p></li>
-<li><p><strong>size</strong> (str): Instance type size. Values are <code class="docutils literal notranslate"><span class="pre">'colossus'</span></code>, <code class="docutils literal notranslate"><span class="pre">'extra-large'</span></code>, <code class="docutils literal notranslate"><span class="pre">'huge'</span></code>, <code class="docutils literal notranslate"><span class="pre">'jumbo'</span></code>, <code class="docutils literal notranslate"><span class="pre">'large'</span></code>, <code class="docutils literal notranslate"><span class="pre">'medium'</span></code>, <code class="docutils literal notranslate"><span class="pre">'mega'</span></code>, <code class="docutils literal notranslate"><span class="pre">'micro'</span></code>, <code class="docutils literal notranslate"><span class="pre">'small'</span></code>, <code class="docutils literal notranslate"><span class="pre">'tiny'</span></code>, <code class="docutils literal notranslate"><span class="pre">'titan'</span></code>.</p></li>
+<li><p><strong>size</strong> (str): Instance type size. Values are <code class="docutils literal notranslate"><span class="pre">'colossus'</span></code>, <code class="docutils literal notranslate"><span class="pre">'extra-large'</span></code>, <code class="docutils literal notranslate"><span class="pre">'huge'</span></code>, <code class="docutils literal notranslate"><span class="pre">'jumbo'</span></code>, <code class="docutils literal notranslate"><span class="pre">'large'</span></code>, <code class="docutils literal notranslate"><span class="pre">'medium'</span></code>, <code class="docutils literal notranslate"><span class="pre">'mega'</span></code>, <code class="docutils literal notranslate"><span class="pre">'micro'</span></code>, <code class="docutils literal notranslate"><span class="pre">'small'</span></code>, <code class="docutils literal notranslate"><span class="pre">'tiny'</span></code>, <code class="docutils literal notranslate"><span class="pre">'titan'</span></code>, <code class="docutils literal notranslate"><span class="pre">'titan48c'</span></code>.</p></li>
 <li><p><strong>family</strong> (str): Instance type family. Values are <code class="docutils literal notranslate"><span class="pre">'colossus'</span></code>, <code class="docutils literal notranslate"><span class="pre">'cpu'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpu'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpu2'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpu3'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpu3080ti'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpua30'</span></code>, <code class="docutils literal notranslate"><span class="pre">'gpua5000'</span></code>, <code class="docutils literal notranslate"><span class="pre">'memory'</span></code>, <code class="docutils literal notranslate"><span class="pre">'standard'</span></code>, <code class="docutils literal notranslate"><span class="pre">'storage'</span></code>.</p></li>
 <li><p><strong>cpus</strong> (int): CPU count.</p></li>
 <li><p><strong>gpus</strong> (int): GPU count.</p></li>
@@ -4885,13 +4907,14 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>auto_upgrade</strong> (bool): Enable auto upgrade of the control plane to the latest patch version available.</p></li>
 <li><p><strong>name</strong> (str): Cluster name.</p></li>
 <li><p><strong>enable_operators_ca</strong> (bool): Indicates whether to add operators certificate authority (CA) as part of trusted CAs for the API server..</p></li>
-<li><p><strong>state</strong> (str): Cluster state. Values are <code class="docutils literal notranslate"><span class="pre">'creating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'deleting'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'resuming'</span></code>, <code class="docutils literal notranslate"><span class="pre">'rotating-ccm-credentials'</span></code>, <code class="docutils literal notranslate"><span class="pre">'rotating-csi-credentials'</span></code>, <code class="docutils literal notranslate"><span class="pre">'running'</span></code>, <code class="docutils literal notranslate"><span class="pre">'suspending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'updating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'upgrading'</span></code>.</p></li>
+<li><p><strong>state</strong> (str): Cluster state. Values are <code class="docutils literal notranslate"><span class="pre">'creating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'deleting'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'resuming'</span></code>, <code class="docutils literal notranslate"><span class="pre">'rotating-ccm-credentials'</span></code>, <code class="docutils literal notranslate"><span class="pre">'rotating-csi-credentials'</span></code>, <code class="docutils literal notranslate"><span class="pre">'rotating-karpenter-credentials'</span></code>, <code class="docutils literal notranslate"><span class="pre">'running'</span></code>, <code class="docutils literal notranslate"><span class="pre">'suspending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'updating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'upgrading'</span></code>.</p></li>
 <li><p><strong>enable_kube_proxy</strong> (bool): Indicates whether to deploy the Kubernetes network proxy..</p></li>
 <li><p><strong>nodepools</strong> (list): Cluster Nodepools.</p></li>
 <li><p><strong>level</strong> (str): Cluster level. Values are <code class="docutils literal notranslate"><span class="pre">'pro'</span></code>, <code class="docutils literal notranslate"><span class="pre">'starter'</span></code>.</p></li>
 <li><p><strong>feature_gates</strong> (list): A list of Kubernetes-only Alpha features to enable for API server component.</p></li>
 <li><p><strong>addons</strong> (list): Cluster addons.</p></li>
 <li><p><strong>id</strong> (str): Cluster ID.</p></li>
+<li><p><strong>audit</strong> (dict): Kubernetes Audit.</p></li>
 <li><p><strong>version</strong> (str): Control plane Kubernetes version.</p></li>
 <li><p><strong>created_at</strong> (str): Cluster creation date.</p></li>
 <li><p><strong>endpoint</strong> (str): Cluster endpoint.</p></li>
@@ -6284,67 +6307,6 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="exoscale.api.v2.Client.reset_sks_cluster_field">
-<span class="sig-name descname"><span class="pre">reset_sks_cluster_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reset_sks_cluster_field" title="Link to this definition"></a></dt>
-<dd><p>Reset an SKS cluster field to its default value</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>)</p></li>
-<li><p><strong>field</strong> (<em>str</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: Operation. A dictionnary with the following keys:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>id</strong> (str): Operation ID.</p></li>
-<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
-<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
-<li><p><strong>message</strong> (str): Operation message.</p></li>
-<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
-</ul>
-</div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>200</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="exoscale.api.v2.Client.reset_sks_nodepool_field">
-<span class="sig-name descname"><span class="pre">reset_sks_nodepool_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reset_sks_nodepool_field" title="Link to this definition"></a></dt>
-<dd><p>Reset an SKS Nodepool field to its default value</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> (<em>str</em>)</p></li>
-<li><p><strong>sks_nodepool_id</strong> (<em>str</em>)</p></li>
-<li><p><strong>field</strong> (<em>str</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: Operation. A dictionnary with the following keys:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>id</strong> (str): Operation ID.</p></li>
-<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
-<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
-<li><p><strong>message</strong> (str): Operation message.</p></li>
-<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
-</ul>
-</div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>200</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.resize_block_storage_volume">
 <span class="sig-name descname"><span class="pre">resize_block_storage_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.resize_block_storage_volume" title="Link to this definition"></a></dt>
 <dd><p>Resize a block storage volume</p>
@@ -6681,6 +6643,33 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.rotate_sks_csi_credentials">
 <span class="sig-name descname"><span class="pre">rotate_sks_csi_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.rotate_sks_csi_credentials" title="Link to this definition"></a></dt>
 <dd><p>Rotate Exoscale CSI credentials</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: Operation. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.rotate_sks_karpenter_credentials">
+<span class="sig-name descname"><span class="pre">rotate_sks_karpenter_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.rotate_sks_karpenter_credentials" title="Link to this definition"></a></dt>
+<dd><p>Rotate Exoscale Karpenter credentials</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
@@ -8148,14 +8137,15 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>str</em>)</p></li>
-<li><p><strong>name</strong> (<em>str</em>) – Cluster name.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Cluster description.</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – Cluster labels.</p></li>
-<li><p><strong>oidc</strong> (<em>dict</em>) – Cluster OpenID configmap.</p></li>
 <li><p><strong>auto_upgrade</strong> (<em>bool</em>) – Enable auto upgrade of the control plane to the latest patch version available.</p></li>
-<li><p><strong>addons</strong> (<em>list</em>) – Cluster addons.</p></li>
-<li><p><strong>feature_gates</strong> (<em>list</em>) – A list of Kubernetes-only Alpha features to enable for API server component.</p></li>
+<li><p><strong>oidc</strong> (<em>dict</em>) – Cluster OpenID configmap.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Cluster name.</p></li>
 <li><p><strong>enable_operators_ca</strong> (<em>bool</em>) – Add or remove the operators certificate authority (CA) from the list of trusted CAs of the api server. The default value is true.</p></li>
+<li><p><strong>feature_gates</strong> (<em>list</em>) – A list of Kubernetes-only Alpha features to enable for API server component.</p></li>
+<li><p><strong>addons</strong> (<em>list</em>) – Cluster addons.</p></li>
+<li><p><strong>audit</strong> (<em>dict</em>) – Kubernetes Audit Log Configuration.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -8381,7 +8371,7 @@ completion.</p></li>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="python-exoscale library documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="changes.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="partner.html" class="btn btn-neutral float-right" title="Partner API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

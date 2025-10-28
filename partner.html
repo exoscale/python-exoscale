@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Partner API &mdash; python-exoscale 0.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/theme_overrides.css?v=a7b7b6ed" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=82662543"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Changelog" href="changes.html" />
+    <link rel="prev" title="V2 API bindings" href="v2.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #da291c" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo-exoscale-white-201711.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="v2.html">V2 API bindings</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Partner API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-client">Creating a client</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#managing-organizations">Managing Organizations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api-reference">API Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.partner.Client"><code class="docutils literal notranslate"><span class="pre">Client</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#exoscale.api.partner.Client.activate_distributor_organization"><code class="docutils literal notranslate"><span class="pre">Client.activate_distributor_organization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exoscale.api.partner.Client.create_distributor_organization"><code class="docutils literal notranslate"><span class="pre">Client.create_distributor_organization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exoscale.api.partner.Client.get_distributor_organization"><code class="docutils literal notranslate"><span class="pre">Client.get_distributor_organization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exoscale.api.partner.Client.list_distributor_organization_usage"><code class="docutils literal notranslate"><span class="pre">Client.list_distributor_organization_usage()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exoscale.api.partner.Client.list_distributor_organizations"><code class="docutils literal notranslate"><span class="pre">Client.list_distributor_organizations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exoscale.api.partner.Client.metering_transaction"><code class="docutils literal notranslate"><span class="pre">Client.metering_transaction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exoscale.api.partner.Client.schedule_purge_distributor_organization"><code class="docutils literal notranslate"><span class="pre">Client.schedule_purge_distributor_organization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exoscale.api.partner.Client.suspend_distributor_organization"><code class="docutils literal notranslate"><span class="pre">Client.suspend_distributor_organization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exoscale.api.partner.Client.terminate_distributor_organization"><code class="docutils literal notranslate"><span class="pre">Client.terminate_distributor_organization()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#unreleased">0.15.0 (unreleased)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id1">0.14.0 (2025-08-28)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id2">0.13.0 (2025-08-11)</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #da291c" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">python-exoscale</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Partner API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/partner.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="partner-api">
+<h1>Partner API<a class="headerlink" href="#partner-api" title="Link to this heading"></a></h1>
+<p>The Partner API client provides access to distributor operations for managing
+sub-organizations in Exoscale.</p>
+<section id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
+<section id="creating-a-client">
+<h3>Creating a client<a class="headerlink" href="#creating-a-client" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">exoscale.api.partner</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
+
+<span class="c1"># Create client with API credentials</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span>
+    <span class="n">key</span><span class="o">=</span><span class="s2">&quot;EXO...&quot;</span><span class="p">,</span>
+    <span class="n">secret</span><span class="o">=</span><span class="s2">&quot;...&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="managing-organizations">
+<h3>Managing Organizations<a class="headerlink" href="#managing-organizations" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># List all distributor organizations</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_distributor_organizations</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">org</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;organizations&#39;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">org</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">org</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create a new organization</span>
+<span class="n">new_org</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_distributor_organization</span><span class="p">(</span>
+    <span class="n">organization</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Customer Corp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;123 Business Ave&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;Zurich&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;postcode&quot;</span><span class="p">:</span> <span class="s2">&quot;8001&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;country&quot;</span><span class="p">:</span> <span class="s2">&quot;CH&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;owner-email&quot;</span><span class="p">:</span> <span class="s2">&quot;admin@customer.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;client-id&quot;</span><span class="p">:</span> <span class="s2">&quot;internal-1234&quot;</span>  <span class="c1"># Optional</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Activate/Suspend organizations</span>
+<span class="n">client</span><span class="o">.</span><span class="n">activate_distributor_organization</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">org_id</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">suspend_distributor_organization</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">org_id</span><span class="p">)</span>
+
+<span class="c1"># Get usage information</span>
+<span class="n">usage</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_distributor_organization_usage</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="n">org_id</span><span class="p">,</span>
+    <span class="n">period</span><span class="o">=</span><span class="s2">&quot;2025-01&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h2>
+<p>The Partner API client uses the same error handling as the V2 API:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">exoscale.api.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ExoscaleAPIAuthException</span><span class="p">,</span>
+    <span class="n">ExoscaleAPIClientException</span><span class="p">,</span>
+    <span class="n">ExoscaleAPIServerException</span>
+<span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">get_distributor_organization</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;invalid&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">ExoscaleAPIClientException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Client error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">ExoscaleAPIServerException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Server error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="exoscale.api.partner.Client">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exoscale.api.partner.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.partner.Client" title="Link to this definition"></a></dt>
+<dd><p>Partner API client with Exoscale authentication.</p>
+<p>This client provides access to distributor operations for managing
+sub-organizations. It uses the same authentication mechanism as the
+V2 API client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – Exoscale API key</p></li>
+<li><p><strong>secret</strong> (<em>str</em>) – Exoscale API secret</p></li>
+<li><p><strong>url</strong> (<em>str</em>) – Override endpoint URL (optional)</p></li>
+<li><p><strong>zone</strong> (<em>str</em>) – Exoscale zone (optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">exoscale.api.partner</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;EXO...&quot;</span><span class="p">,</span> <span class="s2">&quot;secret&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orgs</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_distributor_organizations</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.partner.Client.activate_distributor_organization">
+<span class="sig-name descname"><span class="pre">activate_distributor_organization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.partner.Client.activate_distributor_organization" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: An Organization. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>address</strong> (str): Organization Address.</p></li>
+<li><p><strong>city</strong> (str): Organization City.</p></li>
+<li><p><strong>client_id</strong> (str): Organization Client ID.</p></li>
+<li><p><strong>country</strong> (str): Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
+<li><p><strong>id</strong> (str): Organization ID.</p></li>
+<li><p><strong>name</strong> (str): Organization Name.</p></li>
+<li><p><strong>owner_email</strong> (str): Email Address of the first Owner.</p></li>
+<li><p><strong>postcode</strong> (str): Organization Post Code.</p></li>
+<li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.partner.Client.create_distributor_organization">
+<span class="sig-name descname"><span class="pre">create_distributor_organization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.partner.Client.create_distributor_organization" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>address</strong> (<em>str</em>) – Organization Address.</p></li>
+<li><p><strong>city</strong> (<em>str</em>) – Organization City.</p></li>
+<li><p><strong>client_id</strong> (<em>str</em>) – Organization Client ID.</p></li>
+<li><p><strong>country</strong> (<em>str</em>) – Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
+<li><p><strong>id</strong> (<em>str</em>) – Organization ID.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Organization Name.</p></li>
+<li><p><strong>owner_email</strong> (<em>str</em>) – Email Address of the first Owner.</p></li>
+<li><p><strong>postcode</strong> (<em>str</em>) – Organization Post Code.</p></li>
+<li><p><strong>status</strong> (<em>str</em>) – Organization Status. Must be one of <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: An Organization. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>address</strong> (str): Organization Address.</p></li>
+<li><p><strong>city</strong> (str): Organization City.</p></li>
+<li><p><strong>client_id</strong> (str): Organization Client ID.</p></li>
+<li><p><strong>country</strong> (str): Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
+<li><p><strong>id</strong> (str): Organization ID.</p></li>
+<li><p><strong>name</strong> (str): Organization Name.</p></li>
+<li><p><strong>owner_email</strong> (str): Email Address of the first Owner.</p></li>
+<li><p><strong>postcode</strong> (str): Organization Post Code.</p></li>
+<li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.partner.Client.get_distributor_organization">
+<span class="sig-name descname"><span class="pre">get_distributor_organization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.partner.Client.get_distributor_organization" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: An Organization. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>address</strong> (str): Organization Address.</p></li>
+<li><p><strong>city</strong> (str): Organization City.</p></li>
+<li><p><strong>client_id</strong> (str): Organization Client ID.</p></li>
+<li><p><strong>country</strong> (str): Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
+<li><p><strong>id</strong> (str): Organization ID.</p></li>
+<li><p><strong>name</strong> (str): Organization Name.</p></li>
+<li><p><strong>owner_email</strong> (str): Email Address of the first Owner.</p></li>
+<li><p><strong>postcode</strong> (str): Organization Post Code.</p></li>
+<li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.partner.Client.list_distributor_organization_usage">
+<span class="sig-name descname"><span class="pre">list_distributor_organization_usage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.partner.Client.list_distributor_organization_usage" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>period</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.partner.Client.list_distributor_organizations">
+<span class="sig-name descname"><span class="pre">list_distributor_organizations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.partner.Client.list_distributor_organizations" title="Link to this definition"></a></dt>
+<dd><p>Args:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.partner.Client.metering_transaction">
+<span class="sig-name descname"><span class="pre">metering_transaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.partner.Client.metering_transaction" title="Link to this definition"></a></dt>
+<dd><p>Apply metering transaction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>organization</strong> (<em>str</em>) – Target Org.</p></li>
+<li><p><strong>usage</strong> (<em>list</em>) – Usage data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>204</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.partner.Client.schedule_purge_distributor_organization">
+<span class="sig-name descname"><span class="pre">schedule_purge_distributor_organization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.partner.Client.schedule_purge_distributor_organization" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict
+202: dict</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.partner.Client.suspend_distributor_organization">
+<span class="sig-name descname"><span class="pre">suspend_distributor_organization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.partner.Client.suspend_distributor_organization" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: An Organization. A dictionnary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>address</strong> (str): Organization Address.</p></li>
+<li><p><strong>city</strong> (str): Organization City.</p></li>
+<li><p><strong>client_id</strong> (str): Organization Client ID.</p></li>
+<li><p><strong>country</strong> (str): Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
+<li><p><strong>id</strong> (str): Organization ID.</p></li>
+<li><p><strong>name</strong> (str): Organization Name.</p></li>
+<li><p><strong>owner_email</strong> (str): Email Address of the first Owner.</p></li>
+<li><p><strong>postcode</strong> (str): Organization Post Code.</p></li>
+<li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.partner.Client.terminate_distributor_organization">
+<span class="sig-name descname"><span class="pre">terminate_distributor_organization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.partner.Client.terminate_distributor_organization" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="v2.html" class="btn btn-neutral float-left" title="V2 API bindings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="changes.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2025, The Exoscale team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

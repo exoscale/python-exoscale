@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-0.15.0 (unreleased)
+0.15.0 (2025-10-28)
 -------------------
 
 * Add Partner API client for distributor operations

@@ -1621,7 +1621,6 @@
       "json-schema-thanos": {
         "properties": {
           "compactor": {
-            "additionalProperties": false,
             "description": "Configuration options for Thanos Compactor.",
             "properties": {
               "retention.days": {
@@ -1631,11 +1630,10 @@
                 "type": "integer"
               }
             },
-            "title": "Thanos Compactor User Configuration",
+            "title": "ThanosCompactorUserConfig",
             "type": "object"
           },
           "query": {
-            "additionalProperties": false,
             "description": "Configuration options for Thanos Query.",
             "properties": {
               "query.default-evaluation-interval": {
@@ -1683,11 +1681,10 @@
                 "type": "integer"
               }
             },
-            "title": "Thanos Query User Configuration",
+            "title": "ThanosQueryUserConfig",
             "type": "object"
           },
-          "query_frontend": {
-            "additionalProperties": false,
+          "query-frontend": {
             "description": "Configuration options for Thanos Query Frontend.",
             "properties": {
               "query-range.align-range-with-step": {
@@ -1697,7 +1694,7 @@
                 "type": "boolean"
               }
             },
-            "title": "Thanos Query Frontend User Configuration",
+            "title": "ThanosQueryFrontendUserConfig",
             "type": "object"
           }
         },

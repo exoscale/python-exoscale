@@ -1842,6 +1842,21 @@
         "maxLength": 253,
         "minLength": 1
       },
+      "create-model-request": {
+        "type": "object",
+        "properties": {
+          "huggingface-token": {
+            "type": "string",
+            "description": "Huggingface Token"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Model name"
+          }
+        },
+        "description": "AI model"
+      },
       "dbaas-user-opensearch-secrets": {
         "type": "object",
         "properties": {
@@ -1881,6 +1896,15 @@
           }
         },
         "description": "Access key resource"
+      },
+      "reveal-deployment-api-key-response": {
+        "type": "object",
+        "properties": {
+          "api-key": {
+            "type": "string"
+          }
+        },
+        "description": "AI deployment inference endpoint authentication key"
       },
       "json-schema-kafka": {
         "additionalProperties": false,
@@ -3623,74 +3647,6 @@
           "type",
           "prometheus-uri"
         ]
-      },
-      "aideployment": {
-        "type": "object",
-        "properties": {
-          "updated-at": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true,
-            "description": "Update time"
-          },
-          "deployment-url": {
-            "type": "string",
-            "description": "Deployment URL (nullable)"
-          },
-          "model-id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Associated model ID"
-          },
-          "service-level": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Service level"
-          },
-          "name": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Deployment name"
-          },
-          "endpoint-url": {
-            "type": "string",
-            "description": "Endpoint URL (nullable)"
-          },
-          "instance-type": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Instance type"
-          },
-          "organization-id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Organization ID"
-          },
-          "status": {
-            "type": "string",
-            "description": "Deployment status"
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true,
-            "description": "Deployment ID"
-          },
-          "created-at": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true,
-            "description": "Creation time"
-          },
-          "deployment-size": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0,
-            "exclusiveMinimum": true,
-            "description": "Deployment size (>=1)"
-          }
-        },
-        "description": "AI deployment"
       },
       "dbaas-service-kafka": {
         "type": "object",
@@ -6218,6 +6174,54 @@
           }
         }
       },
+      "list-models-response": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "readOnly": true,
+              "description": "Model ID"
+            },
+            "organization-id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Organization ID"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Model name"
+            },
+            "status": {
+              "type": "string",
+              "description": "Model status"
+            },
+            "model-size": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0,
+              "exclusiveMinimum": false,
+              "description": "Model size (nullable)"
+            },
+            "created-at": {
+              "type": "string",
+              "format": "date-time",
+              "readOnly": true,
+              "description": "Creation time"
+            },
+            "updated-at": {
+              "type": "string",
+              "format": "date-time",
+              "readOnly": true,
+              "description": "Update time"
+            }
+          },
+          "description": "AI model"
+        }
+      },
       "sos-bucket-usage": {
         "type": "object",
         "properties": {
@@ -6923,6 +6927,19 @@
           }
         },
         "description": "Instance Pool"
+      },
+      "scale-deployment-request": {
+        "type": "object",
+        "properties": {
+          "replicas": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "exclusiveMinimum": false,
+            "description": "Number of replicas (>=0)"
+          }
+        },
+        "description": "Scale AI deployment"
       },
       "dbaas-integration-type": {
         "type": "object",
@@ -8272,6 +8289,77 @@
           "up"
         ]
       },
+      "list-deployments-response": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "updated-at": {
+              "type": "string",
+              "format": "date-time",
+              "readOnly": true,
+              "description": "Update time"
+            },
+            "deployment-url": {
+              "type": "string",
+              "description": "Deployment URL (nullable)"
+            },
+            "model-id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Associated model ID"
+            },
+            "service-level": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Service level"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Deployment name"
+            },
+            "endpoint-url": {
+              "type": "string",
+              "description": "Endpoint URL (nullable)"
+            },
+            "instance-type": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Instance type"
+            },
+            "organization-id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Organization ID"
+            },
+            "status": {
+              "type": "string",
+              "description": "Deployment status"
+            },
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "readOnly": true,
+              "description": "Deployment ID"
+            },
+            "replicas": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0,
+              "exclusiveMinimum": false,
+              "description": "Number of replicas (>=0)"
+            },
+            "created-at": {
+              "type": "string",
+              "format": "date-time",
+              "readOnly": true,
+              "description": "Creation time"
+            }
+          },
+          "description": "AI deployment"
+        }
+      },
       "anti-affinity-group": {
         "type": "object",
         "properties": {
@@ -9174,51 +9262,6 @@
           }
         },
         "description": "DNS domain record"
-      },
-      "aimodel": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true,
-            "description": "Model ID"
-          },
-          "organization-id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Organization ID"
-          },
-          "name": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Model name"
-          },
-          "status": {
-            "type": "string",
-            "description": "Model status"
-          },
-          "model-size": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0,
-            "exclusiveMinimum": false,
-            "description": "Model size (nullable)"
-          },
-          "created-at": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true,
-            "description": "Creation time"
-          },
-          "updated-at": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true,
-            "description": "Update time"
-          }
-        },
-        "description": "AI model"
       },
       "organization": {
         "type": "object",
@@ -10212,6 +10255,44 @@
           }
         },
         "description": "Block storage volume"
+      },
+      "create-deployment-request": {
+        "type": "object",
+        "properties": {
+          "model-id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Associated model ID"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Deployment name"
+          },
+          "gpu-type": {
+            "type": "string",
+            "description": "GPU type family (e.g., gpua5000, gpu3080ti)"
+          },
+          "gpu-count": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "exclusiveMinimum": true,
+            "description": "Number of GPUs (1-8)"
+          },
+          "replicas": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "exclusiveMinimum": true,
+            "description": "Number of replicas (>=1)"
+          }
+        },
+        "required": [
+          "gpu-type",
+          "gpu-count"
+        ],
+        "description": "AI deployment"
       },
       "enum-migration-method": {
         "type": "string",
@@ -12226,6 +12307,60 @@
         "operationId": "update-dbaas-external-endpoint-elasticsearch"
       }
     },
+    "/ai/model": {
+      "post": {
+        "tags": [
+          "aiservices"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [],
+        "summary": "[BETA] Create Model",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create-model-request"
+              }
+            }
+          }
+        },
+        "operationId": "create-model"
+      },
+      "get": {
+        "tags": [
+          "aiservices"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/list-models-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [],
+        "summary": "[BETA] List Models",
+        "operationId": "list-models"
+      }
+    },
     "/dbaas-mysql/{service-name}/user": {
       "post": {
         "tags": [
@@ -12310,6 +12445,49 @@
         "parameters": [],
         "summary": "DBaaS Service Types",
         "operationId": "list-dbaas-service-types"
+      }
+    },
+    "/ai/deployment/{id}/scale": {
+      "post": {
+        "tags": [
+          "aiservices"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Scale Deployment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/scale-deployment-request"
+              }
+            }
+          }
+        },
+        "operationId": "scale-deployment"
       }
     },
     "/instance-type/{id}": {
@@ -13177,6 +13355,70 @@
         "parameters": [],
         "summary": "List Compute instance Types",
         "operationId": "list-instance-types"
+      }
+    },
+    "/ai/deployment": {
+      "post": {
+        "tags": [
+          "aiservices"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [],
+        "summary": "[BETA] Create Deployment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create-deployment-request"
+              }
+            }
+          }
+        },
+        "operationId": "create-deployment"
+      },
+      "get": {
+        "tags": [
+          "aiservices"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/list-deployments-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [],
+        "summary": "[BETA] List Deployments",
+        "operationId": "list-deployments"
       }
     },
     "/dbaas-postgres/{service-name}/database/{database-name}": {
@@ -14857,6 +15099,39 @@
         ],
         "summary": "Export a Snapshot",
         "operationId": "export-snapshot"
+      }
+    },
+    "/ai/deployment/{id}": {
+      "delete": {
+        "tags": [
+          "aiservices"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Delete Deployment",
+        "operationId": "delete-deployment"
       }
     },
     "/dbaas-kafka/{service-name}/connect/password/reveal": {
@@ -18814,6 +19089,49 @@
           }
         },
         "operationId": "reset-dbaas-opensearch-user-password"
+      }
+    },
+    "/ai/model/{id}": {
+      "delete": {
+        "tags": [
+          "aiservices"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "412",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Delete Model",
+        "operationId": "delete-model"
       }
     },
     "/sos-buckets-usage": {
@@ -24249,6 +24567,39 @@
         "operationId": "rotate-sks-operators-ca"
       }
     },
+    "/ai/deployment/{id}/api-key": {
+      "get": {
+        "tags": [
+          "aiservices"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/reveal-deployment-api-key-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Get Deployment API Key",
+        "operationId": "reveal-deployment-api-key"
+      }
+    },
     "/anti-affinity-group/{id}": {
       "get": {
         "tags": [
@@ -24849,6 +25200,69 @@
         "parameters": [],
         "summary": "List Users",
         "operationId": "list-users"
+      }
+    },
+    "/ai/deployment/{id}/logs": {
+      "get": {
+        "tags": [
+          "aiservices"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "description": "Return logs for the vLLM deployment (deploy/<release-name>--deployment-vllm). Optional ?stream=true to request streaming (may not be supported).",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Get Deployment Logs",
+        "operationId": "get-deployment-logs"
       }
     },
     "/sks-cluster/{id}/upgrade": {

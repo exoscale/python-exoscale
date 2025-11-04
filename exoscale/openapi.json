@@ -239,6 +239,9 @@
         "maxLength": 2000,
         "minLength": 1
       },
+      "get-deployment-logs-response": {
+        "type": "string"
+      },
       "json-schema-schema-registry": {
         "additionalProperties": false,
         "properties": {
@@ -1284,6 +1287,19 @@
           }
         },
         "description": "Kafka Connect secrets"
+      },
+      "delete-model-conflict-response": {
+        "type": "object",
+        "properties": {
+          "deployments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Deployments using models"
+          }
+        },
+        "description": "Model is in use: deletion forbidden"
       },
       "dbaas-service-type": {
         "type": "object",
@@ -4838,6 +4854,16 @@
           }
         },
         "description": "Update waiting to be installed"
+      },
+      "error-response": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error description"
+          }
+        },
+        "description": "Error"
       },
       "enum-kafka-auth-method": {
         "type": "string",
@@ -13378,7 +13404,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -19112,7 +19138,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/delete-model-conflict-response"
                 }
               }
             }
@@ -25213,7 +25239,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/get-deployment-logs-response"
                 }
               }
             }
@@ -25223,7 +25249,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -25233,7 +25259,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -25243,7 +25269,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }

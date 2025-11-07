@@ -4313,6 +4313,11 @@
           "instance": {
             "$ref": "#/components/schemas/instance",
             "description": "Compute Instance snapshotted"
+          },
+          "application-consistent": {
+            "type": "boolean",
+            "readOnly": true,
+            "description": "Indicates whether the snapshot was taken using an application-consistent method"
           }
         },
         "description": "Snapshot"

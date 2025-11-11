@@ -5809,6 +5809,76 @@
         },
         "description": "IAM API Key"
       },
+      "get-deployment-response": {
+        "type": "object",
+        "properties": {
+          "gpu-count": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "exclusiveMinimum": true,
+            "description": "Number of GPUs"
+          },
+          "updated-at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Update time"
+          },
+          "deployment-url": {
+            "type": "string",
+            "description": "Deployment URL (nullable)"
+          },
+          "service-level": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Service level"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Deployment name"
+          },
+          "gpu-type": {
+            "type": "string",
+            "minLength": 1,
+            "description": "GPU type family"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "creating",
+              "deploying",
+              "error",
+              "ready"
+            ],
+            "description": "Deployment status"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "description": "Deployment ID"
+          },
+          "replicas": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "exclusiveMinimum": false,
+            "description": "Number of replicas (>=0)"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Creation time"
+          },
+          "model": {
+            "$ref": "#/components/schemas/model-ref"
+          }
+        },
+        "description": "AI deployment"
+      },
       "iam-policy": {
         "type": "object",
         "properties": {
@@ -8500,6 +8570,52 @@
             "description": "External integration RSyslog configuration"
           }
         }
+      },
+      "get-model-response": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "description": "Model ID"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Model name"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "creating",
+              "downloading",
+              "error",
+              "ready"
+            ],
+            "description": "Model status"
+          },
+          "model-size": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "exclusiveMinimum": false,
+            "description": "Model size (nullable)"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Creation time"
+          },
+          "updated-at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Update time"
+          }
+        },
+        "description": "AI model"
       },
       "dbaas-endpoint-elasticsearch-input-update": {
         "type": "object",
@@ -15173,6 +15289,47 @@
       }
     },
     "/ai/deployment/{id}": {
+      "get": {
+        "tags": [
+          "dedicated-inference"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/get-deployment-response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Get Deployment",
+        "operationId": "get-deployment"
+      },
       "delete": {
         "tags": [
           "dedicated-inference"
@@ -19203,6 +19360,47 @@
         ],
         "summary": "[BETA] Delete Model",
         "operationId": "delete-model"
+      },
+      "get": {
+        "tags": [
+          "dedicated-inference"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/get-model-response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Get Model",
+        "operationId": "get-model"
       }
     },
     "/sos-buckets-usage": {

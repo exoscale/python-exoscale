@@ -6347,12 +6347,7 @@
             "description": "Instance public IP assignment"
           },
           "labels": {
-            "type": "object",
-            "patternProperties": {
-              "*": {
-                "type": "string"
-              }
-            },
+            "$ref": "#/components/schemas/labels",
             "description": "Resource labels"
           },
           "security-groups": {
@@ -21653,14 +21648,9 @@
                     "description": "Assign public IP to the Instance"
                   },
                   "labels": {
-                    "type": "object",
-                    "patternProperties": {
-                      "*": {
-                        "type": "string"
-                      }
-                    },
-                    "nullable": true,
-                    "description": "Resource labels"
+                    "$ref": "#/components/schemas/labels",
+                    "description": "Resource labels",
+                    "nullable": true
                   }
                 }
               }
@@ -25018,12 +25008,7 @@
                     "description": "Assign public IP to the Instance"
                   },
                   "labels": {
-                    "type": "object",
-                    "patternProperties": {
-                      "*": {
-                        "type": "string"
-                      }
-                    },
+                    "$ref": "#/components/schemas/labels",
                     "description": "Resource labels"
                   },
                   "auto-start": {

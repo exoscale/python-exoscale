@@ -3215,6 +3215,7 @@
               "gpu3080ti",
               "gpua30",
               "gpua5000",
+              "gpurtx6000pro",
               "memory",
               "standard",
               "storage"

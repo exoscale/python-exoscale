@@ -6335,6 +6335,10 @@
       "instance": {
         "type": "object",
         "properties": {
+          "application-consistent-snapshot-enabled": {
+            "type": "boolean",
+            "description": "Indicates if the instance will take application-consistent snapshots"
+          },
           "anti-affinity-groups": {
             "type": "array",
             "items": {
@@ -24995,6 +24999,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "application-consistent-snapshot-enabled": {
+                    "type": "boolean",
+                    "description": "Enable application-consistent snapshot for the instance"
+                  },
                   "anti-affinity-groups": {
                     "type": "array",
                     "items": {

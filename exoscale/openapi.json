@@ -7096,6 +7096,9 @@
             "description": "Number of replicas (>=0)"
           }
         },
+        "required": [
+          "replicas"
+        ],
         "description": "Scale AI deployment"
       },
       "dbaas-integration-type": {
@@ -10484,7 +10487,8 @@
         },
         "required": [
           "gpu-type",
-          "gpu-count"
+          "gpu-count",
+          "replicas"
         ],
         "description": "Deployment an AI model onto a set of GPUs"
       },
@@ -21666,6 +21670,10 @@
                     "$ref": "#/components/schemas/labels",
                     "description": "Resource labels",
                     "nullable": true
+                  },
+                  "application-consistent-snapshot-enabled": {
+                    "type": "boolean",
+                    "description": "Enable/Disable Application Consistent Snapshot for Instance"
                   }
                 }
               }

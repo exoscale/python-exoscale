@@ -6875,6 +6875,8 @@
             "items": {
               "$ref": "#/components/schemas/sks-nodepool"
             },
+            "uniqueItems": true,
+            "maxItems": 16,
             "readOnly": true,
             "description": "Cluster Nodepools"
           },
@@ -6891,7 +6893,6 @@
             "items": {
               "type": "string"
             },
-            "uniqueItems": true,
             "description": "A list of Kubernetes-only Alpha features to enable for API server component"
           },
           "addons": {
@@ -7197,6 +7198,8 @@
             "items": {
               "$ref": "#/components/schemas/anti-affinity-group"
             },
+            "uniqueItems": true,
+            "maxItems": 8,
             "description": "Nodepool Anti-affinity Groups"
           },
           "description": {
@@ -7225,6 +7228,8 @@
             "items": {
               "$ref": "#/components/schemas/security-group"
             },
+            "uniqueItems": true,
+            "maxItems": 16,
             "description": "Nodepool Security Groups"
           },
           "name": {
@@ -7242,6 +7247,8 @@
             "items": {
               "$ref": "#/components/schemas/private-network"
             },
+            "uniqueItems": true,
+            "maxItems": 16,
             "description": "Nodepool Private Networks"
           },
           "template": {
@@ -14259,6 +14266,7 @@
                       "$ref": "#/components/schemas/anti-affinity-group"
                     },
                     "uniqueItems": true,
+                    "maxItems": 8,
                     "description": "Nodepool Anti-affinity Groups"
                   },
                   "description": {
@@ -14288,6 +14296,7 @@
                       "$ref": "#/components/schemas/security-group"
                     },
                     "uniqueItems": true,
+                    "maxItems": 16,
                     "description": "Nodepool Security Groups"
                   },
                   "name": {
@@ -14306,6 +14315,7 @@
                       "$ref": "#/components/schemas/private-network"
                     },
                     "uniqueItems": true,
+                    "maxItems": 16,
                     "description": "Nodepool Private Networks"
                   },
                   "instance-prefix": {
@@ -23115,6 +23125,7 @@
                       "$ref": "#/components/schemas/anti-affinity-group"
                     },
                     "uniqueItems": true,
+                    "maxItems": 8,
                     "description": "Nodepool Anti-affinity Groups"
                   },
                   "description": {
@@ -23144,6 +23155,7 @@
                       "$ref": "#/components/schemas/security-group"
                     },
                     "uniqueItems": true,
+                    "maxItems": 16,
                     "description": "Nodepool Security Groups"
                   },
                   "name": {
@@ -23162,6 +23174,7 @@
                       "$ref": "#/components/schemas/private-network"
                     },
                     "uniqueItems": true,
+                    "maxItems": 16,
                     "description": "Nodepool Private Networks"
                   },
                   "size": {

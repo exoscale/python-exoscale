@@ -83,7 +83,7 @@ def _status_code_docstring(api_spec, operation, status_code):
                 )
 
             doc = (
-                f"dict: {ref['description']}. A dictionnary with the following keys:"
+                f"dict: {ref['description']}. A dictionary with the following keys:"
                 + "\n\n          * ".join([""] + list(body.values()))
             )
         elif "description" in ref:
@@ -104,7 +104,7 @@ def _return_docstring(api_spec, operation):
         for status_code in operation["responses"].keys()
     ]
 
-    return "\n        ".join(status_codes_docs)
+    return "\n\n        ".join(status_codes_docs)
 
 
 class BaseClient:

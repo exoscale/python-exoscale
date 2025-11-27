@@ -1,6 +1,15 @@
 Changelog
 ---------
 
+0.16.0 (unreleased)
+-------------------
+
+**BREAKING CHANGES**
+
+* Partner API: Update to ISO 20022 structured billing addresses. Organization
+  creation now requires ``display-name`` and nested ``billing-address`` object
+  instead of flat address fields. See `PR <https://github.com/exoscale/python-exoscale/pull/76>`_ for migration guide.
+
 0.15.0 (2025-10-28)
 -------------------
 

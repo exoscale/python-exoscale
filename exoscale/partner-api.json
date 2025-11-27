@@ -1,6 +1,57 @@
 {
     "components": {
         "schemas": {
+            "billing-address": {
+                "description": "ISO 20022 Structured Billing Address",
+                "properties": {
+                    "address": {
+                        "description": "Free-text address fallback",
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "building-number": {
+                        "description": "Building number",
+                        "maxLength": 255,
+                        "type": "string"
+                    },
+                    "city": {
+                        "description": "City name",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "country": {
+                        "description": "Country code. Format: ISO 3166-1 alpha-2",
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "Name of the recipient. The organization's display name",
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "postal-code": {
+                        "description": "Postal code",
+                        "maxLength": 80,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "street-name": {
+                        "description": "Street name",
+                        "minLength": 1,
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "country",
+                    "city",
+                    "postal-code",
+                    "street-name"
+                ],
+                "type": "object"
+            },
             "input-webhook-aiven": {
                 "description": "A map representing the payload of Aiven webhooks.",
                 "properties": {
@@ -117,39 +168,20 @@
                 },
                 "type": "object"
             },
-            "organization": {
-                "description": "An Organization",
+            "organization-input": {
+                "description": "Organization creation request",
                 "properties": {
-                    "address": {
-                        "description": "Organization Address",
-                        "minLength": 1,
-                        "type": "string"
-                    },
-                    "city": {
-                        "description": "Organization City",
-                        "maxLength": 255,
-                        "minLength": 1,
-                        "type": "string"
+                    "billing-address": {
+                        "$ref": "#/components/schemas/billing-address",
+                        "description": "ISO 20022 Structured Billing Address"
                     },
                     "client-id": {
                         "description": "Organization Client ID",
                         "maxLength": 191,
                         "type": "string"
                     },
-                    "country": {
-                        "description": "Organization Country. Format: ISO 3166-1 alpha-2",
-                        "maxLength": 2,
-                        "minLength": 2,
-                        "type": "string"
-                    },
-                    "id": {
-                        "description": "Organization ID",
-                        "format": "uuid",
-                        "readOnly": true,
-                        "type": "string"
-                    },
-                    "name": {
-                        "description": "Organization Name",
+                    "display-name": {
+                        "description": "Organization Display Name",
                         "maxLength": 191,
                         "minLength": 1,
                         "type": "string"
@@ -160,11 +192,38 @@
                         "minLength": 1,
                         "type": "string",
                         "writeOnly": true
+                    }
+                },
+                "required": [
+                    "display-name",
+                    "billing-address",
+                    "owner-email"
+                ],
+                "type": "object"
+            },
+            "organization-output": {
+                "description": "Organization representation",
+                "properties": {
+                    "billing-address": {
+                        "$ref": "#/components/schemas/billing-address",
+                        "description": "ISO 20022 Structured Billing Address"
                     },
-                    "postcode": {
-                        "description": "Organization Post Code",
-                        "maxLength": 80,
-                        "minLength": 1,
+                    "client-id": {
+                        "description": "Organization Client ID",
+                        "maxLength": 191,
+                        "type": "string"
+                    },
+                    "country": {
+                        "description": "Organization Country. Format: ISO 3166-1 alpha-2",
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "readOnly": true,
+                        "type": "string"
+                    },
+                    "id": {
+                        "description": "Organization ID",
+                        "format": "uuid",
+                        "readOnly": true,
                         "type": "string"
                     },
                     "status": {
@@ -178,14 +237,6 @@
                         "type": "string"
                     }
                 },
-                "required": [
-                    "name",
-                    "address",
-                    "city",
-                    "postcode",
-                    "country",
-                    "owner-email"
-                ],
                 "type": "object"
             },
             "salesforce-response": {
@@ -226,18 +277,6 @@
             }
         }
     },
-    "info": {
-        "contact": {
-            "email": "api@exoscale.com",
-            "name": "API support",
-            "url": "https://community.exoscale.ch/support"
-        },
-        "description": "API for Partners, Distributors, and Marketplace vendors",
-        "termsOfService": "https://exoscale.com/terms",
-        "title": "Exoscale Partner API",
-        "version": "1.0.1-alpha1"
-    },
-    "openapi": "3.0.0",
     "paths": {
         "/distributor/organization": {
             "get": {
@@ -253,7 +292,7 @@
                                         "organizations": {
                                             "description": "The list of organizations.",
                                             "items": {
-                                                "$ref": "#/components/schemas/organization"
+                                                "$ref": "#/components/schemas/organization-output"
                                             },
                                             "type": "array"
                                         }
@@ -276,7 +315,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/organization"
+                                "$ref": "#/components/schemas/organization-input"
                             }
                         }
                     },
@@ -287,7 +326,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/organization"
+                                    "$ref": "#/components/schemas/organization-output"
                                 }
                             }
                         },
@@ -318,7 +357,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/organization"
+                                    "$ref": "#/components/schemas/organization-output"
                                 }
                             }
                         },
@@ -349,7 +388,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/organization"
+                                    "$ref": "#/components/schemas/organization-output"
                                 }
                             }
                         },
@@ -433,7 +472,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/organization"
+                                    "$ref": "#/components/schemas/organization-output"
                                 }
                             }
                         },

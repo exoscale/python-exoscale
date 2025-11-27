@@ -32,15 +32,17 @@ Managing Organizations
     
     # Create a new organization
     new_org = client.create_distributor_organization(
-        organization={
+        display_name="Customer Corp",
+        billing_address={
             "name": "Customer Corp",
-            "address": "123 Business Ave",
+            "street-name": "Business Avenue",
+            "building-number": "123",
             "city": "Zurich",
-            "postcode": "8001",
-            "country": "CH",
-            "owner-email": "admin@customer.com",
-            "client-id": "internal-1234"  # Optional
-        }
+            "postal-code": "8001",
+            "country": "CH"
+        },
+        owner_email="admin@customer.com",
+        client_id="internal-1234"  # Optional
     )
     
     # Activate/Suspend organizations

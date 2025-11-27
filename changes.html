@@ -47,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="v2.html">V2 API bindings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="partner.html">Partner API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#unreleased">0.16.0 (unreleased)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#id1">0.15.0 (2025-10-28)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#id2">0.14.0 (2025-08-28)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#id3">0.13.0 (2025-08-11)</a><ul>
@@ -130,6 +131,15 @@
              
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
+</section>
+<section id="unreleased">
+<h1>0.16.0 (unreleased)<a class="headerlink" href="#unreleased" title="Link to this heading"></a></h1>
+<p><strong>BREAKING CHANGES</strong></p>
+<ul class="simple">
+<li><p>Partner API: Update to ISO 20022 structured billing addresses. Organization
+creation now requires <code class="docutils literal notranslate"><span class="pre">display-name</span></code> and nested <code class="docutils literal notranslate"><span class="pre">billing-address</span></code> object
+instead of flat address fields. See <a class="reference external" href="https://github.com/exoscale/python-exoscale/pull/76">PR</a> for migration guide.</p></li>
+</ul>
 </section>
 <section id="id1">
 <h1>0.15.0 (2025-10-28)<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>

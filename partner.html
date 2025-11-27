@@ -71,6 +71,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#unreleased">0.16.0 (unreleased)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html#id1">0.15.0 (2025-10-28)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html#id2">0.14.0 (2025-08-28)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html#id3">0.13.0 (2025-08-11)</a></li>
@@ -127,15 +128,17 @@ sub-organizations in Exoscale.</p>
 
 <span class="c1"># Create a new organization</span>
 <span class="n">new_org</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_distributor_organization</span><span class="p">(</span>
-    <span class="n">organization</span><span class="o">=</span><span class="p">{</span>
+    <span class="n">display_name</span><span class="o">=</span><span class="s2">&quot;Customer Corp&quot;</span><span class="p">,</span>
+    <span class="n">billing_address</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Customer Corp&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;123 Business Ave&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;street-name&quot;</span><span class="p">:</span> <span class="s2">&quot;Business Avenue&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;building-number&quot;</span><span class="p">:</span> <span class="s2">&quot;123&quot;</span><span class="p">,</span>
         <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;Zurich&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;postcode&quot;</span><span class="p">:</span> <span class="s2">&quot;8001&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;country&quot;</span><span class="p">:</span> <span class="s2">&quot;CH&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;owner-email&quot;</span><span class="p">:</span> <span class="s2">&quot;admin@customer.com&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;client-id&quot;</span><span class="p">:</span> <span class="s2">&quot;internal-1234&quot;</span>  <span class="c1"># Optional</span>
-    <span class="p">}</span>
+        <span class="s2">&quot;postal-code&quot;</span><span class="p">:</span> <span class="s2">&quot;8001&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;country&quot;</span><span class="p">:</span> <span class="s2">&quot;CH&quot;</span>
+    <span class="p">},</span>
+    <span class="n">owner_email</span><span class="o">=</span><span class="s2">&quot;admin@customer.com&quot;</span><span class="p">,</span>
+    <span class="n">client_id</span><span class="o">=</span><span class="s2">&quot;internal-1234&quot;</span>  <span class="c1"># Optional</span>
 <span class="p">)</span>
 
 <span class="c1"># Activate/Suspend organizations</span>
@@ -202,17 +205,13 @@ V2 API client.</p>
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: An Organization. A dictionnary with the following keys:</p>
+<dd class="field-even"><p><p>dict: Organization representation. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>address</strong> (str): Organization Address.</p></li>
-<li><p><strong>city</strong> (str): Organization City.</p></li>
+<li><p><strong>billing_address</strong> (dict): ISO 20022 Structured Billing Address.</p></li>
 <li><p><strong>client_id</strong> (str): Organization Client ID.</p></li>
 <li><p><strong>country</strong> (str): Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
 <li><p><strong>id</strong> (str): Organization ID.</p></li>
-<li><p><strong>name</strong> (str): Organization Name.</p></li>
-<li><p><strong>owner_email</strong> (str): Email Address of the first Owner.</p></li>
-<li><p><strong>postcode</strong> (str): Organization Post Code.</p></li>
 <li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
 </ul>
 </div></blockquote>
@@ -230,29 +229,20 @@ V2 API client.</p>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>address</strong> (<em>str</em>) – Organization Address.</p></li>
-<li><p><strong>city</strong> (<em>str</em>) – Organization City.</p></li>
+<li><p><strong>billing_address</strong> (<em>dict</em>) – ISO 20022 Structured Billing Address.</p></li>
 <li><p><strong>client_id</strong> (<em>str</em>) – Organization Client ID.</p></li>
-<li><p><strong>country</strong> (<em>str</em>) – Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
-<li><p><strong>id</strong> (<em>str</em>) – Organization ID.</p></li>
-<li><p><strong>name</strong> (<em>str</em>) – Organization Name.</p></li>
+<li><p><strong>display_name</strong> (<em>str</em>) – Organization Display Name.</p></li>
 <li><p><strong>owner_email</strong> (<em>str</em>) – Email Address of the first Owner.</p></li>
-<li><p><strong>postcode</strong> (<em>str</em>) – Organization Post Code.</p></li>
-<li><p><strong>status</strong> (<em>str</em>) – Organization Status. Must be one of <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: An Organization. A dictionnary with the following keys:</p>
+<dd class="field-even"><p><p>dict: Organization representation. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>address</strong> (str): Organization Address.</p></li>
-<li><p><strong>city</strong> (str): Organization City.</p></li>
+<li><p><strong>billing_address</strong> (dict): ISO 20022 Structured Billing Address.</p></li>
 <li><p><strong>client_id</strong> (str): Organization Client ID.</p></li>
 <li><p><strong>country</strong> (str): Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
 <li><p><strong>id</strong> (str): Organization ID.</p></li>
-<li><p><strong>name</strong> (str): Organization Name.</p></li>
-<li><p><strong>owner_email</strong> (str): Email Address of the first Owner.</p></li>
-<li><p><strong>postcode</strong> (str): Organization Post Code.</p></li>
 <li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
 </ul>
 </div></blockquote>
@@ -272,17 +262,13 @@ V2 API client.</p>
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: An Organization. A dictionnary with the following keys:</p>
+<dd class="field-even"><p><p>dict: Organization representation. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>address</strong> (str): Organization Address.</p></li>
-<li><p><strong>city</strong> (str): Organization City.</p></li>
+<li><p><strong>billing_address</strong> (dict): ISO 20022 Structured Billing Address.</p></li>
 <li><p><strong>client_id</strong> (str): Organization Client ID.</p></li>
 <li><p><strong>country</strong> (str): Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
 <li><p><strong>id</strong> (str): Organization ID.</p></li>
-<li><p><strong>name</strong> (str): Organization Name.</p></li>
-<li><p><strong>owner_email</strong> (str): Email Address of the first Owner.</p></li>
-<li><p><strong>postcode</strong> (str): Organization Post Code.</p></li>
 <li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
 </ul>
 </div></blockquote>
@@ -355,8 +341,9 @@ V2 API client.</p>
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict
-202: dict</p>
+<dd class="field-even"><p><p>dict</p>
+<p>202: dict</p>
+</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>200</p>
@@ -372,17 +359,13 @@ V2 API client.</p>
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: An Organization. A dictionnary with the following keys:</p>
+<dd class="field-even"><p><p>dict: Organization representation. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>address</strong> (str): Organization Address.</p></li>
-<li><p><strong>city</strong> (str): Organization City.</p></li>
+<li><p><strong>billing_address</strong> (dict): ISO 20022 Structured Billing Address.</p></li>
 <li><p><strong>client_id</strong> (str): Organization Client ID.</p></li>
 <li><p><strong>country</strong> (str): Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
 <li><p><strong>id</strong> (str): Organization ID.</p></li>
-<li><p><strong>name</strong> (str): Organization Name.</p></li>
-<li><p><strong>owner_email</strong> (str): Email Address of the first Owner.</p></li>
-<li><p><strong>postcode</strong> (str): Organization Post Code.</p></li>
 <li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
 </ul>
 </div></blockquote>

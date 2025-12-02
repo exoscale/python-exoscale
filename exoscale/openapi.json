@@ -7388,6 +7388,10 @@
       "template": {
         "type": "object",
         "properties": {
+          "application-consistent-snapshot-enabled": {
+            "type": "boolean",
+            "description": "Template with Qemu Guest Agent installed for application consistent snapshot"
+          },
           "maintainer": {
             "type": "string",
             "readOnly": true,

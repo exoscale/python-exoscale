@@ -6177,6 +6177,24 @@
           "plan": {
             "type": "string",
             "description": "Subscription plan"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "List of service users"
           }
         },
         "required": [
@@ -20954,6 +20972,46 @@
         ],
         "summary": "",
         "operationId": "list-dbaas-integration-settings"
+      }
+    },
+    "/dbaas-thanos/{service-name}/user/{username}/password/reveal": {
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-user-thanos-secrets"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "username",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-user-username"
+            }
+          }
+        ],
+        "summary": "Reveal the secrets of a DBaaS Thanos user",
+        "operationId": "reveal-dbaas-thanos-user-password"
       }
     },
     "/dbaas-settings-pg": {

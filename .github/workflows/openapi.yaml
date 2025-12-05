@@ -18,7 +18,7 @@ jobs:
       - name: Fetch latest OpenAPI definition
         shell: bash
         run: |-
-          curl https://openapi-v2.exoscale.com/source.json | ./.sort-enums.py | jq > exoscale/openapi.json
+          curl https://api-ch-gva-2.exoscale.com/v2/openapi.json | ./.sort-enums.py | jq > exoscale/openapi.json
 
           curl https://partner-api.exoscale.com/v1.alpha/openapi.json | ./.sort-enums.py | jq > exoscale/partner-api.json
       - name: Commit and push if changed

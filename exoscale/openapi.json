@@ -9,7 +9,7 @@
       "url": "https://portal.exoscale.com/tickets"
     },
     "title": "Exoscale Public API",
-    "description": "\nInfrastructure automation API, allowing programmatic access to all Exoscale products and services.\n\nThe [OpenAPI Specification](http://spec.openapis.org/oas/v3.0.3.html) source of this documentation can be obtained here:\n\n* [JSON format](https://openapi-v2.exoscale.com/source.json)\n* [YAML format](https://openapi-v2.exoscale.com/source.yaml)"
+    "description": "\nInfrastructure automation API, allowing programmatic access to all Exoscale products and services.\n\nThe [OpenAPI Specification](http://spec.openapis.org/oas/v3.0.3.html) source of this documentation can be obtained here:\n\n* [JSON format](https://api-ch-gva-2.exoscale.com/v2/openapi.json)"
   },
   "tags": [
     {
@@ -10556,6 +10556,20 @@
           "bearer-token"
         ],
         "description": "Kubernetes Audit parameters"
+      },
+      "dbaas-user-thanos-secrets": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Thanos username"
+          },
+          "password": {
+            "type": "string",
+            "description": "Thanos password"
+          }
+        },
+        "description": "Thanos User secrets"
       },
       "enum-rsyslog-format": {
         "type": "string",

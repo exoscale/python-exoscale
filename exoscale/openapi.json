@@ -7295,7 +7295,7 @@
             "type": "integer",
             "format": "int64",
             "minimum": 0,
-            "exclusiveMinimum": true,
+            "exclusiveMinimum": false,
             "description": "Number of instances"
           },
           "kubelet-image-gc": {
@@ -13098,6 +13098,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "application-consistent-snapshot-enabled": {
+                    "type": "boolean",
+                    "description": "Enable application consistent snapshots"
+                  },
                   "anti-affinity-groups": {
                     "type": "array",
                     "items": {
@@ -14810,6 +14814,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "application-consistent-snapshot-enabled": {
+                    "type": "boolean",
+                    "description": "Enable application consistent snapshots"
+                  },
                   "anti-affinity-groups": {
                     "type": "array",
                     "items": {
@@ -16889,7 +16897,7 @@
                     "type": "integer",
                     "format": "int64",
                     "minimum": 0,
-                    "exclusiveMinimum": true,
+                    "exclusiveMinimum": false,
                     "description": "Number of instances"
                   }
                 },

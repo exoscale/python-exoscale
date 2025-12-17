@@ -6958,6 +6958,10 @@
       "instance-pool": {
         "type": "object",
         "properties": {
+          "application-consistent-snapshot-enabled": {
+            "type": "boolean",
+            "description": "Enable application consistent snapshots"
+          },
           "anti-affinity-groups": {
             "type": "array",
             "items": {
@@ -12434,6 +12438,38 @@
           }
         },
         "operationId": "attach-instance-to-private-network"
+      }
+    },
+    "/dbaas-thanos/{name}/maintenance/start": {
+      "put": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          }
+        ],
+        "summary": "Initiate Thanos maintenance update",
+        "operationId": "start-dbaas-thanos-maintenance"
       }
     },
     "/dbaas-external-endpoint-elasticsearch/{endpoint-id}": {
@@ -22030,6 +22066,161 @@
         ],
         "summary": "Delete a DBaaS PostgreSQL connection pool",
         "operationId": "delete-dbaas-pg-connection-pool"
+      }
+    },
+    "/dbaas-thanos/{name}": {
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-service-thanos"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get a DBaaS Thanos service",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          }
+        ],
+        "summary": "",
+        "operationId": "get-dbaas-service-thanos"
+      },
+      "put": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "Update a DBaaS Thanos service",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          }
+        ],
+        "summary": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "maintenance": {
+                    "type": "object",
+                    "properties": {
+                      "dow": {
+                        "type": "string",
+                        "enum": [
+                          "friday",
+                          "monday",
+                          "never",
+                          "saturday",
+                          "sunday",
+                          "thursday",
+                          "tuesday",
+                          "wednesday"
+                        ],
+                        "description": "Day of week for installing updates"
+                      },
+                      "time": {
+                        "type": "string",
+                        "maxLength": 8,
+                        "minLength": 8,
+                        "description": "Time for installing updates, UTC"
+                      }
+                    },
+                    "required": [
+                      "dow",
+                      "time"
+                    ],
+                    "description": "Automatic maintenance settings"
+                  },
+                  "plan": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "description": "Subscription plan"
+                  },
+                  "termination-protection": {
+                    "type": "boolean",
+                    "description": "Service is protected against termination and powering off"
+                  },
+                  "ip-filter": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Allowed CIDR address blocks for incoming connections"
+                  },
+                  "thanos-settings": {
+                    "$ref": "#/components/schemas/json-schema-thanos",
+                    "description": "Thanos specific settings"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "update-dbaas-service-thanos"
+      },
+      "delete": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Delete a Thanos service",
+        "operationId": "delete-dbaas-service-thanos"
       }
     },
     "/iam-role/{id}:policy": {

@@ -576,6 +576,18 @@
           }
         }
       },
+      "get-inference-engine-help-response": {
+        "type": "object",
+        "properties": {
+          "parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inference-engine-parameter-entry"
+            }
+          }
+        },
+        "description": "List of allowed inference-engine parameters"
+      },
       "dbaas-user-valkey-secrets": {
         "type": "object",
         "properties": {
@@ -5874,6 +5886,13 @@
             "readOnly": true,
             "description": "Creation time"
           },
+          "inference-engine-parameters": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Optional extra inference engine server CLI args"
+          },
           "model": {
             "$ref": "#/components/schemas/model-ref"
           }
@@ -6593,6 +6612,46 @@
         "type": "string",
         "maxLength": 64,
         "minLength": 1
+      },
+      "inference-engine-parameter-entry": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Parameter name"
+          },
+          "flags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Flag name"
+          },
+          "type": {
+            "type": "string",
+            "description": "Parameter type"
+          },
+          "default": {
+            "type": "string",
+            "description": "Default value if nothing is specified"
+          },
+          "section": {
+            "type": "string",
+            "description": "Section"
+          },
+          "allowed-values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Allowed values"
+          },
+          "description": {
+            "type": "string",
+            "description": "Parameter description"
+          }
+        },
+        "description": "inference-engine parameter definition"
       },
       "dbaas-user-mysql-secrets": {
         "type": "object",
@@ -10509,6 +10568,13 @@
             "minimum": 0,
             "exclusiveMinimum": true,
             "description": "Number of replicas (>=1)"
+          },
+          "inference-engine-parameters": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Optional extra inference engine server CLI args"
           }
         },
         "required": [
@@ -11641,6 +11707,39 @@
           }
         },
         "operationId": "reset-dbaas-mysql-user-password"
+      }
+    },
+    "/ai/help/inference-engine-parameters": {
+      "get": {
+        "tags": [
+          "dedicated-inference"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/get-inference-engine-help-response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get list of allowed inference engine parameters with their descriptions, types, allowed values, and defaults",
+        "parameters": [],
+        "summary": "[BETA] Get inference-engine Help",
+        "operationId": "get-inference-engine-help"
       }
     },
     "/load-balancer": {

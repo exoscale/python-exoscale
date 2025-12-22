@@ -13,7 +13,6 @@
 # import os
 import sys
 from datetime import datetime
-from sphinx_markdown_parser.parser import MarkdownParser  # noqa
 
 sys.path.insert(0, "exoscale")
 
@@ -32,7 +31,7 @@ release = version
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "recommonmark"]
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "myst_parser"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -43,6 +42,12 @@ templates_path = ["_templates"]
 exclude_patterns = []
 
 source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
+
+# MyST-Parser configuration
+myst_enable_extensions = [
+    "colon_fence",      # ::: directive syntax
+    "deflist",          # Definition lists
+]
 
 napoleon_google_docstring = True
 napoleon_include_init_with_doc = False

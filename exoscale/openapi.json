@@ -8078,6 +8078,12 @@
         },
         "description": "Zone"
       },
+      "dbaas-mysql-user-password": {
+        "type": "string",
+        "maxLength": 256,
+        "minLength": 8,
+        "pattern": "^[a-zA-Z0-9!#%^*_+={}()<>|.,;~?-]+$"
+      },
       "dbaas-opensearch-acl-config": {
         "type": "object",
         "properties": {
@@ -11893,7 +11899,7 @@
                 "type": "object",
                 "properties": {
                   "password": {
-                    "$ref": "#/components/schemas/dbaas-user-password",
+                    "$ref": "#/components/schemas/dbaas-mysql-user-password",
                     "description": "New password"
                   },
                   "authentication": {
@@ -12561,10 +12567,7 @@
                     "description": "Subscription plan"
                   },
                   "admin-password": {
-                    "type": "string",
-                    "maxLength": 256,
-                    "minLength": 8,
-                    "pattern": "^[a-zA-Z0-9-_]+$",
+                    "$ref": "#/components/schemas/dbaas-mysql-user-password",
                     "description": "Custom password for admin user. Defaults to random string. This must be set only when a new service is being created."
                   },
                   "migration": {

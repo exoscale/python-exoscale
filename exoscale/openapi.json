@@ -11336,7 +11336,7 @@
                     "type": "integer",
                     "format": "int64",
                     "minimum": 0,
-                    "exclusiveMinimum": true,
+                    "exclusiveMinimum": false,
                     "description": "Number of managed Instances"
                   }
                 },

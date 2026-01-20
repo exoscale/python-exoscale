@@ -51,8 +51,7 @@ line-length = 79
 dev-dependencies = [
     "requests-mock>=1.12.1",
     "pytest>=5.0.0",
-    "recommonmark>=0.5.0",
-    "sphinx-markdown-parser>=0.1.1",
+    "myst-parser>=2.0.0",
     "sphinx-rtd-theme>=0.4.3",
     "sphinx>=2.1.2",
 ]

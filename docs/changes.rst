@@ -41,7 +41,7 @@ Fixes
 * Remove DBaaS service Redis (replaced by Valkey)
 
 0.12.0 (2025-06-04)
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 * Internals: abstract client generation logic into a separate
   ``exoscale.api.generator`` namespace.
@@ -55,7 +55,7 @@ Fixes
     * New zone option: ``hr-zag-1``
 
 0.11.0 (2025-04-24)
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 * Bump python version requirement to 3.8 due to the use of the walrus
   operator.
@@ -63,13 +63,13 @@ Fixes
   API operation.
 
 0.10.0 (2024-05-29)
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 * Introduce exception classes that gets raised when the API responds with 4xx
   or 5xx HTTP statuses.
 
 0.9.1 (2024-04-29)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 ``exoscale.api.v2.Client`` improvements:
 
@@ -93,13 +93,13 @@ Fixes
   * Add MAC address to private network attachments
 
 0.8.0 (2023-05-11)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 - Add ``exoscale.api.v2.Client``: a low-level API client targeting the Exoscale
   V2 API.
 
 0.7.1 (2021-10-18)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 Fixes
 *****
@@ -108,7 +108,7 @@ Fixes
 
 
 0.7.0 (2021-05-11)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 Features
 ********
@@ -130,7 +130,7 @@ Changes
 
 
 0.6.0 (2021-04-21)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 Features
 ********
@@ -148,7 +148,7 @@ Fixes
 
 
 0.5.2 (2021-04-13)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 Fixes
 *****
@@ -157,7 +157,7 @@ Fixes
 
 
 0.5.1 (2021-03-16)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 Fixes
 *****
@@ -166,7 +166,7 @@ Fixes
 
 
 0.5.0 (2021-03-15)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 Features
 ********
@@ -181,7 +181,7 @@ Fixes
 
 
 0.4.0 (2020-12-07)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 Features
 ********
@@ -197,7 +197,7 @@ Changes
 
 
 0.3.0 (2020-01-22)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 New
 ***
@@ -220,7 +220,7 @@ Fixes
 
 
 0.2.0 (2019-10-09)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 Features
 ********
@@ -248,6 +248,6 @@ Changes
 
 
 0.1.1 (2019-09-12)
-~~~~~~~~~~~~~~~~~~
+------------------
 
 - Initial release

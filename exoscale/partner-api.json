@@ -213,13 +213,6 @@
                         "maxLength": 191,
                         "type": "string"
                     },
-                    "country": {
-                        "description": "Organization Country. Format: ISO 3166-1 alpha-2",
-                        "maxLength": 2,
-                        "minLength": 2,
-                        "readOnly": true,
-                        "type": "string"
-                    },
                     "id": {
                         "description": "Organization ID",
                         "format": "uuid",

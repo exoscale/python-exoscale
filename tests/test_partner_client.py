@@ -90,7 +90,6 @@ def test_create_organization_with_structured_address(requests_mock):
 
     expected_response = {
         "id": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
-        "name": "test-org-001",
         "status": "active",
         "billing-address": {
             "name": "ACME Corporation",
@@ -100,7 +99,6 @@ def test_create_organization_with_structured_address(requests_mock):
             "postal-code": "1217",
             "country": "CH",
         },
-        "country": "CH",
     }
 
     requests_mock.post(
@@ -132,7 +130,6 @@ def test_create_organization_with_optional_fields(requests_mock):
 
     expected_response = {
         "id": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
-        "name": "test-org-002",
         "status": "active",
         "billing-address": {
             "name": "Test GmbH",
@@ -144,7 +141,6 @@ def test_create_organization_with_optional_fields(requests_mock):
             "address": "Additional address information",
         },
         "client-id": "custom-client-123",
-        "country": "DE",
     }
 
     requests_mock.post(
@@ -181,7 +177,6 @@ def test_create_organization_minimal_billing_address(requests_mock):
 
     expected_response = {
         "id": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
-        "name": "test-org-003",
         "status": "active",
         "billing-address": {
             "name": "Société Française",
@@ -190,7 +185,6 @@ def test_create_organization_minimal_billing_address(requests_mock):
             "postal-code": "75001",
             "country": "FR",
         },
-        "country": "FR",
     }
 
     requests_mock.post(
@@ -224,7 +218,6 @@ def test_list_organizations(requests_mock):
         "organizations": [
             {
                 "id": "org-1",
-                "name": "org-001",
                 "status": "active",
                 "billing-address": {
                     "name": "Org 1",
@@ -233,11 +226,9 @@ def test_list_organizations(requests_mock):
                     "postal-code": "1000",
                     "country": "CH",
                 },
-                "country": "CH",
             },
             {
                 "id": "org-2",
-                "name": "org-002",
                 "status": "suspended",
                 "billing-address": {
                     "name": "Org 2",
@@ -246,7 +237,6 @@ def test_list_organizations(requests_mock):
                     "postal-code": "2000",
                     "country": "DE",
                 },
-                "country": "DE",
             },
         ]
     }

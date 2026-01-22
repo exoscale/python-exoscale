@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>V2 API bindings &mdash; python-exoscale 0.10.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/theme_overrides.css?v=a7b7b6ed" />
 
   
@@ -16,8 +16,8 @@
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=82662543"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Partner API" href="partner.html" />
@@ -82,6 +82,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_service_mysql"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_service_mysql()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_service_opensearch"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_service_opensearch()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_service_pg"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_service_pg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_service_thanos"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_service_thanos()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_service_valkey"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_service_valkey()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_task_migration_check"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_task_migration_check()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_dbaas_valkey_user"><code class="docutils literal notranslate"><span class="pre">Client.create_dbaas_valkey_user()</span></code></a></li>
@@ -125,6 +126,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_service_mysql"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_service_mysql()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_service_opensearch"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_service_opensearch()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_service_pg"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_service_pg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_service_thanos"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_service_thanos()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_service_valkey"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_service_valkey()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_dbaas_valkey_user"><code class="docutils literal notranslate"><span class="pre">Client.delete_dbaas_valkey_user()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_deployment"><code class="docutils literal notranslate"><span class="pre">Client.delete_deployment()</span></code></a></li>
@@ -184,6 +186,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_service_mysql"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_service_mysql()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_service_opensearch"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_service_opensearch()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_service_pg"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_service_pg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_service_thanos"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_service_thanos()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_service_type"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_service_type()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_service_valkey"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_service_valkey()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_settings_grafana"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_settings_grafana()</span></code></a></li>
@@ -191,6 +194,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_settings_mysql"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_settings_mysql()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_settings_opensearch"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_settings_opensearch()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_settings_pg"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_settings_pg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_settings_thanos"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_settings_thanos()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_settings_valkey"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_settings_valkey()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_dbaas_task"><code class="docutils literal notranslate"><span class="pre">Client.get_dbaas_task()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_deploy_target"><code class="docutils literal notranslate"><span class="pre">Client.get_deploy_target()</span></code></a></li>
@@ -203,6 +207,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_env_impact"><code class="docutils literal notranslate"><span class="pre">Client.get_env_impact()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_iam_organization_policy"><code class="docutils literal notranslate"><span class="pre">Client.get_iam_organization_policy()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_iam_role"><code class="docutils literal notranslate"><span class="pre">Client.get_iam_role()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_inference_engine_help"><code class="docutils literal notranslate"><span class="pre">Client.get_inference_engine_help()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_instance"><code class="docutils literal notranslate"><span class="pre">Client.get_instance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_instance_pool"><code class="docutils literal notranslate"><span class="pre">Client.get_instance_pool()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_instance_type"><code class="docutils literal notranslate"><span class="pre">Client.get_instance_type()</span></code></a></li>
@@ -289,6 +294,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_dbaas_mysql_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_dbaas_mysql_user_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_dbaas_opensearch_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_dbaas_opensearch_user_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_dbaas_postgres_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_dbaas_postgres_user_password()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_dbaas_thanos_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_dbaas_thanos_user_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_dbaas_valkey_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_dbaas_valkey_user_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_deployment_api_key"><code class="docutils literal notranslate"><span class="pre">Client.reveal_deployment_api_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_instance_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_instance_password()</span></code></a></li>
@@ -306,6 +312,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.start_dbaas_mysql_maintenance"><code class="docutils literal notranslate"><span class="pre">Client.start_dbaas_mysql_maintenance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.start_dbaas_opensearch_maintenance"><code class="docutils literal notranslate"><span class="pre">Client.start_dbaas_opensearch_maintenance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.start_dbaas_pg_maintenance"><code class="docutils literal notranslate"><span class="pre">Client.start_dbaas_pg_maintenance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.start_dbaas_thanos_maintenance"><code class="docutils literal notranslate"><span class="pre">Client.start_dbaas_thanos_maintenance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.start_dbaas_valkey_maintenance"><code class="docutils literal notranslate"><span class="pre">Client.start_dbaas_valkey_maintenance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.start_instance"><code class="docutils literal notranslate"><span class="pre">Client.start_instance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.stop_dbaas_mysql_migration"><code class="docutils literal notranslate"><span class="pre">Client.stop_dbaas_mysql_migration()</span></code></a></li>
@@ -329,6 +336,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_service_mysql"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_service_mysql()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_service_opensearch"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_service_opensearch()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_service_pg"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_service_pg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_service_thanos"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_service_thanos()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_service_valkey"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_service_valkey()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dns_domain_record"><code class="docutils literal notranslate"><span class="pre">Client.update_dns_domain_record()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_elastic_ip"><code class="docutils literal notranslate"><span class="pre">Client.update_elastic_ip()</span></code></a></li>
@@ -356,10 +364,26 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="partner.html">Partner API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#unreleased">0.16.1 (unreleased)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html#id1">0.16.0 (2025-11-27)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html#id2">0.15.0 (2025-10-28)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html#id3">0.14.0 (2025-08-28)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html#id4">0.13.0 (2025-08-11)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id5">0.12.0 (2025-06-04)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id6">0.11.0 (2025-04-24)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id7">0.10.0 (2024-05-29)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id8">0.9.1 (2024-04-29)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id9">0.8.0 (2023-05-11)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id10">0.7.1 (2021-10-18)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id12">0.7.0 (2021-05-11)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id13">0.6.0 (2021-04-21)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id16">0.5.2 (2021-04-13)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id18">0.5.1 (2021-03-16)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id20">0.5.0 (2021-03-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id23">0.4.0 (2020-12-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id26">0.3.0 (2020-01-22)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id29">0.2.0 (2019-10-09)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id33">0.1.1 (2019-09-12)</a></li>
 </ul>
 
         </div>
@@ -434,7 +458,7 @@ definition shipped with the package.</p>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exoscale.api.v2.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exoscale.api.v2.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client" title="Link to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.add_external_source_to_security_group">
 <span class="sig-name descname"><span class="pre">add_external_source_to_security_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.add_external_source_to_security_group" title="Link to this definition"></a></dt>
@@ -1560,6 +1584,40 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.create_dbaas_service_thanos">
+<span class="sig-name descname"><span class="pre">create_dbaas_service_thanos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.create_dbaas_service_thanos" title="Link to this definition"></a></dt>
+<dd><p>Create a DBaaS Thanos service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>maintenance</strong> (<em>dict</em>) – Automatic maintenance settings.</p></li>
+<li><p><strong>plan</strong> (<em>str</em>) – Subscription plan.</p></li>
+<li><p><strong>termination_protection</strong> (<em>bool</em>) – Service is protected against termination and powering off.</p></li>
+<li><p><strong>ip_filter</strong> (<em>list</em>) – Allowed CIDR address blocks for incoming connections.</p></li>
+<li><p><strong>thanos_settings</strong> (<em>dict</em>) – Thanos specific settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: Operation. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.create_dbaas_service_valkey">
 <span class="sig-name descname"><span class="pre">create_dbaas_service_valkey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.create_dbaas_service_valkey" title="Link to this definition"></a></dt>
 <dd><p>Create a DBaaS Valkey service</p>
@@ -1669,6 +1727,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>gpu_type</strong> (<em>str</em>) – GPU type family (e.g., gpua5000, gpu3080ti).</p></li>
 <li><p><strong>gpu_count</strong> (<em>int</em>) – Number of GPUs (1-8).</p></li>
 <li><p><strong>replicas</strong> (<em>int</em>) – Number of replicas (&gt;=1).</p></li>
+<li><p><strong>inference_engine_parameters</strong> (<em>list</em>) – Optional extra inference engine server CLI args.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1875,6 +1934,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>application_consistent_snapshot_enabled</strong> (<em>bool</em>) – Enable application consistent snapshots.</p></li>
 <li><p><strong>anti_affinity_groups</strong> (<em>list</em>) – Instance Pool Anti-affinity Groups.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Instance Pool description.</p></li>
 <li><p><strong>public_ip_assignment</strong> (<em>str</em>) – Determines public IP assignment of the Instances. Type <cite>none</cite> is final and can’t be changed later on.. Must be one of <code class="docutils literal notranslate"><span class="pre">'dual'</span></code>, <code class="docutils literal notranslate"><span class="pre">'inet4'</span></code>, <code class="docutils literal notranslate"><span class="pre">'none'</span></code>.</p></li>
@@ -2862,6 +2922,33 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.delete_dbaas_service_pg">
 <span class="sig-name descname"><span class="pre">delete_dbaas_service_pg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.delete_dbaas_service_pg" title="Link to this definition"></a></dt>
 <dd><p>Delete a Postgres service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: Operation. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.delete_dbaas_service_thanos">
+<span class="sig-name descname"><span class="pre">delete_dbaas_service_thanos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.delete_dbaas_service_thanos" title="Link to this definition"></a></dt>
+<dd><p>Delete a Thanos service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
@@ -4320,6 +4407,22 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.get_dbaas_service_thanos">
+<span class="sig-name descname"><span class="pre">get_dbaas_service_thanos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_dbaas_service_thanos" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.get_dbaas_service_type">
 <span class="sig-name descname"><span class="pre">get_dbaas_service_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_dbaas_service_type" title="Link to this definition"></a></dt>
 <dd><p>Get a DBaaS service type</p>
@@ -4438,6 +4541,21 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.get_dbaas_settings_thanos">
+<span class="sig-name descname"><span class="pre">get_dbaas_settings_thanos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_dbaas_settings_thanos" title="Link to this definition"></a></dt>
+<dd><p>Get DBaaS Thanos settings</p>
+<p>Args:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.get_dbaas_settings_valkey">
 <span class="sig-name descname"><span class="pre">get_dbaas_settings_valkey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_dbaas_settings_valkey" title="Link to this definition"></a></dt>
 <dd><p>Get DBaaS Valkey settings</p>
@@ -4515,11 +4633,13 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>deployment_url</strong> (str): Deployment URL (nullable).</p></li>
 <li><p><strong>service_level</strong> (str): Service level.</p></li>
 <li><p><strong>name</strong> (str): Deployment name.</p></li>
+<li><p><strong>status_details</strong> (str): Deployment status details.</p></li>
 <li><p><strong>gpu_type</strong> (str): GPU type family.</p></li>
 <li><p><strong>status</strong> (str): Deployment status. Values are <code class="docutils literal notranslate"><span class="pre">'creating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'deploying'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ready'</span></code>.</p></li>
 <li><p><strong>id</strong> (str): Deployment ID.</p></li>
 <li><p><strong>replicas</strong> (int): Number of replicas (&gt;=0).</p></li>
 <li><p><strong>created_at</strong> (str): Creation time.</p></li>
+<li><p><strong>inference_engine_parameters</strong> (list): Optional extra inference engine server CLI args.</p></li>
 <li><p><strong>model</strong> (dict).</p></li>
 </ul>
 </div></blockquote>
@@ -4546,7 +4666,12 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>str</p>
+<dd class="field-even"><p><p>dict: Deployment logs. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>logs</strong> (list): List of log entries.</p></li>
+</ul>
+</div></blockquote>
 <p>400: dict: Error. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
@@ -4747,6 +4872,33 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.get_inference_engine_help">
+<span class="sig-name descname"><span class="pre">get_inference_engine_help</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_inference_engine_help" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Get inference-engine Help</p>
+<p>Args:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>dict: List of allowed inference-engine parameters. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>parameters</strong> (list).</p></li>
+</ul>
+</div></blockquote>
+<p>500: dict: Error. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>error</strong> (str): Error description.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.get_instance">
 <span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_instance" title="Link to this definition"></a></dt>
 <dd><p>Retrieve Compute instance details</p>
@@ -4805,6 +4957,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-even"><p><p>dict: Instance Pool. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
+<li><p><strong>application_consistent_snapshot_enabled</strong> (bool): Enable application consistent snapshots.</p></li>
 <li><p><strong>anti_affinity_groups</strong> (list): Instance Pool Anti-affinity Groups.</p></li>
 <li><p><strong>description</strong> (str): Instance Pool description.</p></li>
 <li><p><strong>public_ip_assignment</strong> (str): Instance Pool public IP assignment. Values are <code class="docutils literal notranslate"><span class="pre">'dual'</span></code>, <code class="docutils literal notranslate"><span class="pre">'inet4'</span></code>, <code class="docutils literal notranslate"><span class="pre">'none'</span></code>.</p></li>
@@ -5352,6 +5505,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-even"><p><p>dict: Instance template. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
+<li><p><strong>application_consistent_snapshot_enabled</strong> (bool): Template with Qemu Guest Agent installed for application consistent snapshot.</p></li>
 <li><p><strong>maintainer</strong> (str): Template maintainer.</p></li>
 <li><p><strong>description</strong> (str): Template description.</p></li>
 <li><p><strong>ssh_key_enabled</strong> (bool): Enable SSH key-based login.</p></li>
@@ -6829,6 +6983,33 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.reveal_dbaas_thanos_user_password">
+<span class="sig-name descname"><span class="pre">reveal_dbaas_thanos_user_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reveal_dbaas_thanos_user_password" title="Link to this definition"></a></dt>
+<dd><p>Reveal the secrets of a DBaaS Thanos user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: Thanos User secrets. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>username</strong> (str): Thanos username.</p></li>
+<li><p><strong>password</strong> (str): Thanos password.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.reveal_dbaas_valkey_user_password">
 <span class="sig-name descname"><span class="pre">reveal_dbaas_valkey_user_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reveal_dbaas_valkey_user_password" title="Link to this definition"></a></dt>
 <dd><p>Reveal the secrets of a DBaaS Valkey user</p>
@@ -7272,6 +7453,33 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.start_dbaas_pg_maintenance">
 <span class="sig-name descname"><span class="pre">start_dbaas_pg_maintenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.start_dbaas_pg_maintenance" title="Link to this definition"></a></dt>
 <dd><p>Initiate PostgreSQL maintenance update</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: Operation. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.start_dbaas_thanos_maintenance">
+<span class="sig-name descname"><span class="pre">start_dbaas_thanos_maintenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.start_dbaas_thanos_maintenance" title="Link to this definition"></a></dt>
+<dd><p>Initiate Thanos maintenance update</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
@@ -8010,6 +8218,39 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.update_dbaas_service_thanos">
+<span class="sig-name descname"><span class="pre">update_dbaas_service_thanos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.update_dbaas_service_thanos" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>maintenance</strong> (<em>dict</em>) – Automatic maintenance settings.</p></li>
+<li><p><strong>plan</strong> (<em>str</em>) – Subscription plan.</p></li>
+<li><p><strong>termination_protection</strong> (<em>bool</em>) – Service is protected against termination and powering off.</p></li>
+<li><p><strong>ip_filter</strong> (<em>list</em>) – Allowed CIDR address blocks for incoming connections.</p></li>
+<li><p><strong>thanos_settings</strong> (<em>dict</em>) – Thanos specific settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: Operation. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.update_dbaas_service_valkey">
 <span class="sig-name descname"><span class="pre">update_dbaas_service_valkey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.update_dbaas_service_valkey" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
@@ -8244,6 +8485,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>application_consistent_snapshot_enabled</strong> (<em>bool</em>) – Enable application consistent snapshots.</p></li>
 <li><p><strong>anti_affinity_groups</strong> (<em>list</em>) – Instance Pool Anti-affinity Groups.</p></li>
 <li><p><strong>description</strong> (<em>str</em>) – Instance Pool description.</p></li>
 <li><p><strong>public_ip_assignment</strong> (<em>str</em>) – Determines public IP assignment of the Instances.. Must be one of <code class="docutils literal notranslate"><span class="pre">'dual'</span></code>, <code class="docutils literal notranslate"><span class="pre">'inet4'</span></code>.</p></li>
@@ -8727,7 +8969,7 @@ completion.</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2025, The Exoscale team.</p>
+    <p>&#169; Copyright 2018-2026, The Exoscale team.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Partner API &mdash; python-exoscale 0.10.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/theme_overrides.css?v=a7b7b6ed" />
 
   
@@ -16,8 +16,8 @@
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=82662543"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Changelog" href="changes.html" />
@@ -71,10 +71,26 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#unreleased">0.16.1 (unreleased)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html#id1">0.16.0 (2025-11-27)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html#id2">0.15.0 (2025-10-28)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html#id3">0.14.0 (2025-08-28)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html#id4">0.13.0 (2025-08-11)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id5">0.12.0 (2025-06-04)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id6">0.11.0 (2025-04-24)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id7">0.10.0 (2024-05-29)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id8">0.9.1 (2024-04-29)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id9">0.8.0 (2023-05-11)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id10">0.7.1 (2021-10-18)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id12">0.7.0 (2021-05-11)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id13">0.6.0 (2021-04-21)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id16">0.5.2 (2021-04-13)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id18">0.5.1 (2021-03-16)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id20">0.5.0 (2021-03-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id23">0.4.0 (2020-12-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id26">0.3.0 (2020-01-22)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id29">0.2.0 (2019-10-09)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html#id33">0.1.1 (2019-09-12)</a></li>
 </ul>
 
         </div>
@@ -176,7 +192,7 @@ sub-organizations in Exoscale.</p>
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="exoscale.api.partner.Client">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exoscale.api.partner.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.partner.Client" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exoscale.api.partner.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.partner.Client" title="Link to this definition"></a></dt>
 <dd><p>Partner API client with Exoscale authentication.</p>
 <p>This client provides access to distributor operations for managing
 sub-organizations. It uses the same authentication mechanism as the
@@ -208,11 +224,10 @@ V2 API client.</p>
 <dd class="field-even"><p><p>dict: Organization representation. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
+<li><p><strong>id</strong> (str): Organization ID.</p></li>
+<li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
 <li><p><strong>billing_address</strong> (dict): ISO 20022 Structured Billing Address.</p></li>
 <li><p><strong>client_id</strong> (str): Organization Client ID.</p></li>
-<li><p><strong>country</strong> (str): Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
-<li><p><strong>id</strong> (str): Organization ID.</p></li>
-<li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -229,9 +244,9 @@ V2 API client.</p>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>display_name</strong> (<em>str</em>) – Organization Display Name.</p></li>
 <li><p><strong>billing_address</strong> (<em>dict</em>) – ISO 20022 Structured Billing Address.</p></li>
 <li><p><strong>client_id</strong> (<em>str</em>) – Organization Client ID.</p></li>
-<li><p><strong>display_name</strong> (<em>str</em>) – Organization Display Name.</p></li>
 <li><p><strong>owner_email</strong> (<em>str</em>) – Email Address of the first Owner.</p></li>
 </ul>
 </dd>
@@ -239,11 +254,10 @@ V2 API client.</p>
 <dd class="field-even"><p><p>dict: Organization representation. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
+<li><p><strong>id</strong> (str): Organization ID.</p></li>
+<li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
 <li><p><strong>billing_address</strong> (dict): ISO 20022 Structured Billing Address.</p></li>
 <li><p><strong>client_id</strong> (str): Organization Client ID.</p></li>
-<li><p><strong>country</strong> (str): Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
-<li><p><strong>id</strong> (str): Organization ID.</p></li>
-<li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -265,11 +279,10 @@ V2 API client.</p>
 <dd class="field-even"><p><p>dict: Organization representation. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
+<li><p><strong>id</strong> (str): Organization ID.</p></li>
+<li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
 <li><p><strong>billing_address</strong> (dict): ISO 20022 Structured Billing Address.</p></li>
 <li><p><strong>client_id</strong> (str): Organization Client ID.</p></li>
-<li><p><strong>country</strong> (str): Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
-<li><p><strong>id</strong> (str): Organization ID.</p></li>
-<li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -320,8 +333,8 @@ V2 API client.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>organization</strong> (<em>str</em>) – Target Org.</p></li>
 <li><p><strong>usage</strong> (<em>list</em>) – Usage data.</p></li>
+<li><p><strong>organization</strong> (<em>str</em>) – Target Org.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -362,11 +375,10 @@ V2 API client.</p>
 <dd class="field-even"><p><p>dict: Organization representation. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
+<li><p><strong>id</strong> (str): Organization ID.</p></li>
+<li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
 <li><p><strong>billing_address</strong> (dict): ISO 20022 Structured Billing Address.</p></li>
 <li><p><strong>client_id</strong> (str): Organization Client ID.</p></li>
-<li><p><strong>country</strong> (str): Organization Country. Format: ISO 3166-1 alpha-2.</p></li>
-<li><p><strong>id</strong> (str): Organization ID.</p></li>
-<li><p><strong>status</strong> (str): Organization Status. Values are <code class="docutils literal notranslate"><span class="pre">'suspended'</span></code>, <code class="docutils literal notranslate"><span class="pre">'active'</span></code>, <code class="docutils literal notranslate"><span class="pre">'terminated'</span></code>.</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -409,7 +421,7 @@ V2 API client.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2025, The Exoscale team.</p>
+    <p>&#169; Copyright 2018-2026, The Exoscale team.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

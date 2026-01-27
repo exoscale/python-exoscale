@@ -26376,16 +26376,6 @@
               }
             }
           },
-          "400": {
-            "description": "400",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
           "404": {
             "description": "404",
             "content": {
@@ -26416,6 +26406,17 @@
             "schema": {
               "type": "string",
               "format": "uuid"
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "tail",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0,
+              "exclusiveMinimum": false
             }
           }
         ],

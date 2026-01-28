@@ -19,7 +19,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/iam/operation/role-mgmt/"
       },
-      "name": "role"
+      "name": "role",
+      "x-display-name": "Role",
+      "x-weight": 820,
+      "x-icon": "exo-iam"
     },
     {
       "description": "MySQL, the popular open-source, object-relational database.",
@@ -28,7 +31,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/dbaas/service-specific/mysql/"
       },
-      "name": "dbaas-mysql"
+      "name": "dbaas-mysql",
+      "x-display-name": "DBaaS Mysql",
+      "x-weight": 420,
+      "x-icon": "exo-db-mysql"
     },
     {
       "description": "Elastic IPs are additional public IPv4/6 addresses that can be attached to Compute instances, with optional healthcheck support.",
@@ -37,7 +43,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/networking/eip/"
       },
-      "name": "elastic-ip"
+      "name": "elastic-ip",
+      "x-display-name": "Elastic IP",
+      "x-weight": 170,
+      "x-icon": "exo-eip"
     },
     {
       "description": "Reverse DNS lets you record PTR records for Compute instance public IP addresses or Elastic IPs.",
@@ -46,16 +55,22 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/compute/instances/"
       },
-      "name": "reverse-dns"
+      "name": "reverse-dns",
+      "x-display-name": "Reverse DNS",
+      "x-weight": 210,
+      "x-icon": "exo-dns"
     },
     {
-      "description": "SKS is Exoscale's scalable Kubernetes service which provides\n                   managed Kubernetes control planes with integrated support for\n                   Exoscale instance pools ands network load balancers.",
+      "description": "Clusters are managed Kubernetes control planes.",
       "parent": "sks",
       "externalDocs": {
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/sks/"
       },
-      "name": "cluster"
+      "name": "cluster",
+      "x-display-name": "Cluster",
+      "x-weight": 310,
+      "x-icon": "exo-sks"
     },
     {
       "description": "Instances are the virtual machines at the core of the Exoscale\n                   Compute service.",
@@ -64,7 +79,10 @@
         "description": "Read more",
         "url": "https://www.exoscale.com/compute/"
       },
-      "name": "instance"
+      "name": "instance",
+      "x-display-name": "Instance",
+      "x-weight": 110,
+      "x-icon": "exo-vm"
     },
     {
       "description": "Kafka is a distributed, open-source data platform for optimized real-time processing of streaming data.",
@@ -73,7 +91,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/dbaas/service-specific/kafka/"
       },
-      "name": "dbaas-kafka"
+      "name": "dbaas-kafka",
+      "x-display-name": "DBaaS Kafka",
+      "x-weight": 440,
+      "x-icon": "exo-db-kafka"
     },
     {
       "description": "A Zone represents an independent datacenter in which Exoscale\n                   infrastructure is deployed into.",
@@ -82,7 +103,10 @@
         "description": "Read more",
         "url": "https://www.exoscale.com/datacenters/"
       },
-      "name": "zone"
+      "name": "zone",
+      "x-display-name": "Zone",
+      "x-weight": 1110,
+      "x-icon": "exo-network"
     },
     {
       "description": "Databases as a Service (DBaaS) provides scalable and fully-managed database solutions with high availability and performance backed by Exoscale's Compute and Storage services.",
@@ -90,7 +114,21 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/dbaas/"
       },
-      "name": "dbaas"
+      "name": "dbaas",
+      "x-display-name": "DBaaS",
+      "x-weight": 400,
+      "x-icon": "exo-dbaas"
+    },
+    {
+      "description": "Exoscale AI services provide GPU-powered infrastructure for running machine learning workloads and large language models.",
+      "externalDocs": {
+        "description": "Read more",
+        "url": "https://www.exoscale.com/ai-cloud-infrastructure/"
+      },
+      "name": "ai",
+      "x-display-name": "AI",
+      "x-weight": 900,
+      "x-icon": "exo-ai-prod"
     },
     {
       "description": "Anti-affinity groups let you define placement constraints for your Compute instances.",
@@ -99,7 +137,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/compute/instances/how-to/anti-affinity/"
       },
-      "name": "anti-affinity-group"
+      "name": "anti-affinity-group",
+      "x-display-name": "Anti-Affinity Group",
+      "x-weight": 220,
+      "x-icon": "exo-gpu"
     },
     {
       "description": "Operations describe the current state of an asynchronous\n                   operation.",
@@ -108,7 +149,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/"
       },
-      "name": "operation"
+      "name": "operation",
+      "x-display-name": "Operation",
+      "x-weight": 1100,
+      "x-icon": "exo-logo"
     },
     {
       "description": "Host anything from simple applications to complex architectures. Start a compute instance in seconds and scale as your infrastructure grows.",
@@ -116,7 +160,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/compute/"
       },
-      "name": "compute"
+      "name": "compute",
+      "x-display-name": "Compute",
+      "x-weight": 100,
+      "x-icon": "exo-vm"
     },
     {
       "description": "External integrations allow you to connect your Exoscale DBaaS services with third-party monitoring, logging, or analytics tools.",
@@ -125,7 +172,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/dbaas/how-to/external-integrations/"
       },
-      "name": "dbaas-external-endpoints"
+      "name": "dbaas-external-endpoints",
+      "x-display-name": "DBaaS External Endpoints",
+      "x-weight": 490,
+      "x-icon": "exo-dbaas"
     },
     {
       "description": "An Instance Type is a resource describing the amount of\n                   CPU, RAM and GPUs allocated to a Compute instance.",
@@ -134,7 +184,10 @@
         "description": "Read more",
         "url": "https://www.exoscale.com/pricing/"
       },
-      "name": "instance-type"
+      "name": "instance-type",
+      "x-display-name": "Instance Type",
+      "x-weight": 200,
+      "x-icon": "exo-gpu"
     },
     {
       "description": "Thanos is a large-scale metrics management system.",
@@ -143,7 +196,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/dbaas/service-specific/thanos/"
       },
-      "name": "dbaas-thanos"
+      "name": "dbaas-thanos",
+      "x-display-name": "DBaaS Thanos",
+      "x-weight": 470,
+      "x-icon": "exo-db-thanos"
     },
     {
       "description": "Templates contain the OS and the initial setup of a\n                   Compute instance.",
@@ -152,7 +208,10 @@
         "description": "Read more",
         "url": "https://www.exoscale.com/templates/"
       },
-      "name": "template"
+      "name": "template",
+      "x-display-name": "Template",
+      "x-weight": 140,
+      "x-icon": "exo-template"
     },
     {
       "description": "A Network Load Balancer (NLB) is a Layer 4 (TCP/UDP)\n                   load balancer that distributes incoming traffic to Compute\n                   instances managed by an Instance Pool.",
@@ -161,7 +220,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/compute/network-load-balancer/"
       },
-      "name": "network-load-balancer"
+      "name": "network-load-balancer",
+      "x-display-name": "Network Load Balancer",
+      "x-weight": 180,
+      "x-icon": "exo-nlb"
     },
     {
       "description": "Valkey, the open-source key-value store with a Redis®-compatible interface.",
@@ -170,7 +232,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/dbaas/service-specific/valkey/"
       },
-      "name": "dbaas-valkey"
+      "name": "dbaas-valkey",
+      "x-display-name": "DBaaS Valkey",
+      "x-weight": 460,
+      "x-icon": "exo-db-valkey"
     },
     {
       "description": "SSH Keypairs",
@@ -179,7 +244,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/compute/ssh-keypairs/"
       },
-      "name": "ssh-key"
+      "name": "ssh-key",
+      "x-display-name": "SSH Key",
+      "x-weight": 160,
+      "x-icon": "exo-cli"
     },
     {
       "description": "Instance Pools is an Exoscale service allowing users\n                   to provision managed groups of identical Compute\n                   instances automatically.",
@@ -188,7 +256,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/compute/instance-pools/"
       },
-      "name": "instance-pool"
+      "name": "instance-pool",
+      "x-display-name": "Instance Pool",
+      "x-weight": 120,
+      "x-icon": "exo-vmpool"
     },
     {
       "description": "PostgreSQL, open-source database known for its wide range of features and popularity with developers.",
@@ -197,7 +268,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/dbaas/service-specific/postgresql/"
       },
-      "name": "dbaas-postgresql"
+      "name": "dbaas-postgresql",
+      "x-display-name": "DBaaS Postgresql",
+      "x-weight": 410,
+      "x-icon": "exo-db-postgresql"
     },
     {
       "description": "Exoscale Simple Object Storage (SOS) is an S3-compatible object storage service.",
@@ -205,7 +279,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/storage/object-storage/"
       },
-      "name": "sos"
+      "name": "sos",
+      "x-display-name": "Object Storage",
+      "x-weight": 500,
+      "x-icon": "exo-object-storage"
     },
     {
       "description": "Snapshots provide a way to get point-in-time recovery\n                   for your Compute instance.",
@@ -214,7 +291,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/compute/snapshots/"
       },
-      "name": "snapshot"
+      "name": "snapshot",
+      "x-display-name": "Snapshot",
+      "x-weight": 130,
+      "x-icon": "exo-snapshot"
     },
     {
       "description": "Security Groups are groups of firewall rules that regulate\n                   network traffic to and from your Compute instances.",
@@ -223,16 +303,22 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/compute/security-groups/"
       },
-      "name": "security-group"
+      "name": "security-group",
+      "x-display-name": "Security Group",
+      "x-weight": 150,
+      "x-icon": "exo-vpc"
     },
     {
       "description": "Events form the basis of the Exoscale audit-trail, a mechanism\n                   to query past events performing mutations on resources\n                   which happened on an organization.",
       "parent": "audit-trail",
       "externalDocs": {
         "description": "Read more",
-        "url": "https://www.exoscale.com/support/"
+        "url": "https://community.exoscale.com/platform/audit-trail/"
       },
-      "name": "event"
+      "name": "event",
+      "x-display-name": "Event",
+      "x-weight": 1010,
+      "x-icon": "exo-license"
     },
     {
       "description": "Exoscale's Block Storage offers persistent externally\n                   attached volumes for your Compute instances.",
@@ -240,7 +326,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/block-storage/"
       },
-      "name": "block-storage"
+      "name": "block-storage",
+      "x-display-name": "Block Storage",
+      "x-weight": 600,
+      "x-icon": "exo-block-storage"
     },
     {
       "description": "Deploy Target lets you spin up Compute instances on dedicated hypervisors.",
@@ -249,7 +338,10 @@
         "description": "Read more",
         "url": "https://www.exoscale.com/virtual-private-cloud/"
       },
-      "name": "deploy-target"
+      "name": "deploy-target",
+      "x-display-name": "Deploy Target",
+      "x-weight": 230,
+      "x-icon": "exo-gpu"
     },
     {
       "description": "Operational management for DBaaS services: logs, metrics, service types and lifecycle.",
@@ -258,7 +350,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/dbaas/"
       },
-      "name": "dbaas-management"
+      "name": "dbaas-management",
+      "x-display-name": "DBaaS Management",
+      "x-weight": 480,
+      "x-icon": "exo-dbaas"
     },
     {
       "description": "DNS zone records management.",
@@ -267,7 +362,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/networking/dns/overview/"
       },
-      "name": "record"
+      "name": "record",
+      "x-display-name": "Record",
+      "x-weight": 720,
+      "x-icon": "exo-dns"
     },
     {
       "description": "DNS zone hosting and records management.",
@@ -275,25 +373,45 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/networking/dns/"
       },
-      "name": "dns"
+      "name": "dns",
+      "x-display-name": "DNS",
+      "x-weight": 700,
+      "x-icon": "exo-dns"
     },
     {
       "description": "Deployments are loaded model instances ready for inference.",
       "parent": "dedicated-inference",
       "externalDocs": {
         "description": "Read more",
-        "url": "https://www.exoscale.com/gpu/"
+        "url": "https://www.exoscale.com/ai-cloud-infrastructure/dedicated-inference/"
       },
-      "name": "deployment"
+      "name": "deployment",
+      "x-display-name": "Deployment",
+      "x-weight": 930,
+      "x-icon": "exo-gpu"
     },
     {
-      "description": "SKS is Exoscale's scalable Kubernetes service which provides\n                   managed Kubernetes control planes with integrated support for\n                   Exoscale instance pools ands network load balancers.",
+      "description": "The Exoscale audit-trail provides a mechanism to query past events performing mutations on resources which happened on an organization.",
+      "externalDocs": {
+        "description": "Read more",
+        "url": "https://community.exoscale.com/platform/audit-trail/"
+      },
+      "name": "audit-trail",
+      "x-display-name": "Audit Trail",
+      "x-weight": 1000,
+      "x-icon": "exo-license"
+    },
+    {
+      "description": "Nodepools are groups of compute instances managed by SKS, serving as worker nodes in your Kubernetes cluster.",
       "parent": "sks",
       "externalDocs": {
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/sks/"
       },
-      "name": "nodepool"
+      "name": "nodepool",
+      "x-display-name": "Nodepool",
+      "x-weight": 320,
+      "x-icon": "exo-vmpool"
     },
     {
       "description": "Grafana, the open-source software that lets you query and visualize metrics, logs and traces from any storage source.",
@@ -302,7 +420,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/dbaas/service-specific/grafana/"
       },
-      "name": "dbaas-grafana"
+      "name": "dbaas-grafana",
+      "x-display-name": "DBaaS Grafana",
+      "x-weight": 430,
+      "x-icon": "exo-db-grafana"
     },
     {
       "description": "Identity and Access Management: roles, users, policies and credentials for accessing the Exoscale API.",
@@ -310,7 +431,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/iam/"
       },
-      "name": "iam"
+      "name": "iam",
+      "x-display-name": "IAM",
+      "x-weight": 800,
+      "x-icon": "exo-iam"
     },
     {
       "description": "DNS zone management.",
@@ -319,7 +443,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/networking/dns/quick-start/"
       },
-      "name": "domain"
+      "name": "domain",
+      "x-display-name": "Domain",
+      "x-weight": 710,
+      "x-icon": "exo-dns"
     },
     {
       "description": "Private Network provides private L2 networking functionality between Compute instances.",
@@ -328,15 +455,22 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/networking/private-network/"
       },
-      "name": "private-network"
+      "name": "private-network",
+      "x-display-name": "Private Network",
+      "x-weight": 190,
+      "x-icon": "exo-network"
     },
     {
       "description": "Dedicated Inference lets you run Large Language Models (LLMs) on Exoscale GPU infrastructure.",
+      "parent": "ai",
       "externalDocs": {
         "description": "Read more",
-        "url": "https://www.exoscale.com/gpu/"
+        "url": "https://www.exoscale.com/ai-cloud-infrastructure/dedicated-inference/"
       },
-      "name": "dedicated-inference"
+      "name": "dedicated-inference",
+      "x-display-name": "Dedicated Inference",
+      "x-weight": 910,
+      "x-icon": "exo-ai-prod"
     },
     {
       "description": "Opensearch, the popular open-source search and analytics database.",
@@ -345,7 +479,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/dbaas/service-specific/opensearch/"
       },
-      "name": "dbaas-opensearch"
+      "name": "dbaas-opensearch",
+      "x-display-name": "DBaaS Opensearch",
+      "x-weight": 450,
+      "x-icon": "exo-db-opensearch"
     },
     {
       "description": "IAM users map to humans empowered with access to Exoscale resources.",
@@ -354,7 +491,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/iam/operation/users-keys/"
       },
-      "name": "user"
+      "name": "user",
+      "x-display-name": "User",
+      "x-weight": 830,
+      "x-icon": "exo-iam"
     },
     {
       "description": "Nodepool templates are Exoscale-managed instance templates for SKS worker nodes.",
@@ -363,7 +503,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/sks/"
       },
-      "name": "nodepool-template"
+      "name": "nodepool-template",
+      "x-display-name": "Nodepool Template",
+      "x-weight": 330,
+      "x-icon": "exo-template"
     },
     {
       "description": "SKS is Exoscale's scalable Kubernetes service which provides\n                   managed Kubernetes control planes with integrated support for\n                   Exoscale instance pools ands network load balancers.",
@@ -371,7 +514,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/documentation/sks/"
       },
-      "name": "sks"
+      "name": "sks",
+      "x-display-name": "SKS",
+      "x-weight": 300,
+      "x-icon": "exo-sks"
     },
     {
       "description": "The Organization Policy is an IAM policy that applies as a first layer across your entire Exoscale organization.",
@@ -380,7 +526,10 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/iam/operation/roles-policies/"
       },
-      "name": "organization-policy"
+      "name": "organization-policy",
+      "x-display-name": "Organization Policy",
+      "x-weight": 840,
+      "x-icon": "exo-iam"
     },
     {
       "description": "API keys are credentials for programmatic access to Exoscale APIs and services.",
@@ -389,16 +538,22 @@
         "description": "Read more",
         "url": "https://community.exoscale.com/product/iam/how-to/key-mgmt/"
       },
-      "name": "api-key"
+      "name": "api-key",
+      "x-display-name": "API Key",
+      "x-weight": 810,
+      "x-icon": "exo-iam"
     },
     {
       "description": "Lifecycle of AI Models.",
       "parent": "dedicated-inference",
       "externalDocs": {
         "description": "Read more",
-        "url": "https://www.exoscale.com/gpu/"
+        "url": "https://www.exoscale.com/ai-cloud-infrastructure/dedicated-inference/"
       },
-      "name": "model"
+      "name": "model",
+      "x-display-name": "AI Model",
+      "x-weight": 920,
+      "x-icon": "exo-gpu"
     }
   ],
   "components": {

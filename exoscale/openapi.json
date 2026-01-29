@@ -9470,23 +9470,15 @@
       "iam-role": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "readOnly": true,
-            "description": "IAM Role ID"
-          },
-          "name": {
-            "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
-            "description": "IAM Role name"
-          },
           "description": {
             "type": "string",
             "maxLength": 255,
             "minLength": 1,
             "description": "IAM Role description"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/labels",
+            "description": "IAM Role Labels"
           },
           "permissions": {
             "type": "array",
@@ -9500,17 +9492,36 @@
             "uniqueItems": true,
             "description": "IAM Role permissions"
           },
-          "labels": {
-            "$ref": "#/components/schemas/labels",
-            "description": "IAM Role Labels"
+          "assume-role-policy": {
+            "$ref": "#/components/schemas/iam-policy",
+            "description": "IAM Assume Role Policy"
           },
           "editable": {
             "type": "boolean",
             "description": "IAM Role mutability"
           },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "IAM Role name"
+          },
+          "max-session-ttl": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "exclusiveMinimum": true,
+            "description": "Maximum TTL requester is allowed to ask for when assuming a role"
+          },
           "policy": {
             "$ref": "#/components/schemas/iam-policy",
             "description": "IAM Role Policy"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true,
+            "description": "IAM Role ID"
           }
         },
         "description": "IAM Role"
@@ -18323,6 +18334,13 @@
                   "labels": {
                     "$ref": "#/components/schemas/labels",
                     "description": "IAM Role labels"
+                  },
+                  "max-session-ttl": {
+                    "type": "integer",
+                    "format": "int64",
+                    "minimum": 0,
+                    "exclusiveMinimum": true,
+                    "description": "Maximum TTL requester is allowed to ask for when assuming a role"
                   }
                 }
               }
@@ -19115,6 +19133,49 @@
         ],
         "summary": "Initiate PostgreSQL maintenance update",
         "operationId": "start-dbaas-pg-maintenance"
+      }
+    },
+    "/iam-role/{id}:assume-role-policy": {
+      "put": {
+        "tags": [
+          "iam"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Update IAM Assume role Policy",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/iam-policy"
+              }
+            }
+          }
+        },
+        "operationId": "update-iam-assume-role-policy"
       }
     },
     "/dbaas-grafana/{service-name}/user/{username}/password/reveal": {
@@ -26384,6 +26445,17 @@
                   "policy": {
                     "$ref": "#/components/schemas/iam-policy",
                     "description": "IAM Role policy"
+                  },
+                  "assume-role-policy": {
+                    "$ref": "#/components/schemas/iam-policy",
+                    "description": "IAM Assume role policy"
+                  },
+                  "max-session-ttl": {
+                    "type": "integer",
+                    "format": "int64",
+                    "minimum": 0,
+                    "exclusiveMinimum": true,
+                    "description": "Maximum TTL requester is allowed to ask for when assuming a role"
                   }
                 },
                 "required": [

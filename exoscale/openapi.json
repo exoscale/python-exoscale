@@ -19138,7 +19138,7 @@
     "/iam-role/{id}:assume-role-policy": {
       "put": {
         "tags": [
-          "iam"
+          "role"
         ],
         "responses": {
           "200": {

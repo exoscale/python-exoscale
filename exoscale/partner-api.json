@@ -13,12 +13,26 @@
   },
   "tags": [
     {
-      "description": "\n\nMetrics API aimed at collecting the data about resource usage, mostly disk and\nSoS storage, network traffic, etc.\n\n",
+      "description": "The Metering API enables partners to send usage data for consolidated usage-based billing.",
       "externalDocs": {
         "description": "Read more",
-        "url": "https://community.exoscale.com/documentation/"
+        "url": "https://www.exoscale.com/partner-programs/"
       },
-      "name": "metrics"
+      "name": "metering",
+      "x-display-name": "Metering",
+      "x-weight": 100,
+      "x-icon": "exo-logo"
+    },
+    {
+      "description": "Provisioning and lifecycle management of end-customer organizations for members of the Exoscale distributor program.",
+      "externalDocs": {
+        "description": "Read more",
+        "url": "https://www.exoscale.com/partner-programs/"
+      },
+      "name": "distributor-organization",
+      "x-display-name": "Distributor organization",
+      "x-weight": 200,
+      "x-icon": "exo-logo"
     }
   ],
   "components": {
@@ -276,30 +290,15 @@
   },
   "servers": [
     {
-      "url": "{protocol}://{environment}partner-api.exoscale.com/v1.alpha",
-      "variables": {
-        "protocol": {
-          "default": "https",
-          "enum": [
-            "http",
-            "https"
-          ]
-        },
-        "environment": {
-          "default": "",
-          "enum": [
-            "",
-            "lab-",
-            "preprod-"
-          ]
-        }
-      }
+      "url": "https://partner-api.exoscale.com/v1.alpha"
     }
   ],
   "paths": {
     "/distributor/organization/{id}:schedule-purge": {
       "put": {
-        "tags": [],
+        "tags": [
+          "distributor-organization"
+        ],
         "responses": {
           "200": {
             "description": "200",
@@ -353,7 +352,7 @@
     "/metering:apply": {
       "post": {
         "tags": [
-          "metrics"
+          "metering"
         ],
         "responses": {
           "204": {
@@ -367,7 +366,7 @@
             }
           }
         },
-        "description": "\n\nSubmit usage metrics for the given organization. The API accepts a set of\n`usage` objects. Each object represents a product, its variable and a metering\nvalue. The value might be negative or fractional (will be rounded to five\nfractions). Sample payload:\n\n```json\n{\n  'usage': [\n    {\n      'product': 'sos',\n      'variable': 'storage_traffic',\n      'quantity': 3.1415\n    },\n    {\n      'product': 'sos',\n      'variable': 'one_more_metric',\n      'quantity': -42.00005\n    }\n  ],\n  'organization': 'bf9bbc88-71ea-407c-9920-fc1101d86183'\n}\n```\n\n",
+        "description": "\n\nSubmit usage metering for the given organization. The API accepts a set of\n`usage` entries. Each entry represents a product, its variable and a metering\nvalue. The value might be negative or decimal (up to five\ndecimal places). Sample payload:\n\n```json\n{\n  'usage': [\n    {\n      'product': 'partner',\n      'variable': 'license_product',\n      'quantity': 3.1415\n    },\n    {\n      'product': 'partner',\n      'variable': 'commission',\n      'quantity': -42.00005\n    }\n  ],\n  'organization': 'bf9bbc88-71ea-407c-9920-fc1101d86183'\n}\n```\n\n",
         "parameters": [],
         "summary": "Apply metering transaction",
         "requestBody": {
@@ -385,7 +384,9 @@
     },
     "/distributor/organization/{id}:suspend": {
       "put": {
-        "tags": [],
+        "tags": [
+          "distributor-organization"
+        ],
         "responses": {
           "200": {
             "description": "200",
@@ -416,7 +417,9 @@
     },
     "/distributor/organization": {
       "post": {
-        "tags": [],
+        "tags": [
+          "distributor-organization"
+        ],
         "responses": {
           "200": {
             "description": "200",
@@ -445,7 +448,9 @@
         "operationId": "create-distributor-organization"
       },
       "get": {
-        "tags": [],
+        "tags": [
+          "distributor-organization"
+        ],
         "responses": {
           "200": {
             "description": "200",
@@ -467,7 +472,7 @@
             }
           }
         },
-        "description": "List the Organizations linked to your Distributor Organization.",
+        "description": "List Organizations linked to your Distributor Organization.",
         "parameters": [],
         "summary": "",
         "operationId": "list-distributor-organizations"
@@ -475,7 +480,9 @@
     },
     "/distributor/organization/{id}:terminate": {
       "delete": {
-        "tags": [],
+        "tags": [
+          "distributor-organization"
+        ],
         "responses": {
           "200": {
             "description": "200",
@@ -512,7 +519,9 @@
     },
     "/distributor/organization/{id}/usage": {
       "get": {
-        "tags": [],
+        "tags": [
+          "distributor-organization"
+        ],
         "responses": {
           "200": {
             "description": "200",
@@ -525,13 +534,13 @@
                     "properties": {
                       "code": {
                         "type": "string",
-                        "description": "The Usage Code"
+                        "description": "Usage Code"
                       },
                       "currency": {
                         "type": "string",
                         "maxLength": 3,
                         "minLength": 3,
-                        "description": "The possible values are: CHF, EUR, USD."
+                        "description": "Allowed values are: CHF, EUR, USD."
                       },
                       "total-excl-vat": {
                         "type": "number",
@@ -544,12 +553,12 @@
                       "start-date": {
                         "type": "string",
                         "format": "date-time",
-                        "description": "The start date for the Usage statements"
+                        "description": "The start date for Usage statements"
                       },
                       "end-date": {
                         "type": "string",
                         "format": "date-time",
-                        "description": "The end date for the Usage statements"
+                        "description": "The end date for Usage statements"
                       },
                       "usage": {
                         "type": "array",
@@ -573,7 +582,7 @@
                             },
                             "unit": {
                               "type": "string",
-                              "description": "The unit used for this usage statement"
+                              "description": "Unit used for this usage statement"
                             },
                             "total-excl-vat": {
                               "type": "number",
@@ -594,7 +603,7 @@
             }
           }
         },
-        "description": "List the Usage records of a sub-Organization.",
+        "description": "List usage records of a sub-Organization.",
         "parameters": [
           {
             "in": "path",
@@ -622,7 +631,9 @@
     },
     "/distributor/organization/{id}:activate": {
       "put": {
-        "tags": [],
+        "tags": [
+          "distributor-organization"
+        ],
         "responses": {
           "200": {
             "description": "200",
@@ -653,7 +664,9 @@
     },
     "/distributor/organization/{id}": {
       "get": {
-        "tags": [],
+        "tags": [
+          "distributor-organization"
+        ],
         "responses": {
           "200": {
             "description": "200",

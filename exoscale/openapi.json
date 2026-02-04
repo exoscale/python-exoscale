@@ -673,6 +673,17 @@
           }
         }
       },
+      "private-network-ref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Private network ID"
+          }
+        },
+        "description": "Private network reference"
+      },
       "sks-audit-endpoint": {
         "type": "string",
         "maxLength": 2000,
@@ -851,6 +862,17 @@
         "exclusiveMinimum": false,
         "exclusiveMaximum": false
       },
+      "block-storage-snapshot-ref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Block storage snapshot ID"
+          }
+        },
+        "description": "Target block storage snapshot"
+      },
       "security-group-rule": {
         "type": "object",
         "properties": {
@@ -993,6 +1015,17 @@
           }
         },
         "description": "A single log entry"
+      },
+      "anti-affinity-group-ref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Anti-affinity group ID"
+          }
+        },
+        "description": "Anti-affinity group reference"
       },
       "sks-audit-bearer-token": {
         "type": "string",
@@ -2773,17 +2806,6 @@
         },
         "title": "Kafka broker configuration values",
         "type": "object"
-      },
-      "instance-target": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Instance ID"
-          }
-        },
-        "description": "Target Instance"
       },
       "dbaas-external-integration": {
         "type": "object",
@@ -4587,6 +4609,17 @@
           }
         }
       },
+      "instance-ref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Instance ID"
+          }
+        },
+        "description": "Target Instance"
+      },
       "dbaas-user-password": {
         "type": "string",
         "maxLength": 256,
@@ -4673,6 +4706,17 @@
           }
         },
         "description": "Private Network leased IP address"
+      },
+      "template-ref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Template ID"
+          }
+        },
+        "description": "Template reference"
       },
       "sks-nodepool-taint": {
         "type": "object",
@@ -5515,6 +5559,17 @@
         "maxLength": 64,
         "minLength": 1
       },
+      "elastic-ip-ref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Elastic IP ID"
+          }
+        },
+        "description": "Elastic IP reference"
+      },
       "dbaas-service-maintenance": {
         "type": "object",
         "properties": {
@@ -5552,6 +5607,18 @@
           "updates"
         ],
         "description": "Automatic maintenance settings"
+      },
+      "ssh-key-ref": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "SSH key name"
+          }
+        },
+        "description": "SSH key reference"
       },
       "sks-audit-update": {
         "type": "object",
@@ -6059,6 +6126,17 @@
             "description": "Products"
           }
         }
+      },
+      "security-group-ref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Security group ID"
+          }
+        },
+        "description": "Security group reference"
       },
       "sks-oidc": {
         "type": "object",
@@ -7644,6 +7722,17 @@
         },
         "description": "Instance Pool"
       },
+      "block-storage-volume-ref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Block storage volume ID"
+          }
+        },
+        "description": "Target block storage volume"
+      },
       "scale-deployment-request": {
         "type": "object",
         "properties": {
@@ -7751,6 +7840,17 @@
             "description": "Maximum number of partition contexts to send. Applies only when attached to kafka services."
           }
         }
+      },
+      "deploy-target-ref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Deploy target ID"
+          }
+        },
+        "description": "Deploy target reference"
       },
       "sks-nodepool": {
         "type": "object",
@@ -8282,6 +8382,17 @@
           "syncing"
         ]
       },
+      "instance-type-ref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Instance type ID"
+          }
+        },
+        "description": "Instance type reference"
+      },
       "enum-opensearch-rule-permission": {
         "type": "string",
         "enum": [
@@ -8407,17 +8518,6 @@
             "description": "Enable to enforce index rules in a limited fashion for requests that use the _mget, _msearch, and _bulk APIs"
           }
         }
-      },
-      "block-storage-volume-target": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Block storage volume ID"
-          }
-        },
-        "description": "Target block storage volume"
       },
       "dbaas-backup-config": {
         "type": "object",
@@ -9024,6 +9124,17 @@
           "up"
         ]
       },
+      "sks-cluster-ref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "SKS cluster ID"
+          }
+        },
+        "description": "SKS cluster reference"
+      },
       "list-deployments-response": {
         "type": "object",
         "properties": {
@@ -9122,7 +9233,7 @@
             "description": "Resource labels"
           },
           "block-storage-volume": {
-            "$ref": "#/components/schemas/block-storage-volume-target",
+            "$ref": "#/components/schemas/block-storage-volume-ref",
             "description": "Referenced volume"
           }
         },
@@ -10968,17 +11079,6 @@
           "quorum"
         ]
       },
-      "block-storage-snapshot-target": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Block storage snapshot ID"
-          }
-        },
-        "description": "Target block storage snapshot"
-      },
       "block-storage-volume": {
         "type": "object",
         "properties": {
@@ -10987,7 +11087,7 @@
             "description": "Resource labels"
           },
           "instance": {
-            "$ref": "#/components/schemas/instance-target",
+            "$ref": "#/components/schemas/instance-ref",
             "description": "Volume attached instance, if any"
           },
           "name": {
@@ -11030,7 +11130,7 @@
           "block-storage-snapshots": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/block-storage-snapshot-target"
+              "$ref": "#/components/schemas/block-storage-snapshot-ref"
             },
             "description": "Volume snapshots, if any"
           },
@@ -14380,7 +14480,7 @@
                 "type": "object",
                 "properties": {
                   "instance": {
-                    "$ref": "#/components/schemas/instance-target",
+                    "$ref": "#/components/schemas/instance-ref",
                     "description": "Instance to attach to, this can only be done if the volume is not currently attached"
                   }
                 },
@@ -16801,7 +16901,7 @@
                 "type": "object",
                 "properties": {
                   "instance-type": {
-                    "$ref": "#/components/schemas/instance-type",
+                    "$ref": "#/components/schemas/instance-type-ref",
                     "description": "Instance Type"
                   }
                 },
@@ -20271,7 +20371,7 @@
                 "type": "object",
                 "properties": {
                   "template": {
-                    "$ref": "#/components/schemas/template",
+                    "$ref": "#/components/schemas/template-ref",
                     "description": "Template to recreate Instance from"
                   },
                   "disk-size": {
@@ -20524,7 +20624,7 @@
                 "type": "object",
                 "properties": {
                   "instance": {
-                    "$ref": "#/components/schemas/instance-target",
+                    "$ref": "#/components/schemas/instance-ref",
                     "description": "Compute instance"
                   }
                 },
@@ -21460,7 +21560,7 @@
                 "type": "object",
                 "properties": {
                   "instance": {
-                    "$ref": "#/components/schemas/instance-target",
+                    "$ref": "#/components/schemas/instance-ref",
                     "description": "Compute instance"
                   }
                 },
@@ -26108,7 +26208,7 @@
                   "anti-affinity-groups": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/anti-affinity-group"
+                      "$ref": "#/components/schemas/anti-affinity-group-ref"
                     },
                     "uniqueItems": true,
                     "description": "Instance Anti-affinity Groups"
@@ -26128,7 +26228,7 @@
                   "security-groups": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/security-group"
+                      "$ref": "#/components/schemas/security-group-ref"
                     },
                     "uniqueItems": true,
                     "description": "Instance Security Groups"
@@ -26140,11 +26240,11 @@
                     "description": "Instance name"
                   },
                   "instance-type": {
-                    "$ref": "#/components/schemas/instance-type",
+                    "$ref": "#/components/schemas/instance-type-ref",
                     "description": "Instance Type"
                   },
                   "template": {
-                    "$ref": "#/components/schemas/template",
+                    "$ref": "#/components/schemas/template-ref",
                     "description": "Instance Template"
                   },
                   "secureboot-enabled": {
@@ -26152,7 +26252,7 @@
                     "description": "Enable secure boot"
                   },
                   "ssh-key": {
-                    "$ref": "#/components/schemas/ssh-key",
+                    "$ref": "#/components/schemas/ssh-key-ref",
                     "description": "Instance SSH Key"
                   },
                   "user-data": {
@@ -26166,7 +26266,7 @@
                     "description": "Enable Trusted Platform Module (TPM)"
                   },
                   "deploy-target": {
-                    "$ref": "#/components/schemas/deploy-target",
+                    "$ref": "#/components/schemas/deploy-target-ref",
                     "description": "Instance Deploy Target"
                   },
                   "ipv6-enabled": {
@@ -26185,7 +26285,7 @@
                   "ssh-keys": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/ssh-key"
+                      "$ref": "#/components/schemas/ssh-key-ref"
                     },
                     "uniqueItems": true,
                     "description": "Instance SSH Keys"
@@ -26786,7 +26886,7 @@
                     "description": "Resource labels"
                   },
                   "block-storage-snapshot": {
-                    "$ref": "#/components/schemas/block-storage-snapshot-target",
+                    "$ref": "#/components/schemas/block-storage-snapshot-ref",
                     "description": "Block storage snapshot"
                   }
                 }

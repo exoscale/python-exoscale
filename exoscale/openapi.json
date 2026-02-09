@@ -7858,7 +7858,7 @@
           "anti-affinity-groups": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/anti-affinity-group"
+              "$ref": "#/components/schemas/anti-affinity-group-ref"
             },
             "uniqueItems": true,
             "maxItems": 8,
@@ -7888,7 +7888,7 @@
           "security-groups": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/security-group"
+              "$ref": "#/components/schemas/security-group-ref"
             },
             "uniqueItems": true,
             "maxItems": 16,
@@ -7901,20 +7901,20 @@
             "description": "Nodepool name"
           },
           "instance-type": {
-            "$ref": "#/components/schemas/instance-type",
+            "$ref": "#/components/schemas/instance-type-ref",
             "description": "Nodepool Instances type"
           },
           "private-networks": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/private-network"
+              "$ref": "#/components/schemas/private-network-ref"
             },
             "uniqueItems": true,
             "maxItems": 16,
             "description": "Nodepool Private Networks"
           },
           "template": {
-            "$ref": "#/components/schemas/template",
+            "$ref": "#/components/schemas/template-ref",
             "readOnly": true,
             "description": "Nodepool Instance template"
           },
@@ -7944,7 +7944,7 @@
             "description": "Kubelet image GC options"
           },
           "instance-pool": {
-            "$ref": "#/components/schemas/instance-pool",
+            "$ref": "#/components/schemas/instance-pool-ref",
             "readOnly": true,
             "description": "Instance Pool managed by the Nodepool"
           },
@@ -7955,7 +7955,7 @@
             "description": "The instances created by the Nodepool will be prefixed with this value (default: pool)"
           },
           "deploy-target": {
-            "$ref": "#/components/schemas/deploy-target",
+            "$ref": "#/components/schemas/deploy-target-ref",
             "description": "Instance Pool Deploy Target"
           },
           "addons": {
@@ -15050,7 +15050,7 @@
                   "anti-affinity-groups": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/anti-affinity-group"
+                      "$ref": "#/components/schemas/anti-affinity-group-ref"
                     },
                     "uniqueItems": true,
                     "maxItems": 8,
@@ -15080,7 +15080,7 @@
                   "security-groups": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/security-group"
+                      "$ref": "#/components/schemas/security-group-ref"
                     },
                     "uniqueItems": true,
                     "maxItems": 16,
@@ -15093,13 +15093,13 @@
                     "description": "Nodepool name, lowercase only"
                   },
                   "instance-type": {
-                    "$ref": "#/components/schemas/instance-type",
+                    "$ref": "#/components/schemas/instance-type-ref",
                     "description": "Nodepool instances type"
                   },
                   "private-networks": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/private-network"
+                      "$ref": "#/components/schemas/private-network-ref"
                     },
                     "uniqueItems": true,
                     "maxItems": 16,
@@ -15112,7 +15112,7 @@
                     "description": "Prefix to apply to managed instances names (default: pool), lowercase only"
                   },
                   "deploy-target": {
-                    "$ref": "#/components/schemas/deploy-target",
+                    "$ref": "#/components/schemas/deploy-target-ref",
                     "nullable": true,
                     "description": "Nodepool Deploy Target"
                   },
@@ -24310,7 +24310,7 @@
                   "anti-affinity-groups": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/anti-affinity-group"
+                      "$ref": "#/components/schemas/anti-affinity-group-ref"
                     },
                     "uniqueItems": true,
                     "maxItems": 8,
@@ -24340,7 +24340,7 @@
                   "security-groups": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/security-group"
+                      "$ref": "#/components/schemas/security-group-ref"
                     },
                     "uniqueItems": true,
                     "maxItems": 16,
@@ -24353,13 +24353,13 @@
                     "description": "Nodepool name, lowercase only"
                   },
                   "instance-type": {
-                    "$ref": "#/components/schemas/instance-type",
+                    "$ref": "#/components/schemas/instance-type-ref",
                     "description": "Nodepool instances type"
                   },
                   "private-networks": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/private-network"
+                      "$ref": "#/components/schemas/private-network-ref"
                     },
                     "uniqueItems": true,
                     "maxItems": 16,
@@ -24383,7 +24383,7 @@
                     "description": "Prefix to apply to instances names (default: pool), lowercase only"
                   },
                   "deploy-target": {
-                    "$ref": "#/components/schemas/deploy-target",
+                    "$ref": "#/components/schemas/deploy-target-ref",
                     "description": "Nodepool Deploy Target"
                   },
                   "addons": {

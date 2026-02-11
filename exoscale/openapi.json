@@ -12395,7 +12395,16 @@
           }
         },
         "description": "Get list of allowed inference engine parameters with their descriptions and allowed values",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "query",
+            "required": false,
+            "name": "version",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "summary": "[BETA] Get inference-engine Help",
         "operationId": "get-inference-engine-help"
       }
@@ -25104,6 +25113,23 @@
             "schema": {
               "type": "string",
               "format": "uuid"
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "stream",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "tail",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
             }
           }
         ],

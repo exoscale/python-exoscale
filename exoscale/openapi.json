@@ -694,24 +694,14 @@
         "properties": {
           "logs": {
             "description": "List of log entries",
+            "type": "array",
             "items": {
-              "description": "A single log entry",
-              "properties": {
-                "time": {
-                  "description": "Timestamp of the log entry"
-                },
-                "node": {
-                  "description": "Node identifier"
-                },
-                "message": {
-                  "description": "Log message content"
-                }
-              }
+              "$ref": "#/components/schemas/get-deployment-logs-entry"
             }
           }
         },
-        "title": "get-deployment-logs-response",
-        "type": "object"
+        "type": "object",
+        "title": "get-deployment-logs-response"
       },
       "json-schema-schema-registry": {
         "additionalProperties": false,
@@ -876,15 +866,17 @@
         "properties": {
           "name": {
             "description": "Associated model name",
+            "type": "string",
             "minLength": 1
           },
           "id": {
             "description": "Associated model ID",
-            "format": "uuid"
+            "format": "uuid",
+            "type": "string"
           }
         },
-        "title": "model-ref",
-        "type": "object"
+        "type": "object",
+        "title": "model-ref"
       },
       "dbaas-pg-pool-size": {
         "type": "integer",
@@ -1034,17 +1026,20 @@
         "description": "A single log entry",
         "properties": {
           "time": {
-            "description": "Timestamp of the log entry"
+            "description": "Timestamp of the log entry",
+            "type": "string"
           },
           "node": {
-            "description": "Node identifier"
+            "description": "Node identifier",
+            "type": "string"
           },
           "message": {
-            "description": "Log message content"
+            "description": "Log message content",
+            "type": "string"
           }
         },
-        "title": "get-deployment-logs-entry",
-        "type": "object"
+        "type": "object",
+        "title": "get-deployment-logs-entry"
       },
       "anti-affinity-group-ref": {
         "type": "object",
@@ -1110,38 +1105,14 @@
         "description": "List of allowed inference-engine parameters",
         "properties": {
           "parameters": {
+            "type": "array",
             "items": {
-              "description": "inference-engine parameter definition",
-              "properties": {
-                "description": {
-                  "description": "Parameter description"
-                },
-                "allowed-values": {
-                  "description": "Allowed values",
-                  "items": {}
-                },
-                "default": {
-                  "description": "Default value if nothing is specified"
-                },
-                "name": {
-                  "description": "Parameter name"
-                },
-                "section": {
-                  "description": "Section"
-                },
-                "type": {
-                  "description": "Parameter type"
-                },
-                "flags": {
-                  "description": "Flag name",
-                  "items": {}
-                }
-              }
+              "$ref": "#/components/schemas/inference-engine-parameter-entry"
             }
           }
         },
-        "title": "get-inference-engine-help-response",
-        "type": "object"
+        "type": "object",
+        "title": "get-inference-engine-help-response"
       },
       "dbaas-user-valkey-secrets": {
         "type": "object",
@@ -1875,11 +1846,14 @@
         "properties": {
           "deployments": {
             "description": "Deployments using models",
-            "items": {}
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
-        "title": "delete-model-conflict-response",
-        "type": "object"
+        "type": "object",
+        "title": "delete-model-conflict-response"
       },
       "dbaas-service-type": {
         "type": "object",
@@ -2443,14 +2417,16 @@
         "properties": {
           "name": {
             "description": "Model name",
+            "type": "string",
             "minLength": 1
           },
           "huggingface-token": {
-            "description": "Huggingface Token"
+            "description": "Huggingface Token",
+            "type": "string"
           }
         },
-        "title": "create-model-request",
-        "type": "object"
+        "type": "object",
+        "title": "create-model-request"
       },
       "inference-engine-version": {
         "description": "Inference engine version",
@@ -2505,10 +2481,12 @@
       "reveal-deployment-api-key-response": {
         "description": "AI deployment inference endpoint authentication key",
         "properties": {
-          "api-key": {}
+          "api-key": {
+            "type": "string"
+          }
         },
-        "title": "reveal-deployment-api-key-response",
-        "type": "object"
+        "type": "object",
+        "title": "reveal-deployment-api-key-response"
       },
       "json-schema-kafka": {
         "additionalProperties": false,
@@ -5465,11 +5443,12 @@
         "properties": {
           "error": {
             "description": "Error description",
+            "type": "string",
             "readOnly": true
           }
         },
-        "title": "error-response",
-        "type": "object"
+        "type": "object",
+        "title": "error-response"
       },
       "enum-kafka-auth-method": {
         "type": "string",
@@ -6434,6 +6413,7 @@
           "gpu-count": {
             "description": "Number of GPUs",
             "format": "int64",
+            "type": "integer",
             "minimum": 1
           },
           "updated-at": {
@@ -6483,6 +6463,7 @@
           "replicas": {
             "description": "Number of replicas (>=0)",
             "format": "int64",
+            "type": "integer",
             "minimum": 0
           },
           "state-details": {
@@ -6492,27 +6473,22 @@
           "created-at": {
             "description": "Creation time",
             "format": "date-time",
+            "type": "string",
             "readOnly": true
           },
           "inference-engine-parameters": {
             "description": "Optional extra inference engine server CLI args",
-            "items": {}
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "model": {
-            "properties": {
-              "name": {
-                "description": "Associated model name",
-                "minLength": 1
-              },
-              "id": {
-                "description": "Associated model ID",
-                "format": "uuid"
-              }
-            }
+            "$ref": "#/components/schemas/model-ref"
           }
         },
-        "title": "get-deployment-response",
-        "type": "object"
+        "type": "object",
+        "title": "get-deployment-response"
       },
       "iam-policy": {
         "type": "object",
@@ -6955,49 +6931,14 @@
         "description": "AI model list",
         "properties": {
           "models": {
+            "type": "array",
             "items": {
-              "description": "AI model",
-              "properties": {
-                "updated-at": {
-                  "description": "Update time",
-                  "format": "date-time",
-                  "readOnly": true
-                },
-                "name": {
-                  "description": "Model name",
-                  "minLength": 1
-                },
-                "status": {
-                  "description": "Model status",
-                  "enum": [
-                    "created",
-                    "creating",
-                    "downloading",
-                    "error",
-                    "ready"
-                  ]
-                },
-                "id": {
-                  "description": "Model ID",
-                  "format": "uuid",
-                  "readOnly": true
-                },
-                "model-size": {
-                  "description": "Model size (nullable)",
-                  "format": "int64",
-                  "minimum": 0
-                },
-                "created-at": {
-                  "description": "Creation time",
-                  "format": "date-time",
-                  "readOnly": true
-                }
-              }
+              "$ref": "#/components/schemas/list-models-response-entry"
             }
           }
         },
-        "title": "list-models-response",
-        "type": "object"
+        "type": "object",
+        "title": "list-models-response"
       },
       "instance-pool-ref": {
         "type": "object",
@@ -7286,31 +7227,42 @@
         "description": "inference-engine parameter definition",
         "properties": {
           "description": {
-            "description": "Parameter description"
+            "description": "Parameter description",
+            "type": "string"
           },
           "allowed-values": {
             "description": "Allowed values",
-            "items": {}
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "default": {
-            "description": "Default value if nothing is specified"
+            "description": "Default value if nothing is specified",
+            "type": "string"
           },
           "name": {
-            "description": "Parameter name"
+            "description": "Parameter name",
+            "type": "string"
           },
           "section": {
-            "description": "Section"
+            "description": "Section",
+            "type": "string"
           },
           "type": {
-            "description": "Parameter type"
+            "description": "Parameter type",
+            "type": "string"
           },
           "flags": {
             "description": "Flag name",
-            "items": {}
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
-        "title": "inference-engine-parameter-entry",
-        "type": "object"
+        "type": "object",
+        "title": "inference-engine-parameter-entry"
       },
       "dbaas-user-mysql-secrets": {
         "type": "object",
@@ -7434,6 +7386,7 @@
           "gpu-count": {
             "description": "Number of GPUs",
             "format": "int64",
+            "type": "integer",
             "minimum": 1
           },
           "updated-at": {
@@ -7480,28 +7433,21 @@
           "replicas": {
             "description": "Number of replicas (>=0)",
             "format": "int64",
+            "type": "integer",
             "minimum": 0
           },
           "created-at": {
             "description": "Creation time",
             "format": "date-time",
+            "type": "string",
             "readOnly": true
           },
           "model": {
-            "properties": {
-              "name": {
-                "description": "Associated model name",
-                "minLength": 1
-              },
-              "id": {
-                "description": "Associated model ID",
-                "format": "uuid"
-              }
-            }
+            "$ref": "#/components/schemas/model-ref"
           }
         },
-        "title": "list-deployments-response-entry",
-        "type": "object"
+        "type": "object",
+        "title": "list-deployments-response-entry"
       },
       "dbaas-endpoint-elasticsearch-secrets": {
         "type": "object",
@@ -7847,14 +7793,15 @@
           "replicas": {
             "description": "Number of replicas (>=0)",
             "format": "int64",
+            "type": "integer",
             "minimum": 0
           }
         },
+        "type": "object",
         "title": "scale-deployment-request",
         "required": [
           "replicas"
-        ],
-        "type": "object"
+        ]
       },
       "dbaas-integration-type": {
         "type": "object",
@@ -9246,76 +9193,14 @@
         "description": "AI model list",
         "properties": {
           "deployments": {
+            "type": "array",
             "items": {
-              "description": "AI deployment",
-              "properties": {
-                "gpu-count": {
-                  "description": "Number of GPUs",
-                  "format": "int64",
-                  "minimum": 1
-                },
-                "updated-at": {
-                  "description": "Update time",
-                  "format": "date-time",
-                  "readOnly": true
-                },
-                "deployment-url": {
-                  "description": "Deployment URL (nullable)"
-                },
-                "service-level": {
-                  "description": "Service level",
-                  "minLength": 1
-                },
-                "name": {
-                  "description": "Deployment name",
-                  "minLength": 1
-                },
-                "gpu-type": {
-                  "description": "GPU type family",
-                  "minLength": 1
-                },
-                "status": {
-                  "description": "Deployment status",
-                  "enum": [
-                    "creating",
-                    "deploying",
-                    "error",
-                    "ready"
-                  ]
-                },
-                "id": {
-                  "description": "Deployment ID",
-                  "format": "uuid",
-                  "readOnly": true
-                },
-                "replicas": {
-                  "description": "Number of replicas (>=0)",
-                  "format": "int64",
-                  "minimum": 0
-                },
-                "created-at": {
-                  "description": "Creation time",
-                  "format": "date-time",
-                  "readOnly": true
-                },
-                "model": {
-                  "properties": {
-                    "name": {
-                      "description": "Associated model name",
-                      "minLength": 1
-                    },
-                    "id": {
-                      "description": "Associated model ID",
-                      "format": "uuid"
-                    }
-                  }
-                }
-              }
+              "$ref": "#/components/schemas/list-deployments-response-entry"
             }
           }
         },
-        "title": "list-deployments-response",
-        "type": "object"
+        "type": "object",
+        "title": "list-deployments-response"
       },
       "anti-affinity-group": {
         "type": "object",
@@ -9465,16 +9350,18 @@
           "model-size": {
             "description": "Model size (nullable)",
             "format": "int64",
+            "type": "integer",
             "minimum": 0
           },
           "created-at": {
             "description": "Creation time",
             "format": "date-time",
+            "type": "string",
             "readOnly": true
           }
         },
-        "title": "get-model-response",
-        "type": "object"
+        "type": "object",
+        "title": "get-model-response"
       },
       "dbaas-endpoint-elasticsearch-input-update": {
         "type": "object",
@@ -9645,16 +9532,18 @@
           "model-size": {
             "description": "Model size (nullable)",
             "format": "int64",
+            "type": "integer",
             "minimum": 0
           },
           "created-at": {
             "description": "Creation time",
             "format": "date-time",
+            "type": "string",
             "readOnly": true
           }
         },
-        "title": "list-models-response-entry",
-        "type": "object"
+        "type": "object",
+        "title": "list-models-response-entry"
       },
       "dbaas-endpoint-opensearch-input-create": {
         "type": "object",
@@ -9712,12 +9601,13 @@
           "gpu": {
             "description": "Total GPU count",
             "format": "int64",
+            "type": "integer",
             "readOnly": true,
             "minimum": 0
           }
         },
-        "title": "get-organization-usage-response",
-        "type": "object"
+        "type": "object",
+        "title": "get-organization-usage-response"
       },
       "dbaas-service-type-name": {
         "type": "string",
@@ -11334,37 +11224,33 @@
             "minLength": 1
           },
           "gpu-type": {
-            "description": "GPU type family (e.g., gpua5000, gpu3080ti)"
+            "description": "GPU type family (e.g., gpua5000, gpu3080ti)",
+            "type": "string"
           },
           "replicas": {
             "description": "Number of replicas (>=1)",
             "format": "int64",
+            "type": "integer",
             "minimum": 1
           },
           "inference-engine-parameters": {
             "description": "Optional extra inference engine server CLI args",
-            "items": {}
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "model": {
-            "properties": {
-              "name": {
-                "description": "Associated model name",
-                "minLength": 1
-              },
-              "id": {
-                "description": "Associated model ID",
-                "format": "uuid"
-              }
-            }
+            "$ref": "#/components/schemas/model-ref"
           }
         },
+        "type": "object",
         "title": "create-deployment-request",
         "required": [
-          "gpu-count",
           "gpu-type",
+          "gpu-count",
           "replicas"
-        ],
-        "type": "object"
+        ]
       },
       "enum-migration-method": {
         "type": "string",
@@ -12493,14 +12379,15 @@
     },
     "/ai/help/inference-engine-parameters": {
       "get": {
-        "tags": [],
+        "tags": [
+          "deployment"
+        ],
         "responses": {
           "200": {
             "description": "200",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "title",
                   "$ref": "#/components/schemas/get-inference-engine-help-response"
                 }
               }
@@ -13444,6 +13331,121 @@
         "operationId": "update-dbaas-external-endpoint-elasticsearch"
       }
     },
+    "/ai/model": {
+      "post": {
+        "tags": [
+          "model"
+        ],
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "User Operation",
+                  "properties": {
+                    "state": {
+                      "description": "Operation state",
+                      "enum": [
+                        "failure",
+                        "pending",
+                        "success",
+                        "timeout"
+                      ]
+                    },
+                    "reason": {
+                      "description": "Failure reason",
+                      "enum": [
+                        "busy",
+                        "conflict",
+                        "fault",
+                        "forbidden",
+                        "incorrect",
+                        "interrupted",
+                        "not-found",
+                        "partial",
+                        "unavailable",
+                        "unknown",
+                        "unsupported"
+                      ]
+                    },
+                    "id": {
+                      "description": "Operation ID",
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "resource": {
+                      "description": "Related resource",
+                      "properties": {
+                        "type": {
+                          "description": "Resource type",
+                          "type": "string"
+                        },
+                        "id": {
+                          "description": "Resource ID",
+                          "format": "uuid",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "type"
+                      ]
+                    },
+                    "message": {
+                      "description": "Failure message",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "state",
+                    "resource"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Model files will be downloaded from Huggingface.\n\nName must be the exact name of the model on huggingface (ex: openai/gpt-oss-120b or ggml-org/gpt-oss-120b-GGUF).\n\nIf the model is under a license then you must provide a Huggingface access token for an account that signed the license agreement",
+        "parameters": [],
+        "summary": "[BETA] Create Model",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create-model-request"
+              }
+            }
+          }
+        },
+        "operationId": "create-model"
+      },
+      "get": {
+        "tags": [
+          "model"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/list-models-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "List Models",
+        "parameters": [],
+        "summary": "[BETA] List Models",
+        "operationId": "list-models"
+      }
+    },
     "/dbaas-mysql/{service-name}/user": {
       "post": {
         "tags": [
@@ -13528,6 +13530,110 @@
         "parameters": [],
         "summary": "DBaaS Service Types",
         "operationId": "list-dbaas-service-types"
+      }
+    },
+    "/ai/deployment/{id}/scale": {
+      "post": {
+        "tags": [
+          "deployment"
+        ],
+        "responses": {
+          "202": {
+            "description": "202",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "User Operation",
+                  "properties": {
+                    "state": {
+                      "description": "Operation state",
+                      "enum": [
+                        "failure",
+                        "pending",
+                        "success",
+                        "timeout"
+                      ]
+                    },
+                    "reason": {
+                      "description": "Failure reason",
+                      "enum": [
+                        "busy",
+                        "conflict",
+                        "fault",
+                        "forbidden",
+                        "incorrect",
+                        "interrupted",
+                        "not-found",
+                        "partial",
+                        "unavailable",
+                        "unknown",
+                        "unsupported"
+                      ]
+                    },
+                    "id": {
+                      "description": "Operation ID",
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "resource": {
+                      "description": "Related resource",
+                      "properties": {
+                        "type": {
+                          "description": "Resource type",
+                          "type": "string"
+                        },
+                        "id": {
+                          "description": "Resource ID",
+                          "format": "uuid",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "type"
+                      ]
+                    },
+                    "message": {
+                      "description": "Failure message",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "state",
+                    "resource"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Scale Deployment",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Scale Deployment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/scale-deployment-request"
+              }
+            }
+          }
+        },
+        "operationId": "scale-deployment"
       }
     },
     "/instance-type/{id}": {
@@ -14401,6 +14507,141 @@
         "parameters": [],
         "summary": "List Compute instance Types",
         "operationId": "list-instance-types"
+      }
+    },
+    "/ai/deployment": {
+      "post": {
+        "tags": [
+          "deployment"
+        ],
+        "responses": {
+          "412": {
+            "description": "412",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "User Operation",
+                  "properties": {
+                    "state": {
+                      "description": "Operation state",
+                      "enum": [
+                        "failure",
+                        "pending",
+                        "success",
+                        "timeout"
+                      ]
+                    },
+                    "reason": {
+                      "description": "Failure reason",
+                      "enum": [
+                        "busy",
+                        "conflict",
+                        "fault",
+                        "forbidden",
+                        "incorrect",
+                        "interrupted",
+                        "not-found",
+                        "partial",
+                        "unavailable",
+                        "unknown",
+                        "unsupported"
+                      ]
+                    },
+                    "id": {
+                      "description": "Operation ID",
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "resource": {
+                      "description": "Related resource",
+                      "properties": {
+                        "type": {
+                          "description": "Resource type",
+                          "type": "string"
+                        },
+                        "id": {
+                          "description": "Resource ID",
+                          "format": "uuid",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "type"
+                      ]
+                    },
+                    "message": {
+                      "description": "Failure message",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "state",
+                    "resource"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Deploy a model on an inference server",
+        "parameters": [],
+        "summary": "[BETA] Create Deployment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create-deployment-request"
+              }
+            }
+          }
+        },
+        "operationId": "create-deployment"
+      },
+      "get": {
+        "tags": [
+          "deployment"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/list-deployments-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "List Deployments",
+        "parameters": [],
+        "summary": "[BETA] List Deployments",
+        "operationId": "list-deployments"
       }
     },
     "/dbaas-postgres/{service-name}/database/{database-name}": {
@@ -15332,41 +15573,6 @@
         "operationId": "get-block-storage-snapshot"
       }
     },
-    "/deployment/{deployment-uuid}/api-key": {
-      "get": {
-        "tags": [],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "AI deployment inference endpoint authentication key",
-                  "properties": {
-                    "api-key": {}
-                  },
-                  "title": "title",
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "description": "Get Deployment API Key",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "deployment-uuid",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "reveal-deployment-api-key"
-      }
-    },
     "/dbaas-postgres/{service-name}/user": {
       "post": {
         "tags": [
@@ -16126,6 +16332,47 @@
       }
     },
     "/ai/deployment/{id}": {
+      "get": {
+        "tags": [
+          "deployment"
+        ],
+        "responses": {
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/get-deployment-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get Deployment details",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Get Deployment",
+        "operationId": "get-deployment"
+      },
       "patch": {
         "tags": [
           "deployment"
@@ -16193,7 +16440,6 @@
                     }
                   },
                   "type": "object",
-                  "title": "title",
                   "required": [
                     "id",
                     "state",
@@ -16222,13 +16468,104 @@
           "content": {
             "application/json": {
               "schema": {
-                "title": "title",
                 "$ref": "#/components/schemas/patch-deployment-request"
               }
             }
           }
         },
         "operationId": "patch-deployment"
+      },
+      "delete": {
+        "tags": [
+          "deployment"
+        ],
+        "responses": {
+          "202": {
+            "description": "202",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "User Operation",
+                  "properties": {
+                    "state": {
+                      "description": "Operation state",
+                      "enum": [
+                        "failure",
+                        "pending",
+                        "success",
+                        "timeout"
+                      ]
+                    },
+                    "reason": {
+                      "description": "Failure reason",
+                      "enum": [
+                        "busy",
+                        "conflict",
+                        "fault",
+                        "forbidden",
+                        "incorrect",
+                        "interrupted",
+                        "not-found",
+                        "partial",
+                        "unavailable",
+                        "unknown",
+                        "unsupported"
+                      ]
+                    },
+                    "id": {
+                      "description": "Operation ID",
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "resource": {
+                      "description": "Related resource",
+                      "properties": {
+                        "type": {
+                          "description": "Resource type",
+                          "type": "string"
+                        },
+                        "id": {
+                          "description": "Resource ID",
+                          "format": "uuid",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "type"
+                      ]
+                    },
+                    "message": {
+                      "description": "Failure message",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "state",
+                    "resource"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Delete Deployment",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Delete Deployment",
+        "operationId": "delete-deployment"
       }
     },
     "/dbaas-kafka/{service-name}/connect/password/reveal": {
@@ -16929,211 +17266,6 @@
         ],
         "summary": "Reset a Load Balancer field to its default value",
         "operationId": "reset-load-balancer-field"
-      }
-    },
-    "/deployment/{id}": {
-      "get": {
-        "tags": [],
-        "responses": {
-          "404": {
-            "description": "404",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "Error",
-                  "properties": {
-                    "error": {
-                      "description": "Error description",
-                      "readOnly": true
-                    }
-                  },
-                  "title": "title",
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "AI deployment",
-                  "properties": {
-                    "gpu-count": {
-                      "description": "Number of GPUs",
-                      "format": "int64",
-                      "minimum": 1
-                    },
-                    "updated-at": {
-                      "description": "Update time",
-                      "format": "date-time",
-                      "readOnly": true
-                    },
-                    "deployment-url": {
-                      "description": "Deployment URL (nullable)"
-                    },
-                    "service-level": {
-                      "description": "Service level",
-                      "minLength": 1
-                    },
-                    "name": {
-                      "description": "Deployment name",
-                      "minLength": 1
-                    },
-                    "status-details": {
-                      "description": "Deployment status details"
-                    },
-                    "gpu-type": {
-                      "description": "GPU type family",
-                      "minLength": 1
-                    },
-                    "status": {
-                      "description": "Deployment status",
-                      "enum": [
-                        "creating",
-                        "deploying",
-                        "error",
-                        "ready"
-                      ]
-                    },
-                    "id": {
-                      "description": "Deployment ID",
-                      "format": "uuid",
-                      "readOnly": true
-                    },
-                    "replicas": {
-                      "description": "Number of replicas (>=0)",
-                      "format": "int64",
-                      "minimum": 0
-                    },
-                    "created-at": {
-                      "description": "Creation time",
-                      "format": "date-time",
-                      "readOnly": true
-                    },
-                    "inference-engine-parameters": {
-                      "description": "Optional extra inference engine server CLI args",
-                      "items": {}
-                    },
-                    "model": {
-                      "properties": {
-                        "name": {
-                          "description": "Associated model name",
-                          "minLength": 1
-                        },
-                        "id": {
-                          "description": "Associated model ID",
-                          "format": "uuid"
-                        }
-                      }
-                    }
-                  },
-                  "title": "title",
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "description": "Get Deployment details",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "get-deployment"
-      },
-      "delete": {
-        "tags": [],
-        "responses": {
-          "202": {
-            "description": "202",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "User Operation",
-                  "properties": {
-                    "state": {
-                      "description": "Operation state",
-                      "enum": [
-                        "failure",
-                        "pending",
-                        "success",
-                        "timeout"
-                      ]
-                    },
-                    "reason": {
-                      "description": "Failure reason",
-                      "enum": [
-                        "busy",
-                        "conflict",
-                        "fault",
-                        "forbidden",
-                        "incorrect",
-                        "interrupted",
-                        "not-found",
-                        "partial",
-                        "unavailable",
-                        "unknown",
-                        "unsupported"
-                      ]
-                    },
-                    "id": {
-                      "description": "Operation ID",
-                      "format": "uuid"
-                    },
-                    "resource": {
-                      "description": "Related resource",
-                      "properties": {
-                        "type": {
-                          "description": "Resource type"
-                        },
-                        "id": {
-                          "description": "Resource ID",
-                          "format": "uuid"
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "type"
-                      ]
-                    },
-                    "message": {
-                      "description": "Failure message"
-                    }
-                  },
-                  "title": "title",
-                  "required": [
-                    "id",
-                    "resource",
-                    "state"
-                  ],
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "description": "Delete Deployment",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "delete-deployment"
       }
     },
     "/instance/{id}:scale": {
@@ -19101,263 +19233,6 @@
         "operationId": "create-dbaas-external-endpoint-opensearch"
       }
     },
-    "/deployment": {
-      "post": {
-        "tags": [],
-        "responses": {
-          "412": {
-            "description": "412",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "Error",
-                  "properties": {
-                    "error": {
-                      "description": "Error description",
-                      "readOnly": true
-                    }
-                  },
-                  "title": "title",
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "400",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "Error",
-                  "properties": {
-                    "error": {
-                      "description": "Error description",
-                      "readOnly": true
-                    }
-                  },
-                  "title": "title",
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "201",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "User Operation",
-                  "properties": {
-                    "state": {
-                      "description": "Operation state",
-                      "enum": [
-                        "failure",
-                        "pending",
-                        "success",
-                        "timeout"
-                      ]
-                    },
-                    "reason": {
-                      "description": "Failure reason",
-                      "enum": [
-                        "busy",
-                        "conflict",
-                        "fault",
-                        "forbidden",
-                        "incorrect",
-                        "interrupted",
-                        "not-found",
-                        "partial",
-                        "unavailable",
-                        "unknown",
-                        "unsupported"
-                      ]
-                    },
-                    "id": {
-                      "description": "Operation ID",
-                      "format": "uuid"
-                    },
-                    "resource": {
-                      "description": "Related resource",
-                      "properties": {
-                        "type": {
-                          "description": "Resource type"
-                        },
-                        "id": {
-                          "description": "Resource ID",
-                          "format": "uuid"
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "type"
-                      ]
-                    },
-                    "message": {
-                      "description": "Failure message"
-                    }
-                  },
-                  "title": "title",
-                  "required": [
-                    "id",
-                    "resource",
-                    "state"
-                  ],
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "description": "Create Deployment",
-        "parameters": [],
-        "summary": "",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "description": "Deployment an AI model onto a set of GPUs",
-                "properties": {
-                  "gpu-count": {
-                    "description": "Number of GPUs (1-8)",
-                    "format": "int64",
-                    "minimum": 1
-                  },
-                  "name": {
-                    "description": "Deployment name",
-                    "minLength": 1
-                  },
-                  "gpu-type": {
-                    "description": "GPU type family (e.g., gpua5000, gpu3080ti)"
-                  },
-                  "replicas": {
-                    "description": "Number of replicas (>=1)",
-                    "format": "int64",
-                    "minimum": 1
-                  },
-                  "inference-engine-parameters": {
-                    "description": "Optional extra inference engine server CLI args",
-                    "items": {}
-                  },
-                  "model": {
-                    "properties": {
-                      "name": {
-                        "description": "Associated model name",
-                        "minLength": 1
-                      },
-                      "id": {
-                        "description": "Associated model ID",
-                        "format": "uuid"
-                      }
-                    }
-                  }
-                },
-                "title": "title",
-                "required": [
-                  "gpu-count",
-                  "gpu-type",
-                  "replicas"
-                ],
-                "type": "object"
-              }
-            }
-          }
-        },
-        "operationId": "create-deployment"
-      },
-      "get": {
-        "tags": [],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "AI model list",
-                  "properties": {
-                    "deployments": {
-                      "items": {
-                        "description": "AI deployment",
-                        "properties": {
-                          "gpu-count": {
-                            "description": "Number of GPUs",
-                            "format": "int64",
-                            "minimum": 1
-                          },
-                          "updated-at": {
-                            "description": "Update time",
-                            "format": "date-time",
-                            "readOnly": true
-                          },
-                          "deployment-url": {
-                            "description": "Deployment URL (nullable)"
-                          },
-                          "service-level": {
-                            "description": "Service level",
-                            "minLength": 1
-                          },
-                          "name": {
-                            "description": "Deployment name",
-                            "minLength": 1
-                          },
-                          "gpu-type": {
-                            "description": "GPU type family",
-                            "minLength": 1
-                          },
-                          "status": {
-                            "description": "Deployment status",
-                            "enum": [
-                              "creating",
-                              "deploying",
-                              "error",
-                              "ready"
-                            ]
-                          },
-                          "id": {
-                            "description": "Deployment ID",
-                            "format": "uuid",
-                            "readOnly": true
-                          },
-                          "replicas": {
-                            "description": "Number of replicas (>=0)",
-                            "format": "int64",
-                            "minimum": 0
-                          },
-                          "created-at": {
-                            "description": "Creation time",
-                            "format": "date-time",
-                            "readOnly": true
-                          },
-                          "model": {
-                            "properties": {
-                              "name": {
-                                "description": "Associated model name",
-                                "minLength": 1
-                              },
-                              "id": {
-                                "description": "Associated model ID",
-                                "format": "uuid"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "title": "title",
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "description": "List Deployments",
-        "parameters": [],
-        "summary": "",
-        "operationId": "list-deployments"
-      }
-    },
     "/dbaas-mysql/{service-name}/database/{database-name}": {
       "delete": {
         "tags": [
@@ -20748,6 +20623,151 @@
         "operationId": "reset-dbaas-opensearch-user-password"
       }
     },
+    "/ai/model/{id}": {
+      "delete": {
+        "tags": [
+          "model"
+        ],
+        "responses": {
+          "412": {
+            "description": "412",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/delete-model-conflict-response"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "202",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "User Operation",
+                  "properties": {
+                    "state": {
+                      "description": "Operation state",
+                      "enum": [
+                        "failure",
+                        "pending",
+                        "success",
+                        "timeout"
+                      ]
+                    },
+                    "reason": {
+                      "description": "Failure reason",
+                      "enum": [
+                        "busy",
+                        "conflict",
+                        "fault",
+                        "forbidden",
+                        "incorrect",
+                        "interrupted",
+                        "not-found",
+                        "partial",
+                        "unavailable",
+                        "unknown",
+                        "unsupported"
+                      ]
+                    },
+                    "id": {
+                      "description": "Operation ID",
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "resource": {
+                      "description": "Related resource",
+                      "properties": {
+                        "type": {
+                          "description": "Resource type",
+                          "type": "string"
+                        },
+                        "id": {
+                          "description": "Resource ID",
+                          "format": "uuid",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "type"
+                      ]
+                    },
+                    "message": {
+                      "description": "Failure message",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "state",
+                    "resource"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Delete Model",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Delete Model",
+        "operationId": "delete-model"
+      },
+      "get": {
+        "tags": [
+          "model"
+        ],
+        "responses": {
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/get-model-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get Model details",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Get Model",
+        "operationId": "get-model"
+      }
+    },
     "/sos-buckets-usage": {
       "get": {
         "tags": [
@@ -21082,195 +21102,6 @@
           }
         },
         "operationId": "detach-instance-from-elastic-ip"
-      }
-    },
-    "/model/{id}": {
-      "delete": {
-        "tags": [],
-        "responses": {
-          "412": {
-            "description": "412",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "Model is in use: deletion forbidden",
-                  "properties": {
-                    "deployments": {
-                      "description": "Deployments using models",
-                      "items": {}
-                    }
-                  },
-                  "title": "title",
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "202": {
-            "description": "202",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "User Operation",
-                  "properties": {
-                    "state": {
-                      "description": "Operation state",
-                      "enum": [
-                        "failure",
-                        "pending",
-                        "success",
-                        "timeout"
-                      ]
-                    },
-                    "reason": {
-                      "description": "Failure reason",
-                      "enum": [
-                        "busy",
-                        "conflict",
-                        "fault",
-                        "forbidden",
-                        "incorrect",
-                        "interrupted",
-                        "not-found",
-                        "partial",
-                        "unavailable",
-                        "unknown",
-                        "unsupported"
-                      ]
-                    },
-                    "id": {
-                      "description": "Operation ID",
-                      "format": "uuid"
-                    },
-                    "resource": {
-                      "description": "Related resource",
-                      "properties": {
-                        "type": {
-                          "description": "Resource type"
-                        },
-                        "id": {
-                          "description": "Resource ID",
-                          "format": "uuid"
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "type"
-                      ]
-                    },
-                    "message": {
-                      "description": "Failure message"
-                    }
-                  },
-                  "title": "title",
-                  "required": [
-                    "id",
-                    "resource",
-                    "state"
-                  ],
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "description": "Delete Model",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "delete-model"
-      },
-      "get": {
-        "tags": [],
-        "responses": {
-          "404": {
-            "description": "404",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "Error",
-                  "properties": {
-                    "error": {
-                      "description": "Error description",
-                      "readOnly": true
-                    }
-                  },
-                  "title": "title",
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "AI model",
-                  "properties": {
-                    "updated-at": {
-                      "description": "Update time",
-                      "format": "date-time",
-                      "readOnly": true
-                    },
-                    "name": {
-                      "description": "Model name",
-                      "minLength": 1
-                    },
-                    "status": {
-                      "description": "Model status",
-                      "enum": [
-                        "created",
-                        "creating",
-                        "downloading",
-                        "error",
-                        "ready"
-                      ]
-                    },
-                    "id": {
-                      "description": "Model ID",
-                      "format": "uuid",
-                      "readOnly": true
-                    },
-                    "model-size": {
-                      "description": "Model size (nullable)",
-                      "format": "int64",
-                      "minimum": 0
-                    },
-                    "created-at": {
-                      "description": "Creation time",
-                      "format": "date-time",
-                      "readOnly": true
-                    }
-                  },
-                  "title": "title",
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "description": "Get Model details",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "get-model"
       }
     },
     "/dbaas-mysql/{name}/enable/writes": {
@@ -21770,111 +21601,6 @@
           }
         },
         "operationId": "promote-snapshot-to-template"
-      }
-    },
-    "/deployment/{deployment-uuid}/logs": {
-      "get": {
-        "tags": [],
-        "responses": {
-          "500": {
-            "description": "500",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "Error",
-                  "properties": {
-                    "error": {
-                      "description": "Error description",
-                      "readOnly": true
-                    }
-                  },
-                  "title": "title",
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "404",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "Error",
-                  "properties": {
-                    "error": {
-                      "description": "Error description",
-                      "readOnly": true
-                    }
-                  },
-                  "title": "title",
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "Deployment logs",
-                  "properties": {
-                    "logs": {
-                      "description": "List of log entries",
-                      "items": {
-                        "description": "A single log entry",
-                        "properties": {
-                          "time": {
-                            "description": "Timestamp of the log entry"
-                          },
-                          "node": {
-                            "description": "Node identifier"
-                          },
-                          "message": {
-                            "description": "Log message content"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "title": "title",
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "400",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "Error",
-                  "properties": {
-                    "error": {
-                      "description": "Error description",
-                      "readOnly": true
-                    }
-                  },
-                  "title": "title",
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "description": "Get Deployment Logs",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "deployment-uuid",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "summary": "",
-        "operationId": "get-deployment-logs"
       }
     },
     "/sks-cluster": {
@@ -25322,157 +25048,67 @@
         "operationId": "reset-dbaas-kafka-user-password"
       }
     },
-    "/model": {
-      "post": {
-        "tags": [],
+    "/ai/deployment/{deployment-uuid}/logs": {
+      "get": {
+        "tags": [
+          "deployment"
+        ],
         "responses": {
-          "201": {
-            "description": "201",
+          "500": {
+            "description": "500",
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "User Operation",
-                  "properties": {
-                    "state": {
-                      "description": "Operation state",
-                      "enum": [
-                        "failure",
-                        "pending",
-                        "success",
-                        "timeout"
-                      ]
-                    },
-                    "reason": {
-                      "description": "Failure reason",
-                      "enum": [
-                        "busy",
-                        "conflict",
-                        "fault",
-                        "forbidden",
-                        "incorrect",
-                        "interrupted",
-                        "not-found",
-                        "partial",
-                        "unavailable",
-                        "unknown",
-                        "unsupported"
-                      ]
-                    },
-                    "id": {
-                      "description": "Operation ID",
-                      "format": "uuid"
-                    },
-                    "resource": {
-                      "description": "Related resource",
-                      "properties": {
-                        "type": {
-                          "description": "Resource type"
-                        },
-                        "id": {
-                          "description": "Resource ID",
-                          "format": "uuid"
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "type"
-                      ]
-                    },
-                    "message": {
-                      "description": "Failure message"
-                    }
-                  },
-                  "title": "title",
-                  "required": [
-                    "id",
-                    "resource",
-                    "state"
-                  ],
-                  "type": "object"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
-          }
-        },
-        "description": "Create Model",
-        "parameters": [],
-        "summary": "",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "title": "title",
-                "$ref": "#/components/schemas/create-model-request"
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
               }
             }
-          }
-        },
-        "operationId": "create-model"
-      },
-      "get": {
-        "tags": [],
-        "responses": {
+          },
           "200": {
             "description": "200",
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "AI model list",
-                  "properties": {
-                    "models": {
-                      "items": {
-                        "description": "AI model",
-                        "properties": {
-                          "updated-at": {
-                            "description": "Update time",
-                            "format": "date-time",
-                            "readOnly": true
-                          },
-                          "name": {
-                            "description": "Model name",
-                            "minLength": 1
-                          },
-                          "status": {
-                            "description": "Model status",
-                            "enum": [
-                              "created",
-                              "creating",
-                              "downloading",
-                              "error",
-                              "ready"
-                            ]
-                          },
-                          "id": {
-                            "description": "Model ID",
-                            "format": "uuid",
-                            "readOnly": true
-                          },
-                          "model-size": {
-                            "description": "Model size (nullable)",
-                            "format": "int64",
-                            "minimum": 0
-                          },
-                          "created-at": {
-                            "description": "Creation time",
-                            "format": "date-time",
-                            "readOnly": true
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "title": "title",
-                  "type": "object"
+                  "$ref": "#/components/schemas/get-deployment-logs-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
           }
         },
-        "description": "List Models",
-        "parameters": [],
-        "summary": "",
-        "operationId": "list-models"
+        "description": "Return logs for the vLLM deployment (deploy/<release-name>--deployment-vllm). Optional ?stream=true to request streaming (may not be supported).",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "deployment-uuid",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Get Deployment Logs",
+        "operationId": "get-deployment-logs"
       }
     },
     "/dbaas-opensearch/{service-name}/user/{username}/password/reveal": {
@@ -25545,6 +25181,39 @@
         ],
         "summary": "Initiate Valkey maintenance update",
         "operationId": "start-dbaas-valkey-maintenance"
+      }
+    },
+    "/ai/deployment/{deployment-uuid}/api-key": {
+      "get": {
+        "tags": [
+          "deployment"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/reveal-deployment-api-key-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get Deployment API Key",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "deployment-uuid",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Reveal Deployment API Key",
+        "operationId": "reveal-deployment-api-key"
       }
     },
     "/dbaas-opensearch/{name}": {
@@ -27545,115 +27214,6 @@
         "parameters": [],
         "summary": "List Users",
         "operationId": "list-users"
-      }
-    },
-    "/deployment/{id}/scale": {
-      "post": {
-        "tags": [],
-        "responses": {
-          "202": {
-            "description": "202",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "User Operation",
-                  "properties": {
-                    "state": {
-                      "description": "Operation state",
-                      "enum": [
-                        "failure",
-                        "pending",
-                        "success",
-                        "timeout"
-                      ]
-                    },
-                    "reason": {
-                      "description": "Failure reason",
-                      "enum": [
-                        "busy",
-                        "conflict",
-                        "fault",
-                        "forbidden",
-                        "incorrect",
-                        "interrupted",
-                        "not-found",
-                        "partial",
-                        "unavailable",
-                        "unknown",
-                        "unsupported"
-                      ]
-                    },
-                    "id": {
-                      "description": "Operation ID",
-                      "format": "uuid"
-                    },
-                    "resource": {
-                      "description": "Related resource",
-                      "properties": {
-                        "type": {
-                          "description": "Resource type"
-                        },
-                        "id": {
-                          "description": "Resource ID",
-                          "format": "uuid"
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "type"
-                      ]
-                    },
-                    "message": {
-                      "description": "Failure message"
-                    }
-                  },
-                  "title": "title",
-                  "required": [
-                    "id",
-                    "resource",
-                    "state"
-                  ],
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "description": "Scale Deployment",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "summary": "",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "description": "Scale AI deployment",
-                "properties": {
-                  "replicas": {
-                    "description": "Number of replicas (>=0)",
-                    "format": "int64",
-                    "minimum": 0
-                  }
-                },
-                "title": "title",
-                "required": [
-                  "replicas"
-                ],
-                "type": "object"
-              }
-            }
-          }
-        },
-        "operationId": "scale-deployment"
       }
     },
     "/sks-cluster/{id}/upgrade": {

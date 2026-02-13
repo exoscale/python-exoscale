@@ -700,8 +700,7 @@
             }
           }
         },
-        "type": "object",
-        "title": "get-deployment-logs-response"
+        "type": "object"
       },
       "json-schema-schema-registry": {
         "additionalProperties": false,
@@ -853,8 +852,7 @@
             "type": "string"
           }
         },
-        "type": "object",
-        "title": "model-ref"
+        "type": "object"
       },
       "dbaas-pg-pool-size": {
         "type": "integer",
@@ -1016,8 +1014,7 @@
             "type": "string"
           }
         },
-        "type": "object",
-        "title": "get-deployment-logs-entry"
+        "type": "object"
       },
       "anti-affinity-group-ref": {
         "type": "object",
@@ -1089,8 +1086,7 @@
             }
           }
         },
-        "type": "object",
-        "title": "get-inference-engine-help-response"
+        "type": "object"
       },
       "dbaas-user-valkey-secrets": {
         "type": "object",
@@ -1830,8 +1826,7 @@
             }
           }
         },
-        "type": "object",
-        "title": "delete-model-conflict-response"
+        "type": "object"
       },
       "dbaas-service-type": {
         "type": "object",
@@ -2403,8 +2398,7 @@
             "type": "string"
           }
         },
-        "type": "object",
-        "title": "create-model-request"
+        "type": "object"
       },
       "inference-engine-version": {
         "description": "Inference engine version",
@@ -2413,8 +2407,7 @@
           "0.15.1"
         ],
         "default": "0.12.0",
-        "type": "object",
-        "title": "inference-engine-version"
+        "type": "string"
       },
       "dbaas-user-opensearch-secrets": {
         "type": "object",
@@ -2463,8 +2456,7 @@
             "type": "string"
           }
         },
-        "type": "object",
-        "title": "reveal-deployment-api-key-response"
+        "type": "object"
       },
       "json-schema-kafka": {
         "additionalProperties": false,
@@ -5425,8 +5417,7 @@
             "readOnly": true
           }
         },
-        "type": "object",
-        "title": "error-response"
+        "type": "object"
       },
       "enum-kafka-auth-method": {
         "type": "string",
@@ -5679,8 +5670,7 @@
             }
           }
         },
-        "type": "object",
-        "title": "update-deployment-request"
+        "type": "object"
       },
       "enum-service-state": {
         "type": "string",
@@ -6498,8 +6488,7 @@
             "$ref": "#/components/schemas/model-ref"
           }
         },
-        "type": "object",
-        "title": "get-deployment-response"
+        "type": "object"
       },
       "iam-policy": {
         "type": "object",
@@ -6948,8 +6937,7 @@
             }
           }
         },
-        "type": "object",
-        "title": "list-models-response"
+        "type": "object"
       },
       "instance-pool-ref": {
         "type": "object",
@@ -7272,8 +7260,7 @@
             }
           }
         },
-        "type": "object",
-        "title": "inference-engine-parameter-entry"
+        "type": "object"
       },
       "dbaas-user-mysql-secrets": {
         "type": "object",
@@ -7457,8 +7444,7 @@
             "$ref": "#/components/schemas/model-ref"
           }
         },
-        "type": "object",
-        "title": "list-deployments-response-entry"
+        "type": "object"
       },
       "dbaas-endpoint-elasticsearch-secrets": {
         "type": "object",
@@ -7809,7 +7795,6 @@
           }
         },
         "type": "object",
-        "title": "scale-deployment-request",
         "required": [
           "replicas"
         ]
@@ -9210,8 +9195,7 @@
             }
           }
         },
-        "type": "object",
-        "title": "list-deployments-response"
+        "type": "object"
       },
       "anti-affinity-group": {
         "type": "object",
@@ -9371,8 +9355,7 @@
             "readOnly": true
           }
         },
-        "type": "object",
-        "title": "get-model-response"
+        "type": "object"
       },
       "dbaas-endpoint-elasticsearch-input-update": {
         "type": "object",
@@ -9553,8 +9536,7 @@
             "readOnly": true
           }
         },
-        "type": "object",
-        "title": "list-models-response-entry"
+        "type": "object"
       },
       "dbaas-endpoint-opensearch-input-create": {
         "type": "object",
@@ -9617,8 +9599,7 @@
             "minimum": 0
           }
         },
-        "type": "object",
-        "title": "get-organization-usage-response"
+        "type": "object"
       },
       "dbaas-service-type-name": {
         "type": "string",
@@ -11256,7 +11237,6 @@
           }
         },
         "type": "object",
-        "title": "create-deployment-request",
         "required": [
           "gpu-type",
           "gpu-count",

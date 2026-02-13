@@ -780,28 +780,6 @@
         },
         "description": "Resource"
       },
-      "patch-deployment-request": {
-        "description": "Update AI deployment",
-        "properties": {
-          "inference-engine-version": {
-            "$ref": "#/components/schemas/inference-engine-version"
-          },
-          "name": {
-            "description": "Deployment name",
-            "type": "string",
-            "minLength": 1
-          },
-          "inference-engine-parameters": {
-            "description": "Optional extra inference engine server CLI args",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "type": "object",
-        "title": "patch-deployment-request"
-      },
       "dbaas-kafka-topic-acl-entry": {
         "type": "object",
         "properties": {
@@ -5682,6 +5660,28 @@
         },
         "description": "Kubernetes Audit parameters"
       },
+      "update-deployment-request": {
+        "description": "Update AI deployment",
+        "properties": {
+          "inference-engine-version": {
+            "$ref": "#/components/schemas/inference-engine-version"
+          },
+          "name": {
+            "description": "Deployment name",
+            "type": "string",
+            "minLength": 1
+          },
+          "inference-engine-parameters": {
+            "description": "Optional extra inference engine server CLI args",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "type": "object",
+        "title": "update-deployment-request"
+      },
       "enum-service-state": {
         "type": "string",
         "enum": [
@@ -5707,6 +5707,17 @@
             }
           }
         }
+      },
+      "snapshot-ref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Snapshot ID"
+          }
+        },
+        "description": "Snapshot reference"
       },
       "private-network-options": {
         "type": "object",
@@ -6990,7 +7001,7 @@
           "anti-affinity-groups": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/anti-affinity-group"
+              "$ref": "#/components/schemas/anti-affinity-group-ref"
             },
             "description": "Instance Anti-affinity Groups"
           },
@@ -7005,14 +7016,14 @@
           "security-groups": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/security-group"
+              "$ref": "#/components/schemas/security-group-ref"
             },
             "description": "Instance Security Groups"
           },
           "elastic-ips": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/elastic-ip"
+              "$ref": "#/components/schemas/elastic-ip-ref"
             },
             "description": "Instance Elastic IPs"
           },
@@ -7082,7 +7093,7 @@
             "description": "Indicates if the instance has tpm enabled"
           },
           "deploy-target": {
-            "$ref": "#/components/schemas/deploy-target",
+            "$ref": "#/components/schemas/deploy-target-ref",
             "description": "Instance Deploy Target"
           },
           "ipv6-address": {
@@ -7099,7 +7110,7 @@
           "snapshots": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/snapshot"
+              "$ref": "#/components/schemas/snapshot-ref"
             },
             "description": "Instance Snapshots"
           },
@@ -13346,73 +13357,12 @@
           "model"
         ],
         "responses": {
-          "201": {
-            "description": "201",
+          "200": {
+            "description": "200",
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "User Operation",
-                  "properties": {
-                    "state": {
-                      "description": "Operation state",
-                      "enum": [
-                        "failure",
-                        "pending",
-                        "success",
-                        "timeout"
-                      ]
-                    },
-                    "reason": {
-                      "description": "Failure reason",
-                      "enum": [
-                        "busy",
-                        "conflict",
-                        "fault",
-                        "forbidden",
-                        "incorrect",
-                        "interrupted",
-                        "not-found",
-                        "partial",
-                        "unavailable",
-                        "unknown",
-                        "unsupported"
-                      ]
-                    },
-                    "id": {
-                      "description": "Operation ID",
-                      "format": "uuid",
-                      "type": "string"
-                    },
-                    "resource": {
-                      "description": "Related resource",
-                      "properties": {
-                        "type": {
-                          "description": "Resource type",
-                          "type": "string"
-                        },
-                        "id": {
-                          "description": "Resource ID",
-                          "format": "uuid",
-                          "type": "string"
-                        }
-                      },
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ]
-                    },
-                    "message": {
-                      "description": "Failure message",
-                      "type": "string"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "id",
-                    "state",
-                    "resource"
-                  ]
+                  "$ref": "#/components/schemas/operation"
                 }
               }
             }
@@ -13547,73 +13497,12 @@
           "deployment"
         ],
         "responses": {
-          "202": {
-            "description": "202",
+          "200": {
+            "description": "200",
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "User Operation",
-                  "properties": {
-                    "state": {
-                      "description": "Operation state",
-                      "enum": [
-                        "failure",
-                        "pending",
-                        "success",
-                        "timeout"
-                      ]
-                    },
-                    "reason": {
-                      "description": "Failure reason",
-                      "enum": [
-                        "busy",
-                        "conflict",
-                        "fault",
-                        "forbidden",
-                        "incorrect",
-                        "interrupted",
-                        "not-found",
-                        "partial",
-                        "unavailable",
-                        "unknown",
-                        "unsupported"
-                      ]
-                    },
-                    "id": {
-                      "description": "Operation ID",
-                      "format": "uuid",
-                      "type": "string"
-                    },
-                    "resource": {
-                      "description": "Related resource",
-                      "properties": {
-                        "type": {
-                          "description": "Resource type",
-                          "type": "string"
-                        },
-                        "id": {
-                          "description": "Resource ID",
-                          "format": "uuid",
-                          "type": "string"
-                        }
-                      },
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ]
-                    },
-                    "message": {
-                      "description": "Failure message",
-                      "type": "string"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "id",
-                    "state",
-                    "resource"
-                  ]
+                  "$ref": "#/components/schemas/operation"
                 }
               }
             }
@@ -14534,83 +14423,22 @@
               }
             }
           },
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          },
           "400": {
             "description": "400",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "201",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "User Operation",
-                  "properties": {
-                    "state": {
-                      "description": "Operation state",
-                      "enum": [
-                        "failure",
-                        "pending",
-                        "success",
-                        "timeout"
-                      ]
-                    },
-                    "reason": {
-                      "description": "Failure reason",
-                      "enum": [
-                        "busy",
-                        "conflict",
-                        "fault",
-                        "forbidden",
-                        "incorrect",
-                        "interrupted",
-                        "not-found",
-                        "partial",
-                        "unavailable",
-                        "unknown",
-                        "unsupported"
-                      ]
-                    },
-                    "id": {
-                      "description": "Operation ID",
-                      "format": "uuid",
-                      "type": "string"
-                    },
-                    "resource": {
-                      "description": "Related resource",
-                      "properties": {
-                        "type": {
-                          "description": "Resource type",
-                          "type": "string"
-                        },
-                        "id": {
-                          "description": "Resource ID",
-                          "format": "uuid",
-                          "type": "string"
-                        }
-                      },
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ]
-                    },
-                    "message": {
-                      "description": "Failure message",
-                      "type": "string"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "id",
-                    "state",
-                    "resource"
-                  ]
                 }
               }
             }
@@ -16387,73 +16215,12 @@
           "deployment"
         ],
         "responses": {
-          "202": {
-            "description": "202",
+          "200": {
+            "description": "200",
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "User Operation",
-                  "properties": {
-                    "state": {
-                      "description": "Operation state",
-                      "enum": [
-                        "failure",
-                        "pending",
-                        "success",
-                        "timeout"
-                      ]
-                    },
-                    "reason": {
-                      "description": "Failure reason",
-                      "enum": [
-                        "busy",
-                        "conflict",
-                        "fault",
-                        "forbidden",
-                        "incorrect",
-                        "interrupted",
-                        "not-found",
-                        "partial",
-                        "unavailable",
-                        "unknown",
-                        "unsupported"
-                      ]
-                    },
-                    "id": {
-                      "description": "Operation ID",
-                      "format": "uuid",
-                      "type": "string"
-                    },
-                    "resource": {
-                      "description": "Related resource",
-                      "properties": {
-                        "type": {
-                          "description": "Resource type",
-                          "type": "string"
-                        },
-                        "id": {
-                          "description": "Resource ID",
-                          "format": "uuid",
-                          "type": "string"
-                        }
-                      },
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ]
-                    },
-                    "message": {
-                      "description": "Failure message",
-                      "type": "string"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "id",
-                    "state",
-                    "resource"
-                  ]
+                  "$ref": "#/components/schemas/operation"
                 }
               }
             }
@@ -16477,85 +16244,24 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/patch-deployment-request"
+                "$ref": "#/components/schemas/update-deployment-request"
               }
             }
           }
         },
-        "operationId": "patch-deployment"
+        "operationId": "update-deployment"
       },
       "delete": {
         "tags": [
           "deployment"
         ],
         "responses": {
-          "202": {
-            "description": "202",
+          "200": {
+            "description": "200",
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "User Operation",
-                  "properties": {
-                    "state": {
-                      "description": "Operation state",
-                      "enum": [
-                        "failure",
-                        "pending",
-                        "success",
-                        "timeout"
-                      ]
-                    },
-                    "reason": {
-                      "description": "Failure reason",
-                      "enum": [
-                        "busy",
-                        "conflict",
-                        "fault",
-                        "forbidden",
-                        "incorrect",
-                        "interrupted",
-                        "not-found",
-                        "partial",
-                        "unavailable",
-                        "unknown",
-                        "unsupported"
-                      ]
-                    },
-                    "id": {
-                      "description": "Operation ID",
-                      "format": "uuid",
-                      "type": "string"
-                    },
-                    "resource": {
-                      "description": "Related resource",
-                      "properties": {
-                        "type": {
-                          "description": "Resource type",
-                          "type": "string"
-                        },
-                        "id": {
-                          "description": "Resource ID",
-                          "format": "uuid",
-                          "type": "string"
-                        }
-                      },
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ]
-                    },
-                    "message": {
-                      "description": "Failure message",
-                      "type": "string"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "id",
-                    "state",
-                    "resource"
-                  ]
+                  "$ref": "#/components/schemas/operation"
                 }
               }
             }
@@ -20648,73 +20354,12 @@
               }
             }
           },
-          "202": {
-            "description": "202",
+          "200": {
+            "description": "200",
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "User Operation",
-                  "properties": {
-                    "state": {
-                      "description": "Operation state",
-                      "enum": [
-                        "failure",
-                        "pending",
-                        "success",
-                        "timeout"
-                      ]
-                    },
-                    "reason": {
-                      "description": "Failure reason",
-                      "enum": [
-                        "busy",
-                        "conflict",
-                        "fault",
-                        "forbidden",
-                        "incorrect",
-                        "interrupted",
-                        "not-found",
-                        "partial",
-                        "unavailable",
-                        "unknown",
-                        "unsupported"
-                      ]
-                    },
-                    "id": {
-                      "description": "Operation ID",
-                      "format": "uuid",
-                      "type": "string"
-                    },
-                    "resource": {
-                      "description": "Related resource",
-                      "properties": {
-                        "type": {
-                          "description": "Resource type",
-                          "type": "string"
-                        },
-                        "id": {
-                          "description": "Resource ID",
-                          "format": "uuid",
-                          "type": "string"
-                        }
-                      },
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "type"
-                      ]
-                    },
-                    "message": {
-                      "description": "Failure message",
-                      "type": "string"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "id",
-                    "state",
-                    "resource"
-                  ]
+                  "$ref": "#/components/schemas/operation"
                 }
               }
             }
@@ -25057,86 +24702,6 @@
         "operationId": "reset-dbaas-kafka-user-password"
       }
     },
-    "/ai/deployment/{deployment-uuid}/logs": {
-      "get": {
-        "tags": [
-          "deployment"
-        ],
-        "responses": {
-          "500": {
-            "description": "500",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "404",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/get-deployment-logs-response"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "400",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          }
-        },
-        "description": "Return logs for the vLLM deployment (deploy/<release-name>--deployment-vllm). Optional ?stream=true to request streaming (may not be supported).",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "deployment-uuid",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "in": "query",
-            "required": false,
-            "name": "stream",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "in": "query",
-            "required": false,
-            "name": "tail",
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "summary": "[BETA] Get Deployment Logs",
-        "operationId": "get-deployment-logs"
-      }
-    },
     "/dbaas-opensearch/{service-name}/user/{username}/password/reveal": {
       "get": {
         "tags": [
@@ -25207,39 +24772,6 @@
         ],
         "summary": "Initiate Valkey maintenance update",
         "operationId": "start-dbaas-valkey-maintenance"
-      }
-    },
-    "/ai/deployment/{deployment-uuid}/api-key": {
-      "get": {
-        "tags": [
-          "deployment"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/reveal-deployment-api-key-response"
-                }
-              }
-            }
-          }
-        },
-        "description": "Get Deployment API Key",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "deployment-uuid",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "[BETA] Reveal Deployment API Key",
-        "operationId": "reveal-deployment-api-key"
       }
     },
     "/dbaas-opensearch/{name}": {
@@ -26625,6 +26157,39 @@
         "operationId": "rotate-sks-operators-ca"
       }
     },
+    "/ai/deployment/{id}/api-key": {
+      "get": {
+        "tags": [
+          "deployment"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/reveal-deployment-api-key-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get Deployment API Key",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Reveal Deployment API Key",
+        "operationId": "reveal-deployment-api-key"
+      }
+    },
     "/anti-affinity-group/{id}": {
       "get": {
         "tags": [
@@ -27240,6 +26805,86 @@
         "parameters": [],
         "summary": "List Users",
         "operationId": "list-users"
+      }
+    },
+    "/ai/deployment/{id}/logs": {
+      "get": {
+        "tags": [
+          "deployment"
+        ],
+        "responses": {
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/get-deployment-logs-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Return logs for the vLLM deployment (deploy/<release-name>--deployment-vllm). Optional ?stream=true to request streaming (may not be supported).",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "stream",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "tail",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "summary": "[BETA] Get Deployment Logs",
+        "operationId": "get-deployment-logs"
       }
     },
     "/sks-cluster/{id}/upgrade": {

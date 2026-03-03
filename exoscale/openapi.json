@@ -839,6 +839,21 @@
           "rsyslog"
         ]
       },
+      "get-confederatio-usage-response": {
+        "description": "GPU usage for all organizations",
+        "properties": {
+          "organizations_usages": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/organization-usage"
+            },
+            "type": "object"
+          }
+        },
+        "type": "object",
+        "required": [
+          "organizations_usages"
+        ]
+      },
       "model-ref": {
         "properties": {
           "name": {
@@ -2398,7 +2413,10 @@
             "type": "string"
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "name"
+        ]
       },
       "inference-engine-version": {
         "description": "Inference engine version",
@@ -5373,6 +5391,18 @@
         },
         "description": "IAM Access Key"
       },
+      "list-ai-instance-types-response": {
+        "description": "List of available instance types with authorization status",
+        "properties": {
+          "instance-types": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/instance-type-entry"
+            }
+          }
+        },
+        "type": "object"
+      },
       "dbaas-endpoint-opensearch-secrets": {
         "type": "object",
         "properties": {
@@ -7773,6 +7803,21 @@
         },
         "description": "Instance Pool"
       },
+      "organization-usage": {
+        "description": "Organization GPU usage",
+        "properties": {
+          "gpu": {
+            "description": "Total GPU count",
+            "format": "int64",
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "gpu"
+        ]
+      },
       "block-storage-volume-ref": {
         "type": "object",
         "properties": {
@@ -8072,6 +8117,20 @@
         "additionalProperties": {
           "type": "string"
         }
+      },
+      "instance-type-entry": {
+        "description": "Instance type with authorization status",
+        "properties": {
+          "family": {
+            "description": "GPU family name",
+            "type": "string"
+          },
+          "authorized": {
+            "description": "Whether this instance type is authorized based on server availability",
+            "type": "boolean"
+          }
+        },
+        "type": "object"
       },
       "enum-integration-types": {
         "type": "string",
@@ -11238,6 +11297,8 @@
         },
         "type": "object",
         "required": [
+          "model",
+          "name",
           "gpu-type",
           "gpu-count",
           "replicas"
@@ -16916,6 +16977,29 @@
         ],
         "summary": "Delete a Private Network",
         "operationId": "delete-private-network"
+      }
+    },
+    "/ai/instance-type": {
+      "get": {
+        "tags": [
+          "deployment"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/list-ai-instance-types-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "List available instance types with authorization status based on GPU availability",
+        "parameters": [],
+        "summary": "List Instance Types",
+        "operationId": "list-ai-instance-types"
       }
     },
     "/load-balancer/{id}/{field}": {
@@ -26353,6 +26437,7 @@
                   },
                   "ssh-key": {
                     "$ref": "#/components/schemas/ssh-key-ref",
+                    "deprecated": true,
                     "description": "Instance SSH Key"
                   },
                   "user-data": {

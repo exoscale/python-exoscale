@@ -8,7 +8,8 @@ on:
       - master
 
 jobs:
-  proxy:
+  fmt:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - name: Set up ruff

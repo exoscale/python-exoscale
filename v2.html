@@ -230,6 +230,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_ssh_key"><code class="docutils literal notranslate"><span class="pre">Client.get_ssh_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_template"><code class="docutils literal notranslate"><span class="pre">Client.get_template()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_usage_report"><code class="docutils literal notranslate"><span class="pre">Client.get_usage_report()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_ai_instance_types"><code class="docutils literal notranslate"><span class="pre">Client.list_ai_instance_types()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_anti_affinity_groups"><code class="docutils literal notranslate"><span class="pre">Client.list_anti_affinity_groups()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_api_keys"><code class="docutils literal notranslate"><span class="pre">Client.list_api_keys()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_block_storage_snapshots"><code class="docutils literal notranslate"><span class="pre">Client.list_block_storage_snapshots()</span></code></a></li>
@@ -338,8 +339,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_service_pg"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_service_pg()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_service_thanos"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_service_thanos()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_service_valkey"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_service_valkey()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_deployment"><code class="docutils literal notranslate"><span class="pre">Client.update_deployment()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dns_domain_record"><code class="docutils literal notranslate"><span class="pre">Client.update_dns_domain_record()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_elastic_ip"><code class="docutils literal notranslate"><span class="pre">Client.update_elastic_ip()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_iam_assume_role_policy"><code class="docutils literal notranslate"><span class="pre">Client.update_iam_assume_role_policy()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_iam_organization_policy"><code class="docutils literal notranslate"><span class="pre">Client.update_iam_organization_policy()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_iam_role"><code class="docutils literal notranslate"><span class="pre">Client.update_iam_role()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_iam_role_policy"><code class="docutils literal notranslate"><span class="pre">Client.update_iam_role_policy()</span></code></a></li>
@@ -1722,16 +1725,23 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>dict</em>)</p></li>
+<li><p><strong>gpu_count</strong> (<em>int</em>) – Number of GPUs (1-8).</p></li>
+<li><p><strong>inference_engine_version</strong> (<em>str</em>) – Inference engine version. Must be one of <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Deployment name.</p></li>
 <li><p><strong>gpu_type</strong> (<em>str</em>) – GPU type family (e.g., gpua5000, gpu3080ti).</p></li>
-<li><p><strong>gpu_count</strong> (<em>int</em>) – Number of GPUs (1-8).</p></li>
 <li><p><strong>replicas</strong> (<em>int</em>) – Number of replicas (&gt;=1).</p></li>
 <li><p><strong>inference_engine_parameters</strong> (<em>list</em>) – Optional extra inference engine server CLI args.</p></li>
+<li><p><strong>model</strong> (<em>dict</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: Operation. A dictionary with the following keys:</p>
+<dd class="field-even"><p><p>dict: Error. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>error</strong> (str): Error description.</p></li>
+</ul>
+</div></blockquote>
+<p>200: dict: Operation. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>id</strong> (str): Operation ID.</p></li>
@@ -1750,7 +1760,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>200</p>
+<dd class="field-odd"><p>412</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1861,6 +1871,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>editable</strong> (<em>bool</em>) – Sets if the IAM Role Policy is editable or not (default: true). This setting cannot be changed after creation.</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – IAM Role labels.</p></li>
 <li><p><strong>policy</strong> (<em>dict</em>) – IAM Role policy.</p></li>
+<li><p><strong>assume_role_policy</strong> (<em>dict</em>) – IAM Assume role policy.</p></li>
+<li><p><strong>max_session_ttl</strong> (<em>int</em>) – Maximum TTL requester is allowed to ask for when assuming a role.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2013,8 +2025,8 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>huggingface_token</strong> (<em>str</em>) – Huggingface Token.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Model name.</p></li>
+<li><p><strong>huggingface_token</strong> (<em>str</em>) – Huggingface Token.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -3287,7 +3299,13 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: Operation. A dictionary with the following keys:</p>
+<dd class="field-even"><p><p>dict: Model is in use: deletion forbidden. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>deployments</strong> (list): Deployments using models.</p></li>
+</ul>
+</div></blockquote>
+<p>200: dict: Operation. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>id</strong> (str): Operation ID.</p></li>
@@ -3297,16 +3315,10 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
 </ul>
 </div></blockquote>
-<p>412: dict: Model is in use: deletion forbidden. A dictionary with the following keys:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>deployments</strong> (list): Deployments using models.</p></li>
-</ul>
-</div></blockquote>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>200</p>
+<dd class="field-odd"><p>412</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4625,34 +4637,35 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: AI deployment. A dictionary with the following keys:</p>
+<dd class="field-even"><p><p>dict: Error. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>error</strong> (str): Error description.</p></li>
+</ul>
+</div></blockquote>
+<p>200: dict: AI deployment. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>gpu_count</strong> (int): Number of GPUs.</p></li>
 <li><p><strong>updated_at</strong> (str): Update time.</p></li>
 <li><p><strong>deployment_url</strong> (str): Deployment URL (nullable).</p></li>
 <li><p><strong>service_level</strong> (str): Service level.</p></li>
+<li><p><strong>inference_engine_version</strong> (str): Inference engine version. Values are <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>.</p></li>
 <li><p><strong>name</strong> (str): Deployment name.</p></li>
-<li><p><strong>status_details</strong> (str): Deployment status details.</p></li>
+<li><p><strong>state</strong> (str): Deployment state. Values are <code class="docutils literal notranslate"><span class="pre">'creating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'deploying'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ready'</span></code>.</p></li>
 <li><p><strong>gpu_type</strong> (str): GPU type family.</p></li>
-<li><p><strong>status</strong> (str): Deployment status. Values are <code class="docutils literal notranslate"><span class="pre">'creating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'deploying'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ready'</span></code>.</p></li>
 <li><p><strong>id</strong> (str): Deployment ID.</p></li>
 <li><p><strong>replicas</strong> (int): Number of replicas (&gt;=0).</p></li>
+<li><p><strong>state_details</strong> (str): Deployment state details.</p></li>
 <li><p><strong>created_at</strong> (str): Creation time.</p></li>
 <li><p><strong>inference_engine_parameters</strong> (list): Optional extra inference engine server CLI args.</p></li>
 <li><p><strong>model</strong> (dict).</p></li>
 </ul>
 </div></blockquote>
-<p>404: dict: Error. A dictionary with the following keys:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>error</strong> (str): Error description.</p></li>
-</ul>
-</div></blockquote>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>200</p>
+<dd class="field-odd"><p>404</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4663,10 +4676,26 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd><p>[BETA] Get Deployment Logs</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>stream</strong> (<em>bool</em>)</p></li>
+<li><p><strong>tail</strong> (<em>int</em>)</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: Deployment logs. A dictionary with the following keys:</p>
+<dd class="field-even"><p><p>dict: Error. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>error</strong> (str): Error description.</p></li>
+</ul>
+</div></blockquote>
+<p>404: dict: Error. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>error</strong> (str): Error description.</p></li>
+</ul>
+</div></blockquote>
+<p>200: dict: Deployment logs. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>logs</strong> (list): List of log entries.</p></li>
@@ -4678,22 +4707,10 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>error</strong> (str): Error description.</p></li>
 </ul>
 </div></blockquote>
-<p>404: dict: Error. A dictionary with the following keys:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>error</strong> (str): Error description.</p></li>
-</ul>
-</div></blockquote>
-<p>500: dict: Error. A dictionary with the following keys:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>error</strong> (str): Error description.</p></li>
-</ul>
-</div></blockquote>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>200</p>
+<dd class="field-odd"><p>500</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4854,13 +4871,15 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-even"><p><p>dict: IAM Role. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>id</strong> (str): IAM Role ID.</p></li>
-<li><p><strong>name</strong> (str): IAM Role name.</p></li>
 <li><p><strong>description</strong> (str): IAM Role description.</p></li>
-<li><p><strong>permissions</strong> (list): IAM Role permissions.</p></li>
 <li><p><strong>labels</strong> (dict): IAM Role Labels.</p></li>
+<li><p><strong>permissions</strong> (list): IAM Role permissions.</p></li>
+<li><p><strong>assume_role_policy</strong> (dict): IAM Assume Role Policy.</p></li>
 <li><p><strong>editable</strong> (bool): IAM Role mutability.</p></li>
+<li><p><strong>name</strong> (str): IAM Role name.</p></li>
+<li><p><strong>max_session_ttl</strong> (int): Maximum TTL requester is allowed to ask for when assuming a role.</p></li>
 <li><p><strong>policy</strong> (dict): IAM Role Policy.</p></li>
+<li><p><strong>id</strong> (str): IAM Role ID.</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -4875,25 +4894,21 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.get_inference_engine_help">
 <span class="sig-name descname"><span class="pre">get_inference_engine_help</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_inference_engine_help" title="Link to this definition"></a></dt>
 <dd><p>[BETA] Get inference-engine Help</p>
-<p>Args:</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><p>dict: List of allowed inference-engine parameters. A dictionary with the following keys:</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>version</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: List of allowed inference-engine parameters. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>parameters</strong> (list).</p></li>
 </ul>
 </div></blockquote>
-<p>500: dict: Error. A dictionary with the following keys:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>error</strong> (str): Error description.</p></li>
-</ul>
-</div></blockquote>
 </p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>200</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5096,27 +5111,27 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: AI model. A dictionary with the following keys:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>id</strong> (str): Model ID.</p></li>
-<li><p><strong>name</strong> (str): Model name.</p></li>
-<li><p><strong>status</strong> (str): Model status. Values are <code class="docutils literal notranslate"><span class="pre">'creating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'downloading'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ready'</span></code>.</p></li>
-<li><p><strong>model_size</strong> (int): Model size (nullable).</p></li>
-<li><p><strong>created_at</strong> (str): Creation time.</p></li>
-<li><p><strong>updated_at</strong> (str): Update time.</p></li>
-</ul>
-</div></blockquote>
-<p>404: dict: Error. A dictionary with the following keys:</p>
+<dd class="field-even"><p><p>dict: Error. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>error</strong> (str): Error description.</p></li>
 </ul>
 </div></blockquote>
+<p>200: dict: AI model. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>updated_at</strong> (str): Update time.</p></li>
+<li><p><strong>name</strong> (str): Model name.</p></li>
+<li><p><strong>state</strong> (str): Model state. Values are <code class="docutils literal notranslate"><span class="pre">'created'</span></code>, <code class="docutils literal notranslate"><span class="pre">'creating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'downloading'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ready'</span></code>.</p></li>
+<li><p><strong>id</strong> (str): Model ID.</p></li>
+<li><p><strong>model_size</strong> (int): Model size (nullable).</p></li>
+<li><p><strong>created_at</strong> (str): Creation time.</p></li>
+</ul>
+</div></blockquote>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>200</p>
+<dd class="field-odd"><p>404</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5546,6 +5561,27 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.list_ai_instance_types">
+<span class="sig-name descname"><span class="pre">list_ai_instance_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.list_ai_instance_types" title="Link to this definition"></a></dt>
+<dd><p>List Instance Types</p>
+<p>Args:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>dict: List of available instance types with authorization status. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>instance_types</strong> (list).</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>200</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8285,6 +8321,37 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.update_deployment">
+<span class="sig-name descname"><span class="pre">update_deployment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.update_deployment" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>inference_engine_version</strong> (<em>str</em>) – Inference engine version. Must be one of <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Deployment name.</p></li>
+<li><p><strong>inference_engine_parameters</strong> (<em>list</em>) – Optional extra inference engine server CLI args.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: Operation. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.update_dns_domain_record">
 <span class="sig-name descname"><span class="pre">update_dns_domain_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.update_dns_domain_record" title="Link to this definition"></a></dt>
 <dd><p>Update DNS domain record</p>
@@ -8351,6 +8418,37 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.update_iam_assume_role_policy">
+<span class="sig-name descname"><span class="pre">update_iam_assume_role_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.update_iam_assume_role_policy" title="Link to this definition"></a></dt>
+<dd><p>Update IAM Assume role Policy</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>default_service_strategy</strong> (<em>str</em>) – IAM default service strategy. Must be one of <code class="docutils literal notranslate"><span class="pre">'allow'</span></code>, <code class="docutils literal notranslate"><span class="pre">'deny'</span></code>.</p></li>
+<li><p><strong>services</strong> (<em>dict</em>) – IAM services.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: Operation. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.update_iam_organization_policy">
 <span class="sig-name descname"><span class="pre">update_iam_organization_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.update_iam_organization_policy" title="Link to this definition"></a></dt>
 <dd><p>Update IAM Organization Policy</p>
@@ -8391,6 +8489,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>description</strong> (<em>str</em>) – IAM Role description.</p></li>
 <li><p><strong>permissions</strong> (<em>list</em>) – IAM Role permissions.</p></li>
 <li><p><strong>labels</strong> (<em>dict</em>) – IAM Role labels.</p></li>
+<li><p><strong>max_session_ttl</strong> (<em>int</em>) – Maximum TTL requester is allowed to ask for when assuming a role.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

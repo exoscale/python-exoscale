@@ -40,6 +40,12 @@ exclude_patterns = []
 
 source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
 
+# MyST-Parser configuration
+myst_enable_extensions = [
+    "colon_fence",  # ::: directive syntax
+    "deflist",  # Definition lists
+]
+
 napoleon_google_docstring = True
 napoleon_include_init_with_doc = False
 napoleon_include_private_with_doc = False

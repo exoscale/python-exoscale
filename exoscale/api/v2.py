@@ -99,7 +99,7 @@ with open(Path(__file__).parent.parent / "openapi.json", "r") as f:
 
 class Client(BaseClient):
     def __init__(self, key, secret, *args, url=None, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, url=url, **kwargs)
         self.WAIT_ABORT_ERRORS_COUNT = 5
 
         client = requests.Session()

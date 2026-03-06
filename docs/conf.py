@@ -42,8 +42,8 @@ source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
 
 # MyST-Parser configuration
 myst_enable_extensions = [
-    "colon_fence",      # ::: directive syntax
-    "deflist",          # Definition lists
+    "colon_fence",  # ::: directive syntax
+    "deflist",  # Definition lists
 ]
 
 napoleon_google_docstring = True

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.16.1 (2026-01-22)
+
+**Fixes**
+
+* Partner API: Ensure organization responses match ``organization-output`` contract.
+  Responses now only include documented fields (``id``, ``status``, ``billing-address``,
+  ``client-id``). Access organization name via ``billing-address.name``.
+
+* GitHub Actions: Add automatic sync of Partner API OpenAPI spec (``partner-api.json``).
+
 ## 0.16.0 (2025-11-27)
 
 **BREAKING CHANGES**

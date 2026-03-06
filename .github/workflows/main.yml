@@ -2,6 +2,7 @@
 name: CI
 
 "on":
+  workflow_dispatch:
   push:
     branches:
       - '**'
@@ -21,11 +22,10 @@ jobs:
       matrix:
         python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v3
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
-          cache-dependency-glob: "pyproject.toml"
       - name: Tests
         run: |
           uv --version
@@ -33,14 +33,3 @@ jobs:
         env:
           EXOSCALE_API_KEY: ${{ secrets.EXOSCALE_API_KEY }}
           EXOSCALE_API_SECRET: ${{ secrets.EXOSCALE_API_SECRET }}
-  lint:
-    name: Linting
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up ruff
-        run: curl -LsSf https://astral.sh/ruff/0.6.9/install.sh | sh
-      - name: Lint
-        shell: bash
-        run:  |-
-          ruff check

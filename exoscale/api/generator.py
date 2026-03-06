@@ -300,7 +300,7 @@ def _client_docstring(api_spec):
     args = {}
     for server in api_spec["servers"]:
         servers.append(server["url"])
-        for name, variable in server["variables"].items():
+        for name, variable in server.get("variables", {}).items():
             if name in args:
                 continue
             choices = "``, ``".join(map(repr, variable["enum"]))

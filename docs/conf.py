@@ -11,11 +11,7 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 # import os
-import sys
 from datetime import datetime
-from sphinx_markdown_parser.parser import MarkdownParser  # noqa
-
-sys.path.insert(0, "exoscale")
 
 
 # -- Project information -----------------------------------------------------
@@ -32,7 +28,7 @@ release = version
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "recommonmark"]
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "myst_parser"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]

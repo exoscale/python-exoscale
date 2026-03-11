@@ -10624,13 +10624,6 @@
             "$ref": "#/components/schemas/json-schema-valkey",
             "description": "Valkey-specific settings"
           },
-          "ip-filter": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Allowed CIDR address blocks for incoming connections"
-          },
           "backups": {
             "type": "array",
             "items": {
@@ -10720,10 +10713,6 @@
             "type": "object",
             "description": "service_uri parameterized into key-value pairs"
           },
-          "version": {
-            "type": "string",
-            "description": "Valkey version"
-          },
           "created-at": {
             "type": "string",
             "format": "date-time",
@@ -10748,8 +10737,33 @@
                   "type": "string"
                 },
                 "access-control": {
-                  "type": "array",
-                  "items": {}
+                  "type": "object",
+                  "properties": {
+                    "categories": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "channels": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "commands": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "keys": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
                 }
               }
             },

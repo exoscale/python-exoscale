@@ -2251,25 +2251,29 @@
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Use +@<category> to allow and -@<category> to disallow. Separate entries with a single space. Example: +@all -@dangerous."
           },
           "channels": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Patterns use standard glob syntax and must be separated by a single space. Example: ~* &events."
           },
           "commands": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Use +<command> to allow and -<command> to disallow. You can also use @<category>. Separate entries with a single space. Example: +@all -flushall."
           },
           "keys": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Patterns use standard glob syntax and must be separated by a single space. Example: cache:* session:*."
           }
         }
       },
@@ -10624,6 +10628,13 @@
             "$ref": "#/components/schemas/json-schema-valkey",
             "description": "Valkey-specific settings"
           },
+          "ip-filter": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Allowed CIDR address blocks for incoming connections"
+          },
           "backups": {
             "type": "array",
             "items": {
@@ -10712,6 +10723,10 @@
           "uri-params": {
             "type": "object",
             "description": "service_uri parameterized into key-value pairs"
+          },
+          "version": {
+            "type": "string",
+            "description": "Valkey version"
           },
           "created-at": {
             "type": "string",

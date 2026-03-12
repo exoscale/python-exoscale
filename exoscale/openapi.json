@@ -24361,8 +24361,8 @@
           "kms-key"
         ],
         "responses": {
-          "201": {
-            "description": "201",
+          "200": {
+            "description": "200",
             "content": {
               "application/json": {
                 "schema": {
@@ -25482,6 +25482,16 @@
           "kms-key"
         ],
         "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/success-response"
+                }
+              }
+            }
+          },
           "400": {
             "description": "400",
             "content": {
@@ -28197,6 +28207,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "labels",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "summary": "List Compute instances",
@@ -28574,6 +28592,16 @@
           "kms-key"
         ],
         "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/success-response"
+                }
+              }
+            }
+          },
           "400": {
             "description": "400",
             "content": {

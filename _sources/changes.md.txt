@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.16.3 (2026-03-26)
+
+**Fixes**
+
+* fix: none description  with openapi enum type
+
 ## 0.16.2 (2026-03-13)
 
 **Fixes**

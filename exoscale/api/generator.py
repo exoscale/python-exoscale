@@ -237,10 +237,11 @@ def _create_operation_call(
             else:
                 item = prop
             typ = _type_translations[item["type"]]
-            desc = prop.get("description")
+            desc = prop.get("description") or item.get("description")
             if "enum" in item:
                 choices = "``, ``".join(map(repr, item["enum"]))
-                desc += f". Must be one of ``{choices}``"
+                enum_note = f"Must be one of ``{choices}``"
+                desc = f"{desc}. {enum_note}" if desc else enum_note
             suffix = f": {desc}" if desc else ""
             normalized_name = name.replace("-", "_")
             normalized_names[normalized_name] = name

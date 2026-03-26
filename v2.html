@@ -56,6 +56,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.attach_instance_to_elastic_ip"><code class="docutils literal notranslate"><span class="pre">Client.attach_instance_to_elastic_ip()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.attach_instance_to_private_network"><code class="docutils literal notranslate"><span class="pre">Client.attach_instance_to_private_network()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.attach_instance_to_security_group"><code class="docutils literal notranslate"><span class="pre">Client.attach_instance_to_security_group()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.cancel_kms_key_deletion"><code class="docutils literal notranslate"><span class="pre">Client.cancel_kms_key_deletion()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.copy_template"><code class="docutils literal notranslate"><span class="pre">Client.copy_template()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_anti_affinity_group"><code class="docutils literal notranslate"><span class="pre">Client.create_anti_affinity_group()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_api_key"><code class="docutils literal notranslate"><span class="pre">Client.create_api_key()</span></code></a></li>
@@ -93,6 +94,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_iam_role"><code class="docutils literal notranslate"><span class="pre">Client.create_iam_role()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_instance"><code class="docutils literal notranslate"><span class="pre">Client.create_instance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_instance_pool"><code class="docutils literal notranslate"><span class="pre">Client.create_instance_pool()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_kms_key"><code class="docutils literal notranslate"><span class="pre">Client.create_kms_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_load_balancer"><code class="docutils literal notranslate"><span class="pre">Client.create_load_balancer()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_model"><code class="docutils literal notranslate"><span class="pre">Client.create_model()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_private_network"><code class="docutils literal notranslate"><span class="pre">Client.create_private_network()</span></code></a></li>
@@ -101,6 +103,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_sks_nodepool"><code class="docutils literal notranslate"><span class="pre">Client.create_sks_nodepool()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.create_snapshot()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.create_user"><code class="docutils literal notranslate"><span class="pre">Client.create_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.decrypt"><code class="docutils literal notranslate"><span class="pre">Client.decrypt()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_anti_affinity_group"><code class="docutils literal notranslate"><span class="pre">Client.delete_anti_affinity_group()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_api_key"><code class="docutils literal notranslate"><span class="pre">Client.delete_api_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.delete_block_storage_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.delete_block_storage_snapshot()</span></code></a></li>
@@ -155,11 +158,17 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.detach_instance_from_elastic_ip"><code class="docutils literal notranslate"><span class="pre">Client.detach_instance_from_elastic_ip()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.detach_instance_from_private_network"><code class="docutils literal notranslate"><span class="pre">Client.detach_instance_from_private_network()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.detach_instance_from_security_group"><code class="docutils literal notranslate"><span class="pre">Client.detach_instance_from_security_group()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.disable_kms_key"><code class="docutils literal notranslate"><span class="pre">Client.disable_kms_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.disable_kms_key_rotation"><code class="docutils literal notranslate"><span class="pre">Client.disable_kms_key_rotation()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.enable_dbaas_mysql_writes"><code class="docutils literal notranslate"><span class="pre">Client.enable_dbaas_mysql_writes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.enable_kms_key"><code class="docutils literal notranslate"><span class="pre">Client.enable_kms_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.enable_kms_key_rotation"><code class="docutils literal notranslate"><span class="pre">Client.enable_kms_key_rotation()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.enable_tpm"><code class="docutils literal notranslate"><span class="pre">Client.enable_tpm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.encrypt"><code class="docutils literal notranslate"><span class="pre">Client.encrypt()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.evict_instance_pool_members"><code class="docutils literal notranslate"><span class="pre">Client.evict_instance_pool_members()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.evict_sks_nodepool_members"><code class="docutils literal notranslate"><span class="pre">Client.evict_sks_nodepool_members()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.export_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.export_snapshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.generate_data_key"><code class="docutils literal notranslate"><span class="pre">Client.generate_data_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.generate_sks_cluster_kubeconfig"><code class="docutils literal notranslate"><span class="pre">Client.generate_sks_cluster_kubeconfig()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_active_nodepool_template"><code class="docutils literal notranslate"><span class="pre">Client.get_active_nodepool_template()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_anti_affinity_group"><code class="docutils literal notranslate"><span class="pre">Client.get_anti_affinity_group()</span></code></a></li>
@@ -211,6 +220,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_instance"><code class="docutils literal notranslate"><span class="pre">Client.get_instance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_instance_pool"><code class="docutils literal notranslate"><span class="pre">Client.get_instance_pool()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_instance_type"><code class="docutils literal notranslate"><span class="pre">Client.get_instance_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_kms_key"><code class="docutils literal notranslate"><span class="pre">Client.get_kms_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_load_balancer"><code class="docutils literal notranslate"><span class="pre">Client.get_load_balancer()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_load_balancer_service"><code class="docutils literal notranslate"><span class="pre">Client.get_load_balancer_service()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.get_model"><code class="docutils literal notranslate"><span class="pre">Client.get_model()</span></code></a></li>
@@ -242,6 +252,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_dbaas_integration_types"><code class="docutils literal notranslate"><span class="pre">Client.list_dbaas_integration_types()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_dbaas_service_types"><code class="docutils literal notranslate"><span class="pre">Client.list_dbaas_service_types()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_dbaas_services"><code class="docutils literal notranslate"><span class="pre">Client.list_dbaas_services()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_dbaas_valkey_users"><code class="docutils literal notranslate"><span class="pre">Client.list_dbaas_valkey_users()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_deploy_targets"><code class="docutils literal notranslate"><span class="pre">Client.list_deploy_targets()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_deployments"><code class="docutils literal notranslate"><span class="pre">Client.list_deployments()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_dns_domain_records"><code class="docutils literal notranslate"><span class="pre">Client.list_dns_domain_records()</span></code></a></li>
@@ -252,6 +263,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_instance_pools"><code class="docutils literal notranslate"><span class="pre">Client.list_instance_pools()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_instance_types"><code class="docutils literal notranslate"><span class="pre">Client.list_instance_types()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_instances"><code class="docutils literal notranslate"><span class="pre">Client.list_instances()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_kms_key_rotations"><code class="docutils literal notranslate"><span class="pre">Client.list_kms_key_rotations()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_kms_keys"><code class="docutils literal notranslate"><span class="pre">Client.list_kms_keys()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_load_balancers"><code class="docutils literal notranslate"><span class="pre">Client.list_load_balancers()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_models"><code class="docutils literal notranslate"><span class="pre">Client.list_models()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_private_networks"><code class="docutils literal notranslate"><span class="pre">Client.list_private_networks()</span></code></a></li>
@@ -267,11 +280,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_users"><code class="docutils literal notranslate"><span class="pre">Client.list_users()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.list_zones"><code class="docutils literal notranslate"><span class="pre">Client.list_zones()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.promote_snapshot_to_template"><code class="docutils literal notranslate"><span class="pre">Client.promote_snapshot_to_template()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.re_encrypt"><code class="docutils literal notranslate"><span class="pre">Client.re_encrypt()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reboot_instance"><code class="docutils literal notranslate"><span class="pre">Client.reboot_instance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.register_ssh_key"><code class="docutils literal notranslate"><span class="pre">Client.register_ssh_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.register_template"><code class="docutils literal notranslate"><span class="pre">Client.register_template()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.remove_external_source_from_security_group"><code class="docutils literal notranslate"><span class="pre">Client.remove_external_source_from_security_group()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.remove_instance_protection"><code class="docutils literal notranslate"><span class="pre">Client.remove_instance_protection()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.replicate_kms_key"><code class="docutils literal notranslate"><span class="pre">Client.replicate_kms_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_dbaas_grafana_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reset_dbaas_grafana_user_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_dbaas_kafka_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reset_dbaas_kafka_user_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reset_dbaas_mysql_user_password"><code class="docutils literal notranslate"><span class="pre">Client.reset_dbaas_mysql_user_password()</span></code></a></li>
@@ -300,6 +315,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_deployment_api_key"><code class="docutils literal notranslate"><span class="pre">Client.reveal_deployment_api_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.reveal_instance_password"><code class="docutils literal notranslate"><span class="pre">Client.reveal_instance_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.revert_instance_to_snapshot"><code class="docutils literal notranslate"><span class="pre">Client.revert_instance_to_snapshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.rotate_kms_key"><code class="docutils literal notranslate"><span class="pre">Client.rotate_kms_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.rotate_sks_ccm_credentials"><code class="docutils literal notranslate"><span class="pre">Client.rotate_sks_ccm_credentials()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.rotate_sks_csi_credentials"><code class="docutils literal notranslate"><span class="pre">Client.rotate_sks_csi_credentials()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.rotate_sks_karpenter_credentials"><code class="docutils literal notranslate"><span class="pre">Client.rotate_sks_karpenter_credentials()</span></code></a></li>
@@ -308,6 +324,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.scale_instance"><code class="docutils literal notranslate"><span class="pre">Client.scale_instance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.scale_instance_pool"><code class="docutils literal notranslate"><span class="pre">Client.scale_instance_pool()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.scale_sks_nodepool"><code class="docutils literal notranslate"><span class="pre">Client.scale_sks_nodepool()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.schedule_kms_key_deletion"><code class="docutils literal notranslate"><span class="pre">Client.schedule_kms_key_deletion()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.start_dbaas_grafana_maintenance"><code class="docutils literal notranslate"><span class="pre">Client.start_dbaas_grafana_maintenance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.start_dbaas_kafka_maintenance"><code class="docutils literal notranslate"><span class="pre">Client.start_dbaas_kafka_maintenance()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.start_dbaas_mysql_maintenance"><code class="docutils literal notranslate"><span class="pre">Client.start_dbaas_mysql_maintenance()</span></code></a></li>
@@ -339,6 +356,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_service_pg"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_service_pg()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_service_thanos"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_service_thanos()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_service_valkey"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_service_valkey()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dbaas_valkey_user_access_control"><code class="docutils literal notranslate"><span class="pre">Client.update_dbaas_valkey_user_access_control()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_deployment"><code class="docutils literal notranslate"><span class="pre">Client.update_deployment()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_dns_domain_record"><code class="docutils literal notranslate"><span class="pre">Client.update_dns_domain_record()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exoscale.api.v2.Client.update_elastic_ip"><code class="docutils literal notranslate"><span class="pre">Client.update_elastic_ip()</span></code></a></li>
@@ -714,6 +732,35 @@ definition shipped with the package.</p>
 <li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
 <li><p><strong>message</strong> (str): Operation message.</p></li>
 <li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.cancel_kms_key_deletion">
+<span class="sig-name descname"><span class="pre">cancel_kms_key_deletion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.cancel_kms_key_deletion" title="Link to this definition"></a></dt>
+<dd><p>[Beta] Cancel KMS Key Deletion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -1677,6 +1724,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>service_name</strong> (<em>str</em>)</p></li>
 <li><p><strong>username</strong> (<em>str</em>) – Username.</p></li>
+<li><p><strong>access_control</strong> (<em>dict</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1706,7 +1754,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>gpu_count</strong> (<em>int</em>) – Number of GPUs (1-8).</p></li>
-<li><p><strong>inference_engine_version</strong> (<em>str</em>) – Inference engine version. Must be one of <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>.</p></li>
+<li><p><strong>inference_engine_version</strong> (<em>str</em>) – Inference engine version. Must be one of <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.16.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.17.0'</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Deployment name.</p></li>
 <li><p><strong>gpu_type</strong> (<em>str</em>) – GPU type family (e.g., gpua5000, gpu3080ti).</p></li>
 <li><p><strong>replicas</strong> (<em>int</em>) – Number of replicas (&gt;=1).</p></li>
@@ -1715,10 +1763,15 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: Error. A dictionary with the following keys:</p>
+<dd class="field-even"><p><p>dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>error</strong> (str): Error description.</p></li>
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
 <p>200: dict: Operation. A dictionary with the following keys:</p>
@@ -1731,10 +1784,15 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
 </ul>
 </div></blockquote>
-<p>400: dict: Error. A dictionary with the following keys:</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>error</strong> (str): Error description.</p></li>
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -1957,6 +2015,51 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
 <li><p><strong>message</strong> (str): Operation message.</p></li>
 <li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.create_kms_key">
+<span class="sig-name descname"><span class="pre">create_kms_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.create_kms_key" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Create KMS Key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>description</strong> (<em>str</em>)</p></li>
+<li><p><strong>usage</strong> (<em>str</em>) – Must be one of <code class="docutils literal notranslate"><span class="pre">'encrypt-decrypt'</span></code>.</p></li>
+<li><p><strong>multi_zone</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
+</ul>
+</div></blockquote>
+<p>409: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -2231,6 +2334,39 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
 <li><p><strong>message</strong> (str): Operation message.</p></li>
 <li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.decrypt">
+<span class="sig-name descname"><span class="pre">decrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.decrypt" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Decrypt</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>encryption_context</strong> (<em>str</em>)</p></li>
+<li><p><strong>ciphertext</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -3753,6 +3889,67 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.disable_kms_key">
+<span class="sig-name descname"><span class="pre">disable_kms_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.disable_kms_key" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Disable KMS Key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.disable_kms_key_rotation">
+<span class="sig-name descname"><span class="pre">disable_kms_key_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.disable_kms_key_rotation" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Disable Key Rotation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>id</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.enable_dbaas_mysql_writes">
 <span class="sig-name descname"><span class="pre">enable_dbaas_mysql_writes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.enable_dbaas_mysql_writes" title="Link to this definition"></a></dt>
 <dd><p>Temporarily enable writes for MySQL services in read-only mode due to filled up storage</p>
@@ -3780,6 +3977,68 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.enable_kms_key">
+<span class="sig-name descname"><span class="pre">enable_kms_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.enable_kms_key" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Enable KMS Key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.enable_kms_key_rotation">
+<span class="sig-name descname"><span class="pre">enable_kms_key_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.enable_kms_key_rotation" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Enable Key Rotation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>id</strong></p></li>
+<li><p><strong>rotation_period</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.enable_tpm">
 <span class="sig-name descname"><span class="pre">enable_tpm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.enable_tpm" title="Link to this definition"></a></dt>
 <dd><p>Enable tpm for the instance.</p>
@@ -3796,6 +4055,39 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
 <li><p><strong>message</strong> (str): Operation message.</p></li>
 <li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.encrypt">
+<span class="sig-name descname"><span class="pre">encrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.encrypt" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Encrypt</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>encryption_context</strong> (<em>str</em>)</p></li>
+<li><p><strong>plaintext</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -3884,6 +4176,40 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
 <li><p><strong>message</strong> (str): Operation message.</p></li>
 <li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.generate_data_key">
+<span class="sig-name descname"><span class="pre">generate_data_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.generate_data_key" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Generate Data Key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>key_spec</strong> (<em>str</em>) – Must be one of <code class="docutils literal notranslate"><span class="pre">'AES-256'</span></code>.</p></li>
+<li><p><strong>bytes_count</strong> (<em>int</em>)</p></li>
+<li><p><strong>encryption_context</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -4617,10 +4943,15 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: Error. A dictionary with the following keys:</p>
+<dd class="field-even"><p><p>dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>error</strong> (str): Error description.</p></li>
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
 <p>200: dict: AI deployment. A dictionary with the following keys:</p>
@@ -4630,7 +4961,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>updated_at</strong> (str): Update time.</p></li>
 <li><p><strong>deployment_url</strong> (str): Deployment URL (nullable).</p></li>
 <li><p><strong>service_level</strong> (str): Service level.</p></li>
-<li><p><strong>inference_engine_version</strong> (str): Inference engine version. Values are <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>.</p></li>
+<li><p><strong>inference_engine_version</strong> (str): Inference engine version. Values are <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.16.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.17.0'</span></code>.</p></li>
 <li><p><strong>name</strong> (str): Deployment name.</p></li>
 <li><p><strong>state</strong> (str): Deployment state. Values are <code class="docutils literal notranslate"><span class="pre">'creating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'deploying'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ready'</span></code>.</p></li>
 <li><p><strong>gpu_type</strong> (str): GPU type family.</p></li>
@@ -4663,16 +4994,26 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: Error. A dictionary with the following keys:</p>
+<dd class="field-even"><p><p>dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>error</strong> (str): Error description.</p></li>
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
-<p>404: dict: Error. A dictionary with the following keys:</p>
+<p>404: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>error</strong> (str): Error description.</p></li>
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
 <p>200: dict: Deployment logs. A dictionary with the following keys:</p>
@@ -4681,10 +5022,15 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>logs</strong> (list): List of log entries.</p></li>
 </ul>
 </div></blockquote>
-<p>400: dict: Error. A dictionary with the following keys:</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>error</strong> (str): Error description.</p></li>
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -5017,6 +5363,46 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.get_kms_key">
+<span class="sig-name descname"><span class="pre">get_kms_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_kms_key" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Get KMS Key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
+</ul>
+</div></blockquote>
+<p>404: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.get_load_balancer">
 <span class="sig-name descname"><span class="pre">get_load_balancer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_load_balancer" title="Link to this definition"></a></dt>
 <dd><p>Retrieve Load Balancer details</p>
@@ -5091,10 +5477,15 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>dict: Error. A dictionary with the following keys:</p>
+<dd class="field-even"><p><p>dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>error</strong> (str): Error description.</p></li>
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
 <p>200: dict: AI model. A dictionary with the following keys:</p>
@@ -5737,6 +6128,23 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.list_dbaas_valkey_users">
+<span class="sig-name descname"><span class="pre">list_dbaas_valkey_users</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.list_dbaas_valkey_users" title="Link to this definition"></a></dt>
+<dd><p>List DBaaS Valkey users with ACL configuration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>service_name</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.list_deploy_targets">
 <span class="sig-name descname"><span class="pre">list_deploy_targets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.list_deploy_targets" title="Link to this definition"></a></dt>
 <dd><p>List Deploy Targets</p>
@@ -5894,6 +6302,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>manager_id</strong> (<em>str</em>)</p></li>
 <li><p><strong>manager_type</strong> (<em>str</em>)</p></li>
 <li><p><strong>ip_address</strong> (<em>str</em>)</p></li>
+<li><p><strong>labels</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -5901,6 +6310,62 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.list_kms_key_rotations">
+<span class="sig-name descname"><span class="pre">list_kms_key_rotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.list_kms_key_rotations" title="Link to this definition"></a></dt>
+<dd><p>[BETA] List KMS Key Rotations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.list_kms_keys">
+<span class="sig-name descname"><span class="pre">list_kms_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.list_kms_keys" title="Link to this definition"></a></dt>
+<dd><p>[BETA] List KMS Keys</p>
+<p>Args:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>200</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6167,6 +6632,39 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.re_encrypt">
+<span class="sig-name descname"><span class="pre">re_encrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.re_encrypt" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Re-encrypt</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>source</strong> (<em>dict</em>)</p></li>
+<li><p><strong>destination</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.reboot_instance">
 <span class="sig-name descname"><span class="pre">reboot_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reboot_instance" title="Link to this definition"></a></dt>
 <dd><p>Reboot a Compute instance</p>
@@ -6311,6 +6809,47 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
 <li><p><strong>message</strong> (str): Operation message.</p></li>
 <li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.replicate_kms_key">
+<span class="sig-name descname"><span class="pre">replicate_kms_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.replicate_kms_key" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Replicate KMS Key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>zone</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: Operation. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -7129,6 +7668,35 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.rotate_kms_key">
+<span class="sig-name descname"><span class="pre">rotate_kms_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.rotate_kms_key" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Rotate Key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.rotate_sks_ccm_credentials">
 <span class="sig-name descname"><span class="pre">rotate_sks_ccm_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.rotate_sks_ccm_credentials" title="Link to this definition"></a></dt>
 <dd><p>Rotate Exoscale CCM credentials</p>
@@ -7347,6 +7915,38 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
 <li><p><strong>message</strong> (str): Operation message.</p></li>
 <li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.schedule_kms_key_deletion">
+<span class="sig-name descname"><span class="pre">schedule_kms_key_deletion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.schedule_kms_key_deletion" title="Link to this definition"></a></dt>
+<dd><p>[BETA] Schedule KMS Key Deletion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>)</p></li>
+<li><p><strong>delay_days</strong> (<em>int</em>) – Number of days to wait until deletion is final..</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>400: dict: RFC 9457 Problem Details error response. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>type</strong> (str).</p></li>
+<li><p><strong>title</strong> (str).</p></li>
+<li><p><strong>status</strong> (int).</p></li>
+<li><p><strong>detail</strong> (str).</p></li>
+<li><p><strong>instance</strong> (str).</p></li>
+<li><p><strong>errors</strong> (list).</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -8301,13 +8901,44 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="exoscale.api.v2.Client.update_dbaas_valkey_user_access_control">
+<span class="sig-name descname"><span class="pre">update_dbaas_valkey_user_access_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.update_dbaas_valkey_user_access_control" title="Link to this definition"></a></dt>
+<dd><p>Update access control for one DBaaS Valkey service user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>username</strong> (<em>str</em>)</p></li>
+<li><p><strong>access_control</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict: Operation. A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>id</strong> (str): Operation ID.</p></li>
+<li><p><strong>reason</strong> (str): Operation failure reason. Values are <code class="docutils literal notranslate"><span class="pre">'busy'</span></code>, <code class="docutils literal notranslate"><span class="pre">'conflict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fault'</span></code>, <code class="docutils literal notranslate"><span class="pre">'forbidden'</span></code>, <code class="docutils literal notranslate"><span class="pre">'incorrect'</span></code>, <code class="docutils literal notranslate"><span class="pre">'interrupted'</span></code>, <code class="docutils literal notranslate"><span class="pre">'not-found'</span></code>, <code class="docutils literal notranslate"><span class="pre">'partial'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unavailable'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unknown'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsupported'</span></code>.</p></li>
+<li><p><strong>reference</strong> (dict): Related resource reference.</p></li>
+<li><p><strong>message</strong> (str): Operation message.</p></li>
+<li><p><strong>state</strong> (str): Operation status. Values are <code class="docutils literal notranslate"><span class="pre">'failure'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pending'</span></code>, <code class="docutils literal notranslate"><span class="pre">'success'</span></code>, <code class="docutils literal notranslate"><span class="pre">'timeout'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>200</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.update_deployment">
 <span class="sig-name descname"><span class="pre">update_deployment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.update_deployment" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>str</em>)</p></li>
-<li><p><strong>inference_engine_version</strong> (<em>str</em>) – Inference engine version. Must be one of <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>.</p></li>
+<li><p><strong>inference_engine_version</strong> (<em>str</em>) – Inference engine version. Must be one of <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.16.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.17.0'</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Deployment name.</p></li>
 <li><p><strong>inference_engine_parameters</strong> (<em>list</em>) – Optional extra inference engine server CLI args.</p></li>
 </ul>
@@ -8863,6 +9494,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <p>name (str): Nodepool name, lowercase only.</p>
 <p>instance_type (dict): Nodepool instances type.</p>
 <p>private_networks (list): Nodepool Private Networks.</p>
+<p>kubelet_image_gc (dict): Kubelet image GC options.</p>
 <p>instance_prefix (str): Prefix to apply to managed instances names (default: pool), lowercase only.</p>
 <p>deploy_target (dict): Nodepool Deploy Target.</p>
 <p>disk_size (int): Nodepool instances disk size in GiB.</p>

@@ -19807,8 +19807,8 @@
                     "type": "integer",
                     "format": "int64",
                     "minimum": 0,
-                    "exclusiveMinimum": true,
-                    "description": "Maximum TTL requester is allowed to ask for when assuming a role"
+                    "exclusiveMinimum": false,
+                    "description": "Maximum TTL requester is allowed to ask for when assuming a role. A value of 0 resets the property to its default."
                   }
                 }
               }

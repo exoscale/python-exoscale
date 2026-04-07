@@ -1254,18 +1254,6 @@
           }
         }
       },
-      "disable-kms-key-rotation-request": {
-        "type": "object",
-        "required": [
-          "id"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          }
-        }
-      },
       "json-schema-grafana": {
         "properties": {
           "allow_embedding": {
@@ -2483,14 +2471,7 @@
       },
       "enable-kms-key-rotation-request": {
         "type": "object",
-        "required": [
-          "id"
-        ],
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "rotation-period": {
             "type": "integer",
             "minimum": 90,
@@ -5875,7 +5856,8 @@
           "status": {
             "type": "string",
             "enum": [
-              "success"
+              "success",
+              "target-registered"
             ],
             "default": "success"
           }
@@ -10218,7 +10200,6 @@
           "description",
           "usage",
           "source",
-          "policy",
           "status",
           "status-since",
           "material",
@@ -10250,9 +10231,6 @@
             "enum": [
               "exoscale-kms"
             ]
-          },
-          "policy": {
-            "type": "string"
           },
           "usage": {
             "type": "string"
@@ -10307,7 +10285,6 @@
           "source",
           "status",
           "status-since",
-          "policy",
           "multi-zone",
           "origin-zone",
           "created-at",
@@ -10332,9 +10309,6 @@
               "exoscale-kms"
             ]
           },
-          "policy": {
-            "type": "string"
-          },
           "usage": {
             "type": "string"
           },
@@ -10345,10 +10319,6 @@
               "enabled",
               "pending-deletion"
             ]
-          },
-          "status-since": {
-            "type": "string",
-            "format": "date-time"
           },
           "id": {
             "type": "string",
@@ -13181,16 +13151,6 @@
           }
         ],
         "summary": "[BETA] Disable Key Rotation",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/disable-kms-key-rotation-request"
-              }
-            }
-          }
-        },
         "operationId": "disable-kms-key-rotation"
       }
     },
@@ -19807,8 +19767,8 @@
                     "type": "integer",
                     "format": "int64",
                     "minimum": 0,
-                    "exclusiveMinimum": false,
-                    "description": "Maximum TTL requester is allowed to ask for when assuming a role. A value of 0 resets the property to its default."
+                    "exclusiveMinimum": true,
+                    "description": "Maximum TTL requester is allowed to ask for when assuming a role"
                   }
                 }
               }
@@ -27938,7 +27898,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/operation"
+                  "$ref": "#/components/schemas/success-response"
                 }
               }
             }
@@ -28713,7 +28673,7 @@
             }
           }
         ],
-        "summary": "[Beta] Cancel KMS Key Deletion",
+        "summary": "[BETA] Cancel KMS Key Deletion",
         "operationId": "cancel-kms-key-deletion"
       }
     },

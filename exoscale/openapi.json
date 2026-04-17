@@ -8067,6 +8067,13 @@
             "type": "boolean",
             "description": "Indicates whether to add operators certificate authority (CA) as part of trusted CAs for the API server."
           },
+          "default-security-group-id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "readOnly": true,
+            "description": "Cluster default Security Group ID"
+          },
           "state": {
             "type": "string",
             "enum": [

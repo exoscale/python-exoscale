@@ -735,7 +735,10 @@
             }
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "logs"
+        ]
       },
       "json-schema-schema-registry": {
         "additionalProperties": false,
@@ -877,7 +880,7 @@
       "get-confederatio-usage-response": {
         "description": "GPU usage for all organizations",
         "properties": {
-          "organizations_usages": {
+          "organizations-usages": {
             "additionalProperties": {
               "$ref": "#/components/schemas/organization-usage"
             },
@@ -886,10 +889,11 @@
         },
         "type": "object",
         "required": [
-          "organizations_usages"
+          "organizations-usages"
         ]
       },
       "model-ref": {
+        "description": "Model reference",
         "properties": {
           "name": {
             "description": "Associated model name",
@@ -902,6 +906,18 @@
             "type": "string"
           }
         },
+        "anyOf": [
+          {
+            "required": [
+              "id"
+            ]
+          },
+          {
+            "required": [
+              "name"
+            ]
+          }
+        ],
         "type": "object"
       },
       "dbaas-pg-pool-size": {
@@ -1087,6 +1103,7 @@
         "properties": {
           "time": {
             "description": "Timestamp of the log entry",
+            "format": "date-time",
             "type": "string"
           },
           "node": {
@@ -1098,7 +1115,12 @@
             "type": "string"
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "time",
+          "message",
+          "node"
+        ]
       },
       "anti-affinity-group-ref": {
         "type": "object",
@@ -1110,6 +1132,15 @@
           }
         },
         "description": "Anti-affinity group reference"
+      },
+      "create-ai-api-key-response": {
+        "description": "Create AI API key response",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ai-api-key"
+          }
+        ],
+        "type": "object"
       },
       "sks-audit-bearer-token": {
         "type": "string",
@@ -1170,7 +1201,10 @@
             }
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "parameters"
+        ]
       },
       "dbaas-user-valkey-secrets": {
         "type": "object",
@@ -2091,6 +2125,15 @@
         "title": "Kafka Connect configuration values",
         "type": "object"
       },
+      "list-ai-api-keys-response-entry": {
+        "description": "AI API key list entry",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ai-api-key"
+          }
+        ],
+        "type": "object"
+      },
       "private-network": {
         "type": "object",
         "properties": {
@@ -2297,6 +2340,20 @@
           }
         }
       },
+      "set-org-consumption-quota-request": {
+        "description": "Request to set per-org token consumption quota",
+        "properties": {
+          "quota-tokens-per-minute": {
+            "description": "Per-org token consumption quota (tokens/min). Pass null to remove the limit.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        },
+        "type": "object"
+      },
       "json-schema-thanos": {
         "properties": {
           "compactor": {
@@ -2470,6 +2527,28 @@
           }
         }
       },
+      "api-key-usage-entry": {
+        "description": "Usage breakdown for one API key, grouped by model",
+        "properties": {
+          "organization-id": {
+            "description": "Organization that owns this API key",
+            "format": "uuid",
+            "type": "string"
+          },
+          "models": {
+            "description": "Map of model-uuid to accumulated counters. Keys are model UUIDs.",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/model-usage-counters"
+            },
+            "type": "object"
+          }
+        },
+        "type": "object",
+        "required": [
+          "organization-id",
+          "models"
+        ]
+      },
       "enable-kms-key-rotation-request": {
         "type": "object",
         "properties": {
@@ -2550,27 +2629,6 @@
           "name"
         ]
       },
-      "ai-api-key-with-value": {
-        "description": "AI API key with plaintext value",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ai-api-key"
-          },
-          {
-            "properties": {
-              "value": {
-                "description": "Plaintext AI API key value (returned only on create/rotate)",
-                "type": "string"
-              }
-            },
-            "type": "object",
-            "required": [
-              "value"
-            ]
-          }
-        ],
-        "type": "object"
-      },
       "inference-engine-version": {
         "description": "Inference engine version",
         "enum": [
@@ -2580,9 +2638,12 @@
           "0.17.0",
           "0.18.0",
           "0.18.1",
-          "0.19.0"
+          "0.19.0",
+          "0.19.1",
+          "0.20.0",
+          "0.20.1"
         ],
-        "default": "0.19.0",
+        "default": "0.20.1",
         "type": "string"
       },
       "dbaas-user-opensearch-secrets": {
@@ -2629,10 +2690,14 @@
         "description": "AI deployment inference endpoint authentication key",
         "properties": {
           "api-key": {
+            "description": "Inference endpoint authentication key",
             "type": "string"
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "api-key"
+        ]
       },
       "replicate-kms-key-request": {
         "type": "object",
@@ -5509,6 +5574,15 @@
         },
         "description": "SSH key"
       },
+      "reveal-ai-api-key-response": {
+        "description": "Reveal AI API key response",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ai-api-key-value"
+          }
+        ],
+        "type": "object"
+      },
       "load-balancer-service": {
         "type": "object",
         "properties": {
@@ -5654,7 +5728,7 @@
           "ai-api-keys": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ai-api-key"
+              "$ref": "#/components/schemas/list-ai-api-keys-response-entry"
             }
           }
         },
@@ -5685,7 +5759,10 @@
             }
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "instance-types"
+        ]
       },
       "dbaas-endpoint-opensearch-secrets": {
         "type": "object",
@@ -5948,6 +6025,20 @@
           }
         },
         "description": "Elastic IP reference"
+      },
+      "org-consumption-quota-response": {
+        "description": "Per-org token consumption quota response",
+        "properties": {
+          "quota-tokens-per-minute": {
+            "description": "Per-org token consumption quota (tokens/min). Null means unlimited.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        },
+        "type": "object"
       },
       "dbaas-service-maintenance": {
         "type": "object",
@@ -6835,7 +6926,7 @@
             "readOnly": true
           },
           "deployment-url": {
-            "description": "Deployment URL (nullable)",
+            "description": "Deployment inference endpoint URL",
             "type": "string"
           },
           "service-level": {
@@ -6857,6 +6948,7 @@
               "creating",
               "deploying",
               "error",
+              "preparing",
               "ready"
             ],
             "type": "string"
@@ -6899,7 +6991,23 @@
             "$ref": "#/components/schemas/model-ref"
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "state",
+          "state-details",
+          "gpu-type",
+          "gpu-count",
+          "replicas",
+          "service-level",
+          "deployment-url",
+          "inference-engine-parameters",
+          "inference-engine-version",
+          "model",
+          "created-at",
+          "updated-at"
+        ]
       },
       "iam-policy": {
         "type": "object",
@@ -7434,7 +7542,10 @@
             }
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "models"
+        ]
       },
       "instance-pool-ref": {
         "type": "object",
@@ -7917,7 +8028,7 @@
             "readOnly": true
           },
           "deployment-url": {
-            "description": "Deployment URL (nullable)",
+            "description": "Deployment inference endpoint URL",
             "type": "string"
           },
           "service-level": {
@@ -7936,6 +8047,7 @@
               "creating",
               "deploying",
               "error",
+              "preparing",
               "ready"
             ],
             "type": "string"
@@ -7967,7 +8079,20 @@
             "$ref": "#/components/schemas/model-ref"
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "state",
+          "gpu-type",
+          "gpu-count",
+          "replicas",
+          "service-level",
+          "deployment-url",
+          "model",
+          "created-at",
+          "updated-at"
+        ]
       },
       "dbaas-endpoint-elasticsearch-secrets": {
         "type": "object",
@@ -8700,6 +8825,15 @@
           "tag"
         ]
       },
+      "rotate-ai-api-key-response": {
+        "description": "Rotate AI API key response",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ai-api-key-value"
+          }
+        ],
+        "type": "object"
+      },
       "sks-cluster-labels": {
         "type": "object",
         "additionalProperties": {
@@ -8718,7 +8852,11 @@
             "type": "boolean"
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "family",
+          "authorized"
+        ]
       },
       "enum-integration-types": {
         "type": "string",
@@ -9337,6 +9475,40 @@
           }
         }
       },
+      "ingest-metering-request": {
+        "description": "Router flush payload: the router's full in-memory usage map with flush identity fields",
+        "properties": {
+          "flush-id": {
+            "description": "UUID identifying this flush; used for idempotent deduplication",
+            "format": "uuid",
+            "type": "string"
+          },
+          "usage": {
+            "description": "Map of api-key-uuid to usage entry. Keys are API key UUIDs. Mirrors the router's in-memory accumulator structure directly.",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/api-key-usage-entry"
+            },
+            "type": "object"
+          },
+          "router-id": {
+            "description": "Router instance identifier that produced this flush",
+            "type": "string",
+            "minLength": 1
+          },
+          "created-at": {
+            "description": "ISO-8601 UTC timestamp when the flush snapshot was created (truncated to minute boundary for bucketing)",
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "flush-id",
+          "router-id",
+          "created-at",
+          "usage"
+        ]
+      },
       "create-ai-api-key-request": {
         "description": "Request to create a new AI API key",
         "properties": {
@@ -9353,6 +9525,23 @@
         "required": [
           "name",
           "scope"
+        ]
+      },
+      "ingest-metering-response": {
+        "description": "Result of a metering ingest operation",
+        "properties": {
+          "duplicate": {
+            "description": "True if flush-id was already processed (idempotent retry)",
+            "type": "boolean"
+          },
+          "upserted": {
+            "description": "Number of rows affected (inserted or updated) in usage_minutely; 0 if duplicate flush-id",
+            "type": "integer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "upserted"
         ]
       },
       "zone-name": {
@@ -9758,6 +9947,15 @@
           "prometheus-uri"
         ]
       },
+      "get-ai-api-key-response": {
+        "description": "Get AI API key response",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ai-api-key"
+          }
+        ],
+        "type": "object"
+      },
       "manager": {
         "type": "object",
         "properties": {
@@ -9851,7 +10049,7 @@
         "description": "SKS cluster reference"
       },
       "list-deployments-response": {
-        "description": "AI model list",
+        "description": "AI deployment list",
         "properties": {
           "deployments": {
             "type": "array",
@@ -9860,7 +10058,10 @@
             }
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "deployments"
+        ]
       },
       "key-material": {
         "type": "object",
@@ -10028,7 +10229,7 @@
             "readOnly": true
           },
           "model-size": {
-            "description": "Model size (nullable)",
+            "description": "Model size in bytes",
             "format": "int64",
             "type": "integer",
             "minimum": 0
@@ -10040,7 +10241,15 @@
             "readOnly": true
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "state",
+          "model-size",
+          "created-at",
+          "updated-at"
+        ]
       },
       "dbaas-endpoint-elasticsearch-input-update": {
         "type": "object",
@@ -10101,6 +10310,19 @@
           }
         },
         "description": "Postgres User secrets"
+      },
+      "ai-api-key-value": {
+        "description": "AI API key plaintext value",
+        "properties": {
+          "value": {
+            "description": "Plaintext AI API key value",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value"
+        ]
       },
       "list-kms-key-rotations-response-entry": {
         "type": "object",
@@ -10229,7 +10451,7 @@
             "readOnly": true
           },
           "model-size": {
-            "description": "Model size (nullable)",
+            "description": "Model size in bytes",
             "format": "int64",
             "type": "integer",
             "minimum": 0
@@ -10241,7 +10463,15 @@
             "readOnly": true
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "state",
+          "model-size",
+          "created-at",
+          "updated-at"
+        ]
       },
       "dbaas-endpoint-opensearch-input-create": {
         "type": "object",
@@ -10304,7 +10534,10 @@
             "minimum": 0
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "gpu"
+        ]
       },
       "get-kms-key-response": {
         "type": "object",
@@ -10389,6 +10622,32 @@
             "format": "date-time"
           }
         }
+      },
+      "model-usage-counters": {
+        "description": "Accumulated token counters for one model over a flush window",
+        "properties": {
+          "output-tokens": {
+            "description": "Total completion/output tokens across all calls in this flush window",
+            "type": "integer",
+            "minimum": 0
+          },
+          "input-tokens": {
+            "description": "Total prompt/input tokens across all calls in this flush window",
+            "type": "integer",
+            "minimum": 0
+          },
+          "call-count": {
+            "description": "Number of inference calls in this flush window",
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "type": "object",
+        "required": [
+          "input-tokens",
+          "output-tokens",
+          "call-count"
+        ]
       },
       "create-kms-key-response": {
         "type": "object",
@@ -12152,7 +12411,7 @@
         }
       },
       "create-deployment-request": {
-        "description": "Deployment an AI model onto a set of GPUs",
+        "description": "Deploy an AI model onto a set of GPUs",
         "properties": {
           "gpu-count": {
             "description": "Number of GPUs (1-8)",
@@ -12241,8 +12500,17 @@
         ],
         "description": "Kubernetes Audit parameters"
       },
+      "update-ai-api-key-response": {
+        "description": "Update AI API key response",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ai-api-key"
+          }
+        ],
+        "type": "object"
+      },
       "ai-api-key": {
-        "description": "AI API key metadata (without value)",
+        "description": "AI API key metadata",
         "properties": {
           "updated-at": {
             "description": "Last update timestamp",
@@ -12277,7 +12545,15 @@
             "readOnly": true
           }
         },
-        "type": "object"
+        "type": "object",
+        "required": [
+          "id",
+          "org-uuid",
+          "name",
+          "scope",
+          "created-at",
+          "updated-at"
+        ]
       },
       "dbaas-user-thanos-secrets": {
         "type": "object",
@@ -13065,100 +13341,6 @@
           }
         },
         "operationId": "create-anti-affinity-group"
-      }
-    },
-    "/ai/ai-api-key": {
-      "get": {
-        "tags": [
-          "ai-api-key"
-        ],
-        "responses": {
-          "403": {
-            "description": "403",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/list-ai-api-keys-response"
-                }
-              }
-            }
-          }
-        },
-        "description": "List AI API keys for an organization",
-        "parameters": [],
-        "summary": "List AI API Keys",
-        "operationId": "list-ai-api-keys"
-      },
-      "post": {
-        "tags": [
-          "ai-api-key"
-        ],
-        "responses": {
-          "403": {
-            "description": "403",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "404",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ai-api-key-with-value"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "400",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          }
-        },
-        "description": "Create a new AI API key",
-        "parameters": [],
-        "summary": "Create AI API Key",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/create-ai-api-key-request"
-              }
-            }
-          }
-        },
-        "operationId": "create-ai-api-key"
       }
     },
     "/usage-report": {
@@ -17224,6 +17406,171 @@
         "operationId": "list-dbaas-external-endpoint-types"
       }
     },
+    "/ai/api-key/{id}": {
+      "delete": {
+        "tags": [
+          "ai-api-key"
+        ],
+        "responses": {
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/forbidden-operation-response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Delete AI API key",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Delete AI API Key",
+        "operationId": "delete-ai-api-key"
+      },
+      "get": {
+        "tags": [
+          "ai-api-key"
+        ],
+        "responses": {
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/forbidden-operation-response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/get-ai-api-key-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get AI API key metadata",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Get AI API Key",
+        "operationId": "get-ai-api-key"
+      },
+      "patch": {
+        "tags": [
+          "ai-api-key"
+        ],
+        "responses": {
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/forbidden-operation-response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/update-ai-api-key-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Update AI API key name and/or scope",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Update AI API Key",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update-ai-api-key-request"
+              }
+            }
+          }
+        },
+        "operationId": "update-ai-api-key"
+      }
+    },
     "/private-network": {
       "get": {
         "tags": [
@@ -17323,6 +17670,59 @@
           }
         },
         "operationId": "create-private-network"
+      }
+    },
+    "/ai/api-key/{id}/rotate": {
+      "post": {
+        "tags": [
+          "ai-api-key"
+        ],
+        "responses": {
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/forbidden-operation-response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rotate-ai-api-key-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Rotate AI API key value",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Rotate AI API Key",
+        "operationId": "rotate-ai-api-key"
       }
     },
     "/instance/{id}:start": {
@@ -17682,7 +18082,7 @@
             }
           }
         ],
-        "summary": "",
+        "summary": "Update Deployment",
         "requestBody": {
           "required": true,
           "content": {
@@ -17906,189 +18306,6 @@
         ],
         "summary": "Retrieve Resource Quota",
         "operationId": "get-quota"
-      }
-    },
-    "/ai/ai-api-key/{id}": {
-      "delete": {
-        "tags": [
-          "ai-api-key"
-        ],
-        "responses": {
-          "403": {
-            "description": "403",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "404",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "deleted"
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "description": "Delete AI API key",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "Delete AI API Key",
-        "operationId": "delete-ai-api-key"
-      },
-      "get": {
-        "tags": [
-          "ai-api-key"
-        ],
-        "responses": {
-          "403": {
-            "description": "403",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "404",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ai-api-key"
-                }
-              }
-            }
-          }
-        },
-        "description": "Get AI API key metadata",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "Get AI API Key",
-        "operationId": "get-ai-api-key"
-      },
-      "patch": {
-        "tags": [
-          "ai-api-key"
-        ],
-        "responses": {
-          "403": {
-            "description": "403",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "404",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ai-api-key"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "400",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          }
-        },
-        "description": "Update AI API key name and/or scope",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "Update AI API Key",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/update-ai-api-key-request"
-              }
-            }
-          }
-        },
-        "operationId": "update-ai-api-key"
       }
     },
     "/sks-cluster-deprecated-resources/{id}": {
@@ -23430,59 +23647,6 @@
         "operationId": "detach-block-storage-volume"
       }
     },
-    "/ai/ai-api-key/{id}/rotate": {
-      "post": {
-        "tags": [
-          "ai-api-key"
-        ],
-        "responses": {
-          "403": {
-            "description": "403",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "404",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ai-api-key-with-value"
-                }
-              }
-            }
-          }
-        },
-        "description": "Rotate AI API key value",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "Rotate AI API Key",
-        "operationId": "rotate-ai-api-key"
-      }
-    },
     "/dbaas-external-endpoint-prometheus/{name}": {
       "post": {
         "tags": [
@@ -26760,6 +26924,49 @@
         "operationId": "create-dbaas-external-endpoint-elasticsearch"
       }
     },
+    "/ai/api-key/{id}/reveal": {
+      "get": {
+        "tags": [
+          "ai-api-key"
+        ],
+        "responses": {
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/reveal-ai-api-key-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Reveal AI API key plaintext value",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Reveal AI API Key",
+        "operationId": "reveal-ai-api-key"
+      }
+    },
     "/dbaas-opensearch/{name}/maintenance/start": {
       "put": {
         "tags": [
@@ -26878,6 +27085,100 @@
           }
         },
         "operationId": "reset-dbaas-kafka-user-password"
+      }
+    },
+    "/ai/api-key": {
+      "get": {
+        "tags": [
+          "ai-api-key"
+        ],
+        "responses": {
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/forbidden-operation-response"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/list-ai-api-keys-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "List AI API keys for an organization",
+        "parameters": [],
+        "summary": "List AI API Keys",
+        "operationId": "list-ai-api-keys"
+      },
+      "post": {
+        "tags": [
+          "ai-api-key"
+        ],
+        "responses": {
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/forbidden-operation-response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/create-ai-api-key-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Create a new AI API key",
+        "parameters": [],
+        "summary": "Create AI API Key",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create-ai-api-key-request"
+              }
+            }
+          }
+        },
+        "operationId": "create-ai-api-key"
       }
     },
     "/kms-key/{id}/re-encrypt": {
@@ -27574,6 +27875,39 @@
         ],
         "summary": "Reveal the secrets of a DBaaS Valkey user",
         "operationId": "reveal-dbaas-valkey-user-password"
+      }
+    },
+    "/ai/quota": {
+      "get": {
+        "tags": [
+          "ai-api-key"
+        ],
+        "responses": {
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org-consumption-quota-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get per-org token consumption quota (tokens/min). Null means unlimited.",
+        "parameters": [],
+        "summary": "Get Organization Consumption Quota",
+        "operationId": "get-user-org-consumption-quota"
       }
     },
     "/dbaas-postgres/{name}": {

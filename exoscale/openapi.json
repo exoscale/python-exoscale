@@ -6170,6 +6170,20 @@
         },
         "description": "Snapshot reference"
       },
+      "rate-limited": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "The error message"
+          },
+          "retry_after": {
+            "type": "number",
+            "description": "The time in seconds to wait before the next request"
+          }
+        },
+        "description": "Rate Limit"
+      },
       "key-rotation-config": {
         "type": "object",
         "required": [
@@ -7033,6 +7047,22 @@
           "services"
         ],
         "description": "Policy"
+      },
+      "live-balance": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "readOnly": true,
+            "description": "Organization live balance"
+          },
+          "currency": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Organization currency"
+          }
+        },
+        "description": "Live balance"
       },
       "replica-state": {
         "type": "object",
@@ -11377,7 +11407,8 @@
           "balance": {
             "type": "number",
             "readOnly": true,
-            "description": "Organization balance"
+            "deprecated": true,
+            "description": "Organization balance. DEPRECATED: use the dedicated `live-balance` endpoint"
           },
           "currency": {
             "type": "string",
@@ -15985,6 +16016,39 @@
         ],
         "summary": "List Deployments",
         "operationId": "list-deployments"
+      }
+    },
+    "/live-balance": {
+      "get": {
+        "tags": [
+          "organization"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/live-balance"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "429",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rate-limited"
+                }
+              }
+            }
+          }
+        },
+        "description": "[BETA] Returns the live-balance of the current organization.",
+        "parameters": [],
+        "summary": "[BETA] Retrieve the live-balance",
+        "operationId": "get-live-balance"
       }
     },
     "/dbaas-postgres/{service-name}/database/{database-name}": {

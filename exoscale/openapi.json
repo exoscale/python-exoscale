@@ -7749,6 +7749,11 @@
             "exclusiveMaximum": false,
             "description": "Instance disk size in GiB"
           },
+          "disk-encrypted": {
+            "type": "boolean",
+            "readOnly": true,
+            "description": "Indicates if the root volume of the instance is encrypted"
+          },
           "ssh-keys": {
             "type": "array",
             "items": {
@@ -12380,6 +12385,11 @@
             "readOnly": true,
             "description": "Volume ID"
           },
+          "encrypted": {
+            "type": "boolean",
+            "readOnly": true,
+            "description": "Indicates if the block-storage volume is encrypted"
+          },
           "created-at": {
             "type": "string",
             "format": "date-time",
@@ -14548,7 +14558,10 @@
                     "exclusiveMinimum": true,
                     "description": "TTL in seconds for the generated access key (cannot exceed the max TTL defined in the targeted assume role)"
                   }
-                }
+                },
+                "required": [
+                  "ttl"
+                ]
               }
             }
           }

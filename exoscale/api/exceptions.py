@@ -2,6 +2,7 @@ class ExoscaleAPIException(Exception):
     """
     Base exception for exoscale API errors.
     Base for all other exception classes, it allows to catch all exoscale exceptions with a single except block.
+    test
     """
 
     def __init__(self, message, response=None):

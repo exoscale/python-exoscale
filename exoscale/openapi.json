@@ -25725,6 +25725,44 @@
         "operationId": "delete-dbaas-mysql-user"
       }
     },
+    "/sks-cluster/{id}/generate-karpenter-nodepool": {
+      "put": {
+        "tags": [
+          "cluster"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nodepool": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Generate a Karpenter NodePool manifest with minimal configuration for an SKS cluster",
+        "operationId": "generate-sks-karpenter-nodepool"
+      }
+    },
     "/load-balancer/{id}": {
       "put": {
         "tags": [
@@ -26807,6 +26845,44 @@
         ],
         "summary": "",
         "operationId": "get-dbaas-external-endpoint-rsyslog"
+      }
+    },
+    "/sks-cluster/{id}/generate-karpenter-exoscale-nodeclass": {
+      "put": {
+        "tags": [
+          "cluster"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "exoscale-nodeclass": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Generate a Karpenter ExoscaleNodeClass manifest for an SKS cluster, including its default security group and feature flags if present",
+        "operationId": "generate-sks-karpenter-exoscale-nodeclass"
       }
     },
     "/sks-cluster/{id}/nodepool": {

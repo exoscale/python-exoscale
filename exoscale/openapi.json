@@ -14524,6 +14524,9 @@
                     },
                     "secret": {
                       "type": "string"
+                    },
+                    "expires-at": {
+                      "type": "string"
                     }
                   }
                 }
@@ -21485,7 +21488,7 @@
             }
           }
         },
-        "description": "",
+        "description": "Update IAM Assume role Policy",
         "parameters": [
           {
             "in": "path",

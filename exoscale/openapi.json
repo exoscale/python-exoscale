@@ -24235,7 +24235,6 @@
                   },
                   "oidc": {
                     "$ref": "#/components/schemas/sks-oidc",
-                    "nullable": true,
                     "description": "Cluster OpenID configmap"
                   },
                   "name": {

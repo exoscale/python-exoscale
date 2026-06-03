@@ -8982,6 +8982,19 @@
         },
         "description": "SKS Nodepool"
       },
+      "iam-assume-role-policy": {
+        "type": "object",
+        "properties": {
+          "rules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/iam-service-policy-rule"
+            },
+            "description": "IAM Assume Role Policy rules"
+          }
+        },
+        "description": "Assume Role Policy"
+      },
       "dbaas-datadog-tag": {
         "type": "object",
         "properties": {
@@ -10935,7 +10948,7 @@
             "description": "IAM Role permissions"
           },
           "assume-role-policy": {
-            "$ref": "#/components/schemas/iam-policy",
+            "$ref": "#/components/schemas/iam-assume-role-policy",
             "description": "IAM Assume Role Policy"
           },
           "editable": {
@@ -20765,6 +20778,10 @@
                     "minimum": 0,
                     "exclusiveMinimum": true,
                     "description": "Maximum TTL requester is allowed to ask for when assuming a role"
+                  },
+                  "assume-role-policy": {
+                    "$ref": "#/components/schemas/iam-assume-role-policy",
+                    "description": "IAM Assume role policy"
                   }
                 }
               }
@@ -21610,49 +21627,6 @@
         ],
         "summary": "Initiate PostgreSQL maintenance update",
         "operationId": "start-dbaas-pg-maintenance"
-      }
-    },
-    "/iam-role/{id}:assume-role-policy": {
-      "put": {
-        "tags": [
-          "role"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": "Update IAM Assume role Policy",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "Update IAM Assume role Policy",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/iam-policy"
-              }
-            }
-          }
-        },
-        "operationId": "update-iam-role-assume-policy"
       }
     },
     "/dbaas-grafana/{service-name}/user/{username}/password/reveal": {
@@ -29641,7 +29615,7 @@
                     "description": "IAM Role policy"
                   },
                   "assume-role-policy": {
-                    "$ref": "#/components/schemas/iam-policy",
+                    "$ref": "#/components/schemas/iam-assume-role-policy",
                     "description": "IAM Assume role policy"
                   },
                   "max-session-ttl": {

@@ -905,7 +905,7 @@
         ]
       },
       "model-ref": {
-        "description": "Model reference",
+        "description": "Model reference. Provide either id or name.",
         "properties": {
           "name": {
             "description": "Associated model name",
@@ -918,19 +918,8 @@
             "type": "string"
           }
         },
-        "anyOf": [
-          {
-            "required": [
-              "id"
-            ]
-          },
-          {
-            "required": [
-              "name"
-            ]
-          }
-        ],
-        "type": "object"
+        "type": "object",
+        "minProperties": 1
       },
       "dbaas-pg-pool-size": {
         "type": "integer",
@@ -1147,12 +1136,49 @@
       },
       "create-ai-api-key-response": {
         "description": "Create AI API key response",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ai-api-key"
+        "properties": {
+          "updated-at": {
+            "description": "Last update timestamp",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "description": "Human-readable name for the AI API key",
+            "type": "string"
+          },
+          "scope": {
+            "description": "Key scope: 'public' for all deployments, or a specific deployment UUID",
+            "type": "string"
+          },
+          "id": {
+            "description": "AI API key ID",
+            "format": "uuid",
+            "type": "string",
+            "readOnly": true
+          },
+          "org-uuid": {
+            "description": "Organization UUID that owns this key",
+            "format": "uuid",
+            "type": "string",
+            "readOnly": true
+          },
+          "created-at": {
+            "description": "Creation timestamp",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true
           }
-        ],
-        "type": "object"
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "org-uuid",
+          "name",
+          "scope",
+          "created-at",
+          "updated-at"
+        ]
       },
       "sks-audit-bearer-token": {
         "type": "string",
@@ -2139,12 +2165,49 @@
       },
       "list-ai-api-keys-response-entry": {
         "description": "AI API key list entry",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ai-api-key"
+        "properties": {
+          "updated-at": {
+            "description": "Last update timestamp",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "description": "Human-readable name for the AI API key",
+            "type": "string"
+          },
+          "scope": {
+            "description": "Key scope: 'public' for all deployments, or a specific deployment UUID",
+            "type": "string"
+          },
+          "id": {
+            "description": "AI API key ID",
+            "format": "uuid",
+            "type": "string",
+            "readOnly": true
+          },
+          "org-uuid": {
+            "description": "Organization UUID that owns this key",
+            "format": "uuid",
+            "type": "string",
+            "readOnly": true
+          },
+          "created-at": {
+            "description": "Creation timestamp",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true
           }
-        ],
-        "type": "object"
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "org-uuid",
+          "name",
+          "scope",
+          "created-at",
+          "updated-at"
+        ]
       },
       "private-network": {
         "type": "object",
@@ -2470,10 +2533,10 @@
         }
       },
       "set-org-consumption-quota-request": {
-        "description": "Request to set per-org token consumption quota",
+        "description": "Request to set per-org Unit Of Measurement (UOM) consumption quota",
         "properties": {
-          "quota-tokens-per-minute": {
-            "description": "Per-org token consumption quota (tokens/min). Pass null to remove the limit.",
+          "quota-uom-per-minute": {
+            "description": "Per-org Unit Of Measurement (UOM) consumption quota (UOM/min). Pass null to remove the limit. UOM represents weighted units across different AI workloads (e.g., tokens for LLMs, minutes for TTS, pages for OCR).",
             "type": [
               "integer",
               "null"
@@ -2770,9 +2833,12 @@
           "0.19.0",
           "0.19.1",
           "0.20.0",
-          "0.20.1"
+          "0.20.1",
+          "0.20.2",
+          "0.21.0",
+          "0.22.0"
         ],
-        "default": "0.20.1",
+        "default": "0.22.0",
         "type": "string"
       },
       "dbaas-user-opensearch-secrets": {
@@ -5713,12 +5779,16 @@
       },
       "reveal-ai-api-key-response": {
         "description": "Reveal AI API key response",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ai-api-key-value"
+        "properties": {
+          "value": {
+            "description": "Plaintext AI API key value",
+            "type": "string"
           }
-        ],
-        "type": "object"
+        },
+        "type": "object",
+        "required": [
+          "value"
+        ]
       },
       "load-balancer-service": {
         "type": "object",
@@ -6145,6 +6215,7 @@
           "status": {
             "type": "string",
             "enum": [
+              "already-applied",
               "success",
               "target-registered"
             ],
@@ -6164,10 +6235,10 @@
         "description": "Elastic IP reference"
       },
       "org-consumption-quota-response": {
-        "description": "Per-org token consumption quota response",
+        "description": "Per-org Unit Of Measurement (UOM) consumption quota response",
         "properties": {
-          "quota-tokens-per-minute": {
-            "description": "Per-org token consumption quota (tokens/min). Null means unlimited.",
+          "quota-uom-per-minute": {
+            "description": "Per-org Unit Of Measurement (UOM) consumption quota (UOM/min). Null means unlimited. UOM represents weighted units across different AI workloads (e.g., tokens for LLMs, minutes for TTS, pages for OCR).",
             "type": [
               "integer",
               "null"
@@ -7104,7 +7175,9 @@
               "deploying",
               "error",
               "preparing",
-              "ready"
+              "ready",
+              "scaling",
+              "updating"
             ],
             "type": "string"
           },
@@ -8009,10 +8082,7 @@
       "create-kms-key-request": {
         "type": "object",
         "required": [
-          "name",
-          "description",
-          "usage",
-          "multi-zone"
+          "name"
         ],
         "properties": {
           "name": {
@@ -8025,10 +8095,12 @@
             "type": "string",
             "enum": [
               "encrypt-decrypt"
-            ]
+            ],
+            "default": "encrypt-decrypt"
           },
           "multi-zone": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -8224,7 +8296,9 @@
               "deploying",
               "error",
               "preparing",
-              "ready"
+              "ready",
+              "scaling",
+              "updating"
             ],
             "type": "string"
           },
@@ -8618,8 +8692,38 @@
       "organization-usage": {
         "description": "Organization GPU usage",
         "properties": {
+          "gpu3": {
+            "description": "GPU3 count",
+            "format": "int64",
+            "type": "integer",
+            "minimum": 0
+          },
+          "gpua30": {
+            "description": "GPUA30 count",
+            "format": "int64",
+            "type": "integer",
+            "minimum": 0
+          },
+          "gpu3080ti": {
+            "description": "GPU3080TI count",
+            "format": "int64",
+            "type": "integer",
+            "minimum": 0
+          },
           "gpu": {
-            "description": "Total GPU count",
+            "description": "Total GPU count (sum of all GPU types)",
+            "format": "int64",
+            "type": "integer",
+            "minimum": 0
+          },
+          "gpua5000": {
+            "description": "GPUA5000 count",
+            "format": "int64",
+            "type": "integer",
+            "minimum": 0
+          },
+          "gpurtx6000pro": {
+            "description": "GPURTX6000PRO count",
             "format": "int64",
             "type": "integer",
             "minimum": 0
@@ -9016,12 +9120,16 @@
       },
       "rotate-ai-api-key-response": {
         "description": "Rotate AI API key response",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ai-api-key-value"
+        "properties": {
+          "value": {
+            "description": "Plaintext AI API key value",
+            "type": "string"
           }
-        ],
-        "type": "object"
+        },
+        "type": "object",
+        "required": [
+          "value"
+        ]
       },
       "sks-cluster-labels": {
         "type": "object",
@@ -10138,12 +10246,49 @@
       },
       "get-ai-api-key-response": {
         "description": "Get AI API key response",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ai-api-key"
+        "properties": {
+          "updated-at": {
+            "description": "Last update timestamp",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "description": "Human-readable name for the AI API key",
+            "type": "string"
+          },
+          "scope": {
+            "description": "Key scope: 'public' for all deployments, or a specific deployment UUID",
+            "type": "string"
+          },
+          "id": {
+            "description": "AI API key ID",
+            "format": "uuid",
+            "type": "string",
+            "readOnly": true
+          },
+          "org-uuid": {
+            "description": "Organization UUID that owns this key",
+            "format": "uuid",
+            "type": "string",
+            "readOnly": true
+          },
+          "created-at": {
+            "description": "Creation timestamp",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true
           }
-        ],
-        "type": "object"
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "org-uuid",
+          "name",
+          "scope",
+          "created-at",
+          "updated-at"
+        ]
       },
       "manager": {
         "type": "object",
@@ -10731,7 +10876,6 @@
       "get-kms-key-response": {
         "type": "object",
         "required": [
-          "zone",
           "id",
           "name",
           "description",
@@ -10813,15 +10957,15 @@
         }
       },
       "model-usage-counters": {
-        "description": "Accumulated token counters for one model over a flush window",
+        "description": "Accumulated Unit Of Measurement (UOM) counters for one model over a flush window",
         "properties": {
-          "output-tokens": {
-            "description": "Total completion/output tokens across all calls in this flush window",
+          "output-uom": {
+            "description": "Total completion/output Unit Of Measurement (UOM) across all calls in this flush window (e.g., tokens for LLMs, minutes for TTS, pages for OCR)",
             "type": "integer",
             "minimum": 0
           },
-          "input-tokens": {
-            "description": "Total prompt/input tokens across all calls in this flush window",
+          "input-uom": {
+            "description": "Total prompt/input Unit Of Measurement (UOM) across all calls in this flush window (e.g., tokens for LLMs, minutes for TTS, pages for OCR)",
             "type": "integer",
             "minimum": 0
           },
@@ -10833,8 +10977,8 @@
         },
         "type": "object",
         "required": [
-          "input-tokens",
-          "output-tokens",
+          "input-uom",
+          "output-uom",
           "call-count"
         ]
       },
@@ -10882,6 +11026,10 @@
               "enabled",
               "pending-deletion"
             ]
+          },
+          "status-since": {
+            "type": "string",
+            "format": "date-time"
           },
           "id": {
             "type": "string",
@@ -12697,12 +12845,49 @@
       },
       "update-ai-api-key-response": {
         "description": "Update AI API key response",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ai-api-key"
+        "properties": {
+          "updated-at": {
+            "description": "Last update timestamp",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "description": "Human-readable name for the AI API key",
+            "type": "string"
+          },
+          "scope": {
+            "description": "Key scope: 'public' for all deployments, or a specific deployment UUID",
+            "type": "string"
+          },
+          "id": {
+            "description": "AI API key ID",
+            "format": "uuid",
+            "type": "string",
+            "readOnly": true
+          },
+          "org-uuid": {
+            "description": "Organization UUID that owns this key",
+            "format": "uuid",
+            "type": "string",
+            "readOnly": true
+          },
+          "created-at": {
+            "description": "Creation timestamp",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true
           }
-        ],
-        "type": "object"
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "org-uuid",
+          "name",
+          "scope",
+          "created-at",
+          "updated-at"
+        ]
       },
       "ai-api-key": {
         "description": "AI API key metadata",
@@ -28174,7 +28359,7 @@
             }
           }
         },
-        "description": "Get per-org token consumption quota (tokens/min). Null means unlimited.",
+        "description": "Get per-org Unit Of Measurement (UOM) consumption quota (UOM/min). Null means unlimited. UOM represents weighted units across different AI workloads (e.g., tokens for LLMs, minutes for TTS, pages for OCR).",
         "parameters": [],
         "summary": "Get Organization Consumption Quota",
         "operationId": "get-user-org-consumption-quota"

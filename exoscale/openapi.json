@@ -368,6 +368,18 @@
       "x-icon": "exo-gpu"
     },
     {
+      "description": "[BETA] Virtual Private Cloud (VPC) provides isolated virtual network environments for your Exoscale resources.",
+      "parent": "compute",
+      "externalDocs": {
+        "description": "Read more",
+        "url": "https://community.exoscale.com/documentation/compute/"
+      },
+      "name": "vpc",
+      "x-display-name": "VPC",
+      "x-weight": 195,
+      "x-icon": "exo-vpc"
+    },
+    {
       "description": "Operational management for DBaaS services: logs, metrics, service types and lifecycle.",
       "parent": "dbaas",
       "externalDocs": {
@@ -404,7 +416,7 @@
     },
     {
       "description": "Deployments are loaded model instances ready for inference.",
-      "parent": "ai",
+      "parent": "dedicated-inference",
       "externalDocs": {
         "description": "Read more",
         "url": "https://www.exoscale.com/ai-cloud-infrastructure/dedicated-inference/"
@@ -508,6 +520,18 @@
       "x-icon": "exo-secgrp"
     },
     {
+      "description": "Deploy and run AI models on dedicated GPUs.",
+      "parent": "ai",
+      "externalDocs": {
+        "description": "Read more",
+        "url": "https://www.exoscale.com/ai-cloud-infrastructure/dedicated-inference/"
+      },
+      "name": "dedicated-inference",
+      "x-display-name": "Dedicated Inference",
+      "x-weight": 905,
+      "x-icon": "exo-ai-prod"
+    },
+    {
       "description": "Opensearch, the popular open-source search and analytics database.",
       "parent": "dbaas",
       "externalDocs": {
@@ -580,7 +604,7 @@
     },
     {
       "description": "Lifecycle of AI Models.",
-      "parent": "ai",
+      "parent": "dedicated-inference",
       "externalDocs": {
         "description": "Read more",
         "url": "https://www.exoscale.com/ai-cloud-infrastructure/dedicated-inference/"
@@ -2546,6 +2570,37 @@
         },
         "type": "object"
       },
+      "vpc": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "VPC ID"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "VPC name"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 4096,
+            "description": "VPC description"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "VPC creation date"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/labels",
+            "description": "Resource labels"
+          }
+        },
+        "description": "VPC"
+      },
       "json-schema-thanos": {
         "properties": {
           "compactor": {
@@ -2836,9 +2891,10 @@
           "0.20.1",
           "0.20.2",
           "0.21.0",
-          "0.22.0"
+          "0.22.0",
+          "0.22.1"
         ],
-        "default": "0.22.0",
+        "default": "0.22.1",
         "type": "string"
       },
       "dbaas-user-opensearch-secrets": {
@@ -6222,6 +6278,37 @@
             "default": "success"
           }
         }
+      },
+      "list-vpc-response-entry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "VPC ID"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "VPC name"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 4096,
+            "description": "VPC description"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "VPC creation date"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/labels",
+            "description": "Resource labels"
+          }
+        },
+        "description": "VPC"
       },
       "elastic-ip-ref": {
         "type": "object",
@@ -15350,6 +15437,16 @@
               }
             }
           },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
           "404": {
             "description": "404",
             "content": {
@@ -18091,6 +18188,88 @@
         "operationId": "create-private-network"
       }
     },
+    "/vpc": {
+      "post": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [],
+        "summary": "[BETA] Create a VPC",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "description": "VPC name"
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 4096,
+                    "description": "VPC description"
+                  },
+                  "labels": {
+                    "$ref": "#/components/schemas/labels",
+                    "description": "Resource labels"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          }
+        },
+        "operationId": "create-vpc"
+      },
+      "get": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "vpcs": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/list-vpc-response-entry"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [],
+        "summary": "[BETA] List VPCs",
+        "operationId": "list-vpcs"
+      }
+    },
     "/ai/api-key/{id}/rotate": {
       "post": {
         "tags": [
@@ -18458,6 +18637,16 @@
               }
             }
           },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          },
           "404": {
             "description": "404",
             "content": {
@@ -18525,6 +18714,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/forbidden-operation-response"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -30166,6 +30365,131 @@
           }
         },
         "operationId": "generate-data-key"
+      }
+    },
+    "/vpc/{id}": {
+      "put": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/vpc"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Update a VPC",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "nullable": true,
+                    "description": "VPC name"
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 4096,
+                    "nullable": true,
+                    "description": "VPC description"
+                  },
+                  "labels": {
+                    "$ref": "#/components/schemas/labels",
+                    "nullable": true,
+                    "description": "Resource labels"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "update-vpc"
+      },
+      "get": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/vpc"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Retrieve VPC details",
+        "operationId": "get-vpc"
+      },
+      "delete": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Delete a VPC",
+        "operationId": "delete-vpc"
       }
     },
     "/block-storage": {

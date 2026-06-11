@@ -5015,6 +5015,12 @@
             "title": "Counter logarithm factor for volatile-lfu and allkeys-lfu maxmemory-policies",
             "type": "integer"
           },
+          "frequent_snapshots": {
+            "default": true,
+            "description": "When enabled, Valkey will create frequent local RDB snapshots. When disabled, Valkey will only take RDB snapshots when a backup is created, based on the backup schedule. This setting is ignored when `valkey_persistence` is set to `off`.",
+            "title": "Frequent RDB snapshots",
+            "type": "boolean"
+          },
           "maxmemory_policy": {
             "default": "noeviction",
             "enum": [
@@ -5052,6 +5058,14 @@
             "maximum": 512,
             "minimum": 32,
             "title": "Pub/sub client output buffer hard limit in MB",
+            "type": "integer"
+          },
+          "active_expire_effort": {
+            "default": 1,
+            "description": "Valkey reclaims expired keys both when accessed and in the background. The background process scans for expired keys to free memory. Increasing the active-expire-effort setting (default 1, max 10) uses more CPU to reclaim expired keys faster, reducing memory usage but potentially increasing latency.",
+            "maximum": 10,
+            "minimum": 1,
+            "title": "Active expire effort",
             "type": "integer"
           },
           "notify_keyspace_events": {
@@ -25110,6 +25124,25 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "valkey-settings": {
+                    "$ref": "#/components/schemas/json-schema-valkey",
+                    "description": "Valkey.conf settings"
+                  },
+                  "ip-filter": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'"
+                  },
+                  "termination-protection": {
+                    "type": "boolean",
+                    "description": "Service is protected against termination and powering off"
+                  },
+                  "fork-from-service": {
+                    "$ref": "#/components/schemas/dbaas-service-name",
+                    "description": "Service to fork from"
+                  },
                   "maintenance": {
                     "type": "object",
                     "properties": {
@@ -25140,22 +25173,21 @@
                     ],
                     "description": "Automatic maintenance settings"
                   },
+                  "version": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Valkey major version"
+                  },
+                  "recovery-backup-name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Name of a backup to recover from for services that support backup names"
+                  },
                   "plan": {
                     "type": "string",
                     "maxLength": 128,
                     "minLength": 1,
                     "description": "Subscription plan"
-                  },
-                  "termination-protection": {
-                    "type": "boolean",
-                    "description": "Service is protected against termination and powering off"
-                  },
-                  "ip-filter": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    },
-                    "description": "Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'"
                   },
                   "migration": {
                     "type": "object",
@@ -25213,19 +25245,6 @@
                       "port"
                     ],
                     "description": "Migrate data from existing server"
-                  },
-                  "valkey-settings": {
-                    "$ref": "#/components/schemas/json-schema-valkey",
-                    "description": "Valkey.conf settings"
-                  },
-                  "fork-from-service": {
-                    "$ref": "#/components/schemas/dbaas-service-name",
-                    "description": "Service to fork from"
-                  },
-                  "recovery-backup-name": {
-                    "type": "string",
-                    "minLength": 1,
-                    "description": "Name of a backup to recover from for services that support backup names"
                   }
                 },
                 "required": [

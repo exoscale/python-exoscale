@@ -5687,29 +5687,6 @@
           "permission"
         ]
       },
-      "forbidden-operation-response": {
-        "description": "Forbidden operation response",
-        "properties": {
-          "code": {
-            "description": "Machine-readable forbidden error code",
-            "enum": [
-              "forbidden_operation"
-            ],
-            "type": "string",
-            "readOnly": true
-          },
-          "error": {
-            "description": "Forbidden error message",
-            "type": "string",
-            "readOnly": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "error",
-          "code"
-        ]
-      },
       "enum-mysql-authentication-plugin": {
         "type": "string",
         "enum": [
@@ -15263,7 +15240,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -15432,7 +15409,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -16388,7 +16365,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -17933,7 +17910,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -17974,7 +17951,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -18025,7 +18002,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -18281,7 +18258,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -18632,7 +18609,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -18713,7 +18690,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -23070,7 +23047,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -27753,7 +27730,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }
@@ -27784,7 +27761,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/forbidden-operation-response"
+                  "$ref": "#/components/schemas/error-response"
                 }
               }
             }

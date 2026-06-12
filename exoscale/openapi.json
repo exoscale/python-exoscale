@@ -17938,6 +17938,16 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
           }
         },
         "description": "Delete AI API key",

@@ -25405,6 +25405,11 @@
                     ],
                     "description": "Migrate data from existing server"
                   },
+                  "version": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Valkey major version"
+                  },
                   "valkey-settings": {
                     "$ref": "#/components/schemas/json-schema-valkey",
                     "description": "Valkey.conf settings"

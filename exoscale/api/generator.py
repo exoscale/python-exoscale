@@ -166,9 +166,17 @@ class BaseClient:
             # TODO validate
             json["json"] = body
 
-        response = self.http_client.request(
-            method=op["verb"].upper(), url=url, params=query_params, **json
-        )
+        # list-zones returns public data but the server enforces IAM role policies
+        # on authenticated requests — restricted keys (e.g. DBaaS-only) get 403.
+        # Send the request without credentials so it always succeeds.
+        if operation_id == "list-zones":
+            response = requests.request(
+                method=op["verb"].upper(), url=url, params=query_params, **json
+            )
+        else:
+            response = self.http_client.request(
+                method=op["verb"].upper(), url=url, params=query_params, **json
+            )
 
         # Error handling
         if response.status_code == 403:

@@ -52,6 +52,15 @@ _type_translations = {
 }
 
 
+def _translate_type(typ):
+    if isinstance(typ, list):
+        non_null = [t for t in typ if t != "null"]
+        if len(non_null) == 1:
+            return f"{_type_translations[non_null[0]]} | None"
+        return " | ".join(_type_translations[t] for t in non_null)
+    return _type_translations[typ]
+
+
 def _status_code_docstring(api_spec, operation, status_code):
     [ctype] = operation["responses"][status_code]["content"].keys()
     return_schema = operation["responses"][status_code]["content"][ctype][
@@ -71,7 +80,7 @@ def _status_code_docstring(api_spec, operation, status_code):
                     item = _ref
                 else:
                     item = prop
-                typ = _type_translations[item["type"]]
+                typ = _translate_type(item["type"])
                 desc = prop.get("description")
                 if "enum" in item:
                     choices = "``, ``".join(map(repr, item["enum"]))
@@ -87,11 +96,11 @@ def _status_code_docstring(api_spec, operation, status_code):
                 + "\n\n          * ".join([""] + list(body.values()))
             )
         elif "description" in ref:
-            doc = f"{_type_translations[ref['type']]}: {ref['description']}."
+            doc = f"{_translate_type(ref['type'])}: {ref['description']}."
         else:
-            doc = _type_translations[ref["type"]]
+            doc = _translate_type(ref["type"])
     else:
-        doc = _type_translations[return_schema["type"]]
+        doc = _translate_type(return_schema["type"])
     return doc
 
 
@@ -213,9 +222,9 @@ def _create_operation_call(
         name = param["name"]
         if "$ref" in param["schema"]:
             ref = _get_ref(api_spec, param["schema"]["$ref"])
-            typ = _type_translations[ref["type"]]
+            typ = _translate_type(ref["type"])
         else:
-            typ = _type_translations[param["schema"]["type"]]
+            typ = _translate_type(param["schema"]["type"])
         normalized_name = name.replace("-", "_")
         normalized_names[normalized_name] = name
         parameters[normalized_name] = f"{normalized_name} ({typ})."
@@ -236,7 +245,7 @@ def _create_operation_call(
                 item = ref
             else:
                 item = prop
-            typ = _type_translations[item["type"]]
+            typ = _translate_type(item["type"])
             desc = prop.get("description") or item.get("description")
             if "enum" in item:
                 choices = "``, ``".join(map(repr, item["enum"]))

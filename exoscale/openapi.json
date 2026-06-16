@@ -3319,6 +3319,20 @@
         "title": "Kafka broker configuration values",
         "type": "object"
       },
+      "nvidia-mig-profiles": {
+        "type": "object",
+        "properties": {
+          "a30.24gb": {
+            "$ref": "#/components/schemas/nvidia-mig-profile-a30.24gb",
+            "description": "Nvidia A30 MIG Profile"
+          },
+          "rtxpro6000.96gb": {
+            "$ref": "#/components/schemas/nvidia-mig-profile-rtxpro6000.96gb",
+            "description": "Nvidia RTXPRO6000 MIG Profile"
+          }
+        },
+        "description": "Nvidia MIG Profiles enabled"
+      },
       "dbaas-external-integration": {
         "type": "object",
         "properties": {
@@ -4172,6 +4186,22 @@
         },
         "title": "mysql.conf configuration values",
         "type": "object"
+      },
+      "nvidia-mig-profile-rtxpro6000.96gb": {
+        "type": "string",
+        "enum": [
+          "1g.24gb",
+          "1g.24gb+gfx",
+          "1g.24gb+me",
+          "1g.24gb+me.all",
+          "1g.24gb-me",
+          "2g.48gb",
+          "2g.48gb+gfx",
+          "2g.48gb+me.all",
+          "2g.48gb-me",
+          "4g.96gb",
+          "4g.96gb+gfx"
+        ]
       },
       "dbaas-pg-database-name": {
         "type": "string",
@@ -8441,21 +8471,21 @@
           },
           "service-cluster-ip-range": {
             "type": "string",
-            "description": "CIDR range for service cluster IPs. This must not overlap with any IP ranges assigned to nodes or pods. Max of two, comma-separated, dual-stack CIDRs is allowed.\n              If not specified, defaults to 10.96.0.0/12."
+            "description": "CIDR range for service cluster IPs. This must not overlap with any IP ranges assigned to nodes or pods. Max of two, comma-separated, dual-stack CIDRs is allowed. The IPv6 range must be no larger than a /108 (upstream Kubernetes apiserver limit).\n              If not specified, defaults to 10.96.0.0/12."
           },
           "node-cidr-mask-size-ipv4": {
             "type": "integer",
             "format": "int64",
             "minimum": 0,
             "exclusiveMinimum": true,
-            "description": "Mask size for node cidr in cluster. It must be larger than the Pod CIDR subnet mask. Defaults to 24"
+            "description": "Mask size for node cidr in cluster. It must be larger than, and at most 16 bits longer than, the Pod CIDR subnet mask. Defaults to 24"
           },
           "node-cidr-mask-size-ipv6": {
             "type": "integer",
             "format": "int64",
             "minimum": 0,
             "exclusiveMinimum": true,
-            "description": "Mask size for node cidr in cluster. It must be larger than the Pod CIDR subnet mask. Defaults to 64"
+            "description": "Mask size for node cidr in cluster. It must be larger than, and at most 16 bits longer than, the Pod CIDR subnet mask. Defaults to 64"
           }
         },
         "description": "Cluster networking configuration."
@@ -9154,6 +9184,10 @@
             "type": "string",
             "readOnly": true,
             "description": "Nodepool version"
+          },
+          "nvidia-mig-profiles": {
+            "$ref": "#/components/schemas/nvidia-mig-profiles",
+            "description": "Nvidia MIG Profiles"
           },
           "created-at": {
             "type": "string",
@@ -10949,6 +10983,16 @@
         "type": "object",
         "required": [
           "gpu"
+        ]
+      },
+      "nvidia-mig-profile-a30.24gb": {
+        "type": "string",
+        "enum": [
+          "1g.6gb",
+          "1g.6gb+me",
+          "2g.12gb",
+          "2g.12gb+me",
+          "4g.24gb"
         ]
       },
       "get-kms-key-response": {
@@ -17263,6 +17307,11 @@
                     "exclusiveMinimum": false,
                     "exclusiveMaximum": false,
                     "description": "Nodepool instances disk size in GiB"
+                  },
+                  "nvidia-mig-profiles": {
+                    "$ref": "#/components/schemas/nvidia-mig-profiles",
+                    "nullable": true,
+                    "description": "Nvidia MIG Profiles"
                   }
                 }
               }
@@ -27533,6 +27582,10 @@
                     "exclusiveMinimum": false,
                     "exclusiveMaximum": false,
                     "description": "Nodepool instances disk size in GiB"
+                  },
+                  "nvidia-mig-profiles": {
+                    "$ref": "#/components/schemas/nvidia-mig-profiles",
+                    "description": "Nvidia MIG Profiles"
                   }
                 },
                 "required": [

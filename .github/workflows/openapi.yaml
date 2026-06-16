@@ -21,6 +21,11 @@ jobs:
           curl https://api-ch-gva-2.exoscale.com/v2/openapi.json | ./.sort-enums.py | jq > exoscale/openapi.json
 
           curl https://partner-api.exoscale.com/v1.alpha/openapi.json | ./.sort-enums.py | jq > exoscale/partner-api.json
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - name: Verify with tests
+        run: uv run pytest
       - name: Commit and push if changed
         run: |-
           git config user.name "Automated"

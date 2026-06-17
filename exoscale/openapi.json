@@ -1268,6 +1268,56 @@
           "parameters"
         ]
       },
+      "subnet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Subnet ID"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "Subnet name"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 4096,
+            "description": "Subnet description"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Subnet creation date"
+          },
+          "addressfamily": {
+            "type": "string",
+            "enum": [
+              "dual",
+              "inet4"
+            ],
+            "description": "Subnet address family"
+          },
+          "address-space": {
+            "type": "string",
+            "enum": [
+              "private"
+            ],
+            "description": "Subnet address space"
+          },
+          "ipv4-block": {
+            "type": "string",
+            "description": "Subnet ipv4 CIDR"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/labels",
+            "description": "Resource labels"
+          }
+        },
+        "description": "Subnet"
+      },
       "dbaas-user-valkey-secrets": {
         "type": "object",
         "properties": {
@@ -2524,6 +2574,56 @@
             "description": "Patterns use standard glob syntax and must be separated by a single space. Example: cache:* session:*."
           }
         }
+      },
+      "list-subnet-entry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Subnet ID"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "Subnet name"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 4096,
+            "description": "Subnet description"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Subnet creation date"
+          },
+          "addressfamily": {
+            "type": "string",
+            "enum": [
+              "dual",
+              "inet4"
+            ],
+            "description": "Subnet address family"
+          },
+          "address-space": {
+            "type": "string",
+            "enum": [
+              "private"
+            ],
+            "description": "Subnet address space"
+          },
+          "ipv4-block": {
+            "type": "string",
+            "description": "Subnet ipv4 CIDR"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/labels",
+            "description": "Resource labels"
+          }
+        },
+        "description": "Subnet"
       },
       "dbaas-service-logs": {
         "type": "object",
@@ -5014,6 +5114,38 @@
           "prometheus-uri"
         ]
       },
+      "route": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Route ID"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "Subnet",
+              "Vpc"
+            ],
+            "description": "Route kind"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 4096,
+            "description": "Route description"
+          },
+          "destination": {
+            "type": "string",
+            "description": "Route destination CIDR"
+          },
+          "target": {
+            "type": "string",
+            "description": "Route target"
+          }
+        },
+        "description": "Route"
+      },
       "env-impact-detail": {
         "type": "object",
         "properties": {
@@ -5457,6 +5589,37 @@
           }
         },
         "description": "Snapshot"
+      },
+      "list-vpc-entry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "VPC ID"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "VPC name"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 4096,
+            "description": "VPC description"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "VPC creation date"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/labels",
+            "description": "Resource labels"
+          }
+        },
+        "description": "VPC"
       },
       "dbaas-endpoint-rsyslog-secrets": {
         "type": "object",
@@ -6299,37 +6462,6 @@
             "default": "success"
           }
         }
-      },
-      "list-vpc-response-entry": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "VPC ID"
-          },
-          "name": {
-            "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
-            "description": "VPC name"
-          },
-          "description": {
-            "type": "string",
-            "maxLength": 4096,
-            "description": "VPC description"
-          },
-          "created-at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "VPC creation date"
-          },
-          "labels": {
-            "$ref": "#/components/schemas/labels",
-            "description": "Resource labels"
-          }
-        },
-        "description": "VPC"
       },
       "elastic-ip-ref": {
         "type": "object",
@@ -7344,6 +7476,38 @@
           "created-at",
           "updated-at"
         ]
+      },
+      "list-route-entry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Route ID"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "Subnet",
+              "Vpc"
+            ],
+            "description": "Route kind"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 4096,
+            "description": "Route description"
+          },
+          "destination": {
+            "type": "string",
+            "description": "Route destination CIDR"
+          },
+          "target": {
+            "type": "string",
+            "description": "Route target"
+          }
+        },
+        "description": "Route"
       },
       "iam-policy": {
         "type": "object",
@@ -17180,6 +17344,47 @@
         "operationId": "update-private-network-instance-ip"
       }
     },
+    "/vpc/{vpc-id}/route": {
+      "get": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "routes": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/list-route-entry"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "vpc-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] List VPC routes",
+        "operationId": "list-vpc-routes"
+      }
+    },
     "/sks-cluster/{id}/nodepool/{sks-nodepool-id}": {
       "put": {
         "tags": [
@@ -18305,7 +18510,7 @@
                     "vpcs": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/list-vpc-response-entry"
+                        "$ref": "#/components/schemas/list-vpc-entry"
                       }
                     }
                   }
@@ -18900,6 +19105,131 @@
         "operationId": "enable-kms-key-rotation"
       }
     },
+    "/vpc/{vpc-id}/subnet/{subnet-id}/route": {
+      "get": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "routes": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/list-route-entry"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "vpc-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "subnet-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] List Subnet routes",
+        "operationId": "list-routes"
+      },
+      "post": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/route"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "vpc-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "subnet-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Create a route",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "description": "Route name"
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 4096,
+                    "description": "Route description"
+                  },
+                  "destination": {
+                    "type": "string",
+                    "description": "Route destination CIDR"
+                  },
+                  "target": {
+                    "type": "string",
+                    "description": "Route target"
+                  }
+                },
+                "required": [
+                  "destination",
+                  "target"
+                ]
+              }
+            }
+          }
+        },
+        "operationId": "create-route"
+      }
+    },
     "/elastic-ip/{id}/{field}": {
       "delete": {
         "tags": [
@@ -18974,6 +19304,128 @@
         ],
         "summary": "Retrieve Resource Quota",
         "operationId": "get-quota"
+      }
+    },
+    "/vpc/{vpc-id}/subnet": {
+      "get": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subnets": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/list-subnet-entry"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "vpc-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] List Subnets",
+        "operationId": "list-subnets"
+      },
+      "post": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "vpc-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Create a Subnet",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "description": "Subnet name"
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 4096,
+                    "description": "Subnet description"
+                  },
+                  "labels": {
+                    "$ref": "#/components/schemas/labels",
+                    "description": "Resource labels"
+                  },
+                  "addressfamily": {
+                    "type": "string",
+                    "enum": [
+                      "inet4"
+                    ],
+                    "description": "Subnet address family"
+                  },
+                  "address-space": {
+                    "type": "string",
+                    "enum": [
+                      "private"
+                    ],
+                    "description": "Subnet address space"
+                  },
+                  "ipv4-block": {
+                    "type": "string",
+                    "description": "Subnet ipv4 CIDR"
+                  }
+                },
+                "required": [
+                  "name",
+                  "addressfamily",
+                  "address-space"
+                ]
+              }
+            }
+          }
+        },
+        "operationId": "create-subnet"
       }
     },
     "/sks-cluster-deprecated-resources/{id}": {
@@ -23611,6 +24063,57 @@
         "operationId": "reveal-dbaas-kafka-user-password"
       }
     },
+    "/vpc/{vpc-id}/subnet/{subnet-id}/route/{id}": {
+      "delete": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/route"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "vpc-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "subnet-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Delete a route",
+        "operationId": "delete-route"
+      }
+    },
     "/kms-key/{id}/encrypt": {
       "post": {
         "tags": [
@@ -25633,6 +26136,163 @@
         ],
         "summary": "Stop a DBaaS MySQL migration",
         "operationId": "stop-dbaas-mysql-migration"
+      }
+    },
+    "/vpc/{vpc-id}/subnet/{id}": {
+      "delete": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "vpc-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Delete a Subnet",
+        "operationId": "delete-subnet"
+      },
+      "put": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/subnet"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "vpc-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Update a Subnet",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "nullable": true,
+                    "description": "Subnet name"
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 4096,
+                    "nullable": true,
+                    "description": "Subnet description"
+                  },
+                  "labels": {
+                    "$ref": "#/components/schemas/labels",
+                    "nullable": true,
+                    "description": "Resource labels"
+                  },
+                  "ipv4-block": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Subnet CIDR"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "update-subnet"
+      },
+      "get": {
+        "tags": [
+          "vpc"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/subnet"
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "vpc-id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Retrieve Subnet details",
+        "operationId": "get-subnet"
       }
     },
     "/dbaas-external-endpoints": {

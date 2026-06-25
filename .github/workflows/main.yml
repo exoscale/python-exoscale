@@ -6,12 +6,18 @@ name: CI
   push:
     branches:
       - '**'
+      - master
     paths-ignore:
       - '**.md'
       - '**.rst'
       - '**.txt'
     tags-ignore:
       - 'v**'  # Don't run CI tests on release tags
+  workflow_run:
+    workflows:
+      - 'Update bundled openapi definition'
+    types:
+      - completed
 
 jobs:
   tests:

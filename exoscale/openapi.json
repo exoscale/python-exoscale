@@ -9018,7 +9018,7 @@
             "description": "Mask size for node cidr in cluster. It must be larger than, and at most 16 bits longer than, the Pod CIDR subnet mask. Defaults to 64"
           }
         },
-        "description": "Cluster networking configuration."
+        "description": "EXPERIMENTAL: Cluster networking configuration."
       },
       "dbaas-user-grafana-secrets": {
         "type": "object",
@@ -9057,6 +9057,11 @@
           "auto-upgrade": {
             "type": "boolean",
             "description": "Enable auto upgrade of the control plane to the latest patch version available"
+          },
+          "oidc": {
+            "$ref": "#/components/schemas/sks-oidc",
+            "nullable": true,
+            "description": "Cluster OpenID configmap"
           },
           "name": {
             "type": "string",

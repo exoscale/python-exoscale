@@ -9255,7 +9255,6 @@
             "enum": [
               "creating",
               "destroying",
-              "error",
               "running",
               "scaling-down",
               "scaling-up",
@@ -9299,20 +9298,6 @@
             },
             "readOnly": true,
             "description": "Instances"
-          },
-          "error-reason": {
-            "type": "object",
-            "properties": {
-              "cause": {
-                "type": "string",
-                "description": "Error cause"
-              },
-              "job-id": {
-                "type": "string",
-                "description": "Job ID at the origin of error"
-              }
-            },
-            "description": "Instance Pool Error Reason"
           },
           "deploy-target": {
             "$ref": "#/components/schemas/deploy-target-ref",

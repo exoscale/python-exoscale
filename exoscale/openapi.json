@@ -4603,6 +4603,19 @@
           "2g.48gb-me",
           "4g.96gb",
           "4g.96gb+gfx"
+        ],
+        "x-go-enum-varnames": [
+          "1G24Gb",
+          "1G24GbMe",
+          "1G24GbGfx",
+          "1G24GbMeAll",
+          "1G24GbNoMe",
+          "2G48Gb",
+          "2G48GbGfx",
+          "2G48GbMeAll",
+          "2G48GbNoMe",
+          "4G96Gb",
+          "4G96GbGfx"
         ]
       },
       "dbaas-pg-database-name": {
@@ -10445,22 +10458,22 @@
             },
             "type": "object"
           },
+          "timestamp": {
+            "description": "ISO-8601 UTC timestamp when the flush snapshot was created (truncated to minute boundary for bucketing)",
+            "format": "date-time",
+            "type": "string"
+          },
           "router-id": {
             "description": "Router instance identifier that produced this flush",
             "type": "string",
             "minLength": 1
-          },
-          "created-at": {
-            "description": "ISO-8601 UTC timestamp when the flush snapshot was created (truncated to minute boundary for bucketing)",
-            "format": "date-time",
-            "type": "string"
           }
         },
         "type": "object",
         "required": [
           "flush-id",
           "router-id",
-          "created-at",
+          "timestamp",
           "usage"
         ]
       },
@@ -11556,6 +11569,13 @@
           "2g.12gb",
           "2g.12gb+me",
           "4g.24gb"
+        ],
+        "x-go-enum-varnames": [
+          "1G6Gb",
+          "1G6GbMe",
+          "2G12Gb",
+          "2G12GbMe",
+          "4G24Gb"
         ]
       },
       "get-kms-key-response": {
@@ -13479,6 +13499,11 @@
           "gpu-type": {
             "description": "GPU type family (e.g., gpua5000, gpu3080ti)",
             "type": "string"
+          },
+          "product-name": {
+            "description": "Billing identifier for this deployment. Used by the Router for usage counters and Kafka events.",
+            "type": "string",
+            "minLength": 1
           },
           "replicas": {
             "description": "Number of replicas (>=1)",
@@ -23687,7 +23712,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/operation"
+                  "$ref": "#/components/schemas/dbaas-user-clickhouse-secrets"
                 }
               }
             }
@@ -23857,7 +23882,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/operation"
+                  "$ref": "#/components/schemas/dbaas-user-clickhouse-secrets"
                 }
               }
             }

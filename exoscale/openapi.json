@@ -1432,6 +1432,10 @@
             "description": "Human-readable name for the AI API key",
             "type": "string"
           },
+          "value": {
+            "description": "Plaintext AI API key value",
+            "type": "string"
+          },
           "scope": {
             "description": "Key scope: 'public' for all deployments, or a specific deployment UUID",
             "type": "string"
@@ -1462,7 +1466,8 @@
           "name",
           "scope",
           "created-at",
-          "updated-at"
+          "updated-at",
+          "value"
         ]
       },
       "sks-audit-bearer-token": {

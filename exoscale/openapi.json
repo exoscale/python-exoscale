@@ -8049,7 +8049,10 @@
         "properties": {
           "name": {
             "description": "Human-readable name for the AI API key",
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50,
+            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9 _'()-]*[A-Za-z0-9])?$"
           },
           "scope": {
             "description": "Key scope: 'public' for all deployments, or a specific deployment UUID",
@@ -10487,7 +10490,10 @@
         "properties": {
           "name": {
             "description": "Human-readable name for the AI API key",
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50,
+            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9 _'()-]*[A-Za-z0-9])?$"
           },
           "scope": {
             "description": "Key scope: 'public' for all deployments, or a specific deployment UUID",

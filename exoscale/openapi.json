@@ -309,6 +309,18 @@
       "x-icon": "exo-object-storage"
     },
     {
+      "description": "[BETA] Create and manipulate routing rules",
+      "parent": "vpc",
+      "externalDocs": {
+        "description": "Read more",
+        "url": "https://community.exoscale.com/documentation/compute/"
+      },
+      "name": "vpc-route",
+      "x-display-name": "VPC",
+      "x-weight": 195,
+      "x-icon": "exo-vpc"
+    },
+    {
       "description": "Snapshots provide a way to get point-in-time recovery\n                   for your Compute instance.",
       "parent": "compute",
       "externalDocs": {
@@ -556,6 +568,18 @@
       "x-icon": "exo-iam"
     },
     {
+      "description": "[BETA] Create and manipulate VPCs",
+      "parent": "vpc",
+      "externalDocs": {
+        "description": "Read more",
+        "url": "https://community.exoscale.com/documentation/compute/"
+      },
+      "name": "vpc-management",
+      "x-display-name": "VPC",
+      "x-weight": 195,
+      "x-icon": "exo-vpc"
+    },
+    {
       "description": "Nodepool templates are Exoscale-managed instance templates for SKS worker nodes.",
       "parent": "sks",
       "externalDocs": {
@@ -577,6 +601,18 @@
       "x-display-name": "SKS",
       "x-weight": 300,
       "x-icon": "exo-sks"
+    },
+    {
+      "description": "[BETA] Configure VPC subnets and attach instances to them",
+      "parent": "vpc",
+      "externalDocs": {
+        "description": "Read more",
+        "url": "https://community.exoscale.com/documentation/compute/"
+      },
+      "name": "vpc-subnet",
+      "x-display-name": "VPC",
+      "x-weight": 195,
+      "x-icon": "exo-vpc"
     },
     {
       "description": "The Organization Policy is an IAM policy that applies as a first layer across your entire Exoscale organization.",
@@ -3299,9 +3335,10 @@
           "0.22.1",
           "0.23.0",
           "0.24.0",
-          "0.25.0"
+          "0.25.0",
+          "0.25.1"
         ],
-        "default": "0.25.0",
+        "default": "0.25.1",
         "type": "string"
       },
       "dbaas-user-opensearch-secrets": {
@@ -7828,20 +7865,10 @@
         },
         "type": "object",
         "required": [
-          "id",
           "name",
           "state",
-          "state-details",
-          "gpu-type",
-          "gpu-count",
-          "replicas",
-          "service-level",
           "deployment-url",
-          "inference-engine-parameters",
-          "inference-engine-version",
           "model",
-          "created-at",
-          "updated-at",
           "visibility"
         ]
       },
@@ -9008,17 +9035,10 @@
         },
         "type": "object",
         "required": [
-          "id",
           "name",
           "state",
-          "gpu-type",
-          "gpu-count",
-          "replicas",
-          "service-level",
           "deployment-url",
           "model",
-          "created-at",
-          "updated-at",
           "visibility"
         ]
       },
@@ -14689,7 +14709,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Key rotation disabled",
             "content": {
               "application/json": {
                 "schema": {
@@ -14699,7 +14719,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nInvalid Origin: The request was rejected because automatic key rotation can only be enabled on a KMS key with origin \"exoscale-kms\".\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nNot on Default: The request was rejected because the operation is not allowed on the default key.\n\nNot on Replica: The request was rejectde because the operation is not allowed on a replica.\n\nKey is Pending Deletion: The request was rejected because it was performed on a key that is pending deletion.\n\nKey is Disabled: The request was rejected because the specified KMS key is disabled.\n\nInvalid Usage: The request was rejected because the operation is only allowed on symmetric keys with usage \"encrypt-decrypt\".\n\nConflict: The request was rejected because the automatic rotation is already enabled for this KMS Key.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -14843,7 +14863,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -15744,7 +15764,7 @@
     "/vpc/{vpc-id}/subnet/{subnet-id}/attach": {
       "put": {
         "tags": [
-          "vpc"
+          "vpc-subnet"
         ],
         "responses": {
           "200": {
@@ -15790,6 +15810,11 @@
                   "instance": {
                     "$ref": "#/components/schemas/instance-ref",
                     "description": "Compute instance"
+                  },
+                  "ipv4": {
+                    "type": "string",
+                    "format": "ipv4",
+                    "description": "Instance IPv4"
                   }
                 },
                 "required": [
@@ -15809,7 +15834,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "KMS Key Details",
             "content": {
               "application/json": {
                 "schema": {
@@ -15819,7 +15844,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -15989,7 +16014,7 @@
         ],
         "responses": {
           "403": {
-            "description": "403",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -15999,7 +16024,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -16030,7 +16055,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -16041,16 +16066,7 @@
           }
         },
         "description": "List Models",
-        "parameters": [
-          {
-            "in": "query",
-            "required": false,
-            "name": "visibility",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "summary": "List Models",
         "operationId": "list-models"
       }
@@ -16148,7 +16164,7 @@
         ],
         "responses": {
           "412": {
-            "description": "412",
+            "description": "Precondition Failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -16158,7 +16174,7 @@
             }
           },
           "403": {
-            "description": "403",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -16168,7 +16184,7 @@
             }
           },
           "409": {
-            "description": "409",
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -16178,7 +16194,7 @@
             }
           },
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -16188,7 +16204,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -17374,7 +17390,7 @@
         ],
         "responses": {
           "412": {
-            "description": "412",
+            "description": "412 (probably insufficient GPUs)",
             "content": {
               "application/json": {
                 "schema": {
@@ -17384,7 +17400,7 @@
             }
           },
           "403": {
-            "description": "403",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -17394,7 +17410,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -17404,7 +17420,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -17435,7 +17451,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -17445,7 +17461,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -17456,16 +17472,7 @@
           }
         },
         "description": "List Deployments",
-        "parameters": [
-          {
-            "in": "query",
-            "required": false,
-            "name": "visibility",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "summary": "List Deployments",
         "operationId": "list-deployments"
       }
@@ -17602,7 +17609,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Key enabled",
             "content": {
               "application/json": {
                 "schema": {
@@ -17612,7 +17619,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nKey is Pending Deletion: The request was rejected because it was performed on a key that is pending deletion.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -17622,7 +17629,7 @@
             }
           }
         },
-        "description": "Enables a KMS Key by setting its stated to \"enabled\". It restores the ability to fully use the KMS key for cryptographic operations and key lifecycle operations.",
+        "description": "Enables a KMS Key by setting its state to \"enabled\". It restores the ability to fully use the KMS key for cryptographic operations and key lifecycle operations.",
         "parameters": [
           {
             "in": "path",
@@ -18148,7 +18155,7 @@
     "/vpc/{vpc-id}/route": {
       "get": {
         "tags": [
-          "vpc"
+          "vpc-route"
         ],
         "responses": {
           "200": {
@@ -18532,7 +18539,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "The list of all historical rotations for the requested KMS key.",
             "content": {
               "application/json": {
                 "schema": {
@@ -18542,7 +18549,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -18975,7 +18982,7 @@
         ],
         "responses": {
           "403": {
-            "description": "403",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -18985,7 +18992,7 @@
             }
           },
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -18995,7 +19002,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -19026,7 +19033,7 @@
         ],
         "responses": {
           "403": {
-            "description": "403",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -19036,7 +19043,7 @@
             }
           },
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -19046,7 +19053,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -19077,7 +19084,7 @@
         ],
         "responses": {
           "403": {
-            "description": "403",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -19087,7 +19094,7 @@
             }
           },
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -19097,7 +19104,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -19107,7 +19114,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -19247,7 +19254,7 @@
     "/vpc": {
       "post": {
         "tags": [
-          "vpc"
+          "vpc-management"
         ],
         "responses": {
           "200": {
@@ -19298,7 +19305,7 @@
       },
       "get": {
         "tags": [
-          "vpc"
+          "vpc-management"
         ],
         "responses": {
           "200": {
@@ -19333,7 +19340,7 @@
         ],
         "responses": {
           "403": {
-            "description": "403",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -19343,7 +19350,7 @@
             }
           },
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -19353,7 +19360,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -19643,7 +19650,7 @@
         ],
         "responses": {
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -19653,7 +19660,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -19684,7 +19691,7 @@
         ],
         "responses": {
           "403": {
-            "description": "403",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -19694,7 +19701,7 @@
             }
           },
           "409": {
-            "description": "409",
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -19704,7 +19711,7 @@
             }
           },
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -19714,7 +19721,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -19724,7 +19731,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -19765,7 +19772,7 @@
         ],
         "responses": {
           "403": {
-            "description": "403",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -19775,7 +19782,7 @@
             }
           },
           "409": {
-            "description": "409",
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -19785,7 +19792,7 @@
             }
           },
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -19795,7 +19802,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -19860,7 +19867,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Periodic key rotation enabled",
             "content": {
               "application/json": {
                 "schema": {
@@ -19870,7 +19877,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nInvalid Origin: The request was rejected because automatic key rotation can only be enabled on a KMS key with origin \"exoscale-kms\".\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nNot on Default: The request was rejected because the operation is not allowed on the default key.\n\nNot on Replica: The request was rejectde because the operation is not allowed on a replica.\n\nKey is Pending Deletion: The request was rejected because it was performed on a key that is pending deletion.\n\nKey is Disabled: The request was rejected because the specified KMS key is disabled.\n\nInvalid Usage: The request was rejected because the operation is only allowed on symmetric keys with usage \"encrypt-decrypt\".\n\nConflict: The request was rejected because the automatic rotation is already enabled for this KMS Key.\n\nBad Request: The request was rejected because of an invalid request body or path parameter.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -19909,7 +19916,7 @@
     "/vpc/{vpc-id}/subnet/{subnet-id}/route": {
       "get": {
         "tags": [
-          "vpc"
+          "vpc-route"
         ],
         "responses": {
           "200": {
@@ -19957,7 +19964,7 @@
       },
       "post": {
         "tags": [
-          "vpc"
+          "vpc-route"
         ],
         "responses": {
           "200": {
@@ -20104,7 +20111,7 @@
     "/vpc/{vpc-id}/subnet": {
       "get": {
         "tags": [
-          "vpc"
+          "vpc-subnet"
         ],
         "responses": {
           "200": {
@@ -20143,7 +20150,7 @@
       },
       "post": {
         "tags": [
-          "vpc"
+          "vpc-subnet"
         ],
         "responses": {
           "200": {
@@ -20777,7 +20784,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -21942,7 +21949,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Key rotated",
             "content": {
               "application/json": {
                 "schema": {
@@ -21952,7 +21959,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nKey is Pending Deletion: The request was rejected because it was performed on a key that is pending deletion.\n\nNot on a Replica: The request was rejected because the operation is not allowed on a replica.\n\nInvalid Usage: The request was rejected because the operation is only allowed on symmetric keys with usage \"encrypt-decrypt\".\n\nKey is Disabled: The request was rejected because the specified KMS key is disabled.\n\nManual Rotation Limit: The request was rejected because you reached your limit of 10 manual rotations per key for this KMS key.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -23112,7 +23119,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Base64 encoded plaintext.",
             "content": {
               "application/json": {
                 "schema": {
@@ -23122,7 +23129,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nKey is Disabled: The request was rejected because the specified KMS key is disabled.\n\nInvalid Usage: The request was rejected because the operation is only allowed on symmetric keys with usage \"encrypt-decrypt\".\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -24125,7 +24132,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Key disabled",
             "content": {
               "application/json": {
                 "schema": {
@@ -24135,7 +24142,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nKey is Pending Deletion: The request was rejected because it was performed on a key that is pending deletion.\n\nNot on Default: The request was rejected because the operation is not allowed on the default key.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -24581,7 +24588,7 @@
         ],
         "responses": {
           "412": {
-            "description": "412",
+            "description": "Precondition Failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -24591,7 +24598,7 @@
             }
           },
           "403": {
-            "description": "403",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -24601,7 +24608,7 @@
             }
           },
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -24611,7 +24618,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -24642,7 +24649,7 @@
         ],
         "responses": {
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -24652,7 +24659,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -25089,7 +25096,7 @@
     "/vpc/{vpc-id}/subnet/{subnet-id}/route/{id}": {
       "delete": {
         "tags": [
-          "vpc"
+          "vpc-route"
         ],
         "responses": {
           "200": {
@@ -25144,7 +25151,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Base64 encoded ciphertext",
             "content": {
               "application/json": {
                 "schema": {
@@ -25154,7 +25161,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nKey is Disabled: The request was rejected because the specified KMS key is disabled.\n\nInvalid Usage: The request was rejected because the operation is only allowed on symmetric keys with usage \"encrypt-decrypt\".\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -27244,7 +27251,7 @@
     "/vpc/{vpc-id}/subnet/{id}": {
       "delete": {
         "tags": [
-          "vpc"
+          "vpc-subnet"
         ],
         "responses": {
           "200": {
@@ -27284,7 +27291,7 @@
       },
       "put": {
         "tags": [
-          "vpc"
+          "vpc-subnet"
         ],
         "responses": {
           "200": {
@@ -27359,7 +27366,7 @@
       },
       "get": {
         "tags": [
-          "vpc"
+          "vpc-subnet"
         ],
         "responses": {
           "200": {
@@ -27607,7 +27614,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Created new KMS key",
             "content": {
               "application/json": {
                 "schema": {
@@ -27617,7 +27624,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nName Conflict: The request was rejected because a key with the same name already exists in the target zone.\n\nBad Request: The request was rejected because of an invalid request body or path parameter.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -27627,7 +27634,7 @@
             }
           }
         },
-        "description": "Create a customer-managed unique KMS Key in your organization. A KMS Key is a logical represention of a cryptographic key material. It also includes metadata such as a UUID, a name and its state.",
+        "description": "Create a customer-managed unique KMS Key in your organization. A KMS Key is a logical representation of a cryptographic key material. It also includes metadata such as a UUID, a name and its state.",
         "parameters": [],
         "summary": "Create KMS Key",
         "requestBody": {
@@ -27648,7 +27655,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "A list of all KMS keys in the target zone",
             "content": {
               "application/json": {
                 "schema": {
@@ -27658,7 +27665,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nBad Request: The request was rejected because of an invalid request body or path parameter.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -28234,7 +28241,7 @@
     "/vpc/{vpc-id}/subnet/{subnet-id}/detach": {
       "put": {
         "tags": [
-          "vpc"
+          "vpc-subnet"
         ],
         "responses": {
           "200": {
@@ -28817,7 +28824,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Key deletion scheduled",
             "content": {
               "application/json": {
                 "schema": {
@@ -28827,7 +28834,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nNot on Default: The request was rejected because the operation is not allowed on the default key.\n\nNot on Replica: The request was rejectde because the operation is not allowed on a replica.\n\nBad Request: The request was rejected because of an invalid request body or path parameter.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -29464,7 +29471,7 @@
         ],
         "responses": {
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -29474,7 +29481,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -29627,7 +29634,7 @@
         ],
         "responses": {
           "403": {
-            "description": "403",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -29637,7 +29644,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -29658,7 +29665,7 @@
         ],
         "responses": {
           "403": {
-            "description": "403",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -29668,7 +29675,7 @@
             }
           },
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -29678,7 +29685,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -29688,7 +29695,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -29721,7 +29728,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Base64 encoded ciphertext",
             "content": {
               "application/json": {
                 "schema": {
@@ -29731,7 +29738,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nKey is Disabled: The request was rejected because the specified KMS key is disabled.\n\nNot on Default: The request was rejected because the operation is not allowed on the default key.\n\nBad Request: The request was rejected because of an invalid request body or path parameter.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -30417,7 +30424,7 @@
         ],
         "responses": {
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -30427,7 +30434,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -31303,7 +31310,7 @@
         ],
         "responses": {
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -31313,7 +31320,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -31410,7 +31417,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Key replication target registered",
             "content": {
               "application/json": {
                 "schema": {
@@ -31420,7 +31427,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nKey is Pending Deletion: The request was rejected because it was performed on a key that is pending deletion.\n\nNot on Default: The request was rejected because the operation is not allowed on the default key.\n\nNot Multizone: The request was rejected because the KMS key is not a multi-zone key.\n\nConflict: The request was rejected because the key is already replicated in the target zone.\n\nInvalid Argument: The request was rejected because the target zone is invalid.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -32057,7 +32064,7 @@
         ],
         "responses": {
           "500": {
-            "description": "500",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -32067,7 +32074,7 @@
             }
           },
           "404": {
-            "description": "404",
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -32077,7 +32084,7 @@
             }
           },
           "200": {
-            "description": "200",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -32087,7 +32094,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -32189,7 +32196,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Key deletion cancelled",
             "content": {
               "application/json": {
                 "schema": {
@@ -32199,7 +32206,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nNot on Replica: The request was rejectde because the operation is not allowed on a replica.\n\nNot Pending Deletion: The request was rejected because the key is not pending deletion.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -32232,7 +32239,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200",
+            "description": "Data Encryption Key in the clear and in its base64 encoded encrypted format.",
             "content": {
               "application/json": {
                 "schema": {
@@ -32242,7 +32249,7 @@
             }
           },
           "400": {
-            "description": "400",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nKey is Disabled: The request was rejected because the specified KMS key is disabled.\n\nInvalid Usage: The request was rejected because the operation is only allowed on symmetric keys with usage \"encrypt-decrypt\".\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -32281,7 +32288,7 @@
     "/vpc/{id}": {
       "put": {
         "tags": [
-          "vpc"
+          "vpc-management"
         ],
         "responses": {
           "200": {
@@ -32342,7 +32349,7 @@
       },
       "get": {
         "tags": [
-          "vpc"
+          "vpc-management"
         ],
         "responses": {
           "200": {
@@ -32373,7 +32380,7 @@
       },
       "delete": {
         "tags": [
-          "vpc"
+          "vpc-management"
         ],
         "responses": {
           "200": {

@@ -1573,10 +1573,14 @@
       "subnet": {
         "type": "object",
         "properties": {
-          "id": {
+          "description": {
             "type": "string",
-            "format": "uuid",
-            "description": "Subnet ID"
+            "maxLength": 4096,
+            "description": "Subnet description"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/labels",
+            "description": "Resource labels"
           },
           "name": {
             "type": "string",
@@ -1584,15 +1588,9 @@
             "minLength": 1,
             "description": "Subnet name"
           },
-          "description": {
+          "ipv4-block": {
             "type": "string",
-            "maxLength": 4096,
-            "description": "Subnet description"
-          },
-          "created-at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Subnet creation date"
+            "description": "Subnet ipv4 CIDR"
           },
           "addressfamily": {
             "type": "string",
@@ -1609,13 +1607,35 @@
             ],
             "description": "Subnet address space"
           },
-          "ipv4-block": {
-            "type": "string",
-            "description": "Subnet ipv4 CIDR"
+          "instances": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "Instance uuid"
+                },
+                "ipv4": {
+                  "type": "string",
+                  "format": "ipv4",
+                  "description": "Instance Ipv4 address"
+                }
+              },
+              "description": "Subnet attachements"
+            },
+            "description": "Instances attached to the subnet"
           },
-          "labels": {
-            "$ref": "#/components/schemas/labels",
-            "description": "Resource labels"
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Subnet ID"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Subnet creation date"
           }
         },
         "description": "Subnet"
@@ -17472,7 +17492,16 @@
           }
         },
         "description": "List Deployments",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "query",
+            "required": false,
+            "name": "visibility",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "summary": "List Deployments",
         "operationId": "list-deployments"
       }

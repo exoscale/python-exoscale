@@ -266,7 +266,7 @@
       "parent": "kms",
       "externalDocs": {
         "description": "Read more",
-        "url": "https://community.exoscale.com/documentation/kms/kms-key"
+        "url": "https://community.exoscale.com/documentation/security/kms/overview"
       },
       "name": "kms-key",
       "x-display-name": "KMS Key",
@@ -466,7 +466,7 @@
       "parent": "kms",
       "externalDocs": {
         "description": "Read more",
-        "url": "https://community.exoscale.com/documentation/kms/crypto"
+        "url": "https://community.exoscale.com/documentation/security/kms/overview"
       },
       "name": "crypto",
       "x-display-name": "Cryptographic Operations",
@@ -536,7 +536,7 @@
       "description": "Exoscale Key Management Service is a managed security service that lets you create, control and manage the lifecycle of cryptographic keys.",
       "externalDocs": {
         "description": "Read more",
-        "url": "https://community.exoscale.com/documentation/kms/"
+        "url": "https://community.exoscale.com/documentation/security/kms/"
       },
       "name": "kms",
       "x-display-name": "KMS",
@@ -2807,8 +2807,7 @@
             "maxLength": 64,
             "pattern": "^[_A-Za-z0-9][-._A-Za-z0-9]{0,63}$",
             "title": "Role",
-            "type": "string",
-            "user_error": "Must consist of alpha-numeric characters, dots, underscores or dashes, may not start with dash or dot, max 64 characters"
+            "type": "string"
           },
           "log_parameter": {
             "default": false,
@@ -3828,6 +3827,10 @@
           "rtxpro6000.96gb": {
             "$ref": "#/components/schemas/nvidia-mig-profile-rtxpro6000.96gb",
             "description": "Nvidia RTXPRO6000 MIG Profile"
+          },
+          "b300.280gb": {
+            "$ref": "#/components/schemas/nvidia-mig-profile-b300.269gb",
+            "description": "Nvidia B300 MIG Profile"
           }
         },
         "description": "Nvidia MIG Profiles enabled"
@@ -9564,6 +9567,27 @@
           }
         },
         "description": "Target block storage volume"
+      },
+      "nvidia-mig-profile-b300.269gb": {
+        "type": "string",
+        "enum": [
+          "1g.34gb",
+          "1g.34gb+me",
+          "1g.67gb",
+          "2g.67gb",
+          "3g.135gb",
+          "4g.135gb",
+          "7g.269gb"
+        ],
+        "x-go-enum-varnames": [
+          "1G34Gb",
+          "1G34GbMe",
+          "1G67Gb",
+          "2G67Gb",
+          "3G135Gb",
+          "4G135Gb",
+          "7G269Gb"
+        ]
       },
       "scale-deployment-request": {
         "description": "Scale AI deployment",
@@ -25845,46 +25869,6 @@
         "operationId": "promote-snapshot-to-template"
       }
     },
-    "/dbaas-clickhouse/{service-name}/user/{username}": {
-      "delete": {
-        "tags": [
-          "dbaas"
-        ],
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/operation"
-                }
-              }
-            }
-          }
-        },
-        "description": null,
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "service-name",
-            "schema": {
-              "$ref": "#/components/schemas/dbaas-service-name"
-            }
-          },
-          {
-            "in": "path",
-            "required": true,
-            "name": "username",
-            "schema": {
-              "$ref": "#/components/schemas/dbaas-user-username"
-            }
-          }
-        ],
-        "summary": "[BETA] Delete a DBaaS ClickHouse user",
-        "operationId": "delete-dbaas-clickhouse-user"
-      }
-    },
     "/dbaas-clickhouse/{service-name}/user/{username}/password/reveal": {
       "get": {
         "tags": [
@@ -26663,6 +26647,47 @@
         ],
         "summary": "Reveal the secrets of a DBaaS Thanos user",
         "operationId": "reveal-dbaas-thanos-user-password"
+      }
+    },
+    "/dbaas-clickhouse/{service-name}/user/{user-uuid}": {
+      "delete": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "user-uuid",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Delete a DBaaS ClickHouse user",
+        "operationId": "delete-dbaas-clickhouse-user"
       }
     },
     "/dbaas-settings-pg": {

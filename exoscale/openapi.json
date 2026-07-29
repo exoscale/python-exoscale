@@ -3828,7 +3828,7 @@
             "$ref": "#/components/schemas/nvidia-mig-profile-rtxpro6000.96gb",
             "description": "Nvidia RTXPRO6000 MIG Profile"
           },
-          "b300.280gb": {
+          "b300.269gb": {
             "$ref": "#/components/schemas/nvidia-mig-profile-b300.269gb",
             "description": "Nvidia B300 MIG Profile"
           }
@@ -9865,6 +9865,7 @@
             "type": "string",
             "enum": [
               "creating",
+              "degraded",
               "deleting",
               "error",
               "renewing-token",

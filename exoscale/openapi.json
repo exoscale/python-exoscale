@@ -1256,6 +1256,15 @@
             },
             "title": "ClickHouse server settings",
             "type": "object"
+          },
+          "tiered_storage_move_factor": {
+            "default": 0.2,
+            "description": "The percentage of free disk space required on local storage before data is moved to object storage. A value of 0.2 means data is moved when local storage has less than 20% free space.",
+            "example": 0.2,
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Tiered storage move factor",
+            "type": "number"
           }
         },
         "title": "ClickHouse settings",
@@ -5747,6 +5756,36 @@
           }
         }
       },
+      "dbaas-clickhouse-role-privilege": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/dbaas-user-username",
+            "description": "Access type"
+          },
+          "database": {
+            "type": "string",
+            "description": "Database"
+          },
+          "table": {
+            "type": "string",
+            "description": "Table"
+          },
+          "grant-option": {
+            "type": "boolean"
+          },
+          "column": {
+            "type": "string",
+            "description": "Column"
+          },
+          "is-partial-revoke": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
       "replica-failure": {
         "type": "object",
         "required": [
@@ -6009,6 +6048,17 @@
           }
         },
         "description": "Snapshot"
+      },
+      "dbaas-clickhouse-roles": {
+        "type": "object",
+        "properties": {
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/dbaas-clickhouse-role"
+            }
+          }
+        }
       },
       "list-vpc-entry": {
         "type": "object",
@@ -7868,6 +7918,27 @@
         },
         "description": "Operation"
       },
+      "dbaas-clickhouse-granted-role": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Granted role name"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "is-default": {
+            "type": "boolean"
+          },
+          "with-admin-option": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
       "iam-api-key-created": {
         "type": "object",
         "properties": {
@@ -9348,6 +9419,33 @@
           }
         },
         "description": "SKS Cluster"
+      },
+      "dbaas-clickhouse-role": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/dbaas-user-username",
+            "description": "Role name"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "privileges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/dbaas-clickhouse-role-privilege"
+            }
+          },
+          "granted-roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/dbaas-clickhouse-granted-role"
+            }
+          }
+        },
+        "required": [
+          "name"
+        ]
       },
       "dbaas-valkey-users": {
         "type": "object",
@@ -17796,6 +17894,38 @@
         "operationId": "delete-dbaas-pg-database"
       }
     },
+    "/dbaas-clickhouse/{service-name}/role": {
+      "get": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dbaas-clickhouse-roles"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          }
+        ],
+        "summary": "[BETA] List DBaaS ClickHouse roles",
+        "operationId": "list-dbaas-clickhouse-roles"
+      }
+    },
     "/block-storage/{id}:attach": {
       "put": {
         "tags": [
@@ -19803,6 +19933,47 @@
         ],
         "summary": "Delete a Security Group",
         "operationId": "delete-security-group"
+      }
+    },
+    "/dbaas-clickhouse/{service-name}/role/{role-uuid}": {
+      "delete": {
+        "tags": [
+          "dbaas"
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/operation"
+                }
+              }
+            }
+          }
+        },
+        "description": null,
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "service-name",
+            "schema": {
+              "$ref": "#/components/schemas/dbaas-service-name"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "role-uuid",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "[BETA] Delete a DBaaS ClickHouse role",
+        "operationId": "delete-dbaas-clickhouse-role"
       }
     },
     "/sks-cluster/{id}/authority/{authority}/cert": {

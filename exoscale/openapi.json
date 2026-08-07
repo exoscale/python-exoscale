@@ -259,7 +259,7 @@
       "name": "environmental-impact",
       "x-display-name": "Environmental Impact",
       "x-weight": 1150,
-      "x-icon": "exo-license"
+      "x-icon": "exo-logo"
     },
     {
       "description": "Operations for KMS Key lifecycle management.",
@@ -1302,6 +1302,7 @@
             "type": "string",
             "enum": [
               "ah",
+              "all",
               "esp",
               "gre",
               "icmp",
@@ -3398,9 +3399,10 @@
           "0.23.0",
           "0.24.0",
           "0.25.0",
-          "0.25.1"
+          "0.25.1",
+          "0.26.0"
         ],
-        "default": "0.25.1",
+        "default": "0.26.0",
         "type": "string"
       },
       "dbaas-user-opensearch-secrets": {
@@ -17585,7 +17587,9 @@
     },
     "/environmental-impact/estimate": {
       "post": {
-        "tags": [],
+        "tags": [
+          "environmental-impact"
+        ],
         "responses": {
           "200": {
             "description": "Impact estimate",
@@ -17629,9 +17633,9 @@
             }
           }
         },
-        "description": "",
+        "description": "[BETA] Returns an estimate of the impact of a unit of usage of a given product, e.g. one hour for an Instance",
         "parameters": [],
-        "summary": "Return an estimate of the impact of a given usage",
+        "summary": "[BETA] Get an estimate of the impact of using a product",
         "requestBody": {
           "required": true,
           "content": {
@@ -17643,7 +17647,8 @@
                 ],
                 "properties": {
                   "sku": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Product SKU, e.g. compute:ch-gva-2:instance:standard:medium"
                   },
                   "metadata": {
                     "type": "object"
@@ -22512,6 +22517,7 @@
                     "type": "string",
                     "enum": [
                       "ah",
+                      "all",
                       "esp",
                       "gre",
                       "icmp",
@@ -28967,7 +28973,9 @@
     },
     "/environmental-impact/report": {
       "get": {
-        "tags": [],
+        "tags": [
+          "environmental-impact"
+        ],
         "responses": {
           "200": {
             "description": "Environmental impact report",
@@ -29000,7 +29008,7 @@
             }
           }
         },
-        "description": "",
+        "description": "[BETA] Returns a breakdown of the impact of your organization's usage over the given period",
         "parameters": [
           {
             "in": "query",
@@ -29019,7 +29027,7 @@
             }
           }
         ],
-        "summary": "Return an environmental impact report for the given period",
+        "summary": "[BETA] Get an environmental impact report",
         "operationId": "get-impact-report"
       }
     },

@@ -27775,6 +27775,11 @@
                     "$ref": "#/components/schemas/labels",
                     "nullable": true,
                     "description": "Resource labels"
+                  },
+                  "ipv4-block": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Subnet CIDR"
                   }
                 }
               }

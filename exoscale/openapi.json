@@ -17603,8 +17603,12 @@
                   "properties": {
                     "impact": {
                       "type": "object",
+                      "description": "Map of SKUs to their different impact indicators",
                       "additionalProperties": {
-                        "$ref": "#/components/schemas/impact-value-with-unit"
+                        "type": "object",
+                        "additionalProperties": {
+                          "$ref": "#/components/schemas/impact-value-with-unit"
+                        }
                       }
                     }
                   }
@@ -17633,9 +17637,9 @@
             }
           }
         },
-        "description": "[BETA] Returns an estimate of the impact of a unit of usage of a given product, e.g. one hour for an Instance",
+        "description": "[BETA] Returns an estimate of the impact of a unit of usage of one or more products, e.g. the impact of using a standard medium instance for one hour in ch-gva-2",
         "parameters": [],
-        "summary": "[BETA] Get an estimate of the impact of using a product",
+        "summary": "[BETA] Get an estimate of the impact of using products",
         "requestBody": {
           "required": true,
           "content": {
@@ -17648,7 +17652,7 @@
                 "properties": {
                   "sku": {
                     "type": "string",
-                    "description": "Product SKU, e.g. compute:ch-gva-2:instance:standard:medium"
+                    "description": "Product SKU, e.g. compute:ch-gva-2:instance:standard:medium; can also include wildcards, e.g. compute:*:instance:standard:* for all standard instances in all zones"
                   },
                   "metadata": {
                     "type": "object"

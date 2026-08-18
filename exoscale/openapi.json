@@ -3400,9 +3400,11 @@
           "0.24.0",
           "0.25.0",
           "0.25.1",
-          "0.26.0"
+          "0.26.0",
+          "0.27.0",
+          "0.27.1"
         ],
-        "default": "0.26.0",
+        "default": "0.27.1",
         "type": "string"
       },
       "dbaas-user-opensearch-secrets": {
@@ -6528,19 +6530,6 @@
         },
         "description": "SSH key"
       },
-      "reveal-ai-api-key-response": {
-        "description": "Reveal AI API key response",
-        "properties": {
-          "value": {
-            "description": "Plaintext AI API key value",
-            "type": "string"
-          }
-        },
-        "type": "object",
-        "required": [
-          "value"
-        ]
-      },
       "load-balancer-service": {
         "type": "object",
         "properties": {
@@ -8273,24 +8262,6 @@
           "statement",
           "transaction"
         ]
-      },
-      "update-ai-api-key-request": {
-        "description": "Request to update an AI API key (at least one property required)",
-        "properties": {
-          "name": {
-            "description": "Human-readable name for the AI API key",
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 50,
-            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9 _'()-]*[A-Za-z0-9])?$"
-          },
-          "scope": {
-            "description": "Key scope: 'public' for all deployments, or a specific deployment UUID",
-            "type": "string"
-          }
-        },
-        "type": "object",
-        "minProperties": 1
       },
       "dbaas-service-thanos": {
         "type": "object",
@@ -10076,19 +10047,6 @@
         },
         "required": [
           "tag"
-        ]
-      },
-      "rotate-ai-api-key-response": {
-        "description": "Rotate AI API key response",
-        "properties": {
-          "value": {
-            "description": "Plaintext AI API key value",
-            "type": "string"
-          }
-        },
-        "type": "object",
-        "required": [
-          "value"
         ]
       },
       "sks-cluster-labels": {
@@ -13887,52 +13845,6 @@
           "bearer-token"
         ],
         "description": "Kubernetes Audit parameters"
-      },
-      "update-ai-api-key-response": {
-        "description": "Update AI API key response",
-        "properties": {
-          "updated-at": {
-            "description": "Last update timestamp",
-            "format": "date-time",
-            "type": "string",
-            "readOnly": true
-          },
-          "name": {
-            "description": "Human-readable name for the AI API key",
-            "type": "string"
-          },
-          "scope": {
-            "description": "Key scope: 'public' for all deployments, or a specific deployment UUID",
-            "type": "string"
-          },
-          "id": {
-            "description": "AI API key ID",
-            "format": "uuid",
-            "type": "string",
-            "readOnly": true
-          },
-          "org-uuid": {
-            "description": "Organization UUID that owns this key",
-            "format": "uuid",
-            "type": "string",
-            "readOnly": true
-          },
-          "created-at": {
-            "description": "Creation timestamp",
-            "format": "date-time",
-            "type": "string",
-            "readOnly": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "org-uuid",
-          "name",
-          "scope",
-          "created-at",
-          "updated-at"
-        ]
       },
       "ai-api-key": {
         "description": "AI API key metadata",
@@ -19462,77 +19374,6 @@
         ],
         "summary": "[BETA] Get AI API Key",
         "operationId": "get-ai-api-key"
-      },
-      "patch": {
-        "tags": [
-          "ai-api-key"
-        ],
-        "responses": {
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/update-ai-api-key-response"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          }
-        },
-        "description": "Update AI API key name and/or scope",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "[BETA] Update AI API Key",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/update-ai-api-key-request"
-              }
-            }
-          }
-        },
-        "operationId": "update-ai-api-key"
       }
     },
     "/private-network": {
@@ -19716,59 +19557,6 @@
         "parameters": [],
         "summary": "[BETA] List VPCs",
         "operationId": "list-vpcs"
-      }
-    },
-    "/ai/api-key/{id}/rotate": {
-      "post": {
-        "tags": [
-          "ai-api-key"
-        ],
-        "responses": {
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/rotate-ai-api-key-response"
-                }
-              }
-            }
-          }
-        },
-        "description": "Rotate AI API key value",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "[BETA] Rotate AI API Key",
-        "operationId": "rotate-ai-api-key"
       }
     },
     "/instance/{id}:start": {
@@ -29945,49 +29733,6 @@
           }
         },
         "operationId": "create-dbaas-external-endpoint-elasticsearch"
-      }
-    },
-    "/ai/api-key/{id}/reveal": {
-      "get": {
-        "tags": [
-          "ai-api-key"
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error-response"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/reveal-ai-api-key-response"
-                }
-              }
-            }
-          }
-        },
-        "description": "Reveal AI API key plaintext value",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "summary": "[BETA] Reveal AI API Key",
-        "operationId": "reveal-ai-api-key"
       }
     },
     "/dbaas-opensearch/{name}/maintenance/start": {

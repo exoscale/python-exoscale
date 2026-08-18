@@ -1639,6 +1639,10 @@
                   "format": "uuid",
                   "description": "Instance uuid"
                 },
+                "name": {
+                  "type": "string",
+                  "description": "Instance name"
+                },
                 "ipv4": {
                   "type": "string",
                   "format": "ipv4",
@@ -3076,6 +3080,10 @@
             "type": "string",
             "format": "date-time",
             "description": "VPC creation date"
+          },
+          "default": {
+            "type": "boolean",
+            "description": "Indicates if this is the organization's default VPC"
           },
           "labels": {
             "$ref": "#/components/schemas/labels",
@@ -6087,6 +6095,10 @@
             "type": "string",
             "format": "date-time",
             "description": "VPC creation date"
+          },
+          "default": {
+            "type": "boolean",
+            "description": "Indicates if this is the organization's default VPC"
           },
           "labels": {
             "$ref": "#/components/schemas/labels",
@@ -16477,7 +16489,7 @@
             }
           }
         ],
-        "summary": "[BETA] Delete a ClickHouse service",
+        "summary": "Delete a ClickHouse service",
         "operationId": "delete-dbaas-service-clickhouse"
       },
       "get": {
@@ -16507,7 +16519,7 @@
             }
           }
         ],
-        "summary": "[BETA] Get a DBaaS ClickHouse service",
+        "summary": "Get a DBaaS ClickHouse service",
         "operationId": "get-dbaas-service-clickhouse"
       },
       "post": {
@@ -16537,7 +16549,7 @@
             }
           }
         ],
-        "summary": "[BETA] Create a DBaaS ClickHouse service",
+        "summary": "Create a DBaaS ClickHouse service",
         "requestBody": {
           "required": true,
           "content": {
@@ -16647,7 +16659,7 @@
             }
           }
         ],
-        "summary": "[BETA] Update a DBaaS ClickHouse service",
+        "summary": "Update a DBaaS ClickHouse service",
         "requestBody": {
           "required": true,
           "content": {
@@ -17843,7 +17855,7 @@
             }
           }
         ],
-        "summary": "[BETA] List DBaaS ClickHouse roles",
+        "summary": "List DBaaS ClickHouse roles",
         "operationId": "list-dbaas-clickhouse-roles"
       }
     },
@@ -19769,7 +19781,7 @@
             }
           }
         ],
-        "summary": "[BETA] Delete a DBaaS ClickHouse role",
+        "summary": "Delete a DBaaS ClickHouse role",
         "operationId": "delete-dbaas-clickhouse-role"
       }
     },
@@ -23989,7 +24001,7 @@
             }
           }
         ],
-        "summary": "[BETA] Reset the credentials of a DBaaS ClickHouse user",
+        "summary": "Reset the credentials of a DBaaS ClickHouse user",
         "requestBody": {
           "required": true,
           "content": {
@@ -24089,7 +24101,7 @@
             }
           }
         ],
-        "summary": "[BETA] Get DBaaS ClickHouse ACL configuration",
+        "summary": "Get DBaaS ClickHouse ACL configuration",
         "operationId": "get-dbaas-clickhouse-acl-config"
       }
     },
@@ -24121,7 +24133,7 @@
             }
           }
         ],
-        "summary": "[BETA] List DBaaS ClickHouse users",
+        "summary": "List DBaaS ClickHouse users",
         "operationId": "list-dbaas-clickhouse-users"
       },
       "post": {
@@ -24151,7 +24163,7 @@
             }
           }
         ],
-        "summary": "[BETA] Create a DBaaS ClickHouse user",
+        "summary": "Create a DBaaS ClickHouse user",
         "requestBody": {
           "required": true,
           "content": {
@@ -25875,7 +25887,7 @@
             }
           }
         ],
-        "summary": "[BETA] Reveal the secrets of a DBaaS ClickHouse user",
+        "summary": "Reveal the secrets of a DBaaS ClickHouse user",
         "operationId": "reveal-dbaas-clickhouse-user-password"
       }
     },
@@ -26656,7 +26668,7 @@
             }
           }
         ],
-        "summary": "[BETA] Delete a DBaaS ClickHouse user",
+        "summary": "Delete a DBaaS ClickHouse user",
         "operationId": "delete-dbaas-clickhouse-user"
       }
     },
@@ -32281,7 +32293,7 @@
             }
           }
         ],
-        "summary": "[BETA] Initiate ClickHouse maintenance update",
+        "summary": "Initiate ClickHouse maintenance update",
         "operationId": "start-dbaas-clickhouse-maintenance"
       }
     },

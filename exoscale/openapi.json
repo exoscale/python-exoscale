@@ -8641,10 +8641,6 @@
           }
         }
       },
-      "empty": {
-        "type": "object",
-        "description": "An empty map response"
-      },
       "list-models-response": {
         "description": "AI model list",
         "properties": {
@@ -25326,15 +25322,8 @@
           "vpc-route"
         ],
         "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/empty"
-                }
-              }
-            }
+          "204": {
+            "description": "204"
           }
         },
         "description": "",
@@ -27482,15 +27471,8 @@
           "vpc-subnet"
         ],
         "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/empty"
-                }
-              }
-            }
+          "204": {
+            "description": "204"
           }
         },
         "description": "",
@@ -32623,15 +32605,8 @@
           "vpc-management"
         ],
         "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/empty"
-                }
-              }
-            }
+          "204": {
+            "description": "204"
           }
         },
         "description": "",

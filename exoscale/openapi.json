@@ -11345,7 +11345,7 @@
           },
           "automatic": {
             "type": "boolean",
-            "description": "A boolean flag indicating whether this specific material version was created during an automated system rotation window."
+            "description": "Flag stating whether an automation run handled this historic mutation or if manual actor keys initiated it."
           }
         }
       },
@@ -14903,7 +14903,7 @@
             }
           },
           "400": {
-            "description": "### Errors\n\nInvalid Origin: The request was rejected because automatic key rotation can only be enabled on a KMS key with origin \"exoscale-kms\".\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nNot on Default: The request was rejected because the operation is not allowed on the default key.\n\nNot on Replica: The request was rejectde because the operation is not allowed on a replica.\n\nKey is Pending Deletion: The request was rejected because it was performed on a key that is pending deletion.\n\nKey is Disabled: The request was rejected because the specified KMS key is disabled.\n\nInvalid Usage: The request was rejected because the operation is only allowed on symmetric keys with usage \"encrypt-decrypt\".\n\nConflict: The request was rejected because the automatic rotation is already enabled for this KMS Key.\n",
+            "description": "### Errors\n\nInvalid Origin: The request was rejected because automatic key rotation can only be enabled on a KMS key with origin \"exoscale-kms\".\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nNot on Default: The request was rejected because the operation is not allowed on the default key.\n\nNot on Replica: The request was rejected because the operation is not allowed on a replica.\n\nKey is Pending Deletion: The request was rejected because it was performed on a key that is pending deletion.\n\nKey is Disabled: The request was rejected because the specified KMS key is disabled.\n\nInvalid Usage: The request was rejected because the operation is only allowed on symmetric keys with usage \"encrypt-decrypt\".\n\nConflict: The request was rejected because the automatic rotation is already enabled for this KMS Key.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -20099,7 +20099,7 @@
             }
           },
           "400": {
-            "description": "### Errors\n\nInvalid Origin: The request was rejected because automatic key rotation can only be enabled on a KMS key with origin \"exoscale-kms\".\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nNot on Default: The request was rejected because the operation is not allowed on the default key.\n\nNot on Replica: The request was rejectde because the operation is not allowed on a replica.\n\nKey is Pending Deletion: The request was rejected because it was performed on a key that is pending deletion.\n\nKey is Disabled: The request was rejected because the specified KMS key is disabled.\n\nInvalid Usage: The request was rejected because the operation is only allowed on symmetric keys with usage \"encrypt-decrypt\".\n\nConflict: The request was rejected because the automatic rotation is already enabled for this KMS Key.\n\nBad Request: The request was rejected because of an invalid request body or path parameter.\n",
+            "description": "### Errors\n\nInvalid Origin: The request was rejected because automatic key rotation can only be enabled on a KMS key with origin \"exoscale-kms\".\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nNot on Default: The request was rejected because the operation is not allowed on the default key.\n\nNot on Replica: The request was rejected because the operation is not allowed on a replica.\n\nKey is Pending Deletion: The request was rejected because it was performed on a key that is pending deletion.\n\nKey is Disabled: The request was rejected because the specified KMS key is disabled.\n\nInvalid Usage: The request was rejected because the operation is only allowed on symmetric keys with usage \"encrypt-decrypt\".\n\nConflict: The request was rejected because the automatic rotation is already enabled for this KMS Key.\n\nBad Request: The request was rejected because of an invalid request body or path parameter.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -29099,7 +29099,7 @@
             }
           },
           "400": {
-            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nNot on Default: The request was rejected because the operation is not allowed on the default key.\n\nNot on Replica: The request was rejectde because the operation is not allowed on a replica.\n\nBad Request: The request was rejected because of an invalid request body or path parameter.\n",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nNot on Default: The request was rejected because the operation is not allowed on the default key.\n\nNot on Replica: The request was rejected because the operation is not allowed on a replica.\n\nBad Request: The request was rejected because of an invalid request body or path parameter.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -32428,7 +32428,7 @@
             }
           },
           "400": {
-            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nNot on Replica: The request was rejectde because the operation is not allowed on a replica.\n\nNot Pending Deletion: The request was rejected because the key is not pending deletion.\n",
+            "description": "### Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nNot on Replica: The request was rejected because the operation is not allowed on a replica.\n\nNot Pending Deletion: The request was rejected because the key is not pending deletion.\n",
             "content": {
               "application/json": {
                 "schema": {

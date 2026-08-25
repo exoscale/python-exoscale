@@ -13954,7 +13954,14 @@
             "format": "int64",
             "minimum": 0,
             "exclusiveMinimum": false,
-            "description": "Backup's original size before compression"
+            "description": "Backup's original size before compression, in bytes"
+          },
+          "tiered-storage-data-size": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "exclusiveMinimum": false,
+            "description": "Amount of tiered storage data in bytes referenced by this backup"
           }
         },
         "required": [

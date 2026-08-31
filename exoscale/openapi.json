@@ -10021,6 +10021,16 @@
             "$ref": "#/components/schemas/deploy-target-ref",
             "description": "Instance Pool Deploy Target"
           },
+          "kubelet-max-pods": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 65535,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "nullable": true,
+            "description": "Maximum number of pods per node. Set to use a value other than the kubelet default."
+          },
           "addons": {
             "type": "array",
             "items": {
@@ -18668,6 +18678,16 @@
                     "$ref": "#/components/schemas/deploy-target-ref",
                     "nullable": true,
                     "description": "Nodepool Deploy Target"
+                  },
+                  "kubelet-max-pods": {
+                    "type": "integer",
+                    "format": "int64",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "exclusiveMinimum": false,
+                    "exclusiveMaximum": false,
+                    "nullable": true,
+                    "description": "Maximum number of pods per node (kubelet setting)"
                   },
                   "disk-size": {
                     "type": "integer",
@@ -29700,6 +29720,16 @@
                   "deploy-target": {
                     "$ref": "#/components/schemas/deploy-target-ref",
                     "description": "Nodepool Deploy Target"
+                  },
+                  "kubelet-max-pods": {
+                    "type": "integer",
+                    "format": "int64",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "exclusiveMinimum": false,
+                    "exclusiveMaximum": false,
+                    "nullable": true,
+                    "description": "Maximum number of pods per node (kubelet setting)"
                   },
                   "addons": {
                     "type": "array",

@@ -328,8 +328,8 @@
         "url": "https://community.exoscale.com/documentation/compute/"
       },
       "name": "vpc-route",
-      "x-display-name": "VPC",
-      "x-weight": 195,
+      "x-display-name": "VPC Routes",
+      "x-weight": 198,
       "x-icon": "exo-vpc"
     },
     {
@@ -588,7 +588,7 @@
       },
       "name": "vpc-management",
       "x-display-name": "VPC",
-      "x-weight": 195,
+      "x-weight": 196,
       "x-icon": "exo-vpc"
     },
     {
@@ -622,8 +622,8 @@
         "url": "https://community.exoscale.com/documentation/compute/"
       },
       "name": "vpc-subnet",
-      "x-display-name": "VPC",
-      "x-weight": 195,
+      "x-display-name": "VPC Subnets",
+      "x-weight": 197,
       "x-icon": "exo-vpc"
     },
     {
@@ -3410,9 +3410,10 @@
           "0.25.1",
           "0.26.0",
           "0.27.0",
-          "0.27.1"
+          "0.27.1",
+          "0.28.0"
         ],
-        "default": "0.27.1",
+        "default": "0.28.0",
         "type": "string"
       },
       "dbaas-user-opensearch-secrets": {

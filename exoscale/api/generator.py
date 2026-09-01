@@ -61,10 +61,14 @@ def _resolve_type(t):
 
 
 def _status_code_docstring(api_spec, operation, status_code):
-    [ctype] = operation["responses"][status_code]["content"].keys()
-    return_schema = operation["responses"][status_code]["content"][ctype][
-        "schema"
-    ]
+    response = operation["responses"][status_code]
+    # A bodyless response -- a 204, typically -- documents no content, and
+    # `_call_operation` returns None for it.
+    if "content" not in response:
+        return "None"
+
+    [ctype] = response["content"].keys()
+    return_schema = response["content"][ctype]["schema"]
     if "$ref" in return_schema:
         ref = _get_ref(api_spec, return_schema["$ref"])
         if (

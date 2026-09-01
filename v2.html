@@ -640,6 +640,7 @@ definition shipped with the package.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>str</em>)</p></li>
 <li><p><strong>ttl</strong> (<em>int</em>) – TTL in seconds for the generated access key (cannot exceed the max TTL defined in the targeted assume role).</p></li>
+<li><p><strong>org_id</strong> (<em>str</em>) – Organization ID target of the assume role action.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1076,7 +1077,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.create_dbaas_clickhouse_user">
 <span class="sig-name descname"><span class="pre">create_dbaas_clickhouse_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.create_dbaas_clickhouse_user" title="Link to this definition"></a></dt>
-<dd><p>[BETA] Create a DBaaS ClickHouse user</p>
+<dd><p>Create a DBaaS ClickHouse user</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1584,7 +1585,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.create_dbaas_service_clickhouse">
 <span class="sig-name descname"><span class="pre">create_dbaas_service_clickhouse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.create_dbaas_service_clickhouse" title="Link to this definition"></a></dt>
-<dd><p>[BETA] Create a DBaaS ClickHouse service</p>
+<dd><p>Create a DBaaS ClickHouse service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1971,7 +1972,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>gpu_count</strong> (<em>int</em>) – Number of GPUs (1-8).</p></li>
-<li><p><strong>inference_engine_version</strong> (<em>str</em>) – Inference engine version. Must be one of <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.16.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.17.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.18.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.18.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.19.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.19.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.2'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.21.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.22.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.22.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.23.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.24.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.25.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.25.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.26.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.27.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.27.1'</span></code>.</p></li>
+<li><p><strong>inference_engine_version</strong> (<em>str</em>) – Inference engine version. Must be one of <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.16.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.17.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.18.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.18.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.19.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.19.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.2'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.21.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.22.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.22.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.23.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.24.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.25.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.25.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.26.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.27.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.27.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.28.0'</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Deployment name.</p></li>
 <li><p><strong>gpu_type</strong> (<em>str</em>) – GPU type family (e.g., gpua5000, gpu3080ti).</p></li>
 <li><p><strong>product_name</strong> (<em>str</em>) – Billing identifier for this deployment. Used by the Router for usage counters and Kafka events..</p></li>
@@ -2518,6 +2519,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <p>kubelet_image_gc (dict): Kubelet image GC options.</p>
 <p>instance_prefix (str): Prefix to apply to instances names (default: pool), lowercase only.</p>
 <p>deploy_target (dict): Nodepool Deploy Target.</p>
+<p>kubelet_max_pods (int): Maximum number of pods per node (kubelet setting).</p>
 <p>addons (list): Nodepool addons.</p>
 <p>disk_size (int): Nodepool instances disk size in GiB.</p>
 <p>nvidia_mig_profiles (dict): Nvidia MIG Profiles.</p>
@@ -2850,7 +2852,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.delete_dbaas_clickhouse_role">
 <span class="sig-name descname"><span class="pre">delete_dbaas_clickhouse_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.delete_dbaas_clickhouse_role" title="Link to this definition"></a></dt>
-<dd><p>[BETA] Delete a DBaaS ClickHouse role</p>
+<dd><p>Delete a DBaaS ClickHouse role</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -2880,7 +2882,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.delete_dbaas_clickhouse_user">
 <span class="sig-name descname"><span class="pre">delete_dbaas_clickhouse_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.delete_dbaas_clickhouse_user" title="Link to this definition"></a></dt>
-<dd><p>[BETA] Delete a DBaaS ClickHouse user</p>
+<dd><p>Delete a DBaaS ClickHouse user</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -3363,7 +3365,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.delete_dbaas_service_clickhouse">
 <span class="sig-name descname"><span class="pre">delete_dbaas_service_clickhouse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.delete_dbaas_service_clickhouse" title="Link to this definition"></a></dt>
-<dd><p>[BETA] Delete a ClickHouse service</p>
+<dd><p>Delete a ClickHouse service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
@@ -4027,10 +4029,10 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict: An empty map response.</p>
+<dd class="field-even"><p>None</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>200</p>
+<dd class="field-odd"><p>204</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4215,10 +4217,10 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict: An empty map response.</p>
+<dd class="field-even"><p>None</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>200</p>
+<dd class="field-odd"><p>204</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4286,10 +4288,10 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dd class="field-odd"><p><strong>id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict: An empty map response.</p>
+<dd class="field-even"><p>None</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>200</p>
+<dd class="field-odd"><p>204</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5056,7 +5058,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.get_dbaas_clickhouse_acl_config">
 <span class="sig-name descname"><span class="pre">get_dbaas_clickhouse_acl_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_dbaas_clickhouse_acl_config" title="Link to this definition"></a></dt>
-<dd><p>[BETA] Get DBaaS ClickHouse ACL configuration</p>
+<dd><p>Get DBaaS ClickHouse ACL configuration</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>service_name</strong> (<em>str</em>)</p>
@@ -5265,7 +5267,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.get_dbaas_service_clickhouse">
 <span class="sig-name descname"><span class="pre">get_dbaas_service_clickhouse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.get_dbaas_service_clickhouse" title="Link to this definition"></a></dt>
-<dd><p>[BETA] Get a DBaaS ClickHouse service</p>
+<dd><p>Get a DBaaS ClickHouse service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
@@ -5656,7 +5658,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>updated_at</strong> (str): Update time.</p></li>
 <li><p><strong>deployment_url</strong> (str): Deployment inference endpoint URL.</p></li>
 <li><p><strong>service_level</strong> (str): Service level.</p></li>
-<li><p><strong>inference_engine_version</strong> (str): Inference engine version. Values are <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.16.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.17.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.18.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.18.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.19.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.19.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.2'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.21.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.22.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.22.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.23.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.24.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.25.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.25.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.26.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.27.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.27.1'</span></code>.</p></li>
+<li><p><strong>inference_engine_version</strong> (str): Inference engine version. Values are <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.16.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.17.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.18.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.18.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.19.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.19.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.2'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.21.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.22.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.22.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.23.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.24.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.25.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.25.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.26.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.27.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.27.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.28.0'</span></code>.</p></li>
 <li><p><strong>name</strong> (str): Deployment name.</p></li>
 <li><p><strong>state</strong> (str): Deployment state. Values are <code class="docutils literal notranslate"><span class="pre">'creating'</span></code>, <code class="docutils literal notranslate"><span class="pre">'deploying'</span></code>, <code class="docutils literal notranslate"><span class="pre">'error'</span></code>, <code class="docutils literal notranslate"><span class="pre">'preparing'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ready'</span></code>, <code class="docutils literal notranslate"><span class="pre">'scaling'</span></code>, <code class="docutils literal notranslate"><span class="pre">'updating'</span></code>.</p></li>
 <li><p><strong>gpu_type</strong> (str): GPU type family.</p></li>
@@ -6034,6 +6036,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>tpm_enabled</strong> (bool): Indicates if the instance has tpm enabled.</p></li>
 <li><p><strong>deploy_target</strong> (dict): Instance Deploy Target.</p></li>
 <li><p><strong>ipv6_address</strong> (str): Instance IPv6 address.</p></li>
+<li><p><strong>vpc</strong> (dict): VPC.</p></li>
 <li><p><strong>id</strong> (str): Instance ID.</p></li>
 <li><p><strong>snapshots</strong> (list): Instance Snapshots.</p></li>
 <li><p><strong>disk_size</strong> (int): Instance disk size in GiB.</p></li>
@@ -6575,6 +6578,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>instance_pool</strong> (dict): Instance Pool managed by the Nodepool.</p></li>
 <li><p><strong>instance_prefix</strong> (str): The instances created by the Nodepool will be prefixed with this value (default: pool).</p></li>
 <li><p><strong>deploy_target</strong> (dict): Instance Pool Deploy Target.</p></li>
+<li><p><strong>kubelet_max_pods</strong> (int): Maximum number of pods per node. Set to use a value other than the kubelet default..</p></li>
 <li><p><strong>addons</strong> (list): Nodepool addons.</p></li>
 <li><p><strong>id</strong> (str): Nodepool ID.</p></li>
 <li><p><strong>disk_size</strong> (int): Nodepool instances disk size in GiB.</p></li>
@@ -6798,6 +6802,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>name</strong> (str): VPC name.</p></li>
 <li><p><strong>description</strong> (str): VPC description.</p></li>
 <li><p><strong>created_at</strong> (str): VPC creation date.</p></li>
+<li><p><strong>default</strong> (bool): Indicates if this is the organization’s default VPC.</p></li>
 <li><p><strong>labels</strong> (dict): Resource labels.</p></li>
 </ul>
 </div></blockquote>
@@ -6925,7 +6930,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.list_dbaas_clickhouse_roles">
 <span class="sig-name descname"><span class="pre">list_dbaas_clickhouse_roles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.list_dbaas_clickhouse_roles" title="Link to this definition"></a></dt>
-<dd><p>[BETA] List DBaaS ClickHouse roles</p>
+<dd><p>List DBaaS ClickHouse roles</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>service_name</strong> (<em>str</em>)</p>
@@ -6942,7 +6947,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.list_dbaas_clickhouse_users">
 <span class="sig-name descname"><span class="pre">list_dbaas_clickhouse_users</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.list_dbaas_clickhouse_users" title="Link to this definition"></a></dt>
-<dd><p>[BETA] List DBaaS ClickHouse users</p>
+<dd><p>List DBaaS ClickHouse users</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>service_name</strong> (<em>str</em>)</p>
@@ -7863,7 +7868,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.reset_dbaas_clickhouse_user_password">
 <span class="sig-name descname"><span class="pre">reset_dbaas_clickhouse_user_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reset_dbaas_clickhouse_user_password" title="Link to this definition"></a></dt>
-<dd><p>[BETA] Reset the credentials of a DBaaS ClickHouse user</p>
+<dd><p>Reset the credentials of a DBaaS ClickHouse user</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -8407,7 +8412,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.reveal_dbaas_clickhouse_user_password">
 <span class="sig-name descname"><span class="pre">reveal_dbaas_clickhouse_user_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.reveal_dbaas_clickhouse_user_password" title="Link to this definition"></a></dt>
-<dd><p>[BETA] Reveal the secrets of a DBaaS ClickHouse user</p>
+<dd><p>Reveal the secrets of a DBaaS ClickHouse user</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -9057,7 +9062,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.start_dbaas_clickhouse_maintenance">
 <span class="sig-name descname"><span class="pre">start_dbaas_clickhouse_maintenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.start_dbaas_clickhouse_maintenance" title="Link to this definition"></a></dt>
-<dd><p>[BETA] Initiate ClickHouse maintenance update</p>
+<dd><p>Initiate ClickHouse maintenance update</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
@@ -9763,7 +9768,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dl class="py method">
 <dt class="sig sig-object py" id="exoscale.api.v2.Client.update_dbaas_service_clickhouse">
 <span class="sig-name descname"><span class="pre">update_dbaas_service_clickhouse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exoscale.api.v2.Client.update_dbaas_service_clickhouse" title="Link to this definition"></a></dt>
-<dd><p>[BETA] Update a DBaaS ClickHouse service</p>
+<dd><p>Update a DBaaS ClickHouse service</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -10101,7 +10106,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>str</em>)</p></li>
-<li><p><strong>inference_engine_version</strong> (<em>str</em>) – Inference engine version. Must be one of <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.16.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.17.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.18.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.18.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.19.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.19.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.2'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.21.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.22.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.22.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.23.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.24.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.25.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.25.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.26.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.27.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.27.1'</span></code>.</p></li>
+<li><p><strong>inference_engine_version</strong> (<em>str</em>) – Inference engine version. Must be one of <code class="docutils literal notranslate"><span class="pre">'0.12.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.15.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.16.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.17.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.18.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.18.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.19.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.19.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.20.2'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.21.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.22.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.22.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.23.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.24.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.25.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.25.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.26.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.27.0'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.27.1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'0.28.0'</span></code>.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Deployment name.</p></li>
 <li><p><strong>inference_engine_parameters</strong> (<em>list</em>) – Optional extra inference engine server CLI args.</p></li>
 </ul>
@@ -10666,6 +10671,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <p>kubelet_image_gc (dict): Kubelet image GC options.</p>
 <p>instance_prefix (str): Prefix to apply to managed instances names (default: pool), lowercase only.</p>
 <p>deploy_target (dict): Nodepool Deploy Target.</p>
+<p>kubelet_max_pods (int): Maximum number of pods per node (kubelet setting).</p>
 <p>disk_size (int): Nodepool instances disk size in GiB.</p>
 <p>nvidia_mig_profiles (dict): Nvidia MIG Profiles.</p>
 </div></blockquote>
@@ -10806,6 +10812,7 @@ When a snapshot ID is supplied, this defaults to the size of the source volume, 
 <li><p><strong>name</strong> (str): VPC name.</p></li>
 <li><p><strong>description</strong> (str): VPC description.</p></li>
 <li><p><strong>created_at</strong> (str): VPC creation date.</p></li>
+<li><p><strong>default</strong> (bool): Indicates if this is the organization’s default VPC.</p></li>
 <li><p><strong>labels</strong> (dict): Resource labels.</p></li>
 </ul>
 </div></blockquote>

@@ -6275,6 +6275,11 @@
             "type": "string",
             "format": "uuid",
             "description": "IAM API Key Role ID"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "IAM API Key creation timestamp"
           }
         },
         "description": "IAM API Key"
@@ -7983,6 +7988,11 @@
             "type": "string",
             "format": "uuid",
             "description": "IAM API Key Role ID"
+          },
+          "created-at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "IAM API Key creation timestamp"
           }
         },
         "description": "IAM API Key"

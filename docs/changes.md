@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.16.5 (2026-11-20)
+
+**Fixes**
+
+* fix: handle `null` in openapi enum types
+* fix: handle response properties with enum but no description
+
+## 0.16.4 (2026-09-01)
+
+**Fixes**
+
+* fix: allow empty body for 204 status codes
+
 ## 0.16.3 (2026-03-26)
 
 **Fixes**

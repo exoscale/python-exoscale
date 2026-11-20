@@ -87,7 +87,8 @@ def _status_code_docstring(api_spec, operation, status_code):
                 desc = prop.get("description")
                 if "enum" in item:
                     choices = "``, ``".join(map(repr, item["enum"]))
-                    desc += f". Values are ``{choices}``"
+                    enum_note = f"Values are ``{choices}``"
+                    desc = f"{desc}. {enum_note}" if desc else enum_note
                 suffix = f": {desc}" if desc else ""
                 normalized_name = name.replace("-", "_")
                 body[normalized_name] = (

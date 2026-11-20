@@ -6,7 +6,7 @@ import sys
 def walk_map(payload):
     for key, value in payload.items():
         if key == "enum" and isinstance(value, list):
-            payload[key] = list(sorted(value))
+            payload[key] = sorted(value, key=lambda item: (item is None, item))
         elif isinstance(value, dict):
             walk_map(value)
         elif isinstance(value, list):

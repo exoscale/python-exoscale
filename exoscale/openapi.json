@@ -9973,6 +9973,7 @@
           },
           "description": {
             "type": "string",
+            "maxLength": 1024,
             "description": "An optional detailed description providing additional context about the key's intended use case."
           },
           "usage": {
@@ -13547,6 +13548,19 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "update-kms-key-description-request": {
+        "type": "object",
+        "required": [
+          "description"
+        ],
+        "properties": {
+          "description": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "A new detailed description providing additional context about the key's intended use case."
           }
         }
       },
@@ -20118,6 +20132,59 @@
           }
         },
         "operationId": "attach-block-storage-volume-to-instance"
+      }
+    },
+    "/kms-key/{id}/update-description": {
+      "post": {
+        "tags": [
+          "kms-key"
+        ],
+        "responses": {
+          "200": {
+            "description": "Key description updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/success-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Errors\n\nKey Not Found: The request was rejected because the specified KMS Key could not be found.\n\nKey is Pending Deletion: The request was rejected because it was performed on a key that is pending deletion.\n\nNot on Default: The request was rejected because the operation is not allowed on the default key.\n\nNot on Replica: The request was rejected because the operation is not allowed on a replica.\n\nBad Request: The request was rejected because of an invalid request body or path parameter.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-response"
+                }
+              }
+            }
+          }
+        },
+        "description": "Updates the description of a KMS Key. On a multi-zone key, the change is propagated to its replicas.",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Update KMS Key Description",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update-kms-key-description-request"
+              }
+            }
+          }
+        },
+        "operationId": "update-kms-key-description"
       }
     },
     "/kms-key/{id}/enable": {

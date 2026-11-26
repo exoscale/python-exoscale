@@ -10445,7 +10445,7 @@
           },
           "allowed-networks": {
             "$ref": "#/components/schemas/sks-cluster-allowed-networks",
-            "description": "EXPERIMENTAL: List of ranges of allowed IPs using CIDR notation."
+            "description": "List of ranges of allowed IPs using CIDR notation."
           }
         },
         "description": "SKS Cluster"
@@ -28846,7 +28846,7 @@
                   },
                   "allowed-networks": {
                     "$ref": "#/components/schemas/sks-cluster-allowed-networks",
-                    "description": "EXPERIMENTAL: List of ranges of allowed IPs using CIDR notation. Defaults to `[\"0.0.0.0/0\"]`, allowing access to all IPs. (default: [\"0.0.0.0/0\"])"
+                    "description": "List of ranges of allowed IPs using CIDR notation. Defaults to `[\"0.0.0.0/0\"]`, allowing access to all IPs. (default: [\"0.0.0.0/0\"])"
                   }
                 },
                 "required": [
@@ -29341,7 +29341,7 @@
                   },
                   "allowed-networks": {
                     "$ref": "#/components/schemas/sks-cluster-allowed-networks",
-                    "description": "EXPERIMENTAL: List of ranges of allowed IPs using CIDR notation. Defaults to `[\"0.0.0.0/0\"]`, allowing access to all IPs. (default: [\"0.0.0.0/0\"])"
+                    "description": "List of ranges of allowed IPs using CIDR notation. Defaults to `[\"0.0.0.0/0\"]`, allowing access to all IPs. (default: [\"0.0.0.0/0\"])"
                   }
                 }
               }
